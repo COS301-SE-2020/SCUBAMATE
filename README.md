@@ -1,42 +1,51 @@
 # SCUBAMATE
 
+# Overview 
+"Scubamate" is a scuba diving companion app, designed to aid divers, and diving instructors with administrative tasks, such as checking weather information, logging dives, and planning diving trips.
+
+# Software Requirements Specification https://www.overleaf.com/2884188284yrkthjxsjsjy
+ Overleaf - LaTex
+
+# Slack https://team-anti-virus.slack.com
+
+# ClickUp https://app.clickup.com/2536654/home/landing
+
+# Installation Instructions
+ TBC
+
 ## Mentors
 * Matthew Gouws gouwsm@amazon.com
 * Peter Rayner raynpete@amazon.com
-
-## Engineers
-* Gisèle Nadine Marais
-* Jaime Matthew Tellie
-* Isobel Bosman
-* James Darren Jenkins-Ferrett
-* Carmen Janse van Rensburg
 
 # Demo 1 Video Link
 
 # Git Landing Page
 https://cos301capstoneproject.github.io/
-# Meet The Team
 
-## Gisèle Nadine Marais u18012583@tuks.co.za
+# Collaborators
+
+## Gisèle Nadine Marais https://giselenadine.github.io/
 * Introduction
 * Domain Model
 
 
-## Jaime Matthew Tellie u17021627@tuks.co.za
-* Introduction
+## Jaime Matthew Tellie https://u17021627.github.io/
+* Trace-ability Matrix
 * Quality Requirements
-* Trace-ability Matrix
 
-## Isobel Bosman u18020519@tuks.co.za
-* Introduction
+## Isobel Bosman https://u18020519.github.io/
 * User Charactaristics
 * Functional Requirements
+* Use Cases
 
-## James Darren Jenkins-Ferrett u18047701@tuks.co.za
+## James Darren Jenkins-Ferrett https://jamesjenkinsferrett.github.io/
 * Introduction 
-* Trace-ability Matrix
+* Overview
 
-## Carmen Janse van Rensburg u18000836@tuks.co.za
-* Introduction
+## Carmen Janse van Rensburg https://carmenjvr.github.io/
 * User Charactaristics
 * Functional Requirements
+* Use Cases
+
+# Testing Instructions
+ TBC
