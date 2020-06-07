@@ -11,6 +11,30 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
+  {
+    path: 'explore',
+    loadChildren: () => import('./explore/explore.module').then( m => m.ExplorePageModule)
+  },
+  {
+    path: 'profile',
+    loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'my-dives',
+    loadChildren: () => import('./my-dives/my-dives.module').then( m => m.MyDivesPageModule)
+  },
+  {
+    path: 'weather',
+    loadChildren: () => import('./weather/weather.module').then( m => m.WeatherPageModule)
+  },
+  {
+    path: 'signup',
+    loadChildren: () => import('./signup/signup.module').then( m => m.SignupPageModule)
+  },
 ];
 
 @NgModule({

@@ -1,0 +1,76 @@
+$darkBlue : #264653 ;
+$lightBlue : #2A9D8F ;
+$orange: #F4A261 ; 
+$red: #E76F51 ;
+$yellow : #E9C46A ;
+$inputBackgroundColor: #181e21;
+
+body{
+    background-image: url("../../assets/images/sea.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+  
+  }
+
+  #typeDiv{
+    background-color: rgba($color:$darkBlue, $alpha: 0.9) ;
+    margin: auto;
+    margin-top: 40px;
+    width: 40%;
+    border-radius: 3px;
+    padding: 20px;
+    padding-bottom: 40px;
+    text-align: center;
+  }
+  
+  #typeDiv ion-label{
+    color: white;
+  }
+  
+
+  ion-item{
+    background-color: $inputBackgroundColor #181e21 ;
+  }
+
+  #diverDiv{
+    background-color: rgba($color:$darkBlue, $alpha: 0.9) ;
+    margin: auto;
+    margin-top: 20px;
+    width: 70%;
+    border-radius: 3px;
+    padding: 20px;
+    padding-bottom: 40px;
+  }
+
+  #diverDiv ion-label{
+    color: white;
+  }
+
+  #diverDiv input[type=text], input[type=password],input[type=email]{
+    background-color: $inputBackgroundColor;
+    color: white;
+    border: none;
+    border-radius: 2px;
+    width: 70% ;
+    margin-bottom: 10px;
+  }
+
+  #diverDiv input[type=submit], button{
+    margin-top: 50px;
+    width: 50%;
+    background-color: #F4A261;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 5px;
+    margin-left: 25%;
+  }
+
+  #diverDiv input[type=submit]:hover{
+    background-color: #E76F51 ;
+    font-family: 'Righteous';
+    display: swap ;
+    margin-left: 25%;
+  }
