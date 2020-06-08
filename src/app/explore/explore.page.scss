@@ -1,17 +1,70 @@
-body{
-    background-image: url("../../assets/images/sea.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-  
-  }
-  
- 
+$darkBlue : #264653 ;
+$lightBlue : #2A9D8F ;
+$orange: #F4A261 ; 
+$red: #E76F51 ;
+$yellow : #E9C46A ;
+$inputBackgroundColor: #181e21;
 
-  .search-container {
+
+ion-content.background{
+  --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
+}
+
+
+table{
+   width: 70%;
+   margin: 30px;
+   text-align: center;
+   position: relative;
+   border-collapse: collapse; 
+   background-color: $inputBackgroundColor ;
+   -moz-box-shadow:     3px 3px 2px 3px $lightBlue;
+   -webkit-box-shadow:  3px 3px 2px 3px $lightBlue;
+   box-shadow:          3px 3px 2px 3px $lightBlue;
+
+  th, td {
+  padding: 0.25rem;
+  overflow-y:hidden;
+  top: 0;
+  }
+
+   tr{
+     background-color: $inputBackgroundColor ;
+     color: white;
+   }
+
+   td{
+       padding: 10px;
+       font-family: 'Barlow Semi Condensed', sans-serif;
+   }
+
+   th{
+        background-color: $inputBackgroundColor ;
+        color: $orange ;
+        padding: 10px;
+        position: sticky;
+        top: 0;
+        font-family: 'Righteous';
+        display: swap ;
+        font-size: larger;
+  }
+
+  tr:hover{
+    background-color: $darkBlue ;
+    font-size: large ;
+  }
+
+  td:hover{
+    color: $lightBlue;
+    font-weight: bold;
+  }
+
+ } 
+
+.search-container {
     float: right;
     background-color: rgba(38, 70, 83, 0.7);
     margin-right: 30px;
-    margin-bottom: 20px;
     padding: 10px;
     position: static;
     border-radius:2%;
@@ -38,4 +91,9 @@ body{
   .search-container button:hover {
     background: #ccc;
   }
+
   
+
+  .productHeader {
+    --background: transparent;
+}

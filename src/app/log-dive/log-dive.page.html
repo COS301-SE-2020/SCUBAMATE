@@ -1,0 +1,144 @@
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@100&family=Righteous&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+
+</head>
+
+<ion-header no-border slot="fixed">
+ 
+</ion-header>
+<ion-toolbar class="productHeader" transparent slot="fixed">
+  <ul>
+    <li><a routerLink="/login">Login</a></li>
+      <li><a routerLink="/profile">Profile</a></li>
+      <li><a routerLink="/my-dives">My Dives</a></li>
+      <li><a routerLink="/weather">Weather</a></li>
+      <li><a routerLink="/explore">Explore</a></li>
+      <li><a routerLink="/home" >Home</a></li>
+</ul>
+</ion-toolbar>
+
+<ion-content fullscreen class="background" no-scroll padding >
+ 
+  <div id="newDiveDiv">
+    <ion-label id="divHead">Log a new Dive</ion-label>
+
+    <form (submit)="onSubmit(siteOf.value, dateOf.value, timeIn.value, timeOut.value, diveType.value, bud.value, vis.value, dep.value, aTemp.value, sTemp.value, bTemp.value,  $event)">
+    <div id="locationInfo">
+      <ion-label class="subLabel"> Dive Location </ion-label>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label>Dive Site*</ion-label>
+              <ion-select placeholder="Select One" #siteOf required>
+                <ion-select-option *ngFor='let s of siteLst'> {{ s.diveSite }}</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+    <div id="dateTimeDive">
+      <ion-label class="subLabel"> Date And Time </ion-label>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="stacked">Date of Dive*</ion-label>
+              <ion-input type="date" #dateOf></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="stacked">Time In*</ion-label>
+              <ion-input type="time" #timeIn></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label position="stacked">Time Out*</ion-label>
+              <ion-input type="time" #timeOut></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div> <!-- end of dateTimeDive -->
+    <div id="diveDetails">
+      <ion-label class="subLabel"> Dive Details </ion-label>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label>Dive Type*</ion-label>
+              <ion-select placeholder="Select One" #diveType required>
+                <ion-select-option *ngFor='let t of typeLst'> {{ t.diveType }}</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Buddy</ion-label>
+              <ion-input type="text" #bud></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">% Visibility</ion-label>
+              <ion-input type="number" #vis></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Depth in meters</ion-label>
+              <ion-input type="number" #dep></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div> <!-- end of diveDetails-->
+    <div id="conditions">
+      <ion-label class="subLabel"> Water Temperature (°C)</ion-label>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Air Temperature</ion-label>
+              <ion-input type="number" #aTemp ></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Surface Temperature</ion-label>
+              <ion-input type="number" #sTemp></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Bottom Temperature</ion-label>
+            <ion-input type="number" #bTemp ></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+
+        </ion-col>
+      </ion-row>
+      </ion-grid>
+    </div> <!-- end of conditions-->
+
+
+
+
+    <input type="submit" value="Log Dive">
+
+    </form>
+  </div>  <!--End of newDiveDiv -->
+
+</ion-content>

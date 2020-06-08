@@ -34,7 +34,11 @@ const routes: Routes = [
   {
     path: 'signup',
     loadChildren: () => import('./signup/signup.module').then( m => m.SignupPageModule)
+  },  {
+    path: 'log-dive',
+    loadChildren: () => import('./log-dive/log-dive.module').then( m => m.LogDivePageModule)
   },
+
 ];
 
 @NgModule({
