@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-weather',
@@ -7,9 +8,36 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WeatherPage implements OnInit {
 
-  constructor() { }
-
+  loginLabel:string ;
+  constructor(private router: Router) {}
+  
   ngOnInit() {
+    this.loginLabel ="Login";
+    if(!localStorage.getItem("accessToken"))
+    {
+      this.loginLabel = "Login";
+    }else{
+      this.loginLabel = "Sign Out";
+    }
+  }
+
+  ionViewWillEnter(){
+    if(!localStorage.getItem("accessToken"))
+    {
+      this.loginLabel = "Login";
+    }else{
+      this.loginLabel = "Sign Out";
+    }
+  }
+
+  loginClick(){
+    if(localStorage.getItem("accessToken"))
+    {
+      localStorage.removeItem("accessToken");
+      this.router.navigate(['']);
+    }else{
+      this.router.navigate(['login']);
+    }
   }
 
 }

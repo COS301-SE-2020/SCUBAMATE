@@ -10,7 +10,7 @@
 </ion-header>
 <ion-toolbar class="productHeader" transparent slot="fixed">
   <ul>
-    <li><a routerLink="/login">Login</a></li>
+    <li><a routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >{{loginLabel}}</a></li>
       <li><a routerLink="/profile">Profile</a></li>
       <li><a routerLink="/my-dives">My Dives</a></li>
       <li><a routerLink="/weather">Weather</a></li>
@@ -24,7 +24,7 @@
   <div id="newDiveDiv">
     <ion-label id="divHead">Log a new Dive</ion-label>
 
-    <form (submit)="onSubmit(siteOf.value, dateOf.value, timeIn.value, timeOut.value, diveType.value, bud.value, vis.value, dep.value, aTemp.value, sTemp.value, bTemp.value,  $event)">
+    <form (submit)="onSubmit(desc.value, siteOf.value, dateOf.value, timeIn.value, timeOut.value, diveType.value, bud.value, vis.value, dep.value, aTemp.value, sTemp.value, bTemp.value,  $event)">
     <div id="locationInfo">
       <ion-label class="subLabel"> Dive Location </ion-label>
       <ion-grid>
@@ -67,6 +67,36 @@
         </ion-row>
       </ion-grid>
     </div> <!-- end of dateTimeDive -->
+    <div id="conditions">
+      <ion-label class="subLabel"> Water Temperature (°C)</ion-label>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Air Temperature</ion-label>
+              <ion-input type="number" #aTemp ></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Surface Temperature</ion-label>
+              <ion-input type="number" #sTemp></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Bottom Temperature</ion-label>
+            <ion-input type="number" #bTemp ></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+
+        </ion-col>
+      </ion-row>
+      </ion-grid>
+    </div> <!-- end of conditions-->
     <div id="diveDetails">
       <ion-label class="subLabel"> Dive Details </ion-label>
       <ion-grid>
@@ -100,42 +130,17 @@
             </ion-item>
           </ion-col>
         </ion-row>
-      </ion-grid>
-    </div> <!-- end of diveDetails-->
-    <div id="conditions">
-      <ion-label class="subLabel"> Water Temperature (°C)</ion-label>
-      <ion-grid>
         <ion-row>
           <ion-col>
             <ion-item>
-              <ion-label position="floating">Air Temperature</ion-label>
-              <ion-input type="number" #aTemp ></ion-input>
-            </ion-item>
-          </ion-col>
-          <ion-col>
-            <ion-item>
-              <ion-label position="floating">Surface Temperature</ion-label>
-              <ion-input type="number" #sTemp></ion-input>
+              <ion-label position="floating">Dive Description</ion-label>
+              <ion-textarea #desc></ion-textarea>
             </ion-item>
           </ion-col>
         </ion-row>
-        <ion-row>
-        <ion-col>
-          <ion-item>
-            <ion-label position="floating">Bottom Temperature</ion-label>
-            <ion-input type="number" #bTemp ></ion-input>
-          </ion-item>
-        </ion-col>
-        <ion-col>
-
-        </ion-col>
-      </ion-row>
       </ion-grid>
-    </div> <!-- end of conditions-->
-
-
-
-
+    </div> <!-- end of diveDetails-->
+   
     <input type="submit" value="Log Dive">
 
     </form>

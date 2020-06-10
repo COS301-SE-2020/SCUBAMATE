@@ -10,7 +10,7 @@
 </ion-header>
 <ion-toolbar class="productHeader" transparent slot="fixed">
   <ul>
-    <li><a routerLink="/login">Login</a></li>
+     <li><a routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >{{loginLabel}}</a></li>
       <li><a routerLink="/profile">Profile</a></li>
       <li><a routerLink="/my-dives">My Dives</a></li>
       <li><a routerLink="/weather">Weather</a></li>
@@ -28,7 +28,7 @@
   </div>
 
 
-  <div class="tableContainer">
+  <!--<div class="tableContainer">
   <table id="feed"  >
     <tr>
       <th> Diver</th>
@@ -45,6 +45,34 @@
       <td> {{d.Buddy}}  </td>
     </tr>
 </table>
+</div>-->
+
+<!--<ion-list>
+  <ion-item *ngFor="let d of pubLst">
+    <ion-thumbnail slot="start">
+      <ion-img ></ion-img>
+    </ion-thumbnail>
+    <ion-label>{{  d.Location  }}</ion-label>
+  </ion-item>
+</ion-list>-->
+
+<div id="classContainer" style="margin-right:30%;margin-left:10%;">
+  <ion-item *ngFor="let d of pubLst" style="width:45%; margin: auto;margin-left:1%;display: inline-block;" >
+    <ion-card  >
+      <img src="../../assets/images/jellyfish.jpg" />
+        <ion-card-content>
+        <ion-card-title>
+            {{d.Diver }}
+          </ion-card-title>
+        <p>
+          {{d.Location}} <br>
+          {{d.Weather}}  <br>
+          {{d.Buddy}}  <br>
+          {{d.DateOf}}
+        </p>
+      </ion-card-content>
+    </ion-card>
+  </ion-item>
 </div>
 
 </ion-content>

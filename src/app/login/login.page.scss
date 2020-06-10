@@ -4,6 +4,7 @@ $orange: #F4A261 ;
 $red: #E76F51 ;
 $yellow : #E9C46A ;
 $inputBackgroundColor: #181e21;
+$darkRed: #d66853;
 
 body{
     background-image: url("../../assets/images/sea.jpg");
@@ -39,7 +40,7 @@ body{
 #loginDiv input[type=submit], button{
   margin-top: 20px;
   width: 20%;
-  background-color: #F4A261;
+  background-color: $red  ;
   border: none;
   color: #FFFFFF;
   text-align: center;
@@ -57,7 +58,7 @@ body{
 
 
 #loginDiv input[type=submit]:hover, button:hover{
-  background-color: #E76F51 ;
+  background-color: $darkRed ;
   font-family: 'Righteous';
   display: swap ;
 }

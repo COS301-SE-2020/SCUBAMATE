@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 export interface Dive{
   Location : string ;
@@ -43,9 +44,36 @@ export class MyDivesPage implements OnInit {
                       {Location: "Here" , DateOf: "07/03/2019", Weather: "Sunny 70% Visibility", TimeIn: "10:00", TimeOut:"10:45", Buddy: "Gerorge Flint"}  
                     ];
    
-  constructor() { }
-
+  loginLabel:string ;
+  constructor(private router: Router) {}
+  
   ngOnInit() {
+    this.loginLabel ="Login";
+    if(!localStorage.getItem("accessToken"))
+    {
+      this.loginLabel = "Login";
+    }else{
+      this.loginLabel = "Sign Out";
+    }
+  }
+
+  ionViewWillEnter(){
+    if(!localStorage.getItem("accessToken"))
+    {
+      this.loginLabel = "Login";
+    }else{
+      this.loginLabel = "Sign Out";
+    }
+  }
+
+  loginClick(){
+    if(localStorage.getItem("accessToken"))
+    {
+      localStorage.removeItem("accessToken");
+      this.router.navigate(['home']);
+    }else{
+      this.router.navigate(['login']);
+    }
   }
 
 }

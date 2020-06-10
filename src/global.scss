@@ -31,6 +31,7 @@ $lightBlue : #2A9D8F ;
 $orange: #F4A261 ; 
 $red: #E76F51 ;
 $yellow : #E9C46A ;
+$aquaBlue: #00A896 ;
 
 ul {
     list-style-type: none;
@@ -40,30 +41,41 @@ ul {
     overflow: hidden;
     background-color: #264653;
     font-size: 20px ;
+
+    li {
+      float: right;
+      font-family: 'Barlow Semi Condensed', sans-serif;
+
+      a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+      
+      }
+    }
+
+    
+
+    li a:hover {
+      padding: 12.5px 16px;
+      background-color: #203d47;
+      color: #2A9D8F ;
+      font-weight: bold;
+      text-decoration: none;
+      border-bottom-style: solid;
+      border-bottom-color:  #2A9D8F ;
+      border-bottom-width: 3px  ;
+    }
+
   }
   
-  li {
-    float: right;
-    font-family: 'Barlow Semi Condensed', sans-serif;
-  }
-  
-  li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-  
-  }
   
   
-  li a:hover {
-    padding: 12.5px 16px;
-    background-color: #203d47;
-    color: #2A9D8F ;
-    font-weight: bold;
-    text-decoration: none;
-    border-bottom-style: solid;
-    border-bottom-color:  #2A9D8F ;
-    border-bottom-width: 3px  ;
-  }
+  
+  
+  
+  
+
+  

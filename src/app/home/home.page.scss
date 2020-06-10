@@ -1,8 +1,19 @@
-body{
-  background-image: url("../../assets/images/water.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
+$darkBlue : #264653 ;
+$lightBlue : #2A9D8F ;
+$orange: #F4A261 ; 
+$red: #E76F51 ;
+$yellow : #E9C46A ;
+$darkRed: #d66853   ;
+
+
+ion-content.background{
+  --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
 }
+
+.productHeader {
+  --background: transparent;
+}
+
 
 #homeSticker{
   background-color: rgba(38, 70, 83, 0.1);
@@ -24,7 +35,7 @@ height: 100%;
 margin-top: 5%;
 margin-left: 5% ;
 color: white;
-font-size:  25px ;
+font-size:  30px ;
 font-family: 'Righteous';
 display: swap ;
 }
@@ -32,11 +43,13 @@ display: swap ;
 #aboutInfo{
 margin-left: 5% ;
 margin-right: 5% ;
+margin-top:  3%;
+margin-bottom: 2%;
 color: white;
 }
 
 .orangeButton{
-background-color: #F4A261;
+background-color: $red   ;
 border: none;
 color: #FFFFFF;
 text-align: center;
@@ -68,7 +81,7 @@ right: 0;
 }
 
 .orangeButton:hover{
-background-color: #E76F51 ;
+background-color:  $darkRed ;
 font-family: 'Righteous';
 display: swap ;
 }
