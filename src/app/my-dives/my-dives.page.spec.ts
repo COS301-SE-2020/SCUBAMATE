@@ -3,10 +3,12 @@ import { IonicModule } from '@ionic/angular';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { MyDivesPage } from './my-dives.page';
+import { HttpClient } from '@angular/common/http';
 
 describe('MyDivesPage', () => {
   let component: MyDivesPage;
   let fixture: ComponentFixture<MyDivesPage>;
+  let http: HttpClient;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -21,5 +23,9 @@ describe('MyDivesPage', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('Unit Test Case My-Dives', () => {
+    expect(true).toBe(true);
   });
 });

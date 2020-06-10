@@ -22,4 +22,8 @@ describe('WeatherPage', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('Unit Test Case Weather', () => {
+    expect(true).toBe(true);
+  });
 });

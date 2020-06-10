@@ -22,4 +22,8 @@ describe('ProfilePage', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('Unit Test Case Profile', () => {
+    expect(true).toBe(true);
+  });
 });

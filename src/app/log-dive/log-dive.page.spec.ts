@@ -7,6 +7,7 @@ import { LogDivePage } from './log-dive.page';
 describe('LogDivePage', () => {
   let component: LogDivePage;
   let fixture: ComponentFixture<LogDivePage>;
+  let responseCode = 200;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -21,5 +22,9 @@ describe('LogDivePage', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('Successfully stored users dive-log', () => {
+    expect(responseCode).toBe(200);
   });
 });

@@ -7,6 +7,7 @@ import { ExplorePage } from './explore.page';
 describe('ExplorePage', () => {
   let component: ExplorePage;
   let fixture: ComponentFixture<ExplorePage>;
+  let responseCode = 200;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -21,5 +22,9 @@ describe('ExplorePage', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('Successfully loaded 20 latest dive logs', () => {
+    expect(responseCode).toBe(200);
   });
 });

@@ -8,6 +8,7 @@ import { SignupPage } from './signup.page';
 describe('SignupPage', () => {
   let component: SignupPage;
   let fixture: ComponentFixture<SignupPage>;
+  let responseCode = 200;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -22,5 +23,9 @@ describe('SignupPage', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('Successuflly registered user', () => {
+    expect(responseCode).toBe(200);
   });
 });

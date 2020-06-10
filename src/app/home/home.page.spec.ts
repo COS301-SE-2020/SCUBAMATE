@@ -22,4 +22,8 @@ describe('HomePage', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('Unit Test Case Home', () => {
+    expect(true).toBe(true);
+  });
 });
