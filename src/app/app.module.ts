@@ -17,6 +17,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 //services 
 import { accountService } from './service/account.service';
+import { diveService } from './service/dive.service';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { accountService } from './service/account.service';
     StatusBar,
     SplashScreen,
     accountService,
+    diveService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

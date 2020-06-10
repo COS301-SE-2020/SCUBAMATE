@@ -15,7 +15,7 @@ export interface SignUpClass {
   FirstName: string;
   LastName: string;
   Password: string;
-  ProfilePhoto: string; //File ;
+  ProfilePhoto: string;
   PublicStatus: string;
 }
 
@@ -29,16 +29,32 @@ export class SignupPage implements OnInit {
   constructor(private _accountService : accountService) { }
 
   uuidValue:string;
-  selectedFile:File = null;
+  //selectedFile:File = null;
+  base64textString : string;
 
   ngOnInit() {
     
   }
 
-  onFileSelected(event){
+ /**  onFileSelected(event){
     this.selectedFile = <File>event.target.files[0];
     console.log(this.selectedFile);
-  }
+  }*/
+
+  onFileSelected(event) {
+    let me = this;
+    let file = event.target.files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      //console.log(reader.result);
+      let s = reader.result ; 
+      me.base64textString = reader.result.toString() ;
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
+ }
 
 
   onSubmit(bDay:string, aType : string, FName: string , LName: string, pub: boolean, emailI: string, Pass: string, cPass: string, event : Event) {
@@ -66,7 +82,6 @@ export class SignupPage implements OnInit {
 
       //generate GUID
       this.uuidValue=UUID.UUID();
-      console.log("GUID: " + this.uuidValue);
       
       //create object to send
       var attemptLogin = {
@@ -78,7 +93,7 @@ export class SignupPage implements OnInit {
         Email: emailI,
         DateOfBirth : bDay ,
         Password: conversionEncryptOutput,  
-        ProfilePhoto: "test.jpg", //this.selectedFile ,
+        ProfilePhoto: "meep.jpg",//this.base64textString,
         PublicStatus: pStat 
       } as SignUpClass; 
         //send to API service 

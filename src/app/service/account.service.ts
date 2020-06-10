@@ -10,7 +10,7 @@ export class accountService
 
 
     insertUser(postData){
-        console.log(postData);
+        //console.log(postData);
 
         const options = {
             headers: new HttpHeaders({
@@ -18,7 +18,7 @@ export class accountService
             })
           };
 
-        this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/DefaultImageOnly/user', postData, options ).toPromise().then( 
+        this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/UpdatedSignup/user', postData, options ).toPromise().then( 
         data =>{
            console.log(data);
            this.router.navigate(['login']);
@@ -26,8 +26,24 @@ export class accountService
     }
 
 
-    logUser(postData): Observable<any>{
-        return  this.httpClient.post('', postData ) ;
+    logUser(postData){
+      console.log(postData);
+
+      const options = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+          })
+        };
+
+      this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/LoginPenultimate/login', postData, options ).toPromise().then( 
+      res =>{
+         console.log( res );
+       /**if(data.statusCode == 403){
+           console.log("Invalid Password");
+         }else{
+           console.log(data.body);
+         } */  
+     }); 
     }
 
 

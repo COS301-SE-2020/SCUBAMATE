@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { accountService } from '../service/account.service';
+import * as CryptoJS from 'crypto-js';  
 
 
 export interface LoginClass {
-  email: string;
-  password: string;
+  Email: string;
+  Password: string;
 }
 
 @Component({
@@ -56,11 +57,19 @@ export class LoginPage implements OnInit {
   onSubmit(iEmail: string, iPass: string , event : Event) {
     event.preventDefault();
 
-     var attemptLogin = {email: iEmail, password: iPass} as LoginClass; 
+    //encode password
+     let conversionEncryptOutput = CryptoJS.AES.encrypt( iEmail.trim(), iPass.trim()).toString();
+
+     //create object
+     var attemptLogin = {Email: iEmail, Password: conversionEncryptOutput} as LoginClass; 
      console.log(attemptLogin);
 
-     localStorage.setItem('accessToken' , "meep meep");
-     this.router.navigate(['home']);
+     //localStorage.setItem('accessToken' , "meep meep");
+     //this.router.navigate(['home']);
+     
+    //token-> 570490f416471aaa6a1513603312b6e3cda0e386ab791fa8e4bd73b32f143de7
+     //request
+     this._accountService.logUser(attemptLogin) ;
 
    /**  this._accountService.logUser(attemptLogin).subscribe( (res:any) =>{
       console.log(res);

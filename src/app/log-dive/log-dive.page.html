@@ -33,7 +33,7 @@
             <ion-item>
               <ion-label>Dive Site*</ion-label>
               <ion-select placeholder="Select One" #siteOf required>
-                <ion-select-option *ngFor='let s of siteLst'> {{ s.diveSite }}</ion-select-option>
+                <ion-select-option *ngFor='let s of siteLst'> {{ s }}</ion-select-option>
               </ion-select>
             </ion-item>
           </ion-col>
@@ -105,7 +105,7 @@
             <ion-item>
               <ion-label>Dive Type*</ion-label>
               <ion-select placeholder="Select One" #diveType required>
-                <ion-select-option *ngFor='let t of typeLst'> {{ t.diveType }}</ion-select-option>
+                <ion-select-option *ngFor='let t of typeLst'> {{ t }}</ion-select-option>
               </ion-select>
             </ion-item>
           </ion-col>

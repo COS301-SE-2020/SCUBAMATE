@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { diveService } from '../service/dive.service';
 
 
 export interface DiveType{
@@ -33,11 +34,11 @@ export interface DiveLog{
 })
 export class LogDivePage implements OnInit {
 
-  siteLst: DiveSite[] = [{diveSite: "Carabean" },{diveSite: "Sodwana" },{diveSite: "Cape Town" } ];
-  typeLst: DiveType[] = [{diveType: "Lake" }, {diveType: "Reef" },{diveType: "Open Sea" },{diveType: "River" },{diveType: "Indoors" }];
+  siteLst: DiveSite[] ;//= [{diveSite: "Carabean" },{diveSite: "Sodwana" },{diveSite: "Cape Town" } ];
+  typeLst: DiveType[] ; //= [{diveType: "Lake" }, {diveType: "Reef" },{diveType: "Open Sea" },{diveType: "River" },{diveType: "Indoors" }];
 
   loginLabel:string ;
-  constructor(private router: Router) {}
+  constructor(private router: Router, private _diveService: diveService ) {}
   
   ngOnInit() {
     this.loginLabel ="Login";
@@ -47,7 +48,23 @@ export class LogDivePage implements OnInit {
     }else{
       this.loginLabel = "Sign Out";
     }
-  }
+
+    this._diveService.getDiveSites().subscribe(
+      data => {
+          console.log(data);
+          this.siteLst = data.DiveSiteList ; 
+      }
+    ); //end DiveSite req
+
+    this._diveService.getDiveTypes().subscribe(
+      data => {
+          console.log(data);
+          this.typeLst = data.DiveTypeList ; 
+      }
+    ); //end DiveType req
+
+
+  } //end ngOnInit
 
   ionViewWillEnter(){
     if(!localStorage.getItem("accessToken"))
