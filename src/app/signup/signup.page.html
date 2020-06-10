@@ -10,7 +10,7 @@
 </ion-header>
 <ion-toolbar class="productHeader" transparent slot="fixed">
   <ul>
-    <li><a routerLink="/login">Login</a></li>
+    <li><a routerLink="/login" >Login</a></li>
       <li><a routerLink="/profile">Profile</a></li>
       <li><a routerLink="/my-dives">My Dives</a></li>
       <li><a routerLink="/weather">Weather</a></li>
@@ -24,7 +24,7 @@
  <div id="newUser">
     <ion-label id="divHead">Sign Up</ion-label>
 
-    <form (submit)="onSubmit(accountType.value, FirstName.value , LastName.value, public.checked, emailI.value, Password.value, cPassword.value, $event)">
+    <form (submit)="onSubmit(birthD.value, accountType.value, FirstName.value , LastName.value, public.checked, emailI.value, Password.value, cPassword.value, $event)">
       <div id="diveType">
         <ion-label class="subLabel"> Account Type </ion-label>
         <ion-grid>
@@ -33,8 +33,8 @@
               <ion-item>
                 <ion-label>Account*</ion-label>
                 <ion-select placeholder="Select One" #accountType required>
-                  <ion-select-option value="diver">Diver</ion-select-option>
-                  <ion-select-option value="instructor">Instructor</ion-select-option>
+                  <ion-select-option value="Diver">Diver</ion-select-option>
+                  <ion-select-option value="Instructor">Instructor</ion-select-option>
                 </ion-select>
               </ion-item>
             </ion-col>
@@ -69,6 +69,20 @@
               <ion-item>
                 <ion-label position="stacked">Do you want your dives to be logged publicly?</ion-label>
                 <ion-checkbox color="dark" disabled="false" #public ></ion-checkbox>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Date of birth</ion-label>
+                <ion-input type="date" #birthD></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Profile Picture</ion-label>
+                <ion-input type="file" accept="image/*" (change)="onFileSelected($event)" ></ion-input> <!--removed id-->
               </ion-item>
             </ion-col>
           </ion-row>

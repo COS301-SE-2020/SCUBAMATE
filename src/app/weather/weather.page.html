@@ -11,7 +11,7 @@
 
   <ion-header>
     <ul>
-      <li><a routerLink="/login">Login</a></li>
+      <li><a routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >{{loginLabel}}</a></li>
         <li><a routerLink="/profile">Profile</a></li>
         <li><a routerLink="/my-dives">My Dives</a></li>
         <li><a routerLink="/weather">Weather</a></li>
