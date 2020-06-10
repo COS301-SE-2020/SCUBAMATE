@@ -1,0 +1,101 @@
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@100&family=Righteous&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+
+</head>
+
+<ion-header no-border slot="fixed">
+ 
+</ion-header>
+<ion-toolbar class="productHeader" transparent slot="fixed">
+  <ul>
+    <li><a routerLink="/login">Login</a></li>
+      <li><a routerLink="/profile">Profile</a></li>
+      <li><a routerLink="/my-dives">My Dives</a></li>
+      <li><a routerLink="/weather">Weather</a></li>
+      <li><a routerLink="/explore">Explore</a></li>
+      <li><a routerLink="/home" >Home</a></li>
+</ul>
+</ion-toolbar>
+
+<ion-content fullscreen class="background" no-scroll padding >
+ 
+ <div id="newUser">
+    <ion-label id="divHead">Sign Up</ion-label>
+
+    <form (submit)="onSubmit(accountType.value, FirstName.value , LastName.value, public.checked, emailI.value, Password.value, cPassword.value, $event)">
+      <div id="diveType">
+        <ion-label class="subLabel"> Account Type </ion-label>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label>Account*</ion-label>
+                <ion-select placeholder="Select One" #accountType required>
+                  <ion-select-option value="diver">Diver</ion-select-option>
+                  <ion-select-option value="instructor">Instructor</ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div><!-- end of dive Type-->
+      <div id="userInfo">
+        <ion-label class="subLabel"> User Information </ion-label>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">First Name*</ion-label>
+                <ion-input type="text" #FirstName ></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Last Name*</ion-label>
+                <ion-input type="text" #LastName ></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Email*</ion-label>
+                <ion-input type="email" #emailI></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Do you want your dives to be logged publicly?</ion-label>
+                <ion-checkbox color="dark" disabled="false" #public ></ion-checkbox>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div> <!-- end of dateTimeDive -->
+      <div id="passSetup">
+        <ion-label class="subLabel">Password Setup </ion-label>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Password*</ion-label>
+                <ion-input type="password" #Password></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Confirm Password*</ion-label>
+                <ion-input type="password" #cPassword></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div> <!-- end of passSetup-->
+      <input type="submit" value="Sign Up">
+    </form>
+
+ </div> <!-- end newUser Div-->
+</ion-content>
+  

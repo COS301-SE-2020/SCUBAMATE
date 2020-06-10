@@ -1,0 +1,59 @@
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@100&family=Righteous&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+
+</head>
+
+<ion-header no-border slot="fixed">
+ 
+</ion-header>
+<ion-toolbar class="productHeader" transparent slot="fixed">
+  <ul>
+    <li><a routerLink="/login">Login</a></li>
+      <li><a routerLink="/profile">Profile</a></li>
+      <li><a routerLink="/my-dives">My Dives</a></li>
+      <li><a routerLink="/weather">Weather</a></li>
+      <li><a routerLink="/explore">Explore</a></li>
+      <li><a routerLink="/home" >Home</a></li>
+</ul>
+</ion-toolbar>
+
+<ion-content fullscreen class="background" no-scroll padding >
+  <div class="search-container" style="position: fixed;margin-left: 75%;">
+    <form action="">
+      <input type="text" placeholder="Search.." name="search">
+      <button type="submit"><i class="fa fa-search"></i></button>
+    </form>
+  </div>
+
+  <div class="addDive" style="position: fixed;margin-left: 75%;margin-top:100px;">
+        <ion-button routerLink="/log-dive" >
+          <ion-icon name="add"></ion-icon>
+        </ion-button>
+        <ion-label>Add a new Dive</ion-label>
+    </div>
+
+
+  <div class="tableContainer">
+  <table id="feed"  >
+    <tr>
+      <th> Location </th>
+      <th> Date </th>
+      <th> Weather </th>
+      <th> Time In </th>
+      <th> Time Out</th>
+      <th> Buddy </th>
+    </tr>
+    <tr *ngFor='let d of diveLst'> 
+      <td> {{d.Location}} </td>
+      <td> {{d.DateOf}}  </td>
+      <td> {{d.Weather}}  </td>
+      <td> {{d.TimeIn}}  </td>
+      <td> {{d.TimeOut}}  </td>
+      <td> {{d.Buddy}}  </td>
+    </tr>
+</table>
+</div>
+
+</ion-content>
