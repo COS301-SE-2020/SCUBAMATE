@@ -12,6 +12,10 @@
 * <a href="https://team-anti-virus.slack.com">Slack</a>
 * <a href="https://app.clickup.com/2536654/home/landing">ClickUp</a>
 
+## Demo 1 Video Link
+* <a href="https://drive.google.com/drive/folders/14hiS32Kgk8xqgvmLkFV33a35PGvYcp6Y?usp=sharing">TeamAV Demo 1</a>
+
+
 ## Installation Instructions
     Most of our project is done using AWS hosted resources such as Lambda, API Gateway, S3 for storage and DynamoDB.
     Thus the only installation required is to download the master branch of the git which contains our front-end (Angular, Ionic and TypeScript) code, then run this command in the terminal:
@@ -22,9 +26,6 @@
 ## Mentors
 * Matthew Gouws gouwsm@amazon.com
 * Peter Rayner raynpete@amazon.com
-
-## Demo 1 Video Link
-* <a href="https://drive.google.com/drive/folders/14hiS32Kgk8xqgvmLkFV33a35PGvYcp6Y?usp=sharing">TeamAV Video</a>
 
 ## Git Landing Page
  * <a href="https://cos301capstoneproject.github.io/">cos301capstoneproject.github.io/</a>
@@ -38,9 +39,9 @@
  * <details>
      <summary><b>Responsibiities</b></summary>
      <br>
-        - Introduction
+        - SRS Document: Introduction
         <br>
-        - Domain Model
+        - SRS Document: Domain Model
         <br>
         - Lambda function for retrieval of Dive Types and Dive Sites
         <br> 
@@ -62,9 +63,9 @@
  * <details>
      <summary><b>Responsibiities</b></summary>
      <br>
-        - Trace-ability Matrix
+        - SRS Document: Trace-ability Matrix
         <br>
-        - Quality Requirements
+        - SRS Document: Quality Requirements
         <br>
         - Insert data
         <br> 
@@ -79,25 +80,25 @@
     </details>
 
 ## Isobel Bosman 
- * <a href=""> Linkedin  Account </a>
+ * <a href="https://www.linkedin.com/in/isobel-bosman-8b29661a7/"> Linkedin  Account </a>
  * <a href="https://u18020519.github.io/">u18020519.github.io</a>
  * Email : u18020519@tuks.co.za
  * <details>
      <summary><b>Responsibiities</b></summary>
      <br>
-        - User Charactaristics
+        - SRS Document: Functional Requirements 
         <br>
-        - Functional Requirements
+        - SRS Document: Use Cases
         <br>
-        - Use Cases
+        - Created the foundation of our very first Lambda functions (in node js) that get account information as well as adding a new account. I also connected these to API Gateway for testing.
         <br> 
-        - Insert data
+        - I created the Lambda function that adds a user's dive log to the database. The function receives the user's current access token and verifies it. Only if the token is valid will the dive log data be committed.
         <br>
-        - Insert data
+        - I connected this diveLog Lambda function to APIGateway and configured the POST request in such a way that all the requeste that the API receives are in the correct format.
         <br>
-        - Insert data
+        - Another Lambda function that I implemented was the retrieving of dive logs from a specific user. This function only expects an access token that is fisrt verified and returns the user's list of dives.
         <br>
-        - Insert data
+        - This diveLogHistory Lambda function was also connected to APIGateway and configured accordingly. 
         <br>
     </details>
 
@@ -108,9 +109,9 @@
  * <details>
      <summary><b>Responsibiities</b></summary>
      <br>
-        - Introduction
+        - SRS Document: Introduction
         <br>
-        - Overview
+         SRS Document: User Charactaristics and Overview
         <br>
         - Insert data
         <br> 
@@ -131,11 +132,9 @@
  * <details>
      <summary><b>Responsibiities</b></summary>
      <br>
-        - User Charactaristics
+        - SRS Document: Functional Requirements
         <br>
-        - Functional Requirements
-        <br>
-        - Use Cases
+        - SRS Document: Use Cases
         <br> 
         - Angular Ionic Frontend
         <br>
