@@ -6,7 +6,7 @@
 "Scubamate" is a scuba diving companion app, designed to aid divers, and diving instructors with administrative tasks, such as checking weather information, logging dives, and planning diving trips.
 
 ## Software Requirements Specification 
- * <a href="https://www.overleaf.com/2884188284yrkthjxsjsjy">Overleaf - LaTex</a>
+ * <a href="https://www.overleaf.com/read/gnsygbdtvctw">Overleaf - LaTex</a>
 
 ## Project Management Tools
 * <a href="https://team-anti-virus.slack.com">Slack</a>
