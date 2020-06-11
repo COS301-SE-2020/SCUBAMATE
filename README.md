@@ -11,8 +11,12 @@
 * <a href="https://app.clickup.com/2536654/home/landing">ClickUp</a>
 
 ## Installation Instructions
- TBC
-
+    Most of our project is done using AWS hosted resources such as Lambda, API Gateway, S3 for storage and DynamoDB.
+    Thus the only installation required is to download the master branch of the git which contains our front-end (Angular, Ionic and TypeScript) code, then run this command in the terminal:
+    $npm install
+    Then to run the application:
+    $ionic serve
+    The first compilation will take a few seconds and then it will automatically open in your browser on localhost:8100.
 ## Mentors
 * Matthew Gouws gouwsm@amazon.com
 * Peter Rayner raynpete@amazon.com
