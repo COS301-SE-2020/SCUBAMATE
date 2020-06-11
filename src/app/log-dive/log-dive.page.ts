@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { diveService } from '../service/dive.service';
+
+import * as CryptoJS from 'crypto-js';  
+import { UUID } from 'angular2-uuid';
 
 
 export interface DiveType{
@@ -11,18 +15,23 @@ export interface DiveSite{
 }
 
 export interface DiveLog{
+  DiveID : string; 
+  AccessToken: string ; 
+  Approved: boolean;
   DiveDate: string;
   TimeIn: string;
   TimeOut: string;
   Visibility:string;
   Depth: string;
   Buddy:string;
-  DiveType: string;
-  AirTemperature: string;
-  SurfaceTemperature: string;
-  BottomTemperature: string;
-  DiveSite: string;
+  DiveTypeLink: string;
+  AirTemp: number;
+  SurfaceTemp: number;
+  BottomTemp: number;
+  DiveSiteLink: string;
   Description: string ;
+  InstructorLink: "Aaf485cf3-7e5c-4f3e-9c24-1694983820f2" ;
+  Weather: ["10 mph East", "FullMoon","Windy", "high: 1.20m"]  ;
 }
 
 
@@ -33,11 +42,12 @@ export interface DiveLog{
 })
 export class LogDivePage implements OnInit {
 
-  siteLst: DiveSite[] = [{diveSite: "Carabean" },{diveSite: "Sodwana" },{diveSite: "Cape Town" } ];
-  typeLst: DiveType[] = [{diveType: "Lake" }, {diveType: "Reef" },{diveType: "Open Sea" },{diveType: "River" },{diveType: "Indoors" }];
+  siteLst: DiveSite[] ;//= [{diveSite: "Carabean" },{diveSite: "Sodwana" },{diveSite: "Cape Town" } ];
+  typeLst: DiveType[] ; //= [{diveType: "Lake" }, {diveType: "Reef" },{diveType: "Open Sea" },{diveType: "River" },{diveType: "Indoors" }];
+  uuidValue:string;
 
   loginLabel:string ;
-  constructor(private router: Router) {}
+  constructor(private router: Router, private _diveService: diveService ) {}
   
   ngOnInit() {
     this.loginLabel ="Login";
@@ -47,7 +57,23 @@ export class LogDivePage implements OnInit {
     }else{
       this.loginLabel = "Sign Out";
     }
-  }
+
+    this._diveService.getDiveSites().subscribe(
+      data => {
+          console.log(data);
+          this.siteLst = data.DiveSiteList ; 
+      }
+    ); //end DiveSite req
+
+    this._diveService.getDiveTypes().subscribe(
+      data => {
+          console.log(data);
+          this.typeLst = data.DiveTypeList ; 
+      }
+    ); //end DiveType req
+
+
+  } //end ngOnInit
 
   ionViewWillEnter(){
     if(!localStorage.getItem("accessToken"))
@@ -69,38 +95,56 @@ export class LogDivePage implements OnInit {
   }
 
 
-  onSubmit(desc: string, siteOf:string, dateOf : string , timeI : string, timeO: string  , diveT: string, bud: string, vis: string, dep: string, aTemp: string, sTemp: string, bTemp: string,  event: Event) {
+  onSubmit(desc: string, siteOf:string, dateOf : string , timeI : string, timeO: string  , diveT: string, bud: string, vis: string, dep: string, aTemp: number, sTemp: number, bTemp: number,  event: Event) {
     event.preventDefault();
 
-    if( ( siteOf =="") || (dateOf=="") || ( timeI =="") ||( timeO =="") || ( diveT=="")  )
+    //generate GUID
+    this.uuidValue=UUID.UUID();
+
+
+    if(localStorage.getItem('accessToken')) //if user signed in 
     {
-      alert("Fill in al the fields");
-    }
-    else
-    {
-      var log = {
-        DiveDate: dateOf ,
-        TimeIn: timeI ,
-        TimeOut: timeO ,
-        Visibility: vis ,
-        Depth: dep ,
-        Buddy: bud ,
-        DiveType: diveT   ,
-        AirTemperature: aTemp ,
-        SurfaceTemperature: sTemp ,
-        BottomTemperature: bTemp ,
-        DiveSite: siteOf,
-        Description: desc 
-      } as DiveLog;
-  
-      console.log(log);
-      // this._sbrandService.deleteBrand(t);
-    }
+            if( ( siteOf =="") || (dateOf=="") || ( timeI =="") ||( timeO =="") || ( diveT=="")  )
+            {
+              alert("Fill in al the fields");
+            }
+            else
+            {
+                  var log = {
+                    DiveID: "D"+ this.uuidValue,
+                    AccessToken : localStorage.getItem('accessToken'),
+                    Approved: false,
+                    DiveDate: dateOf ,
+                    TimeIn: timeI ,
+                    TimeOut: timeO ,
+                    Visibility: vis + "m",
+                    Depth: dep + "m",
+                    Buddy: bud ,
+                    DiveTypeLink: diveT   ,
+                    AirTemp: Number(aTemp) ,
+                    SurfaceTemp: Number(sTemp) ,
+                    BottomTemp: Number(bTemp) ,
+                    DiveSiteLink: siteOf,
+                    Description: desc ,
+                    InstructorLink: "Aaf485cf3-7e5c-4f3e-9c24-1694983820f2" ,
+                    Weather: ["10 mph East", "FullMoon","Windy", "high: 1.20m"]  
+                  } as DiveLog;
+          
+              console.log(log);
+              this._diveService.logDive(log).subscribe( res =>{
+                console.log(res.body);
+                console.log("after body");
+                location.reload();
+                console.log("after nav");
+              })
+            }
     
+  }else{
+    alert("To Log dives first sign in to your account");
   }
 
 
-
+  }
 
 
 }

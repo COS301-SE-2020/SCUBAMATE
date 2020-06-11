@@ -4,6 +4,7 @@ import { accountService } from '../service/account.service';
 import * as CryptoJS from 'crypto-js';  
 import { UUID } from 'angular2-uuid';
 import { Binary } from '@angular/compiler';
+import { Router } from '@angular/router';
 
 
 export interface SignUpClass {
@@ -15,7 +16,7 @@ export interface SignUpClass {
   FirstName: string;
   LastName: string;
   Password: string;
-  ProfilePhoto: string; //File ;
+  ProfilePhoto: string;
   PublicStatus: string;
 }
 
@@ -26,19 +27,35 @@ export interface SignUpClass {
 })
 export class SignupPage implements OnInit {
 
-  constructor(private _accountService : accountService) { }
+  constructor(private _accountService : accountService, private router: Router) { }
 
   uuidValue:string;
-  selectedFile:File = null;
+  //selectedFile:File = null;
+  base64textString : string;
 
   ngOnInit() {
     
   }
 
-  onFileSelected(event){
+ /**  onFileSelected(event){
     this.selectedFile = <File>event.target.files[0];
     console.log(this.selectedFile);
-  }
+  }*/
+
+  onFileSelected(event) {
+    let me = this;
+    let file = event.target.files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      //console.log(reader.result);
+      let s = reader.result ; 
+      me.base64textString = reader.result.toString() ;
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
+ }
 
 
   onSubmit(bDay:string, aType : string, FName: string , LName: string, pub: boolean, emailI: string, Pass: string, cPass: string, event : Event) {
@@ -59,14 +76,13 @@ export class SignupPage implements OnInit {
          pStat = "true";
       }else{
          pStat = "false" ; 
-      }
+      }  
 
       //encyrpt password
-      let conversionEncryptOutput = CryptoJS.AES.encrypt( emailI.trim(), Pass.trim()).toString();
-
+      //let conversionEncryptOutput = CryptoJS.AES.encrypt( emailI.trim(), Pass.trim()).toString();
+      
       //generate GUID
       this.uuidValue=UUID.UUID();
-      console.log("GUID: " + this.uuidValue);
       
       //create object to send
       var attemptLogin = {
@@ -77,13 +93,18 @@ export class SignupPage implements OnInit {
         LastName: LName,
         Email: emailI,
         DateOfBirth : bDay ,
-        Password: conversionEncryptOutput,  
-        ProfilePhoto: "test.jpg", //this.selectedFile ,
+        Password: Pass, //conversionEncryptOutput,  
+        ProfilePhoto: "meep.jpg",//this.base64textString,
         PublicStatus: pStat 
       } as SignUpClass; 
         //send to API service 
         console.log(attemptLogin);
-        this._accountService.insertUser( attemptLogin );  
+
+        this._accountService.insertUser( attemptLogin ).subscribe( res =>{
+          console.log("in res");
+          console.log(res);
+          this.router.navigate(['login']);
+        }); 
     }
 
      

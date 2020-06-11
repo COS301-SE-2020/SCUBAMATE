@@ -38,20 +38,18 @@
   <div class="tableContainer">
   <table id="feed"  >
     <tr>
-      <th> Location </th>
-      <th> Date </th>
-      <th> Weather </th>
-      <th> Time In </th>
-      <th> Time Out</th>
       <th> Buddy </th>
+      <th> TimeIn </th>
+      <th> TimeOut </th>
+      <th> DiveDate </th>
+      <th> Weather</th>
     </tr>
     <tr *ngFor='let d of diveLst'> 
-      <td> {{d.Location}} </td>
-      <td> {{d.DateOf}}  </td>
-      <td> {{d.Weather}}  </td>
+      <td> {{d.Buddy}} </td>
       <td> {{d.TimeIn}}  </td>
       <td> {{d.TimeOut}}  </td>
-      <td> {{d.Buddy}}  </td>
+      <td> {{d.DiveDate}}  </td>
+      <td> {{d.Weather}}  </td>
     </tr>
 </table>
 </div>

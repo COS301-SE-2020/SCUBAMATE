@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { diveService } from '../service/dive.service';
+
+
+export interface DiveSite{
+  diveSite: string;
+}
 
 @Component({
   selector: 'app-home',
@@ -8,9 +14,9 @@ import { Router } from '@angular/router';
 })
 export class HomePage implements OnInit {
 
-  
+  siteLst: DiveSite[] ;
   loginLabel:string ;
-  constructor(private router: Router) {}
+  constructor(private router: Router,private _diveService: diveService) {}
   
   ngOnInit() {
     this.loginLabel ="Login";
@@ -20,6 +26,14 @@ export class HomePage implements OnInit {
     }else{
       this.loginLabel = "Sign Out";
     }
+
+
+    this._diveService.getDiveSites().subscribe(
+      data => {
+          console.log(data);
+          this.siteLst = data.DiveSiteList ; 
+      }
+    ); //end DiveSite req
   }
 
   ionViewWillEnter(){

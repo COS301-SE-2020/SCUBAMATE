@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { accountService } from '../service/account.service';
+import * as CryptoJS from 'crypto-js';  
 
 
 export interface LoginClass {
-  email: string;
-  password: string;
+  Email: string;
+  Password: string;
 }
 
 @Component({
@@ -56,23 +57,23 @@ export class LoginPage implements OnInit {
   onSubmit(iEmail: string, iPass: string , event : Event) {
     event.preventDefault();
 
-     var attemptLogin = {email: iEmail, password: iPass} as LoginClass; 
+    //encode password
+    // let conversionEncryptOutput = CryptoJS.AES.encrypt( iEmail.trim(), iPass.trim()).toString();
+
+     //create object
+     var attemptLogin = {Email: iEmail, Password: iPass} as LoginClass; 
      console.log(attemptLogin);
 
-     localStorage.setItem('accessToken' , "meep meep");
-     this.router.navigate(['home']);
 
-   /**  this._accountService.logUser(attemptLogin).subscribe( (res:any) =>{
-      console.log(res);
-        if(res.Error){
-          //show error message
-          //this.errorMessage = res;
-          //this.showError = true ;
-        }else{
-            localStorage.setItem('accessToken' , res.SessionID);
-            this.router.navigate(['home']);
-        }
-    } ) */
+     //request
+
+    this._accountService.logUser(attemptLogin).subscribe( res =>{
+      console.log("in res");
+      console.log(res.AccessToken);
+      localStorage.setItem("accessToken", res.AccessToken) ; 
+      this.router.navigate(['home']);
+      //console.log(res.body.AccessToken); 
+    });
 
 
   }
