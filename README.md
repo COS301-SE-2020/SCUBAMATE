@@ -56,7 +56,7 @@
 
 
 ## Jaime Matthew Tellie 
- * <a href=""> Linkedin  Account </a>
+ * <a href="https://www.linkedin.com/in/jaime-tellie/"> Linkedin  Account </a>
  * <a href="https://u17021627.github.io/">u17021627.github.io</a>
  * Email : u17021627@tuks.co.za
  * <details>
