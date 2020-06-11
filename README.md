@@ -29,7 +29,7 @@
 # Collaborators
 
 ## Gisèle Nadine Marais
- * <a href=""> Linkedin  Account </a>
+ * <a href=""> Linkedin Account </a>
  * <a href="https://giselenadine.github.io/">giselenadine.github.io</a>
  * Email : u18012583@tuks.co.za
  * <details>
@@ -39,11 +39,11 @@
         <br>
         - Domain Model
         <br>
-        - Insert data
+        - Lambda function for retrieval of Dive Types and Dive Sites
         <br> 
-        - Insert data
+        - Designed and Implemented the DynamoDB database
         <br>
-        - Insert data
+        - Error checking for retrieval of Dive History 
         <br>
         - Insert data
         <br>
