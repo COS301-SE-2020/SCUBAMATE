@@ -58,34 +58,19 @@ export class LoginPage implements OnInit {
     event.preventDefault();
 
     //encode password
-     let conversionEncryptOutput = CryptoJS.AES.encrypt( iEmail.trim(), iPass.trim()).toString();
+    // let conversionEncryptOutput = CryptoJS.AES.encrypt( iEmail.trim(), iPass.trim()).toString();
 
      //create object
-     var attemptLogin = {Email: iEmail, Password: conversionEncryptOutput} as LoginClass; 
+     var attemptLogin = {Email: iEmail, Password: iPass} as LoginClass; 
      console.log(attemptLogin);
 
-     //localStorage.setItem('accessToken' , "meep meep");
-     //this.router.navigate(['home']);
-     
-    //token-> 570490f416471aaa6a1513603312b6e3cda0e386ab791fa8e4bd73b32f143de7
+
      //request
-     //this._accountService.logUser(attemptLogin) ;
+
     this._accountService.logUser(attemptLogin).subscribe( res =>{
-      console.log(res); 
+      console.log("in res");
+      console.log(res.body.bodyAccessToken); 
     })
-
-
-   /**  this._accountService.logUser(attemptLogin).subscribe( (res:any) =>{
-      console.log(res);
-        if(res.Error){
-          //show error message
-          //this.errorMessage = res;
-          //this.showError = true ;
-        }else{
-            localStorage.setItem('accessToken' , res.SessionID);
-            this.router.navigate(['home']);
-        }
-    } ) */
 
 
   }

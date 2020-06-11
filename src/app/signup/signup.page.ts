@@ -78,8 +78,8 @@ export class SignupPage implements OnInit {
       }
 
       //encyrpt password
-      let conversionEncryptOutput = CryptoJS.AES.encrypt( emailI.trim(), Pass.trim()).toString();
-
+      //let conversionEncryptOutput = CryptoJS.AES.encrypt( emailI.trim(), Pass.trim()).toString();
+      
       //generate GUID
       this.uuidValue=UUID.UUID();
       
@@ -92,7 +92,7 @@ export class SignupPage implements OnInit {
         LastName: LName,
         Email: emailI,
         DateOfBirth : bDay ,
-        Password: conversionEncryptOutput,  
+        Password: Pass, //conversionEncryptOutput,  
         ProfilePhoto: "meep.jpg",//this.base64textString,
         PublicStatus: pStat 
       } as SignUpClass; 

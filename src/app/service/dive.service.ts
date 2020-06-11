@@ -54,4 +54,22 @@ export class diveService
 
     }
 
+    getPrivateDive(): Observable<any>{
+      const options = {
+        headers: new HttpHeaders({
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json'
+        })
+      };
+    
+      var PostData = {
+        "AccessToken" : "test"//localStorage.getItem("accessToken") 
+      }
+
+      console.log(PostData);
+
+     return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveHistory/getpersonaldivelogs', PostData , options); 
+
+    }
+
 }

@@ -134,7 +134,9 @@ export class LogDivePage implements OnInit {
               console.log(log);
               this._diveService.logDive(log).subscribe( res =>{
                 console.log(res.body);
-                this.router['/my-dives'];
+                console.log("after body");
+                location.reload();
+                console.log("after nav");
               })
             }
     

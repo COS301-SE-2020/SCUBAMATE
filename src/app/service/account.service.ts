@@ -36,16 +36,8 @@ export class accountService
             'Content-Type': 'application/json',
           })
         };
-  return this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/LoginPenultimate/login', postData, options );/**.toPromise().then( 
-      res =>{
-         console.log( res );
-       if(data.statusCode == 403){
-           console.log("Invalid Password");
-         }else{
-           console.log(data.body);
-         }   
-     }); */
-    }
+      
+        return this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/LoginPenultimate/login', postData, options );
 
-
+      }
 }
