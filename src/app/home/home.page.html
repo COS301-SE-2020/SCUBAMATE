@@ -42,6 +42,17 @@
       </div>
   </div>
 
+  <div class="tableContainer">
+    <table id="feed"  >
+      <tr>
+        <th> Dive Sites </th>
+      </tr>
+      <tr *ngFor='let d of siteLst'> 
+        <td> {{d}} </td>
+      </tr>
+  </table>
+  </div>
+
   </div>
  
 </ion-content>

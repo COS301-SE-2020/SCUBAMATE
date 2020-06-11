@@ -4,6 +4,7 @@ $orange: #F4A261 ;
 $red: #E76F51 ;
 $yellow : #E9C46A ;
 $darkRed: #d66853   ;
+$inputBackgroundColor: #181e21;
 
 
 ion-content.background{
@@ -85,3 +86,54 @@ background-color:  $darkRed ;
 font-family: 'Righteous';
 display: swap ;
 }
+
+table{
+  width: 70%;
+  margin: auto;
+  margin-top: 30px;
+  text-align: center;
+  position: relative;
+  border-collapse: collapse; 
+  background-color: $inputBackgroundColor ;
+  -moz-box-shadow:     3px 3px 2px 3px $lightBlue;
+  -webkit-box-shadow:  3px 3px 2px 3px $lightBlue;
+  box-shadow:          3px 3px 2px 3px $lightBlue;
+
+ th, td {
+ padding: 0.25rem;
+ overflow-y:hidden;
+ top: 0;
+ }
+
+  tr{
+    background-color: $inputBackgroundColor ;
+    color: white;
+  }
+
+  td{
+      padding: 10px;
+      font-family: 'Barlow Semi Condensed', sans-serif;
+  }
+
+  th{
+       background-color: $inputBackgroundColor ;
+       color: $orange ;
+       padding: 10px;
+       position: sticky;
+       top: 0;
+       font-family: 'Righteous';
+       display: swap ;
+       font-size: larger;
+ }
+
+ tr:hover{
+   background-color: $darkBlue ;
+   font-size: large ;
+ }
+
+ td:hover{
+   color: $lightBlue;
+   font-weight: bold;
+ }
+
+} 

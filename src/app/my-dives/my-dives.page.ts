@@ -7,7 +7,7 @@ export interface Dive{
   TimeIn: string;
   TimeOut: string;
   DiveDate: string ;
-  Weather: [] ; 
+  Weather: string[] ; 
 }
 
 @Component({
@@ -30,10 +30,15 @@ export class MyDivesPage implements OnInit {
       this.loginLabel = "Sign Out";
     }
 
+    console.log("Do a Private search:");
       //get private dives
     this._diveService.getPrivateDive().subscribe( res =>{
       console.log("in here");
-      this.diveLst = res.body.Items;
+      console.log(res);
+      console.log(res.Items);
+      this.diveLst = res.Items;
+      //console.log(res.body.Items);
+      //this.diveLst = res.body.Items;
     });
 
 

@@ -34,7 +34,7 @@ export class accountService
    const options = {
           headers: new HttpHeaders({
             'Content-Type': 'application/json',
-          })
+          }) 
         };
       
         return this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/LoginPenultimate/login', postData, options );

@@ -69,8 +69,9 @@ export class LoginPage implements OnInit {
 
     this._accountService.logUser(attemptLogin).subscribe( res =>{
       console.log("in res");
-      console.log(res.body.bodyAccessToken); 
-    })
+      console.log(res);
+      //console.log(res.body.AccessToken); 
+    });
 
 
   }
