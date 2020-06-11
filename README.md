@@ -1,4 +1,4 @@
-<a href="https://github.com/COS301-SE-2020/SCUBAMATE"><img src="https://github.com/COS301-SE-2020/SCUBAMATE/tree/master/images/logo.jpeg" title="UMTGproductions" alt="UMTGproductions" height="200" width="500"></a>
+<a href="https://github.com/COS301-SE-2020/SCUBAMATE"><img src="https://github.com/COS301-SE-2020/SCUBAMATE/blob/master/images/logo.jpeg" title="Scubamate" alt="Scubamate" height="200" width="500"></a>
 
 # SCUBAMATE
 
