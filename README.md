@@ -125,7 +125,7 @@
     </details>
 
 ## Carmen Janse van Rensburg 
- * <a href=""> Linkedin  Account </a>
+ * <a href="https://www.linkedin.com/in/carmen-janse-van-rensburg-5b54691a9/"> Linkedin  Account </a>
  * <a href="https://carmenjvr.github.io/">carmenjvr.github.io</a>
  * Email : u18000836@tuks.co.za
  * <details>
