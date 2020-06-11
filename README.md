@@ -1,4 +1,4 @@
-<a href="https://github.com/COS301-SE-2020/SCUBAMATE"><img src="https://github.com/Typhon-Divinity/UMTG_Final/blob/master/images/UMTG.png" title="UMTGproductions" alt="UMTGproductions" height="200" width="500"></a>
+<a href="https://github.com/COS301-SE-2020/SCUBAMATE"><img src="https://github.com/COS301-SE-2020/SCUBAMATE/tree/master/images/logo.jpeg" title="UMTGproductions" alt="UMTGproductions" height="200" width="500"></a>
 
 # SCUBAMATE
 
