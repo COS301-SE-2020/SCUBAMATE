@@ -32,7 +32,7 @@
 # Collaborators
 
 ## Gisèle Nadine Marais
- * <a href=""> Linkedin Account </a>
+ * <a href="https://www.linkedin.com/in/gisele-marais-871a801a7/"> Linkedin Account </a>
  * <a href="https://giselenadine.github.io/">giselenadine.github.io</a>
  * Email : u18012583@tuks.co.za
  * <details>
