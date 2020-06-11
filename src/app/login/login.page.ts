@@ -69,7 +69,11 @@ export class LoginPage implements OnInit {
      
     //token-> 570490f416471aaa6a1513603312b6e3cda0e386ab791fa8e4bd73b32f143de7
      //request
-     this._accountService.logUser(attemptLogin) ;
+     //this._accountService.logUser(attemptLogin) ;
+    this._accountService.logUser(attemptLogin).subscribe( res =>{
+      console.log(res); 
+    })
+
 
    /**  this._accountService.logUser(attemptLogin).subscribe( (res:any) =>{
       console.log(res);

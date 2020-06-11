@@ -30,9 +30,9 @@
       <ion-grid>
         <ion-row>
           <ion-col>
-            <ion-item>
+            <ion-item >
               <ion-label>Dive Site*</ion-label>
-              <ion-select placeholder="Select One" #siteOf required>
+              <ion-select placeholder="Select One" #siteOf required >
                 <ion-select-option *ngFor='let s of siteLst'> {{ s }}</ion-select-option>
               </ion-select>
             </ion-item>
@@ -119,13 +119,13 @@
         <ion-row>
           <ion-col>
             <ion-item>
-              <ion-label position="floating">% Visibility</ion-label>
+              <ion-label position="floating">Visibility (m)</ion-label>
               <ion-input type="number" #vis></ion-input>
             </ion-item>
           </ion-col>
           <ion-col>
             <ion-item>
-              <ion-label position="floating">Depth in meters</ion-label>
+              <ion-label position="floating">Depth (m)</ion-label>
               <ion-input type="number" #dep></ion-input>
             </ion-item>
           </ion-col>

@@ -38,4 +38,20 @@ export class diveService
          return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveTypesAndSitesAdded/divelist',body, options);
     }
 
+
+    logDive(PostData){
+
+        const options = {
+            headers: new HttpHeaders({
+              'Content-Type': 'application/json',
+            })
+          };
+
+
+         this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveLogs/divelog', PostData , options);
+   
+
+
+    }
+
 }

@@ -12,18 +12,22 @@ export interface DiveSite{
 }
 
 export interface DiveLog{
+  AccessToken: string ; 
+  Approved: boolean;
   DiveDate: string;
   TimeIn: string;
   TimeOut: string;
   Visibility:string;
   Depth: string;
   Buddy:string;
-  DiveType: string;
-  AirTemperature: string;
-  SurfaceTemperature: string;
-  BottomTemperature: string;
-  DiveSite: string;
+  DiveTypeLink: string;
+  AirTemp: string;
+  SurfaceTemp: string;
+  BottomTemp: string;
+  DiveSiteLink: string;
   Description: string ;
+  InstructorLink: "Aaf485cf3-7e5c-4f3e-9c24-1694983820f2" ;
+  Weather: ["10 mph East", "FullMoon","Windy", "high: 1.20m"]  ;
 }
 
 
@@ -88,36 +92,43 @@ export class LogDivePage implements OnInit {
 
   onSubmit(desc: string, siteOf:string, dateOf : string , timeI : string, timeO: string  , diveT: string, bud: string, vis: string, dep: string, aTemp: string, sTemp: string, bTemp: string,  event: Event) {
     event.preventDefault();
-
-    if( ( siteOf =="") || (dateOf=="") || ( timeI =="") ||( timeO =="") || ( diveT=="")  )
+    if(localStorage.getItem('accessToken')) //if user signed in 
     {
-      alert("Fill in al the fields");
-    }
-    else
-    {
-      var log = {
-        DiveDate: dateOf ,
-        TimeIn: timeI ,
-        TimeOut: timeO ,
-        Visibility: vis ,
-        Depth: dep ,
-        Buddy: bud ,
-        DiveType: diveT   ,
-        AirTemperature: aTemp ,
-        SurfaceTemperature: sTemp ,
-        BottomTemperature: bTemp ,
-        DiveSite: siteOf,
-        Description: desc 
-      } as DiveLog;
-  
-      console.log(log);
-      // this._sbrandService.deleteBrand(t);
-    }
+            if( ( siteOf =="") || (dateOf=="") || ( timeI =="") ||( timeO =="") || ( diveT=="")  )
+            {
+              alert("Fill in al the fields");
+            }
+            else
+            {
+                  var log = {
+                    AccessToken : localStorage.getItem('accessToken'),
+                    Approved: false,
+                    DiveDate: dateOf ,
+                    TimeIn: timeI ,
+                    TimeOut: timeO ,
+                    Visibility: vis + "m",
+                    Depth: dep + "m",
+                    Buddy: bud ,
+                    DiveTypeLink: diveT   ,
+                    AirTemp: aTemp ,
+                    SurfaceTemp: sTemp ,
+                    BottomTemp: bTemp ,
+                    DiveSiteLink: siteOf,
+                    Description: desc ,
+                    InstructorLink: "Aaf485cf3-7e5c-4f3e-9c24-1694983820f2" ,
+                    Weather: ["10 mph East", "FullMoon","Windy", "high: 1.20m"]  
+                  } as DiveLog;
+          
+              console.log(log);
+              this._diveService.logDive(log) ;
+            }
     
+  }else{
+    alert("To Log dives first sign in to your account");
   }
 
 
-
+  }
 
 
 }
