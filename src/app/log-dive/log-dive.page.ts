@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { diveService } from '../service/dive.service';
 
+import * as CryptoJS from 'crypto-js';  
+import { UUID } from 'angular2-uuid';
+
 
 export interface DiveType{
   diveType : string ;
@@ -12,6 +15,7 @@ export interface DiveSite{
 }
 
 export interface DiveLog{
+  DiveID : string; 
   AccessToken: string ; 
   Approved: boolean;
   DiveDate: string;
@@ -21,9 +25,9 @@ export interface DiveLog{
   Depth: string;
   Buddy:string;
   DiveTypeLink: string;
-  AirTemp: string;
-  SurfaceTemp: string;
-  BottomTemp: string;
+  AirTemp: number;
+  SurfaceTemp: number;
+  BottomTemp: number;
   DiveSiteLink: string;
   Description: string ;
   InstructorLink: "Aaf485cf3-7e5c-4f3e-9c24-1694983820f2" ;
@@ -40,6 +44,7 @@ export class LogDivePage implements OnInit {
 
   siteLst: DiveSite[] ;//= [{diveSite: "Carabean" },{diveSite: "Sodwana" },{diveSite: "Cape Town" } ];
   typeLst: DiveType[] ; //= [{diveType: "Lake" }, {diveType: "Reef" },{diveType: "Open Sea" },{diveType: "River" },{diveType: "Indoors" }];
+  uuidValue:string;
 
   loginLabel:string ;
   constructor(private router: Router, private _diveService: diveService ) {}
@@ -90,8 +95,14 @@ export class LogDivePage implements OnInit {
   }
 
 
-  onSubmit(desc: string, siteOf:string, dateOf : string , timeI : string, timeO: string  , diveT: string, bud: string, vis: string, dep: string, aTemp: string, sTemp: string, bTemp: string,  event: Event) {
+  onSubmit(desc: string, siteOf:string, dateOf : string , timeI : string, timeO: string  , diveT: string, bud: string, vis: string, dep: string, aTemp: number, sTemp: number, bTemp: number,  event: Event) {
     event.preventDefault();
+    localStorage.setItem('accessToken', 'test');
+
+    //generate GUID
+    this.uuidValue=UUID.UUID();
+
+
     if(localStorage.getItem('accessToken')) //if user signed in 
     {
             if( ( siteOf =="") || (dateOf=="") || ( timeI =="") ||( timeO =="") || ( diveT=="")  )
@@ -101,6 +112,7 @@ export class LogDivePage implements OnInit {
             else
             {
                   var log = {
+                    DiveID: "D"+ this.uuidValue,
                     AccessToken : localStorage.getItem('accessToken'),
                     Approved: false,
                     DiveDate: dateOf ,
@@ -110,9 +122,9 @@ export class LogDivePage implements OnInit {
                     Depth: dep + "m",
                     Buddy: bud ,
                     DiveTypeLink: diveT   ,
-                    AirTemp: aTemp ,
-                    SurfaceTemp: sTemp ,
-                    BottomTemp: bTemp ,
+                    AirTemp: Number(aTemp) ,
+                    SurfaceTemp: Number(sTemp) ,
+                    BottomTemp: Number(bTemp) ,
                     DiveSiteLink: siteOf,
                     Description: desc ,
                     InstructorLink: "Aaf485cf3-7e5c-4f3e-9c24-1694983820f2" ,
@@ -120,7 +132,10 @@ export class LogDivePage implements OnInit {
                   } as DiveLog;
           
               console.log(log);
-              this._diveService.logDive(log) ;
+              this._diveService.logDive(log).subscribe( res =>{
+                console.log(res.body);
+                this.router['/my-dives'];
+              })
             }
     
   }else{

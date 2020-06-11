@@ -39,17 +39,17 @@ export class diveService
     }
 
 
-    logDive(PostData){
-
+    logDive(PostData): Observable<any>{
+      	console.log("in req");
         const options = {
             headers: new HttpHeaders({
               'Content-Type': 'application/json',
             })
           };
+        
+          console.log("PostData: " + PostData);
 
-
-         this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveLogs/divelog', PostData , options);
-   
+         return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/UpdatedModel/divelog', PostData , options); 
 
 
     }
