@@ -4,6 +4,7 @@ import { accountService } from '../service/account.service';
 import * as CryptoJS from 'crypto-js';  
 import { UUID } from 'angular2-uuid';
 import { Binary } from '@angular/compiler';
+import { Router } from '@angular/router';
 
 
 export interface SignUpClass {
@@ -26,7 +27,7 @@ export interface SignUpClass {
 })
 export class SignupPage implements OnInit {
 
-  constructor(private _accountService : accountService) { }
+  constructor(private _accountService : accountService, private router: Router) { }
 
   uuidValue:string;
   //selectedFile:File = null;
@@ -75,7 +76,7 @@ export class SignupPage implements OnInit {
          pStat = "true";
       }else{
          pStat = "false" ; 
-      }
+      }  
 
       //encyrpt password
       //let conversionEncryptOutput = CryptoJS.AES.encrypt( emailI.trim(), Pass.trim()).toString();
@@ -98,7 +99,12 @@ export class SignupPage implements OnInit {
       } as SignUpClass; 
         //send to API service 
         console.log(attemptLogin);
-        this._accountService.insertUser( attemptLogin );  
+
+        this._accountService.insertUser( attemptLogin ).subscribe( res =>{
+          console.log("in res");
+          console.log(res);
+          this.router.navigate(['login']);
+        }); 
     }
 
      

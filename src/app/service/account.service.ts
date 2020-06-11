@@ -9,7 +9,7 @@ export class accountService
     constructor(private httpClient : HttpClient , private router: Router){}
 
 
-    insertUser(postData){
+    insertUser(postData): Observable<any>{
         //console.log(postData);
 
       const options = {
@@ -18,11 +18,11 @@ export class accountService
             })
           };
 
-        this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/UpdatedSignup/user', postData, options ).toPromise().then( 
+        return this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/UpdatedSignup/user', postData, options );/**.toPromise().then( 
         data =>{
            console.log(data);
            this.router.navigate(['login']);
-       }); 
+       }); */
     }
 
 

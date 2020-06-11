@@ -97,7 +97,6 @@ export class LogDivePage implements OnInit {
 
   onSubmit(desc: string, siteOf:string, dateOf : string , timeI : string, timeO: string  , diveT: string, bud: string, vis: string, dep: string, aTemp: number, sTemp: number, bTemp: number,  event: Event) {
     event.preventDefault();
-    localStorage.setItem('accessToken', 'test');
 
     //generate GUID
     this.uuidValue=UUID.UUID();

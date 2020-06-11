@@ -61,8 +61,9 @@ export class diveService
         })
       };
     
+        let lS =  localStorage.getItem("accessToken") ;
       var PostData = {
-        "AccessToken" : "test"//localStorage.getItem("accessToken") 
+        "AccessToken" : lS
       }
 
       console.log(PostData);
