@@ -109,19 +109,17 @@
  * <details>
      <summary><b>Responsibiities</b></summary>
      <br>
-        - SRS Document: Introduction
+        - SRS Document: Introduction.
         <br>
-         SRS Document: User Charactaristics and Overview
+         SRS Document: User Charactaristics and Overview.
         <br>
-        - Lambda function for Login
+        - Lambda function for Login (including server side password hashing, and unique access token generation).
         <br> 
-        - Insert data
+        - Hashing password functionality in sign-up Lambda function.
         <br>
-        - Insert data
+        - Configuration of some of the endpoints in API-Gateway.
         <br>
-        - Insert data
-        <br>
-        - Insert data
+        - Editing of Demo 1 video.
         <br>
     </details>
 
