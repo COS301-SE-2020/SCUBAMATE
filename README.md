@@ -47,11 +47,11 @@
         <br> 
         - Designed and Implemented the DynamoDB database
         <br>
-        - Error checking for retrieval of Dive History 
+        - Error checking for retrieval of Dive History and Login 
         <br>
-        - Insert data
+        - Set-up S3 for storage of profile images
         <br>
-        - Insert data
+        - Merging branches on github
         <br>
     </details>
 
@@ -67,7 +67,7 @@
         <br>
         - SRS Document: Quality Requirements
         <br>
-        - Insert data
+        - Unit Testing
         <br> 
         - Insert data
         <br>
@@ -94,11 +94,11 @@
         <br> 
         - I created the Lambda function that adds a user's dive log to the database. The function receives the user's current access token and verifies it. Only if the token is valid will the dive log data be committed.
         <br>
-        - I connected this diveLog Lambda function to APIGateway and configured the POST request in such a way that all the requeste that the API receives are in the correct format.
+        - I connected this diveLog Lambda function to API Gateway and configured the POST request in such a way that all the requests that the API receives are in the correct format.
         <br>
-        - Another Lambda function that I implemented was the retrieving of dive logs from a specific user. This function only expects an access token that is fisrt verified and returns the user's list of dives.
+        - Another Lambda function that I implemented was the retrieving of dive logs from a specific user. This function only expects an access token that is first verified and returns the user's list of dives.
         <br>
-        - This diveLogHistory Lambda function was also connected to APIGateway and configured accordingly. 
+        - This diveLogHistory Lambda function was also connected to API Gateway and configured accordingly. 
         <br>
     </details>
 
@@ -113,7 +113,7 @@
         <br>
          SRS Document: User Charactaristics and Overview
         <br>
-        - Insert data
+        - Lambda function for Login
         <br> 
         - Insert data
         <br>
