@@ -47,9 +47,9 @@ export class diveService
             })
           };
         
-          console.log("PostData: " + PostData);
-
-         return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/UpdatedModel/divelog', PostData , options); 
+          //https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/UpdatedModel/divelog
+          //https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveLogs/
+         return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveLogs/divelog', PostData , options); 
 
 
     }
@@ -67,8 +67,9 @@ export class diveService
       }
 
       console.log(PostData);
-
-     return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/FixedDiveHistory/getpersonaldivelogs', PostData , options); 
+        //https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/FixedDiveHistory/getpersonaldivelogs
+        //
+     return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveLogs/getpersonaldivelogs', PostData , options); 
 
     }
 

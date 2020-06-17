@@ -17,7 +17,7 @@ export interface SignUpClass {
   LastName: string;
   Password: string;
   ProfilePhoto: string;
-  PublicStatus: string;
+  PublicStatus: boolean;
 }
 
 @Component({
@@ -59,8 +59,6 @@ export class SignupPage implements OnInit {
 
 
   onSubmit(bDay:string, aType : string, FName: string , LName: string, pub: boolean, emailI: string, Pass: string, cPass: string, event : Event) {
-   // event.preventDefault();
-
 
     if( Pass != cPass ) //test that passwords match
     {
@@ -68,16 +66,6 @@ export class SignupPage implements OnInit {
     }else if( (aType=="") || (FName =="") ||  (LName ==="") || (emailI=="") || (Pass=="") || (cPass=="") ){  //test empty fields
       alert("Empty fields provided. \nPlease fill in all the fields");
     }else{
-
-
-      // Set status to a string value
-      let pStat: string ;
-      if( pub == true){
-         pStat = "true";
-      }else{
-         pStat = "false" ; 
-      }  
-
       //encyrpt password
       //let conversionEncryptOutput = CryptoJS.AES.encrypt( emailI.trim(), Pass.trim()).toString();
       
@@ -94,8 +82,8 @@ export class SignupPage implements OnInit {
         Email: emailI,
         DateOfBirth : bDay ,
         Password: Pass, //conversionEncryptOutput,  
-        ProfilePhoto: "meep.jpg",//this.base64textString,
-        PublicStatus: pStat 
+        ProfilePhoto: this.base64textString,   //"meep.jpg",
+        PublicStatus: pub //pStat 
       } as SignUpClass; 
         //send to API service 
         console.log(attemptLogin);
