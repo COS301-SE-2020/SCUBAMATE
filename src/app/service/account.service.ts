@@ -18,7 +18,6 @@ export class accountService
             })
           };
 
-          //https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/UpdatedSignup/user
           //SignUp works
         //return this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/UserAccountFull/user', postData, options );
     

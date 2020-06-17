@@ -32,7 +32,7 @@ export class MyDivesPage implements OnInit {
 
     console.log("Do a Private search:");
       //get private dives
-      if(localStorage.getItem("accessToken") != null)
+      if(localStorage.getItem("accessToken") != null)//check logged in
       {
         this._diveService.getPrivateDive().subscribe( res =>{
           console.log(res);
