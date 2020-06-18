@@ -42,6 +42,7 @@ export class MyDivesPage implements OnInit {
         })
          
       }else{
+        this.router.navigate(['login']);
         this.diveLst = [];
       }
       
@@ -69,6 +70,7 @@ export class MyDivesPage implements OnInit {
       })
        
     }else{
+      this.router.navigate(['login']);
       this.diveLst = [];
     }
     

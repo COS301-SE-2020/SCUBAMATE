@@ -27,30 +27,20 @@
     </form>
   </div>
 
-    <ion-radio-group style="position: fixed;margin-left: 75%; margin-top: 80px;">
-      <ion-item>
-        <ion-label>Cord</ion-label>
-        <ion-radio value="cord"></ion-radio>
+    <ion-radio-group style="position: fixed;margin-left: 75%; margin-top: 80px;width:20%;">
+      <ion-item (click)="displayFeed()">
+        <ion-label  >Public Feed</ion-label>
+        <ion-radio value="feed"></ion-radio>
       </ion-item>
   
-      <ion-item>
-        <ion-label>Duesenberg</ion-label>
-        <ion-radio value="duesenberg"></ion-radio>
+      <ion-item  (click)="displayDiveTypes()">
+        <ion-label>Dive Types</ion-label>
+        <ion-radio value="types"></ion-radio>
       </ion-item>
   
-      <ion-item>
-        <ion-label>Hudson</ion-label>
-        <ion-radio value="hudson"></ion-radio>
-      </ion-item>
-  
-      <ion-item>
-        <ion-label>Packard</ion-label>
-        <ion-radio value="packard"></ion-radio>
-      </ion-item>
-  
-      <ion-item>
-        <ion-label>Studebaker</ion-label>
-        <ion-radio value="studebaker"></ion-radio>
+      <ion-item (click)="displayDiveSites()">
+        <ion-label>Dive Sites</ion-label>
+        <ion-radio value="sites"></ion-radio>
       </ion-item>
     </ion-radio-group>
 
@@ -84,7 +74,7 @@
   </ion-item>
 </ion-list>-->
 
-<div id="classContainer" style="margin-right:30%;margin-left:10%;">
+<div id="classContainer" style="margin-right:30%;margin-left:10%;" *ngIf='showFeed'>
   <ion-item *ngFor="let d of pubLst" style="width:45%; margin: auto;margin-left:1%;display: inline-block;" >
     <ion-card  >
       <img src="../../assets/images/jellyfish.jpg" />
@@ -101,6 +91,29 @@
       </ion-card-content>
     </ion-card>
   </ion-item>
+</div>
+
+
+<div class="tableContainer" *ngIf='showSites'>
+  <table id="feed"  >
+    <tr>
+      <th> Dive Sites </th>
+    </tr>
+    <tr *ngFor='let d of siteLst'> 
+      <td> {{d}} </td>
+    </tr>
+</table>
+</div>
+
+<div class="tableContainer" *ngIf='showTypes'>
+  <table id="feed"  >
+    <tr>
+      <th> Dive Types </th>
+    </tr>
+    <tr *ngFor='let d of typeLst'> 
+      <td> {{d}} </td>
+    </tr>
+</table>
 </div>
 
 </ion-content>
