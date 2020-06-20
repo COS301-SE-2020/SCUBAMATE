@@ -3,7 +3,6 @@ const AWS = require('aws-sdk');
 AWS.config.update({region: "af-south-1"});
 
 exports.handler = async (event, context) => {
-    const ddb = new AWS.DynamoDB({apiVersion:"2012-08-10"});
     const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
 
     let responseBody = "";
@@ -27,7 +26,8 @@ exports.handler = async (event, context) => {
     var TimeOut = body.TimeOut;
     var Visibility = body.Visibility;
     var Weather = body.Weather;
-
+    var DivePublicStatus = body.DivePublicStatus;
+    
     function compareDates(t,e)
     {
         console.log(t.getFullYear());
@@ -155,7 +155,8 @@ exports.handler = async (event, context) => {
                 TimeIn: TimeIn,
                 TimeOut: TimeOut,
                 Visibility: Visibility,
-                Weather: Weather
+                Weather: Weather,
+                DivePublicStatus: DivePublicStatus
             }
         };
         try{
