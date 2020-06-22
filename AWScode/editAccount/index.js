@@ -6,7 +6,7 @@ const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
 
 exports.handler = async (event, context, callback) => {
 
-    let responseBody = "";
+    let responseBody = "entered";
     let statusCode =0;
 
     let body = JSON.parse(event.body);
@@ -19,128 +19,8 @@ exports.handler = async (event, context, callback) => {
     const ProfilePhoto = body.ProfilePhoto;
     const PublicStatus = body.PublicStatus;
     
-    //Verify AccessToken 
-    try {
-        const params = {
-            TableName: "Scubamate",
-            ProjectionExpression: "Expires,AccountGuid",
-            FilterExpression: "#acc = :AccessToken",
-            ExpressionAttributeNames:{
-                "#acc" : "AccessToken"
-            },
-            ExpressionAttributeValues:{
-                ":AccessToken" : AccessToken
-            }
-        };
-        
-        const data = await documentClient.scan(params).promise();
-        if(data.Items[0].AccountGuid)
-        {
-            console.log("Account thing: " + data.Items[0].AccountGuid);
-            var AccountGuid = data.Items[0].AccountGuid;
-        }
-        if( data.Items[0].Expires) // check if it's undefined
-        {
-            const expiryDate = new Date(data.Items[0].Expires);
-            const today = new Date();
-            console.log("Compare: " + today + " and " + expiryDate  + " " + compareDates(today,expiryDate));
-            if(compareDates(today,expiryDate))
-            {
-                statusCode = 403;
-                responseBody = "Access Token Expired!";
-            }
-            
-        }
-        
-        console.log("status is now: " + statusCode) ;
-
-    } catch (error) {
-        console.error(error);
-        statusCode = 403;
-        responseBody = "Invalid Access Token";
-    }
     
-    
-    
-    // Only update account if access token is verified
-    if(statusCode==0){
-    
-        //update profile image 
-        var profileLink = ProfilePhoto; //to be added later
-        var ItemType = "A"+ AccountGuid;
-        
-            //
-            //Email checking - adjust for updating 
-            
-            // const emailParams = {
-            //     TableName: "Scubamate",
-            //     ProjectionExpression: "Email",
-            //     FilterExpression: "#em = :email",
-            //     ExpressionAttributeNames:{
-            //         "#em" : "Email"
-            //     },
-            //     ExpressionAttributeValues:{
-            //         ":email" : Email
-            //     }
-            // };
-            
-            // var flag = false;
-            
-            // try{
-            //     const ryker = await documentClient.scan(emailParams).promise();
-            //     var maily = ryker.Items[0].Email;
-            //     if (maily)
-            //     {
-            //         statusCode = 403;
-            //         responseBody = "Email already taken.";
-            //         flag = true;
-            //     }
-                
-            // }catch(err){
-                
-            // }
-        
-        
-        const params = {
-            TableName: "Scubamate",
-            Item: {
-                ItemType : ItemType,
-                AccountGuid : AccountGuid,
-                AccountType: AccountType, 
-                FirstName: FirstName,
-                LastName: LastName, 
-                Email: Email, 
-                DateOfBirth: DateOfBirth,
-               // Password: hash, //James time
-                ProfilePhoto: profileLink,
-                PublicStatus: PublicStatus
-            }
-        }
-        try{
-            const data = await documentClient.put(params).promise();
-            responseBody = "Successfully updated account!";
-            statusCode = 201;
-        }catch(err){
-            responseBody = "Unable to update account.";
-            statusCode = 403;
-        } 
-    }
-
-    const response = {
-        statusCode: statusCode,
-        headers: {
-            "Access-Control-Allow-Origin" : "*",
-            "Access-Control-Allow-Methods" : "OPTIONS,POST,GET",
-            "Access-Control-Allow-Credentials" : true,
-            "Content-Type" : "application/json"
-        },
-        body : JSON.stringify(responseBody),
-        isBase64Encoded: false
-    }
-    return response;
-    
-}
-function compareDates(t,e)
+    function compareDates(t,e)
     {
         console.log(t.getFullYear());
         if(t.getFullYear()<e.getFullYear())
@@ -201,5 +81,128 @@ function compareDates(t,e)
 
         return true;
     }
+    
+    //Verify AccessToken 
+    try {
+        const params = {
+            TableName: "Scubamate",
+            ProjectionExpression: "Expires,AccountGuid",
+            FilterExpression: "#acc = :AccessToken",
+            ExpressionAttributeNames:{
+                "#acc" : "AccessToken"
+            },
+            ExpressionAttributeValues:{
+                ":AccessToken" : AccessToken
+            }
+        };
+        
+        const data = await documentClient.scan(params).promise();
+        if(data.Items[0].AccountGuid)
+        {
+            console.log("Account: " + data.Items[0].AccountGuid);
+            var AccountGuid = data.Items[0].AccountGuid;
+        }
+        if( data.Items[0].Expires) // check if it's undefined
+        {
+            const expiryDate = new Date(data.Items[0].Expires);
+            const today = new Date();
+            console.log("Compare: " + today + " and " + expiryDate  + " " + compareDates(today,expiryDate));
+            if(compareDates(today,expiryDate))
+            {
+                statusCode = 403;
+                responseBody = "Access Token Expired!";
+            }
+            
+        }
+        
+        console.log("status is now: " + statusCode) ;
+
+    } catch (error) {
+        console.error(error);
+        statusCode = 403;
+        responseBody = "Invalid Access Token";
+    }
+    
+    
+    
+    // Only update account if access token is verified
+    if(statusCode==0){
+    
+        //update profile image 
+        var profileLink = ProfilePhoto; //to be added later
+        
+            //
+            //Email checking - adjust for updating 
+            
+            // const emailParams = {
+            //     TableName: "Scubamate",
+            //     ProjectionExpression: "Email",
+            //     FilterExpression: "#em = :email",
+            //     ExpressionAttributeNames:{
+            //         "#em" : "Email"
+            //     },
+            //     ExpressionAttributeValues:{
+            //         ":email" : Email
+            //     }
+            // };
+            
+            // var flag = false;
+            
+            // try{
+            //     const ryker = await documentClient.scan(emailParams).promise();
+            //     var maily = ryker.Items[0].Email;
+            //     if (maily)
+            //     {
+            //         statusCode = 403;
+            //         responseBody = "Email already taken.";
+            //         flag = true;
+            //     }
+                
+            // }catch(err){
+                
+            // }
+        var ItemType = "A"+ AccountGuid;
+        
+        const params = {
+            TableName: "Scubamate",
+            Key: {
+                'ItemType' : ItemType,
+            },
+            UpdateExpression: 'set AccountType = :a, FirstName = :f, LastName = :l, Email = :e, DateOfBirth = :d, ProfilePhoto = :pp, PublicStatus = :ps',
+            ExpressionAttributeValues: {
+                ':a' : AccountType,
+                ':f' : FirstName,
+                ':l' :LastName,
+                ':e': Email, 
+                ':d': DateOfBirth,
+                ':pp': profileLink,
+                ':ps': PublicStatus
+            }
+        }
+        try{
+            const data = await documentClient.update(params).promise();
+            responseBody = "Successfully updated account!";
+            statusCode = 201;
+        }catch(err){
+            responseBody = "Unable to update account."+ err +" ";
+            statusCode = 403;
+        } 
+    }
+
+    const response = {
+        statusCode: statusCode,
+        headers: {
+            "Access-Control-Allow-Origin" : "*",
+            "Access-Control-Allow-Methods" : "OPTIONS,POST,GET",
+            "Access-Control-Allow-Credentials" : true,
+            "Content-Type" : "application/json"
+        },
+        body : JSON.stringify(responseBody),
+        isBase64Encoded: false
+    }
+    return response;
+    
+}
+
 
 
