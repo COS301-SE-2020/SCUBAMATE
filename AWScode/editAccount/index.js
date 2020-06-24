@@ -6,7 +6,7 @@ const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
 
 exports.handler = async (event, context, callback) => {
 
-    let responseBody = "entered";
+    let responseBody = "";
     let statusCode =0;
 
     let body = JSON.parse(event.body);
@@ -14,11 +14,9 @@ exports.handler = async (event, context, callback) => {
     const AccountType = body.AccountType;
     const FirstName = body.FirstName;
     const LastName = body.LastName;
-    const Email = body.Email;
     const DateOfBirth = body.DateOfBirth;
     const ProfilePhoto = body.ProfilePhoto;
     const PublicStatus = body.PublicStatus;
-    
     
     function compareDates(t,e)
     {
@@ -99,14 +97,14 @@ exports.handler = async (event, context, callback) => {
         const data = await documentClient.scan(params).promise();
         if(data.Items[0].AccountGuid)
         {
-            console.log("Account: " + data.Items[0].AccountGuid);
+            //console.log("Account: " + data.Items[0].AccountGuid);
             var AccountGuid = data.Items[0].AccountGuid;
         }
         if( data.Items[0].Expires) // check if it's undefined
         {
             const expiryDate = new Date(data.Items[0].Expires);
             const today = new Date();
-            console.log("Compare: " + today + " and " + expiryDate  + " " + compareDates(today,expiryDate));
+            //console.log("Compare: " + today + " and " + expiryDate  + " " + compareDates(today,expiryDate));
             if(compareDates(today,expiryDate))
             {
                 statusCode = 403;
@@ -114,53 +112,19 @@ exports.handler = async (event, context, callback) => {
             }
             
         }
-        
-        console.log("status is now: " + statusCode) ;
+        //console.log("status is now: " + statusCode) ;
 
     } catch (error) {
         console.error(error);
         statusCode = 403;
         responseBody = "Invalid Access Token";
     }
-    
-    
-    
+
     // Only update account if access token is verified
     if(statusCode==0){
     
         //update profile image 
         var profileLink = ProfilePhoto; //to be added later
-        
-            //
-            //Email checking - adjust for updating 
-            
-            // const emailParams = {
-            //     TableName: "Scubamate",
-            //     ProjectionExpression: "Email",
-            //     FilterExpression: "#em = :email",
-            //     ExpressionAttributeNames:{
-            //         "#em" : "Email"
-            //     },
-            //     ExpressionAttributeValues:{
-            //         ":email" : Email
-            //     }
-            // };
-            
-            // var flag = false;
-            
-            // try{
-            //     const ryker = await documentClient.scan(emailParams).promise();
-            //     var maily = ryker.Items[0].Email;
-            //     if (maily)
-            //     {
-            //         statusCode = 403;
-            //         responseBody = "Email already taken.";
-            //         flag = true;
-            //     }
-                
-            // }catch(err){
-                
-            // }
         var ItemType = "A"+ AccountGuid;
         
         const params = {
@@ -168,12 +132,11 @@ exports.handler = async (event, context, callback) => {
             Key: {
                 'ItemType' : ItemType,
             },
-            UpdateExpression: 'set AccountType = :a, FirstName = :f, LastName = :l, Email = :e, DateOfBirth = :d, ProfilePhoto = :pp, PublicStatus = :ps',
+            UpdateExpression: 'set AccountType = :a, FirstName = :f, LastName = :l, DateOfBirth = :d, ProfilePhoto = :pp, PublicStatus = :ps',
             ExpressionAttributeValues: {
                 ':a' : AccountType,
                 ':f' : FirstName,
                 ':l' :LastName,
-                ':e': Email, 
                 ':d': DateOfBirth,
                 ':pp': profileLink,
                 ':ps': PublicStatus
@@ -203,6 +166,3 @@ exports.handler = async (event, context, callback) => {
     return response;
     
 }
-
-
-
