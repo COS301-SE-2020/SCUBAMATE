@@ -2,7 +2,6 @@
 const AWS = require('aws-sdk');
 AWS.config.update({region: "af-south-1"});
 const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
-//const s3 = new AWS.S3({apiVersion: '2006-03-01'});
 
 exports.handler = async (event, context, callback) => {
 
@@ -10,22 +9,9 @@ exports.handler = async (event, context, callback) => {
     let statusCode =0;
 
     let body = JSON.parse(event.body);
-    var DiveID = body.DiveID;
     var AccessToken = body.AccessToken;
-    var AirTemp = body.AirTemp;
-    //var Approved = body.Approved;
-    var SurfaceTemp = body.SurfaceTemp;
-    var BottomTemp = body.BottomTemp;
     var Buddy = body.Buddy;
-    var DiveDate = body.DiveDate;
-    //var DiveSite = body.DiveSite;
-    //var DiveTypeLink = body.DiveTypeLink;
     var InstructorLink = body.InstructorLink;
-    var TimeIn = body.TimeIn;
-    var TimeOut = body.TimeOut;
-    var Visibility = body.Visibility;
-    //var Weather = body.Weather;
-    var Depth = body.Depth;
     var Description = body.Description;
     var DivePublicStatus = body.DivePublicStatus;
     
@@ -123,6 +109,7 @@ exports.handler = async (event, context, callback) => {
             }
             
         }
+        
         //console.log("status is now: " + statusCode) ;
 
     } catch (error) {
@@ -131,25 +118,20 @@ exports.handler = async (event, context, callback) => {
         responseBody = "Invalid Access Token";
     }
 
-    // Only update account if access token is verified
+    // Only update dive if access token is verified
     if(statusCode==0){
+    var DiveID = body.DiveID;
+
         const params = {
             TableName: "Dives",
             Key: {
                 'DiveID' : DiveID,
+                'AccountGuid' : AccountGuid,
             },
-            UpdateExpression: 'set AirTemp = :a, SurfaceTemp = :s, BottomTemp = :b, Buddy = :bud, DiveDate = :d, InstructorLink = :il, TimeIn = :ti, TimeOut = :to, Visibility = :v, Depth = :d, Description = :des, DivePublicStatus = :dp',
+            UpdateExpression: 'set Buddy = :bud, InstructorLink = :il, Description = :des, DivePublicStatus = :dp',
             ExpressionAttributeValues: {
-                ':a' : AirTemp,
-                ':s' : SurfaceTemp,
-                ':b' : BottomTemp,
                 ':bud' : Buddy,
-                ':d' : DiveDate,
                 ':il' : InstructorLink,
-                ':ti' : TimeIn,
-                ':to' : TimeOut,
-                ':v' : Visibility,
-                ':d' : Depth,
                 ':des' : Description,
                 ':dp' : DivePublicStatus
             }
@@ -159,7 +141,7 @@ exports.handler = async (event, context, callback) => {
             responseBody = "Successfully updated dive!";
             statusCode = 201;
         }catch(err){
-            responseBody = "Unable to update dive."+ err +" ";
+            responseBody = "Unable to update dive. "+ err+" "+ DiveID;
             statusCode = 403;
         } 
     }
