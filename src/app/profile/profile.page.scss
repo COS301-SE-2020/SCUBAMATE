@@ -1,6 +1,167 @@
-body{
-    background-image: url("../../assets/images/sea.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-  
+$darkBlue : #264653 ;
+$lightBlue : #2A9D8F ;
+$orange: #F4A261 ; 
+$red: #E76F51 ;
+$yellow : #E9C46A ;
+$inputBackgroundColor: #181e21;
+
+
+ion-content.background{
+  --background: url(../../assets/images/turtle.jpg) 0 0/100% 100% no-repeat;
+}
+
+.productHeader {
+  --background: transparent;
+}
+
+ion-grid {
+  --ion-grid-padding: 0px;
+  ion-row {
+      padding: 0px;
   }
+
+  ion-col {
+      padding: 0px;
+      width:100%;
+  }
+}
+
+#checkListDiv{
+  background-color: rgba(38, 70, 83, 0.5);
+  margin: auto;
+  border-bottom: solid white 0.5px;
+  border-top: solid white 0.5px;
+  width:  70% ;
+  padding: 0;
+  margin-top: 30px;
+  padding: 20px;
+}
+
+#ProfileInfo{
+  background-color: rgba(38, 70, 83, 0.5);
+  margin: auto;
+  border-bottom: solid white 0.5px;
+  border-top: solid white 0.5px;
+  width:  70% ;
+  padding: 0;
+  height: 80%;
+  display: block;
+
+  #leftPane{
+    background-color: rgba(38, 70, 83, 0.9);
+    height: inherit  ;
+    margin:0;
+    text-align: center;
+    padding-bottom: 1%;
+  }
+
+  #acountInfo1{
+    padding-left: 20px;
+    padding-top: 20px;
+    padding-right:0;
+  }
+
+  #acountInfo2{
+    padding-top: 20px;
+  }
+
+  #userProfile{
+    object-fit: cover;
+    width: 150px;
+    height: 150px;
+    margin: auto;
+    margin-top: 5%;
+    margin-bottom: 2%;
+  }
+
+  
+
+
+
+  #editBtn{
+    float:right;
+    margin-right: 5%;
+    margin-top:3%;
+  }
+
+
+}
+
+.subLabel{
+  font-size:  20px ;
+  font-weight: bold;
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  color: white;
+  border-bottom: solid white 0.5px;
+  border-top: solid white 0.5px;
+}
+
+.infoLabel{
+  font-size:  18px ;
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  color: white;
+}
+
+.divHead{
+  font-size:  30px ;
+  font-family: 'Righteous';
+  display: swap ;
+  color: white;
+  width: 100%;
+  margin: auto;
+  margin-bottom: 20px;
+  margin-top: 15px; 
+  margin-left: 20px;
+}
+
+table{
+  width: 90%;
+  text-align: left;
+  position: relative;
+  margin-top: 30px;
+  border-collapse: collapse; 
+  background-color: $inputBackgroundColor ;
+  -moz-box-shadow:     3px 3px 2px 3px $lightBlue;
+  -webkit-box-shadow:  3px 3px 2px 3px $lightBlue;
+  box-shadow:          3px 3px 2px 3px $lightBlue;
+
+ th, td {
+ padding: 0.25rem;
+ overflow-y:hidden;
+ top: 0;
+ }
+
+  tr{
+    background-color: $inputBackgroundColor ;
+    color: white;
+    padding: 20x;
+  }
+
+  td{
+      padding: 10px;
+      font-family: 'Barlow Semi Condensed', sans-serif;
+  }
+
+  th{
+       background-color: $inputBackgroundColor ;
+       color: $orange ;
+       padding: 10px;
+       position: sticky;
+       top: 0;
+       font-family: 'Righteous';
+       display: swap ;
+       font-size: larger;
+       text-align: center;
+ }
+
+ tr:hover{
+   background-color: $darkBlue ;
+   font-size: large ;
+ }
+
+ td:hover{
+   color: $lightBlue;
+   font-weight: bold;
+ }
+
+} 

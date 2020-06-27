@@ -55,7 +55,7 @@ export class LoginPage implements OnInit {
   }
 
   onSubmit(iEmail: string, iPass: string , event : Event) {
-    event.preventDefault();
+    //event.preventDefault();
 
     //encode password
     // let conversionEncryptOutput = CryptoJS.AES.encrypt( iEmail.trim(), iPass.trim()).toString();

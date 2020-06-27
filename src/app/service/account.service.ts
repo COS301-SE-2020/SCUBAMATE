@@ -22,12 +22,13 @@ export class accountService
         //return this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/UserAccountFull/user', postData, options );
     
           var response = this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/UserAccountFull/user', postData, options );
-          if (HttpErrorResponse){
+        return response;
+          /**  if (HttpErrorResponse){
             alert("Email already in use");
             location.reload();
           }else{
             return response;
-          }
+          }*/
     
       }
 
@@ -45,4 +46,22 @@ export class accountService
         return this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/LoginPenultimate/login', postData, options );
 
       }
+
+
+    getUser(): Observable<any>{
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }) 
+      };
+
+      let lS =  localStorage.getItem("accessToken") ;
+      var PostData = {
+        "AccessToken" : lS
+      }
+
+      return this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/getUser/getuser', PostData, options );
+ 
+    }
+
 }
