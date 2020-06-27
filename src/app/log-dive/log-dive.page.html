@@ -10,13 +10,14 @@
 </ion-header>
 <ion-toolbar class="productHeader" transparent slot="fixed">
   <ul>
-    <li><a routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >{{loginLabel}}</a></li>
-      <li><a routerLink="/profile">My Account</a></li>
-      <li><a routerLink="/my-dives">My Dives</a></li>
-      <li><a routerLink="/weather">Weather</a></li>
-      <li><a routerLink="/explore">Explore</a></li>
-      <li><a routerLink="/home" >Home</a></li>
-</ul>
+    <li style="float:right;"><a routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >{{loginLabel}}</a></li>
+    <li style="margin-top:5px; margin-bottom:5px;right:0;float:right;"><ion-searchbar animated></ion-searchbar></li>        
+      <li style="float:left;margin-left:20px;"><a routerLink="/home" >Home</a></li>  
+      <li style="float:left;"><a routerLink="/explore">Explore</a></li>  
+      <li style="float:left;"><a routerLink="/weather">Weather</a></li> 
+      <li style="float:left;"><a routerLink="/my-dives">My Dives</a></li>
+      <li style="float:left;"><a routerLink="/profile">My Account</a></li>   
+  </ul>
 </ion-toolbar>
 
 <ion-content fullscreen class="background" no-scroll padding >

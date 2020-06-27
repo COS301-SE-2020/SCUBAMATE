@@ -10,33 +10,30 @@
 </ion-header>
 <ion-toolbar class="productHeader" transparent slot="fixed">
   <ul>
-    <li><a routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >{{loginLabel}}</a></li>
-      <li><a routerLink="/profile">My Account</a></li>
-      <li><a routerLink="/my-dives">My Dives</a></li>
-      <li><a routerLink="/weather">Weather</a></li>
-      <li><a routerLink="/explore">Explore</a></li>
-      <li><a routerLink="/home" >Home</a></li>
+    <li style="float:right;"><a routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >{{loginLabel}}</a></li>
+    <li style="margin-top:5px; margin-bottom:5px;right:0;float:right;"><ion-searchbar animated></ion-searchbar></li>        
+      <li style="float:left;margin-left:20px;"><a routerLink="/home" >Home</a></li>  
+      <li style="float:left;"><a routerLink="/explore">Explore</a></li>  
+      <li style="float:left;"><a routerLink="/weather">Weather</a></li> 
+      <li style="float:left;"><a routerLink="/my-dives">My Dives</a></li>
+      <li style="float:left;"><a routerLink="/profile">My Account</a></li>   
 </ul>
 </ion-toolbar>
 
 <ion-content fullscreen class="background" no-scroll padding >
-  <div class="search-container" style="position: fixed;margin-left: 75%;">
-    <form action="">
-      <input type="text" placeholder="Search.." name="search">
-      <button type="submit"><i class="fa fa-search"></i></button>
-    </form>
-  </div>
-
-  <div class="addDive" style="position: fixed;margin-left: 75%;margin-top:100px;">
-        <ion-button routerLink="/log-dive" >
-          <ion-icon name="add"></ion-icon>
-        </ion-button>
-        <ion-label>Add a new Dive</ion-label>
-    </div>
-
-
-  <div class="tableContainer">
-  <table id="feed"  >
+  
+  <table style="margin:auto;"  >
+    <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th>
+          <ion-button routerLink="/log-dive"  >
+            <ion-icon name="add"></ion-icon>
+          </ion-button>
+        </th>
+    </tr>
     <tr>
       <th> Buddy </th>
       <th> TimeIn </th>
@@ -52,6 +49,5 @@
       <td> {{d.Weather}}  </td>
     </tr>
 </table>
-</div>
 
 </ion-content>

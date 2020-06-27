@@ -50,28 +50,29 @@ export class ProfilePage implements OnInit {
     this.loginLabel ="Login";
     if(!localStorage.getItem("accessToken"))
     {
+      this.router.navigate(['login']);
       this.loginLabel = "Login";
     }else{
       this.loginLabel = "Sign Out";
+    
+
+        this._accountService.getUser().subscribe(res => {
+          this.AD = res;
+          if (res.PublicStatus == true){
+            this.AD.PublicStatus = "Public";
+          }else{
+            this.AD.PublicStatus = "Private";
+          }
+
+        }) 
+
+        this._diveService.getDiveTypes().subscribe(
+          data => {
+              console.log(data);
+              this.typeLst = data.DiveTypeList ; 
+          }
+        ); //end DiveType req
     }
-
-    this._accountService.getUser().subscribe(res => {
-      this.AD = res;
-      if (res.PublicStatus == true){
-        this.AD.PublicStatus = "Public";
-      }else{
-        this.AD.PublicStatus = "Private";
-      }
-
-    }) 
-
-    this._diveService.getDiveTypes().subscribe(
-      data => {
-          console.log(data);
-          this.typeLst = data.DiveTypeList ; 
-      }
-    ); //end DiveType req
-
     
   }
 

@@ -14,8 +14,8 @@ export interface DiveSite{
   diveSite: string;
 }
 
-export interface DiveType{
-  diveType : string ;
+export interface DiveCenter{
+  diveCenter : string ;
 }
 
 @Component({
@@ -27,9 +27,9 @@ export class ExplorePage implements OnInit {
 
   //variables
   siteLst: DiveSite[] ;
-  typeLst: DiveType[] ;
+  centerLst: DiveCenter[] ;
   showSites : boolean ;
-  showTypes : boolean ;
+  showCenters : boolean ;
   showFeed  : boolean ;
 
 
@@ -62,7 +62,7 @@ export class ExplorePage implements OnInit {
     //setup what gets displayed
     this.showFeed = true;
     this.showSites = false;
-    this.showTypes = false;
+    this.showCenters = false;
 
     this.loginLabel ="Login";
     if(!localStorage.getItem("accessToken"))
@@ -77,7 +77,7 @@ export class ExplorePage implements OnInit {
     //setup what gets displayed
     this.showFeed = true;
     this.showSites = false;
-    this.showTypes = false;
+    this.showCenters = false;
 
     if(!localStorage.getItem("accessToken"))
     {
@@ -104,7 +104,7 @@ export class ExplorePage implements OnInit {
     //setup what gets displayed
     this.showFeed =  false;
     this.showSites = true;
-    this.showTypes = false;
+    this.showCenters = false;
 
     this._diveService.getDiveSites().subscribe(
       data => {
@@ -114,15 +114,15 @@ export class ExplorePage implements OnInit {
     ); //end DiveSite req
   }
 
-  displayDiveTypes(){
+  displayDiveCenters(){
     this.showFeed =  false;
     this.showSites = false;
-    this.showTypes = true;
+    this.showCenters= true;
 
-    this._diveService.getDiveTypes().subscribe(
+    this._diveService.getDiveCenters().subscribe(
       data => {
           console.log(data);
-          this.typeLst = data.DiveTypeList ; 
+          this.centerLst = data.DiveCenterList ; 
       }
     ); //end DiveType req
   }
@@ -130,7 +130,7 @@ export class ExplorePage implements OnInit {
   displayFeed(){
     this.showFeed =  true;
     this.showSites = false;
-    this.showTypes = false;
+    this.showCenters = false;
   }
 
 
