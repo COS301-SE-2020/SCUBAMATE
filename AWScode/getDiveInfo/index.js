@@ -7,26 +7,45 @@ exports.handler = async (event, context) => {
 
     //properly formatted response
     let statusCode =0;
-
-    const{ItemType} =JSON.parse(event.body); //Would be either DiveSites, DiveTypes or DiveCenters
-
+    let body = JSON.parse(event.body);
+    var ItemType = body.ItemType; //Would be DS- Dive Sites, DT- Dive Type, DC- Dive Centre
+    const UserEntry = body.UserEntry; //Letters entered by user so far (in case of lookahead else must be *)
+    
     let responseBody = "";
     
-    const params = {
-        TableName: "Scubamate",
-        Key: {
-            "ItemType": ItemType
-        }
+    if(UserEntry.toString().trim() != '*'){
+       ItemType = ItemType+"-"+UserEntry;
     }
-    
+    const params = {
+        TableName: 'Scubamate',
+        FilterExpression: 'begins_with(#itemT , :itemT)',
+        ExpressionAttributeNames: {
+            '#itemT': 'ItemType',
+        },
+        ExpressionAttributeValues: {
+            ':itemT': ItemType,
+        },
+    };
 
     try{
-        const data = await documentClient.get(params).promise();
-        responseBody = JSON.stringify(data.Item); 
-        statusCode = 200;
-
+        const data = await documentClient.scan(params).promise();
+        var tmp = [];
+        data.Items.forEach(function(item) {
+            tmp.push(item.Name);
+        });
+        if(tmp.length == 0){
+            responseBody = "No Results Found For: "+UserEntry;
+            statusCode = 404;
+        }
+        else{
+            var returnList = [];
+            returnList.push({ReturnedList: tmp});
+            responseBody = returnList[0];
+            statusCode = 200;
+        }
+        
     }catch(err){
-        responseBody = "Unable to get dive data";
+        responseBody = "Unable to get data ";
         statusCode = 403;
     }
 
@@ -36,7 +55,7 @@ exports.handler = async (event, context) => {
             "Content-Type" : "application/json",
             "access-control-allow-origin" : "*"
         },
-        body : responseBody,
+        body : JSON.stringify(responseBody),
         isBase64Encoded: false
     }
 
