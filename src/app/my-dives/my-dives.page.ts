@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { diveService } from '../service/dive.service';
 
+
 export interface Dive{
   Buddy : string;
   TimeIn: string;
@@ -39,6 +40,7 @@ export class MyDivesPage implements OnInit {
           console.log(res.Items);
 
             this.diveLst = res.Items;
+
         })
          
       }else{

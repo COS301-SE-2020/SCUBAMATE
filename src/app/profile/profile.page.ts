@@ -40,7 +40,6 @@ export class ProfilePage implements OnInit {
   viewChecklist : Boolean = false ; 
   viewProfile : Boolean;
   editProfile : Boolean; 
-    
 
   constructor( private router: Router, private _accountService: accountService,  private _diveService: diveService) {}
   
@@ -72,7 +71,8 @@ export class ProfilePage implements OnInit {
               this.typeLst = data.DiveTypeList ; 
           }
         ); //end DiveType req
-    }
+
+      }
     
   }
 
@@ -82,6 +82,7 @@ export class ProfilePage implements OnInit {
     this.editProfile = false;
     if(!localStorage.getItem("accessToken"))
     {
+      this.router.navigate(['login']);
       this.loginLabel = "Login";
     }else{
       this.loginLabel = "Sign Out";
@@ -127,6 +128,10 @@ export class ProfilePage implements OnInit {
 
   }
 
+  goToEdit(){
+    console.log("in edit func");
+    this.router.navigate(["/edit-profile"]);
+  }
 
 
 }
