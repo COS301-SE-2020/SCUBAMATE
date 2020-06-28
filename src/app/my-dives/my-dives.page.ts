@@ -32,14 +32,20 @@ export class MyDivesPage implements OnInit {
 
     console.log("Do a Private search:");
       //get private dives
-    this._diveService.getPrivateDive().subscribe( res =>{
-      console.log("in here");
-      console.log(res);
-      console.log(res.Items);
-      this.diveLst = res.Items;
-      //console.log(res.body.Items);
-      //this.diveLst = res.body.Items;
-    });
+      if(localStorage.getItem("accessToken") != null)//check logged in
+      {
+        this._diveService.getPrivateDive().subscribe( res =>{
+          console.log(res);
+          console.log(res.Items);
+
+            this.diveLst = res.Items;
+        })
+         
+      }else{
+        this.router.navigate(['login']);
+        this.diveLst = [];
+      }
+      
 
 
   }
@@ -51,6 +57,23 @@ export class MyDivesPage implements OnInit {
     }else{
       this.loginLabel = "Sign Out";
     }
+
+    console.log("Do a Private search:");
+    //get private dives
+    if(localStorage.getItem("accessToken") != null)
+    {
+      this._diveService.getPrivateDive().subscribe( res =>{
+        console.log(res);
+        console.log(res.Items);
+
+          this.diveLst = res.Items;
+      })
+       
+    }else{
+      this.router.navigate(['login']);
+      this.diveLst = [];
+    }
+    
   }
 
   loginClick(){

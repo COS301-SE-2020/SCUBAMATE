@@ -38,6 +38,22 @@ export class diveService
          return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveTypesAndSitesAdded/divelist',body, options);
     }
 
+    getDiveCenters(): Observable<any>{
+
+      const options = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+          })
+        };
+
+      var  body= {
+          "ItemType" : "DiveCenters" 
+        } ;
+        return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveTypesAndSitesAdded/divelist',body, options);
+      }
+
+      
+
 
     logDive(PostData): Observable<any>{
       	console.log("in req");
@@ -47,9 +63,9 @@ export class diveService
             })
           };
         
-          console.log("PostData: " + PostData);
-
-         return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/UpdatedModel/divelog', PostData , options); 
+          //https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/UpdatedModel/divelog
+          //https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveLogs/
+         return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveLogs/divelog', PostData , options); 
 
 
     }
@@ -67,9 +83,23 @@ export class diveService
       }
 
       console.log(PostData);
-
-     return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/FixedDiveHistory/getpersonaldivelogs', PostData , options); 
+        //https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/FixedDiveHistory/getpersonaldivelogs
+        //
+     return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveLogs/getpersonaldivelogs', PostData , options); 
 
     }
+
+    getCheckList(PostData): Observable<any>{
+      console.log("in req");
+      const options = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+          })
+        };
+      
+       return this.httpClient.post('https://a8dptkt6md.execute-api.af-south-1.amazonaws.com/ChecklistPen/checklist', PostData , options); 
+
+
+  }
 
 }
