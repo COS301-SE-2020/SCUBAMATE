@@ -3,13 +3,12 @@ const AWS = require('aws-sdk');
 AWS.config.update({region: "af-south-1"});
 
 exports.handler = async (event, context) => {
-    //const ddb = new AWS.DynamoDB({apiVersion:"2012-08-10"});
     const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
 
     //properly formatted response
     let statusCode =0;
 
-    const{ItemType} =JSON.parse(event.body); //Would be either DiveSites or DiveTypes
+    const{ItemType} =JSON.parse(event.body); //Would be either DiveSites, DiveTypes or DiveCenters
 
     let responseBody = "";
     
@@ -23,7 +22,7 @@ exports.handler = async (event, context) => {
 
     try{
         const data = await documentClient.get(params).promise();
-        responseBody = JSON.stringify(data.Item); //Is stringset
+        responseBody = JSON.stringify(data.Item); 
         statusCode = 200;
 
     }catch(err){
