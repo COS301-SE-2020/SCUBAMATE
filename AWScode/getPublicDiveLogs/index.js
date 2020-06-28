@@ -8,8 +8,11 @@ exports.handler = async (event, context) => {
 
     let responseBody = "";
     let statusCode =0;
+    // let publicLogs = "";
 
-    var AccessToken = event.AccessToken;
+    let body = JSON.parse(event.body)
+    const AccessToken = body.AccessToken; 
+    console.log(body.AccessToken);
 
     function compareDates(t,e)
     {
@@ -114,38 +117,118 @@ exports.handler = async (event, context) => {
         responseBody = "Invalid Access Token";
     }
     
+
     //Only proceed if access token is valid
     if(statusCode==0){
+
         var diveParams = {
             TableName: "Dives",
-            ProjectionExpression: "DiveSiteLink, DiveDate, Weather, TimeIn , TimeOut, Buddy",
+            ProjectionExpression: "AccountGuid, DiveSiteLink, DiveDate, DivePublicStatus, Weather, TimeIn , TimeOut, Buddy",
             FilterExpression: "#acc = :acc",
             ExpressionAttributeNames:{
-                "#acc" : "PublicStatus"
+                "#acc" : "DivePublicStatus"
             },
             ExpressionAttributeValues:{
                 ":acc" : true,
             }
         };
-        
-        try{
-            //search for all the dive logs 
-            responseBody = JSON.stringify(await documentClient.scan(diveParams).promise());
-            // responseBody = "here is your dive things with " + "D" + AccountGuid;
-            statusCode = 201;
-        }catch(err){
-            responseBody = "No diver logs found " + err;
-            statusCode = 404;
+
+        try {
+            console.log("Scanning...");
+            const dives = await documentClient.scan(diveParams).promise();
+            if(!dives.Items[0].AccountGuid)
+            {
+                responseBody = "No public dives found :(";
+                statusCode = 404;
+            }
+            else{
+                //now add the name and surname of the diver
+                console.log("Scan succeeded.");
+                var accounts = [];
+                dives.Items.forEach(function(dive) {
+                    console.log( dive.AccountGuid + " hmm");
+                    accounts.push(dive.AccountGuid);
+                });
+                console.log("length: " + accounts.length)
+
+                for(var i=0; i<accounts.length; i++)
+                {
+                    var item = "A" + accounts[i];
+                    var accountParams = {
+                        TableName: "Scubamate",
+                        Key: {
+                            "ItemType": item
+                        }
+                    }
+                    
+                    try{
+                        var acc = await documentClient.get(accountParams).promise();
+                        console.log(acc.Item.FirstName + " " + acc.Item.LastName); //Is stringset
+                        if(i == 0)
+                        {
+                            responseBody += '{ "Public Dive Logs" : ['
+                        }
+                        else
+                        {
+                            responseBody += ",";
+                        }
+                        responseBody += '{ "FirstName" : "' + acc.Item.FirstName + '",' +
+                                            '"LastName" : "' + acc.Item.LastName + '",' +
+                                            '"DiveSiteLink" : "'  + dives.Items[i].DiveSiteLink + '",' +
+                                            '"DiveDate" : "' + dives.Items[i].DiveDate + '",' +
+                                            '"TimeIn" : "' + dives.Items[i].TimeIn + '",' +
+                                            '"TimeOut" : "' + dives.Items[i].TimeOut + '",' +
+                                            '"Buddy" : "' + dives.Items[i].Buddy + '",' +
+                                            '"Weather" : "' + dives.Items[i].Weather + '"'  +
+                                            '}';
+
+                        if(i==accounts.length)
+                        {
+                            responseBody += ']}';
+                        }
+
+                
+                    }catch(err){
+                        responseBody = "Unable to get account";
+                        statusCode = 403;
+                    }
+                    // statusCode = 200;
+                }
+    
+                // continue scanning if we have more movies, because
+                // scan can retrieve a maximum of 1MB of data
+                // if (typeof data.LastEvaluatedKey != "undefined") {
+                //     console.log("Scanning for more...");
+                //     diveParams.ExclusiveStartKey = data.LastEvaluatedKey;
+                //     documentClient.scan(diveParams, onScan);
+                // }
+    
+
+                responseBody = JSON.parse(responseBody);
+                statusCode = 200;
+            }
         } 
-    }
+        catch(err)
+        {
+            console.error("Unable to scan the table. Error JSON:", JSON.stringify(err, null, 2), );
+            responseBody = "No public dives found " + err + " " + responseBody;
+            statusCode = 404;
+        }
+        
+    }   
+    
+  
 
     const response = {
         statusCode: statusCode,
         headers: {
             "Content-Type" : "application/json",
-            "access-control-allow-origin" : "*"
+            "Access-Control-Allow-Origin" : "*",
+            "Access-Control-Allow-Methods" : "OPTIONS,POST,GET",
+            "Access-Control-Allow-Credentials" : true
         },
-        body : responseBody
+        body : JSON.stringify(responseBody),
+        isBase64Encoded: false
     };
 
     return response;
