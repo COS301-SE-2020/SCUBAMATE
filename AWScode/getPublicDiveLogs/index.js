@@ -123,7 +123,7 @@ exports.handler = async (event, context) => {
 
         var diveParams = {
             TableName: "Dives",
-            ProjectionExpression: "AccountGuid, DiveSiteLink, DiveDate, DivePublicStatus, Weather, TimeIn , TimeOut, Buddy",
+            ProjectionExpression: "AccountGuid, DiveSite, DiveDate, DivePublicStatus, Weather, TimeIn , TimeOut, Buddy",
             FilterExpression: "#acc = :acc",
             ExpressionAttributeNames:{
                 "#acc" : "DivePublicStatus"
