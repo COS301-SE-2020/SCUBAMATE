@@ -8,7 +8,7 @@ exports.handler = async (event, context) => {
     //properly formatted response
     let statusCode =0;
     let body = JSON.parse(event.body); 
-    const ItemType = body.ItemType; //Instructors and Divers or just instructors 
+    const ItemType = body.ItemType; //Instructors and Divers or just instructors  (A/ AI)
     const UserEntry = body.UserEntry; //Letters entered by user so far 
     
     let responseBody = "";
@@ -24,7 +24,7 @@ exports.handler = async (event, context) => {
             '#pub': 'PublicStatus',
         },
         ExpressionAttributeValues: {
-            ':itemT' : 'A',
+            ':itemT' : ItemType,
             ':em': UserEntry,
             ':fn': UserEntry,
             ':ln': UserEntry,
