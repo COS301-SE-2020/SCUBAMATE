@@ -151,7 +151,7 @@ exports.handler = async (event, context) => {
                 });
                 console.log("length: " + accounts.length)
 
-                for(var i=0; i<accounts.length; i++)
+                for(var i=0; i<accounts.length && statusCode==0; i++)
                 {
                     var item = "A" + accounts[i];
                     var accountParams = {
@@ -174,7 +174,7 @@ exports.handler = async (event, context) => {
                         }
                         responseBody += '{ "FirstName" : "' + acc.Item.FirstName + '",' +
                                             '"LastName" : "' + acc.Item.LastName + '",' +
-                                            '"DiveSiteLink" : "'  + dives.Items[i].DiveSiteLink + '",' +
+                                            '"DiveSite" : "'  + dives.Items[i].DiveSite + '",' +
                                             '"DiveDate" : "' + dives.Items[i].DiveDate + '",' +
                                             '"TimeIn" : "' + dives.Items[i].TimeIn + '",' +
                                             '"TimeOut" : "' + dives.Items[i].TimeOut + '",' +
@@ -182,15 +182,17 @@ exports.handler = async (event, context) => {
                                             '"Weather" : "' + dives.Items[i].Weather + '"'  +
                                             '}';
 
-                        if(i==accounts.length)
+                        if(i==accounts.length-1)
                         {
                             responseBody += ']}';
                         }
 
                 
                     }catch(err){
-                        responseBody = "Unable to get account";
+                        var temp = responseBody;
+                        responseBody = temp + " Unable to get account." ;
                         statusCode = 403;
+                        
                     }
                     // statusCode = 200;
                 }
@@ -203,16 +205,21 @@ exports.handler = async (event, context) => {
                 //     documentClient.scan(diveParams, onScan);
                 // }
     
-
-                responseBody = JSON.parse(responseBody);
-                statusCode = 200;
+                if(statusCode == 0)
+                {    
+                    responseBody = JSON.parse(responseBody);
+                    statusCode = 200;
+                }
             }
         } 
         catch(err)
         {
-            console.error("Unable to scan the table. Error JSON:", JSON.stringify(err, null, 2), );
-            responseBody = "No public dives found " + err + " " + responseBody;
-            statusCode = 404;
+            if(statusCode == 0)
+            {
+                console.error("Unable to scan the table. Error JSON:", JSON.stringify(err, null, 2), );
+                responseBody = "No public dives found " + err + " " + responseBody;
+                statusCode = 404;
+            }
         }
         
     }   
