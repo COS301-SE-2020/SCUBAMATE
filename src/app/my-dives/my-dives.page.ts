@@ -43,15 +43,19 @@ export class MyDivesPage implements OnInit {
           console.log(res);
           console.log(res.Items);
 
-            this.diveLst = res.Items;
+            if( res.Items){
+              this.diveLst = res.Items;
+            }else{
+              this.diveLst = [];
+            }
             this.showLoading= false;
 
         })
          
       }else{
         this.router.navigate(['login']);
-        this.diveLst = [];
         this.showLoading= false;
+        this.diveLst = [];
       }
       
 

@@ -30,8 +30,8 @@
           <div>
               <ion-img src="../assets/images/STDuser.jpg" id="userProfile"></ion-img>
               <ion-label class="infoLabel" id="names" > {{AD.FirstName}}  {{AD.LastName}}</ion-label> <br>
-              <ion-button color="dark" id="editBtn"  (click)="goToEdit()" ><ion-icon name="pencil-outline"></ion-icon></ion-button>
-          
+              <ion-button color="dark" id="editBtn" routerLink="/edit-profile" routerDirection="root" ><ion-icon name="pencil-outline"></ion-icon></ion-button>
+              
           </div>
         </ion-col>
         <ion-col style="padding-right:0;" >
@@ -59,13 +59,19 @@
   </div>
 
   <div id="checkListDiv">
-    <ion-label class="divHead"> Checklist </ion-label> <br>
-      <ion-item>
-        <ion-label>Dive Type*</ion-label>
-        <ion-select placeholder="Select One" #diveType (ionChange)="onChooseDive( diveType.value, $event)">
-          <ion-select-option *ngFor='let t of typeLst'> {{ t }}</ion-select-option>
-        </ion-select>
-      </ion-item>
+    <ion-label class="divHead"> Checklist </ion-label> 
+    <ion-button (click)="onChooseDive( diveType.value, $event)">
+      <ion-icon name="search"></ion-icon>
+    </ion-button><br>
+
+   
+      <div class="searchableSelect">
+        <ion-label class="searchableSelectLabel">Dive Type</ion-label>
+        <input list="diveTypes"  placeholder="Insert A Dive Type" #diveType>
+        <datalist id="diveTypes" >
+            <option *ngFor='let t of DiveTypeLst' value={{t}}></option>
+        </datalist>
+      </div>
  
 
     <ion-grid id="CheckListsInfo">

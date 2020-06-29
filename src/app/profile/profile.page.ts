@@ -33,7 +33,7 @@ export class ProfilePage implements OnInit {
 
   loginLabel:string ;
   AD : AccountDetails ; 
-  typeLst: DiveType[] ; 
+  DiveTypeLst: []; 
   OptionalList : String[];
   EquipmentList : String[];
  
@@ -69,13 +69,16 @@ export class ProfilePage implements OnInit {
 
         }) 
 
-      /*  this._diveService.getDiveTypes().subscribe(
+        this._diveService.getDiveTypes("*").subscribe(
           data => {
               console.log(data);
-              this.typeLst = data.DiveTypeList ; 
+              this.DiveTypeLst = data.ReturnedList ; 
+              console.log("In type");
+              this.showLoading = false;
           }
         ); //end DiveType req
-*/
+
+
       }
     
   }
@@ -95,14 +98,14 @@ export class ProfilePage implements OnInit {
     this._accountService.getUser().subscribe(res => {
       this.AD = res;
     })
-
-   /** this._diveService.getDiveTypes().subscribe(
+    this._diveService.getDiveTypes("*").subscribe(
       data => {
           console.log(data);
-          this.typeLst = data.DiveTypeList ; 
+          this.DiveTypeLst = data.ReturnedList ; 
+          console.log("In type");
+          this.showLoading = false;
       }
     ); //end DiveType req
-      */ 
   }
 
   loginClick(){
@@ -120,6 +123,8 @@ export class ProfilePage implements OnInit {
     var RequestData = {
       "DiveType" : DT
     }
+
+    console.log(RequestData);
 
 
     this._diveService.getCheckList(RequestData).subscribe( res =>{

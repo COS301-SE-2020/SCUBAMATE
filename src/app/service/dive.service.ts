@@ -117,4 +117,15 @@ export class diveService
    
     }
 
+    updateDive(PostData): Observable<any>{
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+
+     return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/editdives', PostData , options); 
+   
+    }
+
 }

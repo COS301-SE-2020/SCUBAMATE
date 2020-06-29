@@ -16,9 +16,10 @@
       <li style="float:left;"><a routerLink="/explore">Explore</a></li>  
       <li style="float:left;"><a routerLink="/weather">Weather</a></li> 
       <li style="float:left;"><a routerLink="/my-dives">My Dives</a></li>
-      <li style="float:left;"><a routerLink="/profile">My Account</a></li>   
+      <li style="float:left;"><a routerLink="/profile">My Account</a></li>
+      <ion-progress-bar type="indeterminate" *ngIf="showLoading" ></ion-progress-bar>   
   </ul>
-  <ion-progress-bar type="indeterminate" ></ion-progress-bar>
+  
 </ion-toolbar>
 
 <ion-content fullscreen class="background" no-scroll padding >
@@ -26,7 +27,7 @@
   <div id="newDiveDiv">
     <ion-label id="divHead">Log a new Dive</ion-label>
 
-    <form (submit)="onSubmit(desc.value, siteOf.value, dateOf.value, timeIn.value, timeOut.value, diveType.value, bud.value, vis.value, dep.value, aTemp.value, sTemp.value, bTemp.value,  $event)">
+    <form (submit)="onSubmit(public.checked , desc.value, siteOf.value, dateOf.value, timeIn.value, timeOut.value, diveType.value, bud.value, vis.value, dep.value, aTemp.value, sTemp.value, bTemp.value,  $event)">
     <div id="locationInfo">
       <ion-label class="subLabel"> Dive Location </ion-label>
       <ion-grid>
@@ -121,6 +122,12 @@
                     <option *ngFor='let b of BuddyLst' value={{b}}></option>
                 </datalist>
               </div>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Do you want this dive to be logged publicly?</ion-label>
+                <ion-checkbox color="dark"  #public ></ion-checkbox>
+              </ion-item>
             </ion-col>
         </ion-row>
         <ion-row>

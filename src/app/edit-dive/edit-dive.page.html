@@ -26,7 +26,7 @@
     <div id="newDiveDiv">
       <ion-label id="divHead">Edit Dive Information</ion-label>
   
-      <form (submit)="onSubmit(desc.value, bud.value, public.value ,   $event)">
+      <form (submit)="onSubmit(desc.value, bud.value, public.checked ,   $event)">
       <div id="locationInfo">
         <ion-label class="subLabel"> Dive Location </ion-label>
         <ion-grid>
@@ -107,8 +107,8 @@
             <ion-col>
               <div class="searchableSelect">
                 <ion-label class="searchableSelectLabel"  >Buddy</ion-label>
-                <input list="buddylst"  value={{CurrentDive.Buddy}} placeholder="Insert Buddy" (keypress)="buddyListFinder($event.target.value)">
-                <datalist id="buddylst" #bud>
+                <input list="buddylst" #bud value={{CurrentDive.Buddy}} placeholder="Insert Buddy" (keypress)="buddyListFinder($event.target.value)">
+                <datalist id="buddylst" >
                     <option *ngFor='let b of BuddyLst' value={{b}}></option>
                 </datalist>
               </div>
@@ -116,7 +116,7 @@
             <ion-col>
               <ion-item>
                 <ion-label position="stacked">Do you want your dives to be logged publicly?</ion-label>
-                <ion-checkbox color="dark" disabled="false" #public value={{CurrentDive.DivePublicStatus}}  ></ion-checkbox>
+                <ion-checkbox color="dark"  #public checked={{CurrentDive.DivePublicStatus}} ></ion-checkbox>
               </ion-item>
             </ion-col>
           </ion-row>

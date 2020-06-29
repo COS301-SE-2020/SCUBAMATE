@@ -59,6 +59,7 @@ export class LogDivePage implements OnInit {
       data => {
           console.log(data);
           this.DiveSiteLst = data.ReturnedList ; 
+          this.showLoading = false;
       }
     ); //end DiveSite req
 
@@ -94,7 +95,7 @@ export class LogDivePage implements OnInit {
   }
 
 
-  onSubmit(desc: string, siteOf:string, dateOf : string , timeI : string, timeO: string  , diveT: string, bud: string, vis: string, dep: string, aTemp: number, sTemp: number, bTemp: number,  event: Event) {
+  onSubmit(pub: boolean, desc: string, siteOf:string, dateOf : string , timeI : string, timeO: string  , diveT: string, bud: string, vis: string, dep: string, aTemp: number, sTemp: number, bTemp: number,  event: Event) {
     event.preventDefault();
 
     //generate GUID
@@ -130,15 +131,15 @@ export class LogDivePage implements OnInit {
                     Description: desc ,
                     InstructorLink: "-" ,
                     Weather: ["10 mph East", "FullMoon","Windy", "high: 1.20m"] ,
-                    DivePublicStatus: true
+                    DivePublicStatus: pub
                   } as DiveLog;
           
               console.log(log);
-              console.log("before req");
+              this.showLoading = true;
               this._diveService.logDive(log).subscribe( res =>{
-                console.log("req response");
+                
                 console.log(res);
-                console.log("after body");
+                this.showLoading = false;
                // location.reload();
                this.router.navigate(['my-dives']);
                 console.log("after nav");

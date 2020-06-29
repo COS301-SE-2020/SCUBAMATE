@@ -22,7 +22,7 @@ export interface DiveLog{
   Description: string ;
   InstructorLink: "Aaf485cf3-7e5c-4f3e-9c24-1694983820f2" ;
   Weather: [] ;
-  DivePublicStatus: Boolean;
+  DivePublicStatus: boolean;
 }
 
 
@@ -77,9 +77,33 @@ export class EditDivePage implements OnInit {
     }
   }
 
-  onSubmit(desc : String , bud: String , pub: Boolean ,   event : Event)
+  onSubmit(desc : String , bud: String , pub: string ,   event : Event)
   {
-      
+    if(bud == ""){
+      bud = "-";
+    }
+    console.log("Pub: "+ pub );
+
+    
+      var reqBody = {
+        DiveID: localStorage.getItem("DiveID"),
+        AccessToken: localStorage.getItem("accessToken"),
+        Buddy: bud,
+        InstructorLink: "-",
+        Description: desc,
+        DivePublicStatus: pub
+      }
+      console.log(reqBody);
+
+      this.showLoading = true;
+
+      this._diveService.updateDive(reqBody).subscribe(res=>{
+        this.showLoading = false;
+        localStorage.removeItem("DiveID");
+        this.router.navigate(["/my-dives"]);
+      } );
+
+
   }
 
   buddyListFinder(eventValue: string){
