@@ -58,6 +58,8 @@ export class ProfilePage implements OnInit {
     
 
         this._accountService.getUser().subscribe(res => {
+          console.log("res");
+          console.log(res);
           this.AD = res;
           if (res.PublicStatus == true){
             this.AD.PublicStatus = "Public";
@@ -66,7 +68,7 @@ export class ProfilePage implements OnInit {
           }
 
           this.showLoading = false;
-
+          
         }) 
 
         this._diveService.getDiveTypes("*").subscribe(
@@ -120,18 +122,20 @@ export class ProfilePage implements OnInit {
 
   onChooseDive( DT: string , event: Event  )
   {
+    this.showLoading= true;
     var RequestData = {
       "DiveType" : DT
     }
 
     console.log(RequestData);
 
-
+    this.showLoading= true;
     this._diveService.getCheckList(RequestData).subscribe( res =>{
       this.viewChecklist = false ; 
       this.OptionalList = res.Optional;
       this.EquipmentList = res.Equipment;
       this.viewChecklist = true ; 
+      this.showLoading= false;
     });
 
 

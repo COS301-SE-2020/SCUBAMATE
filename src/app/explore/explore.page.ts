@@ -31,6 +31,7 @@ export class ExplorePage implements OnInit {
   showSites : boolean ;
   showCenters : boolean ;
   showFeed  : boolean ;
+  showLoading : boolean;
 
 
   //hardcoded public feed -> remove later
@@ -101,6 +102,7 @@ export class ExplorePage implements OnInit {
 
   /// code to edit what gets displayed
   displayDiveSites(){
+    this.showLoading = true;
     //setup what gets displayed
     this.showFeed =  false;
     this.showSites = true;
@@ -110,12 +112,14 @@ export class ExplorePage implements OnInit {
       data => {
           console.log(data);
           this.siteLst = data.ReturnedList ; 
+          this.showLoading = false;
       }
     ); //end DiveSite req
     
   }
 
   displayDiveCenters(){
+    this.showLoading = true;
     this.showFeed =  false;
     this.showSites = false;
     this.showCenters= true;
@@ -124,6 +128,7 @@ export class ExplorePage implements OnInit {
       data => {
           console.log(data);
           this.centerLst = data.ReturnedList ; 
+          this.showLoading = false;
       }
     ); //end DiveType req
   }

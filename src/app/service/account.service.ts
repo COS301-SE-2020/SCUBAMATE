@@ -34,9 +34,7 @@ export class accountService
 
 
     logUser(postData): Observable<any>{
-      console.log(postData);
-
-
+    
    const options = {
           headers: new HttpHeaders({
             'Content-Type': 'application/json',
@@ -59,7 +57,6 @@ export class accountService
       var PostData = {
         "AccessToken" : lS
       }
-
       return this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/getUser/getuser', PostData, options );
  
     }
