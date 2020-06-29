@@ -91,14 +91,12 @@ exports.handler = async (event, context) => {
         const data = await documentClient.scan(params).promise();
         if(data.Items[0].AccountGuid)
         {
-            console.log("Account thing: " + data.Items[0].AccountGuid);
             var AccountGuid = data.Items[0].AccountGuid;
         }
         if( data.Items[0].Expires) // check if it's undefined
         {
             const expiryDate = new Date(data.Items[0].Expires);
             const today = new Date();
-            console.log("Compare: " + today + " and " + expiryDate  + " " + compareDates(today,expiryDate));
             if(compareDates(today,expiryDate))
             {
                 statusCode = 403;
@@ -106,12 +104,9 @@ exports.handler = async (event, context) => {
             }
                 
         }
-            
-        console.log("status is now: " + statusCode) ;
     } catch (error) {
-        console.error(error);
         statusCode = 403;
-        responseBody = "Invalid Access Token "+AccessToken;
+        responseBody = "Invalid Access Token ";
     }
     
     //Only proceed if access token is valid
@@ -129,8 +124,7 @@ exports.handler = async (event, context) => {
             }
         };
         
-        try{
-            //search for all the dive logs 
+        try{ 
             var res = await documentClient.scan(diveParams).promise();
             if(res.Items.length == 0){
                  responseBody = "Could not find dive";
