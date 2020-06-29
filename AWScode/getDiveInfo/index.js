@@ -24,7 +24,7 @@ exports.handler = async (event, context) => {
         }
     }
     const params = {
-        TableName: 'Scubamate',
+        TableName: 'DiveInfo',
         FilterExpression: filter,
         ExpressionAttributeNames: {
             '#itemT': 'ItemType',
