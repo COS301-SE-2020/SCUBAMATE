@@ -12,19 +12,24 @@ exports.handler = async (event, context) => {
     const UserEntry = body.UserEntry; //Letters entered by user so far (in case of lookahead else must be *)
     
     let responseBody = "";
-    
-    if(UserEntry.toString().trim() != '*'){
-       ItemType = ItemType+"-"+UserEntry;
+    let filter = 'contains(#itemT , :itemT) AND contains(#itemT , :user)';
+    let expressVal = {
+            ':itemT': ItemType,
+            ':user': UserEntry,
+        }
+    if(UserEntry.toString().trim() === '*'){
+       filter = 'contains(#itemT , :itemT)';
+       expressVal = {
+            ':itemT': ItemType,
+        }
     }
     const params = {
         TableName: 'Scubamate',
-        FilterExpression: 'begins_with(#itemT , :itemT)',
+        FilterExpression: filter,
         ExpressionAttributeNames: {
             '#itemT': 'ItemType',
         },
-        ExpressionAttributeValues: {
-            ':itemT': ItemType,
-        },
+        ExpressionAttributeValues: expressVal,
     };
 
     try{
@@ -45,7 +50,7 @@ exports.handler = async (event, context) => {
         }
         
     }catch(err){
-        responseBody = "Unable to get data ";
+        responseBody = "Unable to get data "+err;
         statusCode = 403;
     }
 
