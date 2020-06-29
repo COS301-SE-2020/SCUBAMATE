@@ -15,7 +15,7 @@ exports.handler = async (event, context) => {
 
     const params = {
         TableName: 'Scubamate',
-        FilterExpression: 'begins_with(#itemT , :itemT) AND  AND #pub = :pub AND (contains(#em , :em) OR contains(#fn , :fn) OR contains(#ln , :ln))',
+        FilterExpression: 'begins_with(#itemT , :itemT) AND #pub = :pub AND (contains(#em , :em) OR contains(#fn , :fn) OR contains(#ln , :ln))',
         ExpressionAttributeNames: {
             '#itemT' : 'ItemType',
             '#em': 'Email',
