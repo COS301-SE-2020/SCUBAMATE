@@ -16,7 +16,8 @@
       <li style="float:left;"><a routerLink="/explore">Explore</a></li>  
       <li style="float:left;"><a routerLink="/weather">Weather</a></li> 
       <li style="float:left;"><a routerLink="/my-dives">My Dives</a></li>
-      <li style="float:left;"><a routerLink="/profile">My Account</a></li>   
+      <li style="float:left;"><a routerLink="/profile">My Account</a></li> 
+      <ion-progress-bar type="indeterminate" *ngIf="showLoading"></ion-progress-bar>  
 </ul>
 </ion-toolbar>
 
@@ -24,29 +25,28 @@
   
   <table style="margin:auto;"  >
     <tr>
-        <th></th>
+      <th></th>
         <th></th>
         <th></th>
         <th></th>
         <th>
-          <ion-button routerLink="/log-dive"  >
+          <ion-button id="addBtn" routerLink="/log-dive" style="margin-right:15px;  margin-top: 10px;" >
             <ion-icon name="add"></ion-icon>
           </ion-button>
         </th>
     </tr>
     <tr>
-      <th> Buddy </th>
+      <th> Dive Date </th>
+      <th> Dive Site </th>
       <th> TimeIn </th>
-      <th> TimeOut </th>
-      <th> DiveDate </th>
-      <th> Weather</th>
+      <th> Buddy </th>
     </tr>
     <tr *ngFor='let d of diveLst' > 
-      <td> {{d.Buddy}} </td>
-      <td> {{d.TimeIn}}  </td>
-      <td> {{d.TimeOut}}  </td>
       <td> {{d.DiveDate}}  </td>
-      <td> {{d.Weather}}  </td>
+      <td> {{d.DiveSite}} </td>
+      <td> {{d.TimeIn}}  </td>
+      <td> {{d.Buddy}} </td>
+      <td> <ion-button color="dark" id="editBtn" (click)="goToEdit(d.DiveID)" ><ion-icon name="pencil-outline"></ion-icon></ion-button></td>
     </tr>
 </table>
 

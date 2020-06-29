@@ -40,6 +40,7 @@ export class ProfilePage implements OnInit {
   viewChecklist : Boolean = false ; 
   viewProfile : Boolean;
   editProfile : Boolean; 
+  showLoading: Boolean;
 
   constructor( private router: Router, private _accountService: accountService,  private _diveService: diveService) {}
   
@@ -47,6 +48,7 @@ export class ProfilePage implements OnInit {
     this.viewProfile = true;
     this.editProfile = false;
     this.loginLabel ="Login";
+    this.showLoading = true;
     if(!localStorage.getItem("accessToken"))
     {
       this.router.navigate(['login']);
@@ -63,15 +65,17 @@ export class ProfilePage implements OnInit {
             this.AD.PublicStatus = "Private";
           }
 
+          this.showLoading = false;
+
         }) 
 
-        this._diveService.getDiveTypes().subscribe(
+      /*  this._diveService.getDiveTypes().subscribe(
           data => {
               console.log(data);
               this.typeLst = data.DiveTypeList ; 
           }
         ); //end DiveType req
-
+*/
       }
     
   }
@@ -92,13 +96,13 @@ export class ProfilePage implements OnInit {
       this.AD = res;
     })
 
-    this._diveService.getDiveTypes().subscribe(
+   /** this._diveService.getDiveTypes().subscribe(
       data => {
           console.log(data);
           this.typeLst = data.DiveTypeList ; 
       }
     ); //end DiveType req
-
+      */ 
   }
 
   loginClick(){

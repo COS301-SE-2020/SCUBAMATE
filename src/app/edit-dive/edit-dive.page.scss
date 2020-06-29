@@ -5,26 +5,31 @@ $red: #E76F51 ;
 $yellow : #E9C46A ;
 $inputBackgroundColor: #181e21;
 
-.searchableSelect{
-  background-color: white;
-  border-radius: 1px;
-  text-align: left;
-  padding: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
-  width: 100%;
+.readOnlyInputArea{
+    color: gray;
+}
 
-  input{
-      width: 100%;
-      margin: auto;
-      border: none;
-      font-size: medium;
-  }
+.searchableSelect{
+    background-color: white;
+    border-radius: 1px;
+    text-align: left;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 100%;
+    height:100%;
+
+    input{
+        width: 100%;
+        margin: auto;
+        border: none;
+        font-size: medium;
+    }
 
 }
 
 .searchableSelectLabel{
-  font-size: small;
+    font-size: small;
 }
 
 ion-content.background{

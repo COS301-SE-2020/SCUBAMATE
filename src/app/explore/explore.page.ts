@@ -106,12 +106,13 @@ export class ExplorePage implements OnInit {
     this.showSites = true;
     this.showCenters = false;
 
-    this._diveService.getDiveSites().subscribe(
+    this._diveService.getDiveSites("*").subscribe(
       data => {
           console.log(data);
-          this.siteLst = data.DiveSiteList ; 
+          this.siteLst = data.ReturnedList ; 
       }
     ); //end DiveSite req
+    
   }
 
   displayDiveCenters(){
@@ -119,10 +120,10 @@ export class ExplorePage implements OnInit {
     this.showSites = false;
     this.showCenters= true;
 
-    this._diveService.getDiveCenters().subscribe(
+    this._diveService.getDiveCenters("*").subscribe(
       data => {
           console.log(data);
-          this.centerLst = data.DiveCenterList ; 
+          this.centerLst = data.ReturnedList ; 
       }
     ); //end DiveType req
   }

@@ -6,9 +6,11 @@ import { diveService } from '../service/dive.service';
 export interface Dive{
   Buddy : string;
   TimeIn: string;
-  TimeOut: string;
   DiveDate: string ;
-  Weather: string[] ; 
+  DiveSite: string ;
+ /* TimeOut: string;
+  DiveDate: string ;
+  Weather: string[] ; */
 }
 
 @Component({
@@ -18,12 +20,14 @@ export interface Dive{
 })
 export class MyDivesPage implements OnInit {
 //{Location: "Here" , DateOf: "07/03/2019", Weather: "Sunny 70% Visibility", TimeIn: "10:00", TimeOut:"10:45", Buddy: "Gerorge Flint"} 
-   diveLst: Dive[] ;
+   diveLst:[]; //Dive[] ;
   loginLabel:string ;
+  showLoading: Boolean ;
   constructor(private router: Router, private _diveService: diveService) {}
   
   ngOnInit() {
     this.loginLabel ="Login";
+    this.showLoading= true;
     if(!localStorage.getItem("accessToken"))
     {
       this.loginLabel = "Login";
@@ -40,12 +44,14 @@ export class MyDivesPage implements OnInit {
           console.log(res.Items);
 
             this.diveLst = res.Items;
+            this.showLoading= false;
 
         })
          
       }else{
         this.router.navigate(['login']);
         this.diveLst = [];
+        this.showLoading= false;
       }
       
 
@@ -53,6 +59,7 @@ export class MyDivesPage implements OnInit {
   }
 
   ionViewWillEnter(){
+    this.showLoading= true;
     if(!localStorage.getItem("accessToken"))
     {
       this.loginLabel = "Login";
@@ -69,11 +76,13 @@ export class MyDivesPage implements OnInit {
         console.log(res.Items);
 
           this.diveLst = res.Items;
+          this.showLoading= false;
       })
        
     }else{
       this.router.navigate(['login']);
       this.diveLst = [];
+      this.showLoading= false;
     }
     
   }
@@ -86,6 +95,13 @@ export class MyDivesPage implements OnInit {
     }else{
       this.router.navigate(['login']);
     }
+  }
+
+  goToEdit(diveID : string ){
+    console.log("DIVE: " + diveID);
+    localStorage.setItem("DiveID", diveID);
+    console.log("in edit func");
+    this.router.navigate(["/edit-dive"]);
   }
 
 }
