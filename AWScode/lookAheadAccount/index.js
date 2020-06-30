@@ -8,28 +8,51 @@ exports.handler = async (event, context) => {
     //properly formatted response
     let statusCode =0;
     let body = JSON.parse(event.body); 
-    const ItemType = body.ItemType; //Instructors and Divers or just instructors  (A/ AI)
+    var ItemType = body.ItemType; //Instructors and Divers or just instructors  (A / I)
     const UserEntry = body.UserEntry; //Letters entered by user so far 
     
     let responseBody = "";
-
-    const params = {
-        TableName: 'Scubamate',
-        FilterExpression: 'begins_with(#itemT , :itemT) AND #pub = :pub AND (contains(#em , :em) OR contains(#fn , :fn) OR contains(#ln , :ln))',
-        ExpressionAttributeNames: {
+    let filter = 'begins_with(#itemT , :itemT) AND #pub = :pub AND (contains(#em , :em) OR contains(#fn , :fn) OR contains(#ln , :ln))';
+    let exp = {
+        '#itemT' : 'ItemType',
+        '#em': 'Email',
+        '#fn': 'FirstName',
+        '#ln': 'LastName',
+        '#pub': 'PublicStatus',
+    }
+    let expVals = {
+        ':itemT' : ItemType,
+        ':em': UserEntry,
+        ':fn': UserEntry,
+        ':ln': UserEntry,
+        ':pub': true,
+    }
+    if(ItemType.trim() ==="I"){
+        var Instructor = "Instructor";
+        filter = 'begins_with(#itemT , :itemT) AND #accT = :accT AND #pub = :pub AND (contains(#em , :em) OR contains(#fn , :fn) OR contains(#ln , :ln))';
+        exp = {
             '#itemT' : 'ItemType',
             '#em': 'Email',
             '#fn': 'FirstName',
             '#ln': 'LastName',
             '#pub': 'PublicStatus',
-        },
-        ExpressionAttributeValues: {
-            ':itemT' : ItemType,
+            '#accT': 'AccountType',
+        }
+        expVals = {
+            ':itemT' : "A",
+            ':accT': Instructor,
             ':em': UserEntry,
             ':fn': UserEntry,
             ':ln': UserEntry,
             ':pub': true,
-        },
+        }
+    }
+
+    const params = {
+        TableName: 'Scubamate',
+        FilterExpression: filter,
+        ExpressionAttributeNames: exp,
+        ExpressionAttributeValues: expVals,
     };
 
     try{
