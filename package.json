@@ -25,11 +25,8 @@
     "@ionic-native/status-bar": "^5.0.0",
     "@ionic/angular": "^5.0.0",
     "angular2-uuid": "^1.1.1",
-<<<<<<< HEAD
     "aws-sdk": "^2.696.0",
-=======
     "cordova-plugin-geolocation": "^4.0.2",
->>>>>>> ui/WeatherTemp
     "crypto-js": "^4.0.0",
     "rxjs": "~6.5.1",
     "tslib": "^1.10.0",
