@@ -24,12 +24,13 @@ exports.handler = async (event, context, callback) => {
     const Password = body.Password;
     const PublicStatus = body.PublicStatus;
     
-    const ItemType = "AI"+AccountGuid;
+    const ItemType = "A"+AccountGuid;
     const AccountType = "Instructor";
     
     //James time
     var crypto = require('crypto');
     var hash = crypto.createHash('sha256').update(Password).digest('hex');
+    
     /*
     var hash = "";
     //hashes the password using the Email as a salt
@@ -144,5 +145,3 @@ exports.handler = async (event, context, callback) => {
     return response;
     
 }
-
-
