@@ -1,12 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { diveService } from '../service/dive.service';
-import { accountService } from '../service/account.service';
 import { weatherService } from '../service/weather.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import * as CryptoJS from 'crypto-js';  
 import { UUID } from 'angular2-uuid';
 
+
+export interface DiveType{
+  diveType : string ;
+}
+
+export interface DiveSite{
+  diveSite: string;
+}
 
 export interface DiveLog{
   DiveID : string; 
@@ -22,11 +29,10 @@ export interface DiveLog{
   AirTemp: number;
   SurfaceTemp: number;
   BottomTemp: number;
-  DiveSite: string;
+  DiveSiteLink: string;
   Description: string ;
-  InstructorLink: "-" ;
+  InstructorLink: "Aaf485cf3-7e5c-4f3e-9c24-1694983820f2" ;
   Weather: ["10 mph East", "FullMoon","Windy", "high: 1.20m"]  ;
-  DivePublicStatus: Boolean;
 }
 
 
@@ -37,14 +43,6 @@ export interface DiveLog{
 })
 export class LogDivePage implements OnInit {
 
-   uuidValue:string;
-   showLoading: Boolean;
-    DiveTypeLst: [];
-    DiveSiteLst: [];
-    BuddyLst:[];
-    cDate : Date; 
-    currentDate : string ;
-  
   siteLst: DiveSite[] ;//= [{diveSite: "Carabean" },{diveSite: "Sodwana" },{diveSite: "Cape Town" } ];
   typeLst: DiveType[] ; //= [{diveType: "Lake" }, {diveType: "Reef" },{diveType: "Open Sea" },{diveType: "River" },{diveType: "Indoors" }];
   uuidValue:string;
@@ -56,18 +54,9 @@ export class LogDivePage implements OnInit {
     Longitude: null
   };
   loginLabel:string ;
-  constructor(private _accountService : accountService, private router: Router, private _diveService: diveService, private _weatherService: weatherService,private geolocation: Geolocation ) {}
+  constructor(private router: Router, private _diveService: diveService, private _weatherService: weatherService,private geolocation: Geolocation ) {}
   
   ngOnInit() {
-     this.cDate = new Date();
-      var dd = String(this.cDate.getDate()).padStart(2, '0');
-      var mm = String(this.cDate.getMonth() + 1).padStart(2, '0'); 
-      var yyyy = this.cDate.getFullYear();
-
-      this.currentDate =   yyyy + '-'+ mm + '-' + dd  ;
-      console.log(this.currentDate);
-
-    this.showLoading = true;
     this.loginLabel ="Login";
     if(!localStorage.getItem("accessToken"))
     {
@@ -76,20 +65,17 @@ export class LogDivePage implements OnInit {
       this.loginLabel = "Sign Out";
     }
 
-     this._diveService.getDiveSites("*").subscribe(
+    this._diveService.getDiveSites().subscribe(
       data => {
           console.log(data);
-          this.DiveSiteLst = data.ReturnedList ; 
-          this.showLoading = false;
+          this.siteLst = data.DiveSiteList ; 
       }
     ); //end DiveSite req
 
-    this._diveService.getDiveTypes("*").subscribe(
+    this._diveService.getDiveTypes().subscribe(
       data => {
           console.log(data);
-          this.DiveTypeLst = data.ReturnedList ; 
-          console.log("In type");
-          this.showLoading = false;
+          this.typeLst = data.DiveTypeList ; 
       }
     ); //end DiveType req
 
@@ -140,7 +126,7 @@ export class LogDivePage implements OnInit {
   }
 
 
-  onSubmit(pub: boolean, desc: string, siteOf:string, dateOf : string , timeI : string, timeO: string  , diveT: string, bud: string, vis: string, dep: string, aTemp: number, sTemp: number, bTemp: number,  event: Event) {
+  onSubmit(desc: string, siteOf:string, dateOf : string , timeI : string, timeO: string  , diveT: string, bud: string, vis: string, dep: string, aTemp: number, sTemp: number, bTemp: number,  event: Event) {
     event.preventDefault();
 
     //generate GUID
@@ -155,9 +141,6 @@ export class LogDivePage implements OnInit {
             }
             else
             {
-              if(bud == ""){
-                bud = "-";
-              }
               //Weather req
               this._weatherService.getLogWeather(siteOf).subscribe(res => {
                 console.log(res);
@@ -178,19 +161,18 @@ export class LogDivePage implements OnInit {
                     AirTemp: Number(aTemp) ,
                     SurfaceTemp: Number(sTemp) ,
                     BottomTemp: Number(bTemp) ,
-                    DiveSite: siteOf,
+                    DiveSiteLink: siteOf,
                     Description: desc ,
-                    InstructorLink: "-" ,
-                    Weather: ["10 mph East", "FullMoon","Windy", "high: 1.20m"] ,
-                    DivePublicStatus: pub
+                    InstructorLink: "Aaf485cf3-7e5c-4f3e-9c24-1694983820f2" ,
+                    Weather: ["10 mph East", "FullMoon","Windy", "high: 1.20m"]  
                   } as DiveLog;
           
               console.log(log);
-              this.showLoading = true;
+              console.log("before req");
               this._diveService.logDive(log).subscribe( res =>{
-                
+                console.log("req response");
                 console.log(res);
-                this.showLoading = false;
+                console.log("after body");
                // location.reload();
                this.router.navigate(['my-dives']);
                 console.log("after nav");
@@ -201,24 +183,6 @@ export class LogDivePage implements OnInit {
     alert("To Log dives first sign in to your account");
   }
 
-
-  }
-
-
-  buddyListFinder(eventValue: string){
-
-     if(eventValue.length >= 2)
-    {
-        this.showLoading = true;
-        this._accountService.lookAheadBuddy(eventValue).subscribe(
-          data => {
-            console.log(eventValue);
-              console.log(data);
-              this.BuddyLst = data.ReturnedList ; 
-              this.showLoading = false;
-          }
-        ); //end Buddy req
-    }
 
   }
 

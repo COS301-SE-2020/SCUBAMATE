@@ -16,8 +16,7 @@
       <li style="float:left;"><a routerLink="/explore">Explore</a></li>  
       <li style="float:left;"><a routerLink="/weather">Weather</a></li> 
       <li style="float:left;"><a routerLink="/my-dives">My Dives</a></li>
-      <li style="float:left;"><a routerLink="/profile">My Account</a></li>
-      <ion-progress-bar type="indeterminate" *ngIf="showLoading"></ion-progress-bar>   
+      <li style="float:left;"><a routerLink="/profile">My Account</a></li>   
 </ul>
 </ion-toolbar>
 
@@ -52,9 +51,9 @@
 -->
 <ion-radio-group color="dark" slot="fixed" style="width:20%;margin-top:2%;margin-left:2%;" >
   <ion-row>
-    <ion-item color="dark" (click)="displayFeed()" style="width:100%;--border-radius:27px;" >
+    <ion-item color="dark" (click)="displayFeed()" style="width:100%;--border-radius:27px;">
       <ion-label>Public Feed</ion-label>
-      <ion-radio value="feed" checked="viewFeed" ></ion-radio>
+      <ion-radio value="feed"></ion-radio>
     </ion-item>
 
     <ion-item color="dark" (click)="displayDiveCenters()" style="width:100%;--border-radius:27px;margin-top:8px;">
@@ -77,12 +76,13 @@
       <img src="../../assets/images/jellyfish.jpg" />
         <ion-card-content>
         <ion-card-title>
-            {{d.FirstName}} {{d.LastName}}
+            {{d.Diver }}
           </ion-card-title>
         <p>
-          {{d.DiveSite}} <br>
-          {{d.DiveType}} <br>
-          {{d.DiveDate}}
+          {{d.Location}} <br>
+          {{d.Weather}}  <br>
+          {{d.Buddy}}  <br>
+          {{d.DateOf}}
         </p>
       </ion-card-content>
     </ion-card>
