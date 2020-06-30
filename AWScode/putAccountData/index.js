@@ -9,25 +9,25 @@ exports.handler = async (event, context, callback) => {
     let responseBody = "";
     let statusCode =0;
 
-    //const{ItemType, AccountGuid, AccountType, FirstName, LastName, Email, DateOfBirth, Password, PublicStatus} = JSON.parse(event.body);
     let body = JSON.parse(event.body);
-    const ItemType = body.ItemType;
     const AccountGuid = body.AccountGuid;
-    const AccountType = body.AccountType;
+    const AccountType = "Diver";
     const FirstName = body.FirstName;
     const LastName = body.LastName;
     const Email = body.Email;
+    
     const DateOfBirth = body.DateOfBirth;
     const ProfilePhoto = body.ProfilePhoto;
     const Password = body.Password;
     const PublicStatus = body.PublicStatus;
-    //James time
+    
+    //hashes the password using the Email as a salt
     var crypto = require('crypto');
-    var hash = crypto.createHash('sha256').update(Password).digest('hex');
+    var hash = crypto.pbkdf2Sync(Password, Email, 1000, 64, 'sha512').toString('hex');
     
     //Profile Photo
     //Read content from the file
-    let encodedImage = ProfilePhoto;//JSON.parse(event.body).user_avatar;
+    let encodedImage = "data:image/jpg;base64," +ProfilePhoto;
     let decodedImage = Buffer.from(encodedImage, 'base64');
     var filePath = "profilephoto" + AccountGuid + ".jpg";
     let profileLink ="https://profilephoto-imagedatabase-scubamate.s3.af-south-1.amazonaws.com/"+filePath;
@@ -43,16 +43,17 @@ exports.handler = async (event, context, callback) => {
             profileLink ="https://profilephoto-imagedatabase-scubamate.s3.af-south-1.amazonaws.com/image2.jpg";
         }
     });
+    profileLink ="https://profilephoto-imagedatabase-scubamate.s3.af-south-1.amazonaws.com/image2.jpg";
     
-    var paramsImg = {Bucket: 'profilephoto-imagedatabase-scubamate', Key: filePath, Body: decodedImage};
-    var url = s3.getSignedUrl('putObject', paramsImg);
-    console.log('The URL is', url);
-    await s3.getSignedUrl('putObject', paramsImg, function (err, url) {
-        if(!err){
-            console.log('The URL is', url,". ");
-            //profileLink = url;
-        }
-    });
+    //var paramsImg = {Bucket: 'profilephoto-imagedatabase-scubamate', Key: filePath, Body: decodedImage};
+   
+    // await s3.getSignedUrl('putObject', paramsImg, function (err, url) {
+    //     if(!err){
+    //         console.log('The URL is', url,". ");
+    //         profileLink = url;
+    //     }
+    // });
+    
     //
     //Email checking
     const emailParams = {
@@ -66,6 +67,8 @@ exports.handler = async (event, context, callback) => {
             ":email" : Email
         }
     };
+    
+    
     
     var flag = false;
     
@@ -87,7 +90,6 @@ exports.handler = async (event, context, callback) => {
     const params = {
         TableName: "Scubamate",
         Item: {
-            ItemType : ItemType,
             AccountGuid : AccountGuid,
             AccountType: AccountType, 
             FirstName: FirstName,
@@ -103,12 +105,9 @@ exports.handler = async (event, context, callback) => {
     try{
         if (!flag)
         {
-        const data = await documentClient.put(params).promise();
-        }
-        if (!flag)
-        {
-        responseBody = "Successfully added account!";
-        statusCode = 201;
+            const data = await documentClient.put(params).promise();
+            responseBody = "Successfully added account!";
+            statusCode = 201;
         }
     }catch(err){
         if (!flag)
@@ -132,5 +131,3 @@ exports.handler = async (event, context, callback) => {
     return response;
     
 }
-
-
