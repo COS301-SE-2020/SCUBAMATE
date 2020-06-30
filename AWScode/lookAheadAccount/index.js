@@ -12,16 +12,14 @@ exports.handler = async (event, context) => {
     const UserEntry = body.UserEntry; //Letters entered by user so far 
     
     let responseBody = "";
-    let filter = 'begins_with(#itemT , :itemT) AND #pub = :pub AND (contains(#em , :em) OR contains(#fn , :fn) OR contains(#ln , :ln))';
+    let filter = '#pub = :pub AND (contains(#em , :em) OR contains(#fn , :fn) OR contains(#ln , :ln))';
     let exp = {
-        '#itemT' : 'ItemType',
         '#em': 'Email',
         '#fn': 'FirstName',
         '#ln': 'LastName',
         '#pub': 'PublicStatus',
     }
     let expVals = {
-        ':itemT' : ItemType,
         ':em': UserEntry,
         ':fn': UserEntry,
         ':ln': UserEntry,
@@ -29,9 +27,8 @@ exports.handler = async (event, context) => {
     }
     if(ItemType.trim() ==="I"){
         var Instructor = "Instructor";
-        filter = 'begins_with(#itemT , :itemT) AND #accT = :accT AND #pub = :pub AND (contains(#em , :em) OR contains(#fn , :fn) OR contains(#ln , :ln))';
+        filter = '#accT = :accT AND #pub = :pub AND (contains(#em , :em) OR contains(#fn , :fn) OR contains(#ln , :ln))';
         exp = {
-            '#itemT' : 'ItemType',
             '#em': 'Email',
             '#fn': 'FirstName',
             '#ln': 'LastName',
@@ -39,7 +36,6 @@ exports.handler = async (event, context) => {
             '#accT': 'AccountType',
         }
         expVals = {
-            ':itemT' : "A",
             ':accT': Instructor,
             ':em': UserEntry,
             ':fn': UserEntry,
