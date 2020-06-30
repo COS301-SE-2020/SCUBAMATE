@@ -27,13 +27,6 @@ export class HomePage implements OnInit {
       this.loginLabel = "Sign Out";
     }
 
-
-    this._diveService.getDiveSites().subscribe(
-      data => {
-          console.log(data);
-          this.siteLst = data.DiveSiteList ; 
-      }
-    ); //end DiveSite req
   }
 
   ionViewWillEnter(){
