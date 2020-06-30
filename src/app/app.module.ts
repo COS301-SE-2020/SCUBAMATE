@@ -18,6 +18,8 @@ import { HttpClientModule } from '@angular/common/http';
 //services 
 import { accountService } from './service/account.service';
 import { diveService } from './service/dive.service';
+import { weatherService } from './service/weather.service';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 
 @NgModule({
@@ -32,7 +34,9 @@ import { diveService } from './service/dive.service';
     SplashScreen,
     accountService,
     diveService,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    weatherService,
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    Geolocation
   ],
   bootstrap: [AppComponent]
 })
