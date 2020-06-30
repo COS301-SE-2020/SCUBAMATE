@@ -1,0 +1,93 @@
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@100&family=Righteous&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+
+</head>
+
+
+<ion-header no-border slot="fixed">
+ 
+</ion-header>
+<ion-toolbar class="productHeader" transparent slot="fixed">
+  <ul>
+    <li style="float:right;"><a routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >{{loginLabel}}</a></li>
+    <li style="margin-top:5px; margin-bottom:5px;right:0;float:right;"><ion-searchbar animated></ion-searchbar></li>        
+      <li style="float:left;margin-left:20px;"><a routerLink="/home" >Home</a></li>  
+      <li style="float:left;"><a routerLink="/explore">Explore</a></li>  
+      <li style="float:left;"><a routerLink="/weather">Weather</a></li> 
+      <li style="float:left;"><a routerLink="/my-dives">My Dives</a></li>
+      <li style="float:left;"><a routerLink="/profile">My Account</a></li>   
+</ul>
+</ion-toolbar>
+
+<ion-content fullscreen class="background" no-scroll padding >
+ 
+
+
+ <div id="newUser">
+    <ion-label id="divHead">Edit Account</ion-label>
+
+    <form (submit)="onSubmit(birthD.value, accountType.value, FirstName.value , LastName.value, public.checked, emailI.value,  $event)">
+      <div id="diveType">
+        <ion-label class="subLabel"> Account Type </ion-label>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label>Account*</ion-label>
+                <ion-select value={{AD.AccountType}} #accountType required>
+                  <ion-select-option value="Diver">Diver</ion-select-option>
+                  <ion-select-option value="Instructor">Instructor</ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div><!-- end of dive Type-->
+      <div id="userInfo">
+        <ion-label class="subLabel"> User Information </ion-label>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">First Name*</ion-label>
+                <ion-input type="text" #FirstName  value={{AD.FirstName}}></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Last Name*</ion-label>
+                <ion-input type="text" #LastName value={{AD.LastName}}></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Email*</ion-label>
+                <ion-input type="email" #emailI value={{AD.Email}}></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Date of birth</ion-label>
+                <ion-input type="date" #birthD value={{AD.DateOfBirth}}></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Do you want your account to be public?</ion-label>
+                <ion-checkbox color="dark" disabled="false" #public checked={{AD.PublicStatus}}></ion-checkbox>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div> <!-- end of dateTimeDive -->
+      <input type="submit" value="Apply">
+    </form>
+
+ </div> <!-- end newUser Div-->
+</ion-content>

@@ -62,8 +62,7 @@ export class LoginPage implements OnInit {
 
      //create object
      var attemptLogin = {Email: iEmail, Password: iPass} as LoginClass; 
-     console.log(attemptLogin);
-
+     
 
      //request
 
