@@ -3,11 +3,15 @@ import { Router } from '@angular/router';
 import { diveService } from '../service/dive.service';
 
 export interface Dive{
-  Diver : string; 
-  Location : string ;
-  DateOf : string   ;
-  Weather : string ;
-  Buddy: string   ; 
+  FirstName : string ;
+  LastName : string ;
+  DiveSite : string ;
+  DiveType : string;
+  DiveDate : string ;
+  TimeIn : string ;
+  TimeOut : string ;
+  Buddy : string;
+  Weather : []  ;
 }
 
 export interface DiveSite{
@@ -32,32 +36,16 @@ export class ExplorePage implements OnInit {
   showCenters : boolean ;
   showFeed  : boolean ;
   showLoading : boolean;
+  pubLst: Dive[] ; 
+  loginLabel:string ;
 
 
-  //hardcoded public feed -> remove later
-  pubLst: Dive[] = [{Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"}
-                  ];
 
+  
   constructor(private router: Router, private _diveService: diveService) { }
 
-  loginLabel:string ;
+ 
+
 
   ngOnInit() {
     //setup what gets displayed
@@ -72,6 +60,13 @@ export class ExplorePage implements OnInit {
     }else{
       this.loginLabel = "Sign Out";
     }
+
+    this.showLoading = true ; 
+    this._diveService.getPublicDives().subscribe(res =>{
+      this.pubLst = res;
+      this.showLoading = false ;
+    });
+
   }
 
   ionViewWillEnter(){
@@ -86,6 +81,13 @@ export class ExplorePage implements OnInit {
     }else{
       this.loginLabel = "Sign Out";
     }
+
+    this.showLoading = true ; 
+    this._diveService.getPublicDives().subscribe(res =>{
+      console.log(res);
+      this.pubLst = res.PublicDiveLogs;
+      this.showLoading = false ;
+    });
   }
 
   loginClick(){

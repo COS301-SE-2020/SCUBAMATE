@@ -41,11 +41,22 @@ export class LogDivePage implements OnInit {
     DiveTypeLst: [];
     DiveSiteLst: [];
     BuddyLst:[];
+    cDate : Date; 
+    currentDate : string ;
+    
 
   loginLabel:string ;
   constructor(private _accountService : accountService ,private router: Router, private _diveService: diveService ) {}
   
   ngOnInit() {
+     this.cDate = new Date();
+      var dd = String(this.cDate.getDate()).padStart(2, '0');
+      var mm = String(this.cDate.getMonth() + 1).padStart(2, '0'); 
+      var yyyy = this.cDate.getFullYear();
+
+      this.currentDate =   yyyy + '-'+ mm + '-' + dd  ;
+      console.log(this.currentDate);
+
     this.showLoading = true;
     this.loginLabel ="Login";
     if(!localStorage.getItem("accessToken"))
