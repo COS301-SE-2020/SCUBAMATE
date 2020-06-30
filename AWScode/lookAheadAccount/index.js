@@ -59,7 +59,6 @@ exports.handler = async (event, context) => {
         });
         if(tmp.length == 0){
             responseBody = "No Results Found For: "+UserEntry +", will be stored as text.";
-            responseBody = params;
             statusCode = 404;
         }
         else{
