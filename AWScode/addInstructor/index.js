@@ -27,18 +27,13 @@ exports.handler = async (event, context, callback) => {
     const ItemType = "A"+AccountGuid;
     const AccountType = "Instructor";
     
-    //James time
     var crypto = require('crypto');
-    var hash = crypto.createHash('sha256').update(Password).digest('hex');
-    
-    /*
     var hash = "";
     //hashes the password using the Email as a salt
     crypto.pbkdf2(Password,Email, 100000, 64, 'sha512', (err, derivedKey) =>{
         if (err) throw err;
         hash = derivedKey.toString('hex');
     });
-    */
     
     //Profile Photo
     //Read content from the file
