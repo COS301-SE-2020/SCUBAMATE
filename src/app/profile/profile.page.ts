@@ -33,14 +33,14 @@ export class ProfilePage implements OnInit {
 
   loginLabel:string ;
   AD : AccountDetails ; 
-  DiveTypeLst: []; 
+  typeLst: DiveType[] ; 
   OptionalList : String[];
   EquipmentList : String[];
  
   viewChecklist : Boolean = false ; 
   viewProfile : Boolean;
   editProfile : Boolean; 
-  showLoading: Boolean;
+    
 
   constructor( private router: Router, private _accountService: accountService,  private _diveService: diveService) {}
   
@@ -48,7 +48,6 @@ export class ProfilePage implements OnInit {
     this.viewProfile = true;
     this.editProfile = false;
     this.loginLabel ="Login";
-    this.showLoading = true;
     if(!localStorage.getItem("accessToken"))
     {
       this.router.navigate(['login']);
@@ -58,8 +57,6 @@ export class ProfilePage implements OnInit {
     
 
         this._accountService.getUser().subscribe(res => {
-          console.log("res");
-          console.log(res);
           this.AD = res;
           if (res.PublicStatus == true){
             this.AD.PublicStatus = "Public";
@@ -67,21 +64,15 @@ export class ProfilePage implements OnInit {
             this.AD.PublicStatus = "Private";
           }
 
-          this.showLoading = false;
-          
         }) 
 
-        this._diveService.getDiveTypes("*").subscribe(
+        this._diveService.getDiveTypes().subscribe(
           data => {
               console.log(data);
-              this.DiveTypeLst = data.ReturnedList ; 
-              console.log("In type");
-              this.showLoading = false;
+              this.typeLst = data.DiveTypeList ; 
           }
         ); //end DiveType req
-
-
-      }
+    }
     
   }
 
@@ -91,7 +82,6 @@ export class ProfilePage implements OnInit {
     this.editProfile = false;
     if(!localStorage.getItem("accessToken"))
     {
-      this.router.navigate(['login']);
       this.loginLabel = "Login";
     }else{
       this.loginLabel = "Sign Out";
@@ -100,14 +90,14 @@ export class ProfilePage implements OnInit {
     this._accountService.getUser().subscribe(res => {
       this.AD = res;
     })
-    this._diveService.getDiveTypes("*").subscribe(
+
+    this._diveService.getDiveTypes().subscribe(
       data => {
           console.log(data);
-          this.DiveTypeLst = data.ReturnedList ; 
-          console.log("In type");
-          this.showLoading = false;
+          this.typeLst = data.DiveTypeList ; 
       }
     ); //end DiveType req
+
   }
 
   loginClick(){
@@ -122,29 +112,21 @@ export class ProfilePage implements OnInit {
 
   onChooseDive( DT: string , event: Event  )
   {
-    this.showLoading= true;
     var RequestData = {
       "DiveType" : DT
     }
 
-    console.log(RequestData);
 
-    this.showLoading= true;
     this._diveService.getCheckList(RequestData).subscribe( res =>{
       this.viewChecklist = false ; 
       this.OptionalList = res.Optional;
       this.EquipmentList = res.Equipment;
       this.viewChecklist = true ; 
-      this.showLoading= false;
     });
 
 
   }
 
-  goToEdit(){
-    console.log("in edit func");
-    this.router.navigate(["/edit-profile"]);
-  }
 
 
 }

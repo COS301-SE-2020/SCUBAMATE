@@ -8,43 +8,37 @@ export class diveService
 {
     constructor(private httpClient : HttpClient , private router: Router){}
 
+    getDiveSites(): Observable<any>{
 
+        const options = {
+            headers: new HttpHeaders({
+              'Content-Type': 'application/json',
+            })
+          };
 
-    getDiveTypes(entry : String): Observable<any>{
+        var  body= {
+            "ItemType" : "DiveSites" 
+          } ;
 
-      const options = {
-          headers: new HttpHeaders({
-            'Content-Type': 'application/json',
-          })
-        };
-
-      var  body= {
-          "ItemType" : "DT" ,
-          "UserEntry" : entry
-        } ;
-
-       return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/divelist',body, options);
+         return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveTypesAndSitesAdded/divelist',body, options);
     }
 
-    getDiveSites(entry : String): Observable<any>{
+    getDiveTypes(): Observable<any>{
 
-      const options = {
-          headers: new HttpHeaders({
-            'Content-Type': 'application/json',
-          })
-        };
+        const options = {
+            headers: new HttpHeaders({
+              'Content-Type': 'application/json',
+            })
+          };
 
-      var  body= {
-          "ItemType" : "DS" ,
-          "UserEntry" : entry
-        } ;
+        var  body= {
+            "ItemType" : "DiveTypes" 
+          } ;
 
-       return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/divelist',body, options);
+         return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveTypesAndSitesAdded/divelist',body, options);
     }
 
-
-
-    getDiveCenters(entry : String): Observable<any>{
+    getDiveCenters(): Observable<any>{
 
       const options = {
           headers: new HttpHeaders({
@@ -53,11 +47,13 @@ export class diveService
         };
 
       var  body= {
-          "ItemType" : "DC"  ,
-          "UserEntry" : entry
+          "ItemType" : "DiveCenters" 
         } ;
         return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveTypesAndSitesAdded/divelist',body, options);
       }
+
+      
+
 
     logDive(PostData): Observable<any>{
       	console.log("in req");
@@ -89,7 +85,7 @@ export class diveService
       console.log(PostData);
         //https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/FixedDiveHistory/getpersonaldivelogs
         //
-     return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/getpersonaldivelogs', PostData , options); 
+     return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveLogs/getpersonaldivelogs', PostData , options); 
 
     }
 
@@ -104,43 +100,6 @@ export class diveService
        return this.httpClient.post('https://a8dptkt6md.execute-api.af-south-1.amazonaws.com/ChecklistPen/checklist', PostData , options); 
 
 
-    }
-
-    getIndividualDive(PostData): Observable<any>{
-      const options = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json'
-        })
-      };
-
-     return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/getsingledive', PostData , options); 
-   
-    }
-
-    updateDive(PostData): Observable<any>{
-      const options = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json'
-        })
-      };
-
-     return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/editdives', PostData , options); 
-   
-    }
-
-    getPublicDives(): Observable<any>{
-      const options = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json'
-        })
-      };
-    
-      var PostData = {
-        "AccessToken" : localStorage.getItem("accessToken")
-      }
-
-      return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/publicDives/getpublicdives', PostData , options); 
-
-    }
+  }
 
 }
