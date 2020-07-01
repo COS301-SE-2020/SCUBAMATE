@@ -3,12 +3,27 @@ import { Router } from '@angular/router';
 import { weatherService } from '../service/weather.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 
+export interface Dive{
+  FirstName : string ;
+  LastName : string ;
+  DiveSite : string ;
+  DiveType : string;
+  DiveDate : string ;
+}
+
 @Component({
   selector: 'app-weather',
   templateUrl: './weather.page.html',
   styleUrls: ['./weather.page.scss'],
 })
 export class WeatherPage implements OnInit {
+
+  tempList : Dive[] = [ {"FirstName" : " Meep", "LastName" : "Meep", "DiveSite": "Meep", "DiveType": "Meep" , "DiveDate": "Meep" },
+                        {"FirstName" : " Meep", "LastName" : "Meep", "DiveSite": "Meep", "DiveType": "Meep" , "DiveDate": "Meep" },
+                        {"FirstName" : " Meep", "LastName" : "Meep", "DiveSite": "Meep", "DiveType": "Meep" , "DiveDate": "Meep" },
+                        {"FirstName" : " Meep", "LastName" : "Meep", "DiveSite": "Meep", "DiveType": "Meep" , "DiveDate": "Meep" },
+                        {"FirstName" : " Meep", "LastName" : "Meep", "DiveSite": "Meep", "DiveType": "Meep" , "DiveDate": "Meep" },
+                        {"FirstName" : " Meep", "LastName" : "Meep", "DiveSite": "Meep", "DiveType": "Meep" , "DiveDate": "Meep" } ];
 
   Key = {
     "key": null

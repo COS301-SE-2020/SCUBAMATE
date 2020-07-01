@@ -81,19 +81,19 @@
       </ion-grid>
     </div> <!-- end of dateTimeDive -->
     <div id="conditions">
-      <ion-label class="subLabel"> Water Temperature (°C)</ion-label>
+      <ion-label class="subLabel">Temperature (°C)</ion-label>
       <ion-grid>
         <ion-row>
           <ion-col>
             <ion-item>
               <ion-label position="floating">Air Temperature</ion-label>
-              <ion-input type="number" #aTemp ></ion-input>
+              <ion-input type="number" #aTemp value={{MaxTempAPI}}></ion-input>
             </ion-item>
           </ion-col>
           <ion-col>
             <ion-item>
               <ion-label position="floating">Surface Temperature</ion-label>
-              <ion-input type="number" #sTemp></ion-input>
+              <ion-input type="number" #sTemp value={{MinTempAPI}}></ion-input>
             </ion-item>
           </ion-col>
         </ion-row>
@@ -101,7 +101,7 @@
         <ion-col>
           <ion-item>
             <ion-label position="floating">Bottom Temperature</ion-label>
-            <ion-input type="number" #bTemp ></ion-input>
+            <ion-input type="number" #bTemp value={{MinTempAPI}}></ion-input>
           </ion-item>
         </ion-col>
         <ion-col>

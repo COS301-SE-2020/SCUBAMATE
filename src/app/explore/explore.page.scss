@@ -114,3 +114,68 @@ table{
   .productHeader {
     --background: transparent;
 }
+
+///////////// Flash-Card 
+.maincontainer{
+  position: relative;
+  width: 250px;
+  height: 320px;
+}
+
+.thecard{
+  //width: 250px;
+  //height: 320px;
+  width: 270px;
+  height: 320px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: all 0.5s ease;
+  word-wrap: break-word;
+}
+
+.thecard:active{
+  transform: rotateY(180deg);
+}
+
+.thefront{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  color: #333;
+ // background-color: rgba(38, 70, 83);
+
+    ion-card{
+      position: absolute;
+      height: 100%;
+    }  
+}
+
+.theback{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  //background-color: rgba(38, 70, 83);
+  transform: rotateY(180deg);
+
+  ion-card{
+    position: absolute;
+    height: 100%;
+    width:100%;
+  } 
+ 
+}
+
+.contentContainer{
+  margin-right:5%;
+  margin-left:30%;
+  margin-top:20px;
+}
+
+.weatherIMG{
+  width: 60px;
+  height: 60px;
+  float: right;
+}
+/////////////
