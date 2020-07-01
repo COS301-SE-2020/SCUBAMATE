@@ -38,7 +38,6 @@ exports.handler = async (event, context)=> {
         if (data.Items.length==0)
         {
             responseBody = "1. Unable to login";
-            responseBody = params;
             statusCode = 403;
         }
         else{
