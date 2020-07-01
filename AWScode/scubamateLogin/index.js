@@ -56,8 +56,7 @@ exports.handler = async (event, context)=> {
             const params2 = {
                 TableName: "Scubamate",
                 Key: {
-                    AccountGuid: AccountGuid,
-                    AccountType: AccountType
+                    AccountGuid: AccountGuid
                 },
                 UpdateExpression: "set AccessToken = :a, Expires = :e",
                 ExpressionAttributeValues:{
