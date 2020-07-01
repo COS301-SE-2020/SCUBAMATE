@@ -38,7 +38,6 @@ exports.handler = async (event, context)=> {
         if (data.Items.length==0)
         {
             responseBody = "1. Unable to login";
-            responseBody = params;
             statusCode = 403;
         }
         else{
@@ -57,8 +56,7 @@ exports.handler = async (event, context)=> {
             const params2 = {
                 TableName: "Scubamate",
                 Key: {
-                    AccountGuid: AccountGuid,
-                    AccountType: AccountType
+                    AccountGuid: AccountGuid
                 },
                 UpdateExpression: "set AccessToken = :a, Expires = :e",
                 ExpressionAttributeValues:{
