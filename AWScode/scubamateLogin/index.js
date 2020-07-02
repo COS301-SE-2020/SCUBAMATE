@@ -6,7 +6,6 @@ const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
 
 exports.handler = async (event, context)=> {
     var AccountGuid;
-    var AccountType;
     let body = JSON.parse(event.body);
     const Email = body.Email;
     const Password = body.Password;
@@ -32,7 +31,7 @@ exports.handler = async (event, context)=> {
     
     let responseBody = "";
     let statusCode = 0;
-        
+    var AccountType = "";
     try{
         const data = await documentClient.scan(params).promise();
         if (data.Items.length==0)
@@ -43,7 +42,6 @@ exports.handler = async (event, context)=> {
         else{
             AccountGuid = data.Items[0].AccountGuid;
             AccountType = data.Items[0].AccountType;
-            
             var nownow = ""+Date.now();
             var guid = crypto.createHash('sha256').update(nownow).digest('hex');
             guid = ""+AccountGuid + guid + AccountGuid.length;
@@ -71,11 +69,14 @@ exports.handler = async (event, context)=> {
                 console.log("Error");
             }
             
-            var ponseBody = {AccessToken:guid};
-            console.log("ponsebody: " +ponseBody);
+            var ponseBody =[];
+            ponseBody.push({AccessToken:guid});
+            ponseBody.push({AccountType:AccountType});
+            
+            var fullBody = ({Data: ponseBody});
             if (statusCode!=403)
             {
-                responseBody = ponseBody;
+                responseBody = fullBody;
             }
             else
             {
