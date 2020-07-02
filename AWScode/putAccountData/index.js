@@ -21,6 +21,9 @@ exports.handler = async (event, context, callback) => {
     const Password = body.Password;
     const PublicStatus = body.PublicStatus;
     
+    const Qualification = body.Qualification;
+    const Specialisation = body.Specialisation;
+    
     //hashes the password using the Email as a salt
     var crypto = require('crypto');
     var hash = crypto.pbkdf2Sync(Password, Email, 1000, 64, 'sha512').toString('hex');
@@ -98,7 +101,11 @@ exports.handler = async (event, context, callback) => {
             DateOfBirth: DateOfBirth,
             Password: hash, //James time
             ProfilePhoto: profileLink,
-            PublicStatus: PublicStatus
+            PublicStatus: PublicStatus,
+            Qualification: Qualification,
+            Specialisation: Specialisation,
+            EmailVerified: false,
+            AccountVerified: false
         }
     }
 
@@ -131,3 +138,5 @@ exports.handler = async (event, context, callback) => {
     return response;
     
 }
+
+
