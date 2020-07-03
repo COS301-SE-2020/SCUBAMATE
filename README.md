@@ -23,7 +23,6 @@
     $cordova telemetry on
     $ionic cordova plugin add cordova-plugin-geolocation
     $npm install @ionic-native/geolocation
-    $npm i --save @ionic-native/geolocation@5.00-beta.14
     Then to run the application:
     $ionic serve
     The first compilation will take a few seconds and then it will automatically open in your browser on localhost:8100.
