@@ -41,6 +41,7 @@ export class ProfilePage implements OnInit {
   viewProfile : Boolean;
   editProfile : Boolean; 
   showLoading: Boolean;
+  showAD : Boolean = false  ;
 
   constructor( private router: Router, private _accountService: accountService,  private _diveService: diveService) {}
   
@@ -49,6 +50,8 @@ export class ProfilePage implements OnInit {
     this.editProfile = false;
     this.loginLabel ="Login";
     this.showLoading = true;
+    this.showAD = false; 
+
     if(!localStorage.getItem("accessToken"))
     {
       this.router.navigate(['login']);
@@ -68,6 +71,7 @@ export class ProfilePage implements OnInit {
           }
 
           this.showLoading = false;
+          this.showAD = true; 
           
         }) 
 
@@ -77,6 +81,7 @@ export class ProfilePage implements OnInit {
               this.DiveTypeLst = data.ReturnedList ; 
               console.log("In type");
               this.showLoading = false;
+
           }
         ); //end DiveType req
 

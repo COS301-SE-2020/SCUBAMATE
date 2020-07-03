@@ -68,8 +68,10 @@ export class LoginPage implements OnInit {
 
     this._accountService.logUser(attemptLogin).subscribe( res =>{
       console.log("in res");
-      console.log(res.AccessToken);
-      localStorage.setItem("accessToken", res.AccessToken) ; 
+      console.log(res);
+      console.log(res.Data[0].AccessToken)
+      localStorage.setItem("accessToken", res.Data[0].AccessToken) ; 
+      localStorage.setItem("accountType", res.Data[1].AccountType)  ;
       this.router.navigate(['home']);
       //console.log(res.body.AccessToken); 
     });

@@ -38,11 +38,13 @@ export class EditProfilePage implements OnInit {
 
   AD : AccountDetails ;
   loginLabel:string ; 
+  showData : Boolean = false;
 
   constructor(private _accountService : accountService, private router: Router) { }
 
   ngOnInit() {
     this.loginLabel ="Login";
+    this.showData = false;
     if(!localStorage.getItem("accessToken"))
     {
       this.router.navigate(['login']);
@@ -52,6 +54,7 @@ export class EditProfilePage implements OnInit {
       this.loginLabel = "Sign Out";
       this._accountService.getUser().subscribe(res => {
         this.AD = res;
+        this.showData = true;
       })
     }
   }
