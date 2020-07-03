@@ -20,6 +20,45 @@
 </ion-toolbar>
 
 <ion-content fullscreen class="background" no-scroll padding >
-
- 
+  <ion-card id="GeneralInformationCard">
+    <ion-card-header>
+      <ion-card-subtitle>Scuba Mate</ion-card-subtitle>
+      <ion-card-title id="Date">Day, Date</ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content id="WeatherDesc">
+      Weather Description
+    </ion-card-content>
+  </ion-card>
+  
+  <ion-card id="LocationCard">
+    <ion-item>
+      <ion-icon name="location-outline" slot="start"></ion-icon>
+      <ion-label id="City">City</ion-label>
+    </ion-item>
+  
+    <ion-card-content id="Coordinates">Coordinates</ion-card-content>
+  </ion-card>
+  
+  <ion-card id="WeatherCard">
+    <ion-item href="#" class="ion-activated">
+      <ion-icon name="thermometer-outline" slot="start"></ion-icon>
+      <ion-label id="MinTemp">Min Temperature: </ion-label>
+    </ion-item>
+  
+    <ion-item href="#">
+      <ion-icon name="thermometer-outline" slot="start"></ion-icon>
+      <ion-label id="MaxTemp">Max Temperature: </ion-label>
+    </ion-item>
+  
+    <ion-item class="ion-activated">
+      <ion-icon name="sunny-outline" slot="start"></ion-icon>
+      <ion-label id="Day">Day Information: </ion-label>
+    </ion-item>
+  
+    <ion-item>
+      <ion-icon name="moon-outline" slot="start"></ion-icon>
+      <ion-label id="Night">Night Information: </ion-label>
+    </ion-item>
+  </ion-card>
 </ion-content>
