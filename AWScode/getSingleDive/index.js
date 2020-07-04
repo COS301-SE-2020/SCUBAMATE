@@ -12,6 +12,8 @@ exports.handler = async (event, context) => {
     const AccessToken = body.AccessToken; 
     const DiveID = body.DiveID; 
 
+    const guid = AccessToken.substring(0,36);
+
     function compareDates(t,e)
     {
         console.log(t.getFullYear());
@@ -75,28 +77,19 @@ exports.handler = async (event, context) => {
     }
 
     //Verify AccessToken 
-    try {
-        const params = {
-            TableName: "Scubamate",
-            ProjectionExpression: "Expires,AccountGuid",
-            FilterExpression: "#acc = :AccessToken",
-            ExpressionAttributeNames:{
-                "#acc" : "AccessToken"
-            },
-            ExpressionAttributeValues:{
-                ":AccessToken" : AccessToken
-            }
-        };
-            
-        const data = await documentClient.scan(params).promise();
-        if(data.Items[0].AccountGuid)
-        {
-            console.log("Account thing: " + data.Items[0].AccountGuid);
-            var AccountGuid = data.Items[0].AccountGuid;
+    const params = {
+        TableName: "Scubamate",
+        Key: {
+            "AccountGuid": guid
         }
-        if( data.Items[0].Expires) // check if it's undefined
+    }
+
+    try {     
+        const data = await documentClient.get(params).promise();
+        
+        if( data.Item.Expires) // check if it's undefined
         {
-            const expiryDate = new Date(data.Items[0].Expires);
+            const expiryDate = new Date(data.Item.Expires);
             const today = new Date();
             console.log("Compare: " + today + " and " + expiryDate  + " " + compareDates(today,expiryDate));
             if(compareDates(today,expiryDate))
@@ -108,10 +101,11 @@ exports.handler = async (event, context) => {
         }
             
         console.log("status is now: " + statusCode) ;
+
     } catch (error) {
         console.error(error);
         statusCode = 403;
-        responseBody = "Invalid Access Token "+AccessToken;
+        responseBody = "Invalid Access Token ";
     }
     
     //Only proceed if access token is valid
@@ -124,7 +118,7 @@ exports.handler = async (event, context) => {
                 "#di" : "DiveID"
             },
             ExpressionAttributeValues:{
-                ":acc" : AccountGuid,
+                ":acc" : guid,
                 ":di" : DiveID,
             }
         };
@@ -162,3 +156,4 @@ exports.handler = async (event, context) => {
     return response;
 
 };
+
