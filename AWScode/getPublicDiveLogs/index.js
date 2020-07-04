@@ -13,6 +13,7 @@ exports.handler = async (event, context) => {
     let body = JSON.parse(event.body)
     const AccessToken = body.AccessToken; 
     console.log(body.AccessToken);
+    const guid = AccessToken.substring(0,36);
 
     function compareDates(t,e)
     {
@@ -77,28 +78,19 @@ exports.handler = async (event, context) => {
     }
 
     //Verify AccessToken 
-    try {
-        const params = {
-            TableName: "Scubamate",
-            ProjectionExpression: "Expires,AccountGuid",
-            FilterExpression: "#acc = :AccessToken",
-            ExpressionAttributeNames:{
-                "#acc" : "AccessToken"
-            },
-            ExpressionAttributeValues:{
-                ":AccessToken" : AccessToken
-            }
-        };
-            
-        const data = await documentClient.scan(params).promise();
-        if(data.Items[0].AccountGuid)
-        {
-            console.log("Account thing: " + data.Items[0].AccountGuid);
-            var AccountGuid = data.Items[0].AccountGuid;
+    const params = {
+        TableName: "Scubamate",
+        Key: {
+            "AccountGuid": guid
         }
-        if( data.Items[0].Expires) // check if it's undefined
+    }
+
+    try {     
+        const data = await documentClient.get(params).promise();
+        
+        if( data.Item.Expires) // check if it's undefined
         {
-            const expiryDate = new Date(data.Items[0].Expires);
+            const expiryDate = new Date(data.Item.Expires);
             const today = new Date();
             console.log("Compare: " + today + " and " + expiryDate  + " " + compareDates(today,expiryDate));
             if(compareDates(today,expiryDate))
@@ -114,16 +106,15 @@ exports.handler = async (event, context) => {
     } catch (error) {
         console.error(error);
         statusCode = 403;
-        responseBody = "Invalid Access Token";
+        responseBody = "Invalid Access Token ";
     }
-    
 
     //Only proceed if access token is valid
     if(statusCode==0){
 
         var diveParams = {
             TableName: "Dives",
-            ProjectionExpression: "AccountGuid, DiveSite, DiveDate, DivePublicStatus, Weather, TimeIn , TimeOut, Buddy",
+            ProjectionExpression: "AccountGuid, DiveSite, DiveDate, DivePublicStatus, DiveTypeLink, Weather, TimeIn , TimeOut, Buddy",
             FilterExpression: "#acc = :acc",
             ExpressionAttributeNames:{
                 "#acc" : "DivePublicStatus"
@@ -153,11 +144,11 @@ exports.handler = async (event, context) => {
 
                 for(var i=0; i<accounts.length && statusCode==0; i++)
                 {
-                    var item = "A" + accounts[i];
+                    var acc = accounts[i];
                     var accountParams = {
                         TableName: "Scubamate",
                         Key: {
-                            "ItemType": item
+                            "AccountGuid": acc
                         }
                     }
                     
@@ -166,7 +157,7 @@ exports.handler = async (event, context) => {
                         console.log(acc.Item.FirstName + " " + acc.Item.LastName); //Is stringset
                         if(i == 0)
                         {
-                            responseBody += '{ "Public Dive Logs" : ['
+                            responseBody += '{ "PublicDiveLogs" : ['
                         }
                         else
                         {
@@ -176,11 +167,25 @@ exports.handler = async (event, context) => {
                                             '"LastName" : "' + acc.Item.LastName + '",' +
                                             '"DiveSite" : "'  + dives.Items[i].DiveSite + '",' +
                                             '"DiveDate" : "' + dives.Items[i].DiveDate + '",' +
+                                            '"DiveType" : "' + dives.Items[i].DiveTypeLink + '",' +
                                             '"TimeIn" : "' + dives.Items[i].TimeIn + '",' +
                                             '"TimeOut" : "' + dives.Items[i].TimeOut + '",' +
                                             '"Buddy" : "' + dives.Items[i].Buddy + '",' +
-                                            '"Weather" : "' + dives.Items[i].Weather + '"'  +
-                                            '}';
+                                            '"Weather" : [';
+                                            
+                        for(var j=0; j<dives.Items[i].Weather.length; j++)
+                        {
+                            if(j == 0)
+                            {
+                                responseBody += '"' + dives.Items[i].Weather[j] + '"';
+                            }
+                            else
+                            {
+                                responseBody += ',"' + dives.Items[i].Weather[j] + '"';
+                            }
+                            
+                        }
+                        responseBody += ']}';
 
                         if(i==accounts.length-1)
                         {
