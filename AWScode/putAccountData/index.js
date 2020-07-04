@@ -28,34 +28,33 @@ exports.handler = async (event, context, callback) => {
     var crypto = require('crypto');
     var hash = crypto.pbkdf2Sync(Password, Email, 1000, 64, 'sha512').toString('hex');
     
-    //Profile Photo
-    //Read content from the file
-    let encodedImage = "data:image/jpg;base64," +ProfilePhoto;
-    let decodedImage = Buffer.from(encodedImage, 'base64');
-    var filePath = "profilephoto" + AccountGuid + ".jpg";
+    /* data:image/png;base64, is send at the front of ProfilePhoto thus find the first , */
+    const startContentType = ProfilePhoto.indexOf(":")+1;
+    const endContentType = ProfilePhoto.indexOf(";");
+    const contentType = ProfilePhoto.substring(startContentType, endContentType);
+    
+    const startExt = contentType.indexOf("/")+1;
+    const extension = contentType.substring(startExt, contentType.length);
+    
+    const startIndex = ProfilePhoto.indexOf(",")+1;
+    const encodedImage = ProfilePhoto.substring(startIndex, ProfilePhoto.length);
+    const decodedImage = Buffer.from(encodedImage, 'base64');
+    const filePath = "profilephoto" + AccountGuid + "."+extension;
     let profileLink ="https://profilephoto-imagedatabase-scubamate.s3.af-south-1.amazonaws.com/"+filePath;
-    var paramsImage = {
+    const paramsImage = {
       "Body": decodedImage,
       "Bucket": "profilephoto-imagedatabase-scubamate",
-      "Key": filePath, 
-      "Content-Type": "image/jpg"
+      "Key": filePath,
+      "Content-Type" : contentType
     };
     
+    const s3 = new AWS.S3({apiVersion: '2006-03-01'});
     s3.upload(paramsImage, function(err, data){
         if(err) {
             profileLink ="https://profilephoto-imagedatabase-scubamate.s3.af-south-1.amazonaws.com/image2.jpg";
         }
     });
-    profileLink ="https://profilephoto-imagedatabase-scubamate.s3.af-south-1.amazonaws.com/image2.jpg";
     
-    //var paramsImg = {Bucket: 'profilephoto-imagedatabase-scubamate', Key: filePath, Body: decodedImage};
-   
-    // await s3.getSignedUrl('putObject', paramsImg, function (err, url) {
-    //     if(!err){
-    //         console.log('The URL is', url,". ");
-    //         profileLink = url;
-    //     }
-    // });
     
     //
     //Email checking
@@ -89,7 +88,6 @@ exports.handler = async (event, context, callback) => {
         
     }
     
-    
     const params = {
         TableName: "Scubamate",
         Item: {
@@ -99,7 +97,7 @@ exports.handler = async (event, context, callback) => {
             LastName: LastName, 
             Email: Email, 
             DateOfBirth: DateOfBirth,
-            Password: hash, //James time
+            Password: hash, 
             ProfilePhoto: profileLink,
             PublicStatus: PublicStatus,
             Qualification: Qualification,
