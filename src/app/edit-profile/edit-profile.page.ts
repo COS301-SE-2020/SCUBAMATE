@@ -5,9 +5,7 @@ import { accountService } from '../service/account.service';
 
 export interface EditAccountClass {
   AccessToken: string;
-  AccountType: string ;
   DateOfBirth : string ;
-  //Email: string ;
   ProfilePhoto: string,
   FirstName: string;
   LastName: string;
@@ -70,18 +68,16 @@ export class EditProfilePage implements OnInit {
   }
 
 
-  onSubmit(bDay:string, aType : string, FName: string , LName: string, pub: boolean, emailI: string, event : Event) {
+  onSubmit(bDay:string,  FName: string , LName: string, pub: boolean, event : Event) {
 
-     if( (aType=="") || (FName =="") ||  (LName ==="") || (emailI=="") ){  //test empty fields
+     if(  (FName =="") ||  (LName ==="") ){  //test empty fields
       alert("Empty fields provided. \nPlease fill in all the fields");
     }else{
       //create object to send
       var attemptUpdate = { 
         AccessToken: localStorage.getItem("accessToken"),
-        AccountType:  aType ,
         FirstName: FName,
         LastName: LName,
-        //Email: emailI,
         ProfilePhoto: "meep.jpg",
         DateOfBirth : bDay ,  
         PublicStatus: pub //pStat 

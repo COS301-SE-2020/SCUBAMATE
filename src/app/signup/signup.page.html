@@ -26,23 +26,7 @@
  <div id="newUser">
     <ion-label id="divHead">Sign Up</ion-label>
 
-    <form (submit)="onSubmit(Qual.value, Spec.value, birthD.value, accountType.value, FirstName.value , LastName.value, public.checked, emailI.value, Password.value, cPassword.value, $event)">
-      <div id="diveType">
-        <ion-label class="subLabel"> Account Type </ion-label>
-        <ion-grid>
-          <ion-row>
-            <ion-col>
-              <ion-item>
-                <ion-label>Account*</ion-label>
-                <ion-select placeholder="Select One" #accountType required>
-                  <ion-select-option value="Diver">Diver</ion-select-option>
-                  <ion-select-option value="Instructor">Instructor</ion-select-option>
-                </ion-select>
-              </ion-item>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </div><!-- end of dive Type-->
+    <form (submit)="onSubmit(Qual.value, Spec.value, birthD.value, FirstName.value , LastName.value, public.checked, emailI.value, Password.value, cPassword.value, $event)">
       <div id="userInfo">
         <ion-label class="subLabel"> User Information </ion-label>
         <ion-grid>
@@ -88,28 +72,8 @@
               </ion-item>
             </ion-col>
           </ion-row>
-          <ion-row>
-            <ion-col >
-              <div class="searchableSelect">
-                <ion-label class="searchableSelectLabel">Qualification</ion-label><br>
-                  <input list="diveQ"  placeholder="Insert Your Qualification" #Qual (keypress)="QualificationListFinder($event.target.value)">
-                  <datalist id="diveQ" >
-                      <option *ngFor='let q of QualificationLst' value={{q}}></option>
-                  </datalist>
-              </div>
-              </ion-col>
-              <ion-col >
-              <div class="searchableSelect">
-                <ion-label class="searchableSelectLabel">Specialization</ion-label>
-                <input list="diveS"  placeholder="Insert Your Specialization" #Spec (keypress)="SpecializationListFinder($event.target.value)">
-                <datalist id="diveS" >
-                    <option *ngFor='let s of SpecializationLst' value={{s}}></option>
-                </datalist>
-              </div>
-            </ion-col>
-          </ion-row>
         </ion-grid>
-      </div> <!-- end of dateTimeDive -->
+      </div> <!-- end of user Info -->
       <div id="passSetup">
         <ion-label class="subLabel">Password Setup </ion-label>
         <ion-grid>
@@ -129,6 +93,47 @@
           </ion-row>
         </ion-grid>
       </div> <!-- end of passSetup-->
+      <div id="diveType">
+        <ion-label class="subLabel"> Diver Credentials </ion-label>
+        <ion-grid>
+          <ion-row>
+            <ion-col >
+              <div class="searchableSelect">
+                <ion-label class="searchableSelectLabel">Qualification</ion-label><br>
+                  <input list="diveQ"  placeholder="Insert Your Qualification" #Qual (keypress)="QualificationListFinder($event.target.value)">
+                  <datalist id="diveQ" >
+                      <option *ngFor='let q of QualificationLst' value={{q}}></option>
+                  </datalist>
+              </div>
+              </ion-col>
+          </ion-row>
+          <ion-row >
+            <ion-col>
+              <div class="searchableSelect" >
+                <ion-button id="addBtn" (click)="addSpecialisation(Spec.value)" style="margin-right:15px;  margin-top: 10px;" >
+                  <ion-icon name="add"></ion-icon>
+                </ion-button>
+                <ion-label class="searchableSelectLabel">Add All Specialisations</ion-label>
+                <input list="diveS"  placeholder="Add Your Specialisation" #Spec (keypress)="SpecializationListFinder($event.target.value)" style="margin-left:60px;width:80%;">
+                <datalist id="diveS">
+                    <option *ngFor='let s of SpecializationLst' value={{s}}></option>
+                </datalist>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="showSpecialization">
+                  <table>
+                    <tr>
+                      <th>Specialisation</th>
+                    </tr>
+                    <tr *ngFor='let us of userSpecialisation'>
+                      <td>{{ us }}</td>
+                    </tr>
+                    <tr></tr>
+                  </table>
+          </ion-row>
+        </ion-grid>
+      </div><!-- end of dive credentials-->
       <input type="submit" value="Sign Up">
     </form>
 

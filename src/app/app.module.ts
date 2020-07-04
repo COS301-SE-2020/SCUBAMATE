@@ -10,6 +10,9 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { FlashCardComponent } from '../app/components/flash-card/flash-card.component';
 
+//forms
+import { ReactiveFormsModule, FormsModule } from '@angular/forms' ;
+
 //api
 import { HttpClientModule } from '@angular/common/http';
 
@@ -29,7 +32,9 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
   imports: [BrowserModule,
             IonicModule.forRoot(), 
             AppRoutingModule,
-            HttpClientModule],
+            HttpClientModule,
+            FormsModule,
+            ReactiveFormsModule],
   providers: [
     StatusBar,
     SplashScreen,

@@ -91,7 +91,7 @@
                       {{d.DiveDate}}
                     </ion-col>
                     <ion-col>
-                      <img class="weatherIMG" src="../../assets/images/Weather/Sunny.png" />
+                      <img class="weatherIMG" src="../../assets/images/Weather/{{d.Weather[2]}}.png" />
                     </ion-col>
                   </ion-row>
                 </ion-grid>
@@ -106,13 +106,15 @@
                 {{d.FirstName}} {{d.LastName}}
                 </ion-card-title>
               <p>
-                Site: {{d.DiveSite}} <br>
-                Type: {{d.DiveType}} <br>
-                Date: {{d.DiveDate}} <br>
-                Time: {{d.TimeIn}} - {{d.TimeOut}} <br>
-                Buddy: {{d.Buddy.substring(0, d.Buddy.indexOf("(") -1 )}} <br>
-                Weather: {{d.Weather}}
-                <img class="weatherIMG" src="../../assets/images/Weather/Sunny.png" />
+                <b>Site:</b> {{d.DiveSite}} <br>
+                <b>Type:</b> {{d.DiveType}} <br>
+                <b>Date:</b> {{d.DiveDate}} <br>
+                <b>Time:</b> {{d.TimeIn}} - {{d.TimeOut}} <br>
+                <b>Buddy:</b> {{d.Buddy.substring(0, d.Buddy.indexOf("(") -1 )}} <br>
+                <b>Weather:</b> <br>{{d.Weather[0]}} <br>
+                             {{d.Weather[1]}} <br>
+                             {{d.Weather[2]}} <br>
+                <img class="weatherIMG" src="../../assets/images/Weather/{{d.Weather[2]}}.png" />
               </p>
             </ion-card-content>
           </ion-card>

@@ -46,7 +46,11 @@ const routes: Routes = [
   {
     path: 'edit-dive',
     loadChildren: () => import('./edit-dive/edit-dive.module').then( m => m.EditDivePageModule)
+  },  {
+    path: 'testing',
+    loadChildren: () => import('./testing/testing.module').then( m => m.TestingPageModule)
   },
+
   
 
 
