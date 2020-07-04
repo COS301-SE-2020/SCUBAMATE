@@ -33,6 +33,8 @@ export interface SignUpClassI {
   PublicStatus: boolean;
   InstructorNumber: string;
   DiveCentre: string;
+  Specialisation: string[];
+  Qualification: string;
 }
 
 
@@ -195,7 +197,7 @@ export class SignupPage implements OnInit {
   }
 
 
-  onSubmitInstructor(cent: string, INum: string , bDay:string,  FName: string , LName: string, pub: boolean, emailI: string, Pass: string, cPass: string, event : Event) {
+  onSubmitInstructor(qual: string, cent: string, INum: string , bDay:string,  FName: string , LName: string, pub: boolean, emailI: string, Pass: string, cPass: string, event : Event) {
 
     if( Pass != cPass ) //test that passwords match
     {
@@ -217,7 +219,9 @@ export class SignupPage implements OnInit {
         ProfilePhoto: this.base64textString,   //"meep.jpg",
         PublicStatus: pub ,
         InstructorNumber: INum,
-        DiveCentre: cent
+        DiveCentre: cent,
+        Specialisation: this.userSpecialisation,
+        Qualification: qual 
       } as SignUpClassI; 
         //send to API service 
         console.log(attemptSignUp);
