@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { diveService } from '../service/dive.service';
+import { accountService } from '../service/account.service';
 
 
 export interface DiveSite{
@@ -16,7 +17,7 @@ export class HomePage implements OnInit {
 
   siteLst: DiveSite[] ;
   loginLabel:string ;
-  constructor(private router: Router,private _diveService: diveService) {}
+  constructor(private router: Router,private _accountService: accountService) {}
   
   ngOnInit() {
     this.loginLabel ="Login";
@@ -46,6 +47,13 @@ export class HomePage implements OnInit {
     }else{
       this.router.navigate(['login']);
     }
+  }
+
+  sendEmail(){
+    this._accountService.sendValidationEmail("carmenjvrensburg07@gmail.com").subscribe( res =>{
+      console.log("In res");
+      console.log(res);
+    }) 
   }
 
 

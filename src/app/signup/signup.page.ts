@@ -189,7 +189,10 @@ export class SignupPage implements OnInit {
         this._accountService.insertUserDiver( attemptLogin ).subscribe( res =>{
           console.log("in res");
           console.log(res);
-          this.router.navigate(['login']);
+          this._accountService.sendValidationEmail(attemptLogin.Email).subscribe( res => {
+            console.log(res);
+            this.router.navigate(['login']);
+          });
         }); 
     }
 
@@ -229,7 +232,11 @@ export class SignupPage implements OnInit {
         this._accountService.insertUserInstructor( attemptSignUp ).subscribe( res =>{
           console.log("in res");
           console.log(res);
-          this.router.navigate(['login']);
+          this._accountService.sendValidationEmail(attemptSignUp.Email).subscribe( res => {
+            console.log(res);
+            this.router.navigate(['login']);
+          });
+         
         }); 
     }
 

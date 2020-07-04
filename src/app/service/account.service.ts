@@ -21,7 +21,6 @@ export class accountService
 
           var response = this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/UserAccountFull/user', postData, options );
         
-          this.sendValidationEmail(postData.Email);
           return response;
          
     
@@ -39,7 +38,6 @@ export class accountService
 
           var response = this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/UserAccountFull/addinstructor', postData, options );
         
-          this.sendValidationEmail(postData.Email);
           return response;
          
     
@@ -140,7 +138,7 @@ export class accountService
        return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveTypesAndSitesAdded/divelist',body, options);
     }
 
-    sendValidationEmail(newUserEmail : string){
+    sendValidationEmail(newUserEmail : string): Observable<any>{
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
@@ -153,7 +151,7 @@ export class accountService
 
       console.log(postData);
 
-      this.httpClient.post('https://10n4obqtkh.execute-api.af-south-1.amazonaws.com/eSendInit/emailsender', postData, options );
+     return  this.httpClient.post('https://10n4obqtkh.execute-api.af-south-1.amazonaws.com/eSendInit/emailsender', postData, options );
    
     }
 
