@@ -9,7 +9,7 @@ export class accountService
     constructor(private httpClient : HttpClient , private router: Router){}
 
 
-    insertUser(postData): Observable<any>{
+    insertUserDiver(postData): Observable<any>{
         //console.log(postData);
 
       const options = {
@@ -20,6 +20,24 @@ export class accountService
 
 
           var response = this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/UserAccountFull/user', postData, options );
+        
+          this.sendValidationEmail(postData.Email);
+          return response;
+         
+    
+      }
+
+      insertUserInstructor(postData): Observable<any>{
+        //console.log(postData);
+
+      const options = {
+            headers: new HttpHeaders({
+              'Content-Type': 'application/json',
+            })
+          };
+
+
+          var response = this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/UserAccountFull/addinstructor', postData, options );
         
           this.sendValidationEmail(postData.Email);
           return response;

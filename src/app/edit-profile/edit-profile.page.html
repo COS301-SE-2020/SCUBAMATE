@@ -30,6 +30,22 @@
     <ion-label id="divHead">Edit Account</ion-label>
 
     <form (submit)="onSubmit(birthD.value,  FirstName.value , LastName.value, public.checked,   $event)" *ngIf="showData">
+      <div id="diveType">
+        <ion-label class="subLabel"> Account Type </ion-label>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label>Account*</ion-label>
+                <ion-select value={{AD.AccountType}} #accountType required readonly>
+                  <ion-select-option value="Diver">Diver</ion-select-option>
+                  <ion-select-option value="Instructor">Instructor</ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div><!-- end of dive Type-->
       <div id="userInfo">
         <ion-label class="subLabel"> User Information </ion-label>
         <ion-grid>
