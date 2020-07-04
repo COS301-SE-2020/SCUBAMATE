@@ -8,9 +8,9 @@ import { Router } from '@angular/router';
 
 
 export interface SignUpClass {
-  ItemType: string ;
+ // ItemType: string ;
   AccountGuid: string;
-  AccountType: string ;
+//  AccountType: string ;
   DateOfBirth : string ;
   Email: string ;
   FirstName: string;
@@ -18,6 +18,8 @@ export interface SignUpClass {
   Password: string;
   ProfilePhoto: string;
   PublicStatus: boolean;
+  Specialisation: string[];
+  Qualification: string;
 }
 
 @Component({
@@ -32,6 +34,10 @@ export class SignupPage implements OnInit {
   uuidValue:string;
   //selectedFile:File = null;
   base64textString : string;
+
+  showLoading : Boolean = false; 
+  SpecializationLst : string[];
+  QualificationLst: string[];
 
   ngOnInit() {
     
@@ -58,7 +64,7 @@ export class SignupPage implements OnInit {
  }
 
 
-  onSubmit(bDay:string, aType : string, FName: string , LName: string, pub: boolean, emailI: string, Pass: string, cPass: string, event : Event) {
+  onSubmit(Qual: string, Spec: string , bDay:string, aType : string, FName: string , LName: string, pub: boolean, emailI: string, Pass: string, cPass: string, event : Event) {
 
     if( Pass != cPass ) //test that passwords match
     {
@@ -74,16 +80,18 @@ export class SignupPage implements OnInit {
       
       //create object to send
       var attemptLogin = {
-        ItemType: "A"+this.uuidValue , 
+      //  ItemType: "A"+this.uuidValue , 
         AccountGuid : this.uuidValue,  
-        AccountType:  aType ,
+      //  AccountType:  aType ,
         FirstName: FName,
         LastName: LName,
         Email: emailI,
         DateOfBirth : bDay ,
         Password: Pass, //conversionEncryptOutput,  
         ProfilePhoto: this.base64textString,   //"meep.jpg",
-        PublicStatus: pub //pStat 
+        PublicStatus: pub ,
+        Specialisation: [Spec],
+        Qualification: Qual 
       } as SignUpClass; 
         //send to API service 
         console.log(attemptLogin);
@@ -97,5 +105,42 @@ export class SignupPage implements OnInit {
 
      
   }
+
+
+  SpecializationListFinder(eventValue: string){
+
+    if(eventValue.length >= 2)
+   {
+       this.showLoading = true;
+       this._accountService.getSpecializations(eventValue).subscribe(
+         data => {
+           console.log(eventValue);
+             console.log(data);
+             this.SpecializationLst = data.ReturnedList ; 
+             this.showLoading = false;
+         }
+       ); //end Buddy req
+   }
+
+ }
+
+ QualificationListFinder(eventValue: string){
+
+  if(eventValue.length >= 2)
+ {
+     this.showLoading = true;
+     this._accountService.getQualifications(eventValue).subscribe(
+       data => {
+         console.log(eventValue);
+           console.log(data);
+           this.QualificationLst = data.ReturnedList ; 
+           this.showLoading = false;
+       }
+     ); //end Buddy req
+ }
+
+}
+
+
 
 }

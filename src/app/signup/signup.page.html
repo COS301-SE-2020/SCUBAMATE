@@ -17,6 +17,7 @@
       <li style="float:left;"><a routerLink="/weather">Weather</a></li> 
       <li style="float:left;"><a routerLink="/my-dives">My Dives</a></li>
       <li style="float:left;"><a routerLink="/profile">My Account</a></li>   
+      <ion-progress-bar type="indeterminate" *ngIf="showLoading" ></ion-progress-bar>   
 </ul>
 </ion-toolbar>
 
@@ -25,7 +26,7 @@
  <div id="newUser">
     <ion-label id="divHead">Sign Up</ion-label>
 
-    <form (submit)="onSubmit(birthD.value, accountType.value, FirstName.value , LastName.value, public.checked, emailI.value, Password.value, cPassword.value, $event)">
+    <form (submit)="onSubmit(Qual.value, Spec.value, birthD.value, accountType.value, FirstName.value , LastName.value, public.checked, emailI.value, Password.value, cPassword.value, $event)">
       <div id="diveType">
         <ion-label class="subLabel"> Account Type </ion-label>
         <ion-grid>
@@ -85,6 +86,26 @@
                 <ion-label position="stacked">Profile Picture</ion-label>
                 <ion-input type="file" accept="image/*" (change)="onFileSelected($event)" ></ion-input> <!--removed id-->
               </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col >
+              <div class="searchableSelect">
+                <ion-label class="searchableSelectLabel">Qualification</ion-label><br>
+                  <input list="diveQ"  placeholder="Insert Your Qualification" #Qual (keypress)="QualificationListFinder($event.target.value)">
+                  <datalist id="diveQ" >
+                      <option *ngFor='let q of QualificationLst' value={{q}}></option>
+                  </datalist>
+              </div>
+              </ion-col>
+              <ion-col >
+              <div class="searchableSelect">
+                <ion-label class="searchableSelectLabel">Specialization</ion-label>
+                <input list="diveS"  placeholder="Insert Your Specialization" #Spec (keypress)="SpecializationListFinder($event.target.value)">
+                <datalist id="diveS" >
+                    <option *ngFor='let s of SpecializationLst' value={{s}}></option>
+                </datalist>
+              </div>
             </ion-col>
           </ion-row>
         </ion-grid>

@@ -78,6 +78,30 @@ ul {
     }
 
   }
+
+  //Lookahead Input Elements
+  .searchableSelect{
+    background-color: white;
+    border-radius: 1px;
+    text-align: left;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 100%;
+    height: 100%;
+  
+    input{
+        width: 100%;
+        margin: auto;
+        border: none;
+        font-size: medium;
+    }
+  
+  }
+  
+  .searchableSelectLabel{
+    font-size: small;
+  }
   
   
   
