@@ -37,11 +37,10 @@
             <ion-label class="subLabel"> User Information </ion-label> <br>
             <ion-label class="infoLabel" id="email" >Email: {{AD.Email}} </ion-label> <br>
             <ion-label class="infoLabel" id="birth" >Date of Birth: {{AD.DateOfBirth}} </ion-label> <br>
-            <ion-label class="infoLabel" id="status"   >Viewable Status: {{AD.PublicStatus}} </ion-label> <br>
+            <ion-label class="infoLabel" id="status"   >Viewable Status: {{AD.PublicStatus}} </ion-label><br> <br>
 
-            <ion-label class="infoLabel" id="qual" >Qualificaton: *** </ion-label> <br>
-            <ion-label class="infoLabel" id="spes" >Specialisation: *** </ion-label> <br><br>
-
+            <ion-label class="infoLabel" id="qual" *ngIf='AD.Qualification'>Qualificaton: <br><ion-icon name="play-outline"></ion-icon>{{AD.Qualification}} </ion-label> <br><br>
+            <ion-label class="infoLabel" id="spes" *ngIf='AD.Specialisation'>Specialisation: <br> <ion-label class="infoLabel" *ngFor="let s of AD.Specialisation"><ion-icon name="play-outline"></ion-icon> {{s}}<br></ion-label></ion-label>
           </div>
         </ion-col>
         <ion-col col-8 id="acountInfo2" >
