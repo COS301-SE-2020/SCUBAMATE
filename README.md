@@ -72,13 +72,13 @@
         <br>
         - Unit Testing
         <br> 
-        - Insert data
+        - Integration Testing
         <br>
-        - Insert data
+        - Architectural Design Documment: Quality Requirements
         <br>
-        - Insert data
+        - Weather extraction for functionality of application
         <br>
-        - Insert data
+        - Assisting UI Design for COVID, BLM & GBV
         <br>
     </details>
 
