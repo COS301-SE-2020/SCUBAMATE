@@ -11,13 +11,15 @@ exports.handler = async (event, context, callback) => {
 
     let body = JSON.parse(event.body);
     const AccessToken = body.AccessToken;
-    const AccountType = body.AccountType;
     const FirstName = body.FirstName;
     const LastName = body.LastName;
     const DateOfBirth = body.DateOfBirth;
     const ProfilePhoto = body.ProfilePhoto;
     const PublicStatus = body.PublicStatus;
     
+
+     const guid = AccessToken.substring(0,36);
+
     function compareDates(t,e)
     {
         console.log(t.getFullYear());
@@ -79,45 +81,37 @@ exports.handler = async (event, context, callback) => {
 
         return true;
     }
-    
+
     //Verify AccessToken 
-    try {
-        const params = {
-            TableName: "Scubamate",
-            ProjectionExpression: "Expires,AccountGuid",
-            FilterExpression: "#acc = :AccessToken",
-            ExpressionAttributeNames:{
-                "#acc" : "AccessToken"
-            },
-            ExpressionAttributeValues:{
-                ":AccessToken" : AccessToken
-            }
-        };
-        
-        const data = await documentClient.scan(params).promise();
-        if(data.Items[0].AccountGuid)
-        {
-            //console.log("Account: " + data.Items[0].AccountGuid);
-            var AccountGuid = data.Items[0].AccountGuid;
+    const params = {
+        TableName: "Scubamate",
+        Key: {
+            "AccountGuid": guid
         }
-        if( data.Items[0].Expires) // check if it's undefined
+    }
+
+    try {     
+        const data = await documentClient.get(params).promise();
+        
+        if( data.Item.Expires) // check if it's undefined
         {
-            const expiryDate = new Date(data.Items[0].Expires);
+            const expiryDate = new Date(data.Item.Expires);
             const today = new Date();
-            //console.log("Compare: " + today + " and " + expiryDate  + " " + compareDates(today,expiryDate));
+            console.log("Compare: " + today + " and " + expiryDate  + " " + compareDates(today,expiryDate));
             if(compareDates(today,expiryDate))
             {
                 statusCode = 403;
                 responseBody = "Access Token Expired!";
             }
-            
+                
         }
-        //console.log("status is now: " + statusCode) ;
+            
+        console.log("status is now: " + statusCode) ;
 
     } catch (error) {
         console.error(error);
         statusCode = 403;
-        responseBody = "Invalid Access Token";
+        responseBody = "Invalid Access Token ";
     }
 
     // Only update account if access token is verified
@@ -125,16 +119,14 @@ exports.handler = async (event, context, callback) => {
     
         //update profile image 
         var profileLink = ProfilePhoto; //to be added later
-        var ItemType = "A"+ AccountGuid;
         
         const params = {
             TableName: "Scubamate",
             Key: {
-                'ItemType' : ItemType,
+                'AccountGuid' : guid,
             },
-            UpdateExpression: 'set AccountType = :a, FirstName = :f, LastName = :l, DateOfBirth = :d, ProfilePhoto = :pp, PublicStatus = :ps',
+            UpdateExpression: 'set FirstName = :f, LastName = :l, DateOfBirth = :d, ProfilePhoto = :pp, PublicStatus = :ps',
             ExpressionAttributeValues: {
-                ':a' : AccountType,
                 ':f' : FirstName,
                 ':l' :LastName,
                 ':d': DateOfBirth,
@@ -166,3 +158,6 @@ exports.handler = async (event, context, callback) => {
     return response;
     
 }
+
+
+
