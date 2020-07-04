@@ -8,17 +8,17 @@ exports.handler = async (event, context) => {
     //properly formatted response
     let statusCode =0;
     let body = JSON.parse(event.body);
-    var ItemType = body.ItemType; //Would be DS- Dive Sites, DT- Dive Type, DC- Dive Centre
+    var ItemType = body.ItemType+"-"; //Would be DS- Dive Sites, DT- Dive Type, DC- Dive Centre
     const UserEntry = body.UserEntry; //Letters entered by user so far (in case of lookahead else must be *)
     
     let responseBody = "";
-    let filter = 'contains(#itemT , :itemT) AND contains(#itemT , :user)';
+    let filter = 'begins_with(#itemT , :itemT) AND contains(#itemT , :user)';
     let expressVal = {
             ':itemT': ItemType,
             ':user': UserEntry,
         }
     if(UserEntry.toString().trim() === '*'){
-       filter = 'contains(#itemT , :itemT)';
+       filter = 'begins_with(#itemT , :itemT)';
        expressVal = {
             ':itemT': ItemType,
         }
