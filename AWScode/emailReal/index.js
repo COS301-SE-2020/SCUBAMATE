@@ -2,8 +2,8 @@
 const AWS = require('aws-sdk');
 AWS.config.update({region: "af-south-1"});
 
-var sesAccessKey = 'scubamate.team@gmail.com';
-var sesSecretKey = 'Scub@123';
+var sesAccessKey = '[redacted]';
+var sesSecretKey = '[redacted]';
 
 exports.handler = function(event,context,callback) {
     let body = JSON.parse(event.body);
