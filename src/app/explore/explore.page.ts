@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { diveService } from '../service/dive.service';
+//import { FlashCardComponent } from '../components/flash-card/flash-card.component';
 
 export interface Dive{
   FirstName : string ;
@@ -39,14 +40,11 @@ export class ExplorePage implements OnInit {
   pubLst: Dive[] ; 
   loginLabel:string ;
 
-
-
   
   constructor(private router: Router, private _diveService: diveService) { }
 
  
-
-
+ 
   ngOnInit() {
     //setup what gets displayed
     this.showFeed = true;
@@ -99,6 +97,7 @@ export class ExplorePage implements OnInit {
       this.router.navigate(['login']);
     }
   }
+
 
 
 

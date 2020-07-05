@@ -8,8 +8,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-
-
+import { FlashCardComponent } from '../app/components/flash-card/flash-card.component';
 
 //api
 import { HttpClientModule } from '@angular/common/http';
@@ -23,7 +22,9 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent,
+    FlashCardComponent],
   entryComponents: [],
   imports: [BrowserModule,
             IonicModule.forRoot(), 

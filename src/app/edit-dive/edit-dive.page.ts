@@ -34,6 +34,7 @@ export interface DiveLog{
 export class EditDivePage implements OnInit {
 
   showLoading: Boolean;
+  showUser : Boolean = false;
   DiveTypeLst: [];
   DiveSiteLst: [];
   BuddyLst:[];
@@ -42,6 +43,7 @@ export class EditDivePage implements OnInit {
   constructor(private _accountService : accountService , private router: Router, private _diveService: diveService) { }
 
   ngOnInit() {  
+    this.showUser = false;
     this.showLoading = true;
     this.loginLabel ="Login";
       if(!localStorage.getItem("accessToken"))
@@ -138,6 +140,7 @@ export class EditDivePage implements OnInit {
         this.CurrentDive = res ;
         console.log(this.CurrentDive.DiveSite);
         this.showLoading = false;
+        this.showUser = true;
     });
 
 

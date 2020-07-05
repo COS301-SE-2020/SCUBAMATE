@@ -11,7 +11,8 @@
   <ul>
     <li style="float:right;"><a routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >{{loginLabel}}</a></li>
     <li style="margin-top:5px; margin-bottom:5px;right:0;float:right;"><ion-searchbar animated></ion-searchbar></li>        
-      <li style="float:left;margin-left:20px;"><a routerLink="/home" >Home</a></li>  
+    <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo">
+     <li style="float:left;margin-left:20px;"><a routerLink="/home" >Home</a></li>  
       <li style="float:left;"><a routerLink="/explore">Explore</a></li>  
       <li style="float:left;"><a routerLink="/weather">Weather</a></li> 
       <li style="float:left;"><a routerLink="/my-dives">My Dives</a></li>
@@ -20,6 +21,7 @@
 </ion-toolbar>
 
 <ion-content fullscreen class="background" no-scroll padding >
+
   <ion-card id="GeneralInformationCard">
     <ion-card-header>
       <ion-card-subtitle>Scuba Mate</ion-card-subtitle>

@@ -25,7 +25,7 @@ export interface DiveLog{
   DiveSite: string;
   Description: string ;
   InstructorLink: "-" ;
-  Weather: ["10 mph East", "FullMoon","Windy", "high: 1.20m"]  ;
+  Weather: String[] ;//["10 mph East", "FullMoon","Windy", "high: 1.20m"]  ;
   DivePublicStatus: Boolean;
 }
 
@@ -44,10 +44,13 @@ export class LogDivePage implements OnInit {
     BuddyLst:[];
     cDate : Date; 
     currentDate : string ;
+    MaxTempAPI : number ;
+    MinTempAPI : number ;
+    MoonPhase : string ;
+    WeatherDescription: string ; 
+    WindSpeed : string;
   
-  //siteLst: DiveSite[] ;//= [{diveSite: "Carabean" },{diveSite: "Sodwana" },{diveSite: "Cape Town" } ];
-  //typeLst: DiveType[] ; //= [{diveType: "Lake" }, {diveType: "Reef" },{diveType: "Open Sea" },{diveType: "River" },{diveType: "Indoors" }];
-  Key = {
+   Key = {
     "key": null
   };
   Coordinates ={
@@ -110,6 +113,15 @@ export class LogDivePage implements OnInit {
         console.log("Temperature Max: " + res.DailyForecasts[0].Temperature.Maximum.Value + res.DailyForecasts[0].Temperature.Maximum.Unit);
         console.log("Day Description: " + res.DailyForecasts[0].Day.IconPhrase);
         console.log("Night Description: " + res.DailyForecasts[0].Night.IconPhrase);
+        console.log(res.DailyForecasts[0]);
+        //setup variables
+        this.MinTempAPI = res.DailyForecasts[0].Temperature.Minimum.Value;
+        this.MaxTempAPI = res.DailyForecasts[0].Temperature.Maximum.Value;
+        this.MoonPhase = res.DailyForecasts[0].Moon.Phase ;
+        this.WeatherDescription = res.DailyForecasts[0].Day.ShortPhrase ;
+        this.WindSpeed = res.DailyForecasts[0].Day.Wind.Speed.Value + " " + res.DailyForecasts[0].Day.Wind.Speed.Unit  ; 
+
+
       });
       });
 
@@ -180,7 +192,7 @@ export class LogDivePage implements OnInit {
                     DiveSite: siteOf,
                     Description: desc ,
                     InstructorLink: "-" ,
-                    Weather: ["10 mph East", "FullMoon","Windy", "high: 1.20m"] ,
+                    Weather: [this.WindSpeed, this.MoonPhase, this.WeatherDescription],
                     DivePublicStatus: pub
                   } as DiveLog;
           

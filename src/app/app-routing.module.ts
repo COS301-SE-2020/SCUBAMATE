@@ -38,7 +38,8 @@ const routes: Routes = [
   {
     path: 'log-dive',
     loadChildren: () => import('./log-dive/log-dive.module').then( m => m.LogDivePageModule)
-  },  {
+  },
+  {
     path: 'edit-profile',
     loadChildren: () => import('./edit-profile/edit-profile.module').then( m => m.EditProfilePageModule)
   },
@@ -46,13 +47,15 @@ const routes: Routes = [
     path: 'edit-dive',
     loadChildren: () => import('./edit-dive/edit-dive.module').then( m => m.EditDivePageModule)
   },
+  
+
 
 
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, {  preloadingStrategy: PreloadAllModules })
   ],
   exports: [RouterModule]
 })
