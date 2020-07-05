@@ -1,11 +1,18 @@
 
 ion-content.background{
-  --background: url(../../assets/images/sea.jpg) 0 0/100% 100% no-repeat;
+  --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
 }
 
 .productHeader {
   --background: transparent;
 }
 
+ion-card{
+  align-items: center;
+  width: 50%;
+  margin: auto;
+}
 
-
+#GeneralInformationCard {
+  text-align: center;
+}

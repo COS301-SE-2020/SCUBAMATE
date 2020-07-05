@@ -20,9 +20,9 @@
     Most of our project is done using AWS hosted resources such as Lambda, API Gateway, S3 for storage and DynamoDB.
     Thus the only installation required is to download the master branch of the git which contains our front-end (Angular, Ionic and TypeScript) code, then run this command in the terminal:
     $npm install
+    $cordova telemetry on
     $ionic cordova plugin add cordova-plugin-geolocation
     $npm install @ionic-native/geolocation
-    $npm i --save @ionic-native/geolocation@5.00-beta.14
     Then to run the application:
     $ionic serve
     The first compilation will take a few seconds and then it will automatically open in your browser on localhost:8100.
@@ -72,13 +72,13 @@
         <br>
         - Unit Testing
         <br> 
-        - Insert data
+        - Integration Testing
         <br>
-        - Insert data
+        - Architectural Design Documment: Quality Requirements
         <br>
-        - Insert data
+        - Weather extraction for functionality of application
         <br>
-        - Insert data
+        - Assisting UI Design for COVID, BLM & GBV
         <br>
     </details>
 

@@ -12,9 +12,6 @@ exports.handler = async (event, context, callback) => {
 //Adding new instructor
     let body = JSON.parse(event.body);
     
-    const InstructorNumber = body.InstructorNumber;
-    const DiveCentre = body.DiveCentre;
-    
     const AccountGuid = body.AccountGuid;
     const FirstName = body.FirstName;
     const LastName = body.LastName;
@@ -24,21 +21,12 @@ exports.handler = async (event, context, callback) => {
     const Password = body.Password;
     const PublicStatus = body.PublicStatus;
     
-    const ItemType = "A"+AccountGuid;
     const AccountType = "Instructor";
+    const InstructorNumber = body.InstructorNumber;
+    const DiveCentre = body.DiveCentre;
     
-    //James time
     var crypto = require('crypto');
-    var hash = crypto.createHash('sha256').update(Password).digest('hex');
-    
-    /*
-    var hash = "";
-    //hashes the password using the Email as a salt
-    crypto.pbkdf2(Password,Email, 100000, 64, 'sha512', (err, derivedKey) =>{
-        if (err) throw err;
-        hash = derivedKey.toString('hex');
-    });
-    */
+    var hash = crypto.pbkdf2Sync(Password, Email, 1000, 64, 'sha512').toString('hex');
     
     //Profile Photo
     //Read content from the file
@@ -58,15 +46,17 @@ exports.handler = async (event, context, callback) => {
             profileLink ="https://profilephoto-imagedatabase-scubamate.s3.af-south-1.amazonaws.com/image2.jpg";
         }
     });
-    var paramsImg = {Bucket: 'profilephoto-imagedatabase-scubamate', Key: filePath, Body: decodedImage};
+    profileLink ="https://profilephoto-imagedatabase-scubamate.s3.af-south-1.amazonaws.com/image2.jpg";
+    // var paramsImg = {Bucket: 'profilephoto-imagedatabase-scubamate', Key: filePath, Body: decodedImage};
    
-    await s3.getSignedUrl('putObject', paramsImg, function (err, url) {
-        if(!err){
-            console.log('The URL is', url,". ");
-            profileLink = url;
-        }
-    });
+    // await s3.getSignedUrl('putObject', paramsImg, function (err, url) {
+    //     if(!err){
+    //         console.log('The URL is', url,". ");
+    //         profileLink = url;
+    //     }
+    // });
     //
+    
     //Email checking
     const emailParams = {
         TableName: "Scubamate",
@@ -98,7 +88,6 @@ exports.handler = async (event, context, callback) => {
     const params = {
         TableName: "Scubamate",
         Item: {
-            ItemType : ItemType,
             AccountGuid : AccountGuid,
             AccountType: AccountType, 
             FirstName: FirstName,
@@ -116,10 +105,7 @@ exports.handler = async (event, context, callback) => {
     try{
         if (!flag)
         {
-        const data = await documentClient.put(params).promise();
-        }
-        if (!flag)
-        {
+            const data = await documentClient.put(params).promise();
             responseBody = "Successfully added account!";
             statusCode = 201;
         }
@@ -145,3 +131,5 @@ exports.handler = async (event, context, callback) => {
     return response;
     
 }
+
+
