@@ -12,7 +12,7 @@ export interface Dive{
   TimeIn : string ;
   TimeOut : string ;
   Buddy : string;
-  Weather : []  ;
+  Weather : string[]  ;
 }
 
 export interface DiveSite{

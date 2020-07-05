@@ -9,7 +9,7 @@ export class accountService
     constructor(private httpClient : HttpClient , private router: Router){}
 
 
-    insertUser(postData): Observable<any>{
+    insertUserDiver(postData): Observable<any>{
         //console.log(postData);
 
       const options = {
@@ -18,17 +18,28 @@ export class accountService
             })
           };
 
-          //SignUp works
-        //return this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/UserAccountFull/user', postData, options );
-    
+
           var response = this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/UserAccountFull/user', postData, options );
-        return response;
-          /**  if (HttpErrorResponse){
-            alert("Email already in use");
-            location.reload();
-          }else{
-            return response;
-          }*/
+        
+          return response;
+         
+    
+      }
+
+      insertUserInstructor(postData): Observable<any>{
+        //console.log(postData);
+
+      const options = {
+            headers: new HttpHeaders({
+              'Content-Type': 'application/json',
+            })
+          };
+
+
+          var response = this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/UserAccountFull/addinstructor', postData, options );
+        
+          return response;
+         
     
       }
 
@@ -89,6 +100,59 @@ export class accountService
         console.log(body);
 
        return this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/getUser/lookbuddy',body, options);
+    }
+
+    getQualifications(entry : String): Observable<any>{
+
+      const options = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+          })
+        };
+
+      var  body= {
+          "ItemType" : "C" ,
+          "UserEntry" : entry
+        } ;
+        console.log("Buddy Req");
+        console.log(body);
+
+       return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveTypesAndSitesAdded/divelist',body, options);
+    }
+
+    getSpecializations(entry : String): Observable<any>{
+
+      const options = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+          })
+        };
+
+      var  body= {
+          "ItemType" : "S" ,
+          "UserEntry" : entry
+        } ;
+        console.log("Buddy Req");
+        console.log(body);
+
+       return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveTypesAndSitesAdded/divelist',body, options);
+    }
+
+    sendValidationEmail(newUserEmail : string): Observable<any>{
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        })
+      };
+
+      var postData ={
+        Email : newUserEmail
+      }
+
+      console.log(postData);
+
+     return  this.httpClient.post('https://10n4obqtkh.execute-api.af-south-1.amazonaws.com/eSendInit/emailsender', postData, options );
+   
     }
 
 }

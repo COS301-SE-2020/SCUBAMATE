@@ -29,7 +29,7 @@
  <div id="newUser">
     <ion-label id="divHead">Edit Account</ion-label>
 
-    <form (submit)="onSubmit(birthD.value, accountType.value, FirstName.value , LastName.value, public.checked, emailI.value,  $event)" *ngIf="showData">
+    <form (submit)="onSubmit(birthD.value,  FirstName.value , LastName.value, public.checked,   $event)" *ngIf="showData">
       <div id="diveType">
         <ion-label class="subLabel"> Account Type </ion-label>
         <ion-grid>
@@ -37,7 +37,7 @@
             <ion-col>
               <ion-item>
                 <ion-label>Account*</ion-label>
-                <ion-select value={{AD.AccountType}} #accountType required>
+                <ion-select value={{AD.AccountType}} #accountType required readonly>
                   <ion-select-option value="Diver">Diver</ion-select-option>
                   <ion-select-option value="Instructor">Instructor</ion-select-option>
                 </ion-select>
@@ -67,7 +67,7 @@
             <ion-col>
               <ion-item>
                 <ion-label position="stacked">Email*</ion-label>
-                <ion-input type="email" #emailI value={{AD.Email}}></ion-input>
+                <ion-input type="email" #emailI value={{AD.Email}} readonly></ion-input>
               </ion-item>
             </ion-col>
             <ion-col>

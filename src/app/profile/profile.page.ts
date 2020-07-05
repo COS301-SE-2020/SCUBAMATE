@@ -18,6 +18,8 @@ export interface AccountDetails{
   AccountType: string ;
   LastName: string ;
   Email: string ;
+  Specialisation: string[];
+  Qualification: string;
 }
 
 export interface DiveType{
@@ -103,6 +105,7 @@ export class ProfilePage implements OnInit {
     }
 
     this._accountService.getUser().subscribe(res => {
+      console.log(res);
       this.AD = res;
     })
     this._diveService.getDiveTypes("*").subscribe(

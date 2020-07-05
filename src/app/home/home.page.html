@@ -18,7 +18,6 @@
       <li style="float:left;"><a routerLink="/weather">Weather</a></li> 
       <li style="float:left;"><a routerLink="/my-dives">My Dives</a></li>
       <li style="float:left;"><a routerLink="/profile">My Account</a></li>  
-      <li style="float:left;"><a routerLink="/temp">Temp</a></li> 
   </ul>
 </ion-toolbar>
 
@@ -41,7 +40,8 @@
             </div>
             <div class="row">
                 <button  class="orangeButton" style="margin-left:5%;" routerLink="/signup">Sign Up <span></span></button>
-            </div>
+           <button (click)="sendEmail()">Send Email</button>
+              </div>
           </div>
       </div>
   </div>
