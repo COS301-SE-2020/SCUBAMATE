@@ -71,7 +71,7 @@ export class WeatherPage implements OnInit {
           document.getElementById("Date").innerText = this.weatherDate;
           document.getElementById("WeatherDesc").innerText = this.Weather.Desc;
           document.getElementById("City").innerText = this.Key.city;
-          document.getElementById("Coordinates").innerText = this.Coordinates.Latitude + ", " + this.Coordinates.Longitude;
+          // document.getElementById("Coordinates").innerText = this.Coordinates.Latitude + ", " + this.Coordinates.Longitude;
           document.getElementById("MinTemp").innerText += " " + this.Weather.Min;
           document.getElementById("MaxTemp").innerText += " " + this.Weather.Max;
           document.getElementById("Day").innerText += " " + this.Weather.Day;
