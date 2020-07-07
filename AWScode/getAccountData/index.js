@@ -122,8 +122,9 @@ exports.handler = async (event, context) => {
             const s3 = new AWS.S3({httpOptions: { timeout: 2000 }});
             try{
                 const binaryFile = await s3.getObject(paramsImg).promise();
-                
-                let base64Image = binaryFile.Body.toString('base64'); 
+                const startIndexContentType = (data.Item.ProfilePhoto).lastIndexOf(".")+1;
+                const contentType = data.Item.ProfilePhoto.substring(startIndexContentType, data.Item.ProfilePhoto.length);
+                let base64Image = "data:image/"+contentType+";base64," +binaryFile.Body.toString('base64'); 
                 
                 let completeResponse ={
                     "AccountType": AccountType,
