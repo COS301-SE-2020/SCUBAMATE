@@ -34,7 +34,7 @@ export interface DiveType{
 export class ProfilePage implements OnInit {
 
   loginLabel:string ;
-  AD : AccountDetails ; 
+  AD ;//: AccountDetails ; 
   DiveTypeLst: []; 
   OptionalList : String[];
   EquipmentList : String[];
@@ -44,6 +44,8 @@ export class ProfilePage implements OnInit {
   editProfile : Boolean; 
   showLoading: Boolean;
   showAD : Boolean = false  ;
+
+  showAccountVerifiedMessage : Boolean ; 
 
   constructor( private router: Router, private _accountService: accountService,  private _diveService: diveService) {}
   
@@ -70,6 +72,12 @@ export class ProfilePage implements OnInit {
             this.AD.PublicStatus = "Public";
           }else{
             this.AD.PublicStatus = "Private";
+          }
+
+          if(res.VerifiedEmail){
+            this.showAccountVerifiedMessage = false ;
+          }else{
+            this.showAccountVerifiedMessage = true ;
           }
 
           this.showLoading = false;
@@ -104,9 +112,22 @@ export class ProfilePage implements OnInit {
       this.loginLabel = "Sign Out";
     }
 
+    
+
     this._accountService.getUser().subscribe(res => {
       console.log(res);
       this.AD = res;
+      if (res.PublicStatus == true){
+        this.AD.PublicStatus = "Public";
+      }else{
+        this.AD.PublicStatus = "Private";
+      }
+      
+      if(res.VerifiedEmail){
+        this.showAccountVerifiedMessage = false ;
+      }else{
+        this.showAccountVerifiedMessage = true ;
+      }
     })
     this._diveService.getDiveTypes("*").subscribe(
       data => {
