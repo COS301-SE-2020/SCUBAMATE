@@ -14,6 +14,7 @@
       <li style="float:left;"><a routerLink="/weather">Weather</a></li> 
       <li style="float:left;"><a routerLink="/my-dives">My Dives</a></li>
       <li style="float:left;"><a routerLink="/profile">My Account</a></li>  
+      <ion-progress-bar type="indeterminate" *ngIf="showLoading"></ion-progress-bar>   
     </ul>
   
 </ion-toolbar>
@@ -24,7 +25,8 @@
 
     <div id="EmailVerificationDiv" *ngIf='showAccountVerifiedMessage'>
       <ion-icon name="close" (click)="showAccountVerifiedMessage=false"></ion-icon>
-      <label id="EmailVerificationMsg">Your email {{AD.Email}} has not yet been verified.</label>
+      <label id="EmailVerificationMsg">Your email {{AD.Email}} has not yet been verified. <br>
+         Click <span (click)="sendEmail()" id="EmailLink">Here</span> to resend email.</label>
       
     </div>
 
@@ -32,7 +34,7 @@
       <ion-row>
         <ion-col id="leftPane">
           <div>
-              <ion-img src="../assets/images/STDuser.jpg" id="userProfile"></ion-img>
+              <ion-img src={{AD.ProfilePhoto}} id="userProfile" ></ion-img>
               <ion-label class="infoLabel" id="names" > {{AD.FirstName}}  {{AD.LastName}}</ion-label> <br>
               <ion-button color="dark" id="editBtn" routerLink="/edit-profile" routerDirection="root" ><ion-icon name="pencil-outline"></ion-icon></ion-button>
               
@@ -40,17 +42,29 @@
         </ion-col>
      <ion-col style="padding-right:0;" >
           <div id="acountInfo1">
-            <ion-label class="subLabel"> User Information </ion-label> <br>
-            <ion-label class="infoLabel" id="email" >Email: {{AD.Email}} </ion-label> <br>
-            <ion-label class="infoLabel" id="birth" >Date of Birth: {{AD.DateOfBirth}} </ion-label> <br>
-            <ion-label class="infoLabel" id="status"   >Viewable Status: {{AD.PublicStatus}} </ion-label><br> <br>
+            <ion-label class="divHead"> User Information </ion-label> <br>
+            <div class="divBodySection">
+              <ion-label class="infoLabel" id="email" >Email: {{AD.Email}} </ion-label> <br>
+              <ion-label class="infoLabel" id="instructorNum" *ngIf='AD.InstructorNumber' >Instructor Number: {{AD.InstructorNumber}} </ion-label> <br>
+              <ion-label class="infoLabel" id="birth" >Date of Birth: {{AD.DateOfBirth}} </ion-label> <br>
+              <ion-label class="infoLabel" id="status"   >Viewable Status: {{AD.PublicStatus}} </ion-label><br>
+              <ion-label class="infoLabel" id="accverified"   >Account Verified:
+                 
+                 <ion-icon name="close" *ngIf='!AD.AccountVerified'  ></ion-icon>
+                 <ion-icon name="checkmark" *ngIf='AD.AccountVerified'></ion-icon>
 
+                </ion-label><br> <br>
+
+            </div>
             </div>
         </ion-col>
         <ion-col col-8 id="acountInfo2" >
           <div>
             </div>
         </ion-col>
+        <!--<ion-col  id="acountInfo2" *ngIf='AD.DiveCentre' >
+            <ion-img src='../../assets/images/DiveCenters/{{AD.DiveCentre}}.png' class="diveCenterIMG" ></ion-img>
+        </ion-col>-->
       </ion-row>
     </ion-grid> <!-- View Profile -->
   </div>
@@ -68,8 +82,9 @@
             </ion-col>
             <ion-col>
               <ion-label class="infoLabel" id="qual" *ngIf='AD.Qualification'>Qualificaton: <br><ion-icon name="play-outline"></ion-icon>{{AD.Qualification}} </ion-label> <br><br>
-              <ion-label class="infoLabel" id="qual" *ngIf='AD.Qualification'>Center: <br><ion-icon name="play-outline"></ion-icon>{{AD.DiveCentre}} </ion-label> <br><br>
+              <ion-label class="infoLabel" id="qual" *ngIf='AD.DiveCentre'>Center: <br><ion-icon name="play-outline"></ion-icon>{{AD.DiveCentre}} </ion-label> <br><br>
             </ion-col>
+            
           </ion-row>
         </ion-grid>
     </div>

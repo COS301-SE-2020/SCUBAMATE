@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { accountService } from '../service/account.service';
 import { diveService } from '../service/dive.service';
+import { AlertController } from '@ionic/angular';
 
 
 
@@ -47,7 +48,7 @@ export class ProfilePage implements OnInit {
 
   showAccountVerifiedMessage : Boolean ; 
 
-  constructor( private router: Router, private _accountService: accountService,  private _diveService: diveService) {}
+  constructor( public alertController : AlertController , private router: Router, private _accountService: accountService,  private _diveService: diveService) {}
   
   ngOnInit() {
     this.viewProfile = true;
@@ -173,6 +174,28 @@ export class ProfilePage implements OnInit {
   goToEdit(){
     console.log("in edit func");
     this.router.navigate(["/edit-profile"]);
+  }
+
+  async presentAlertEmailSent( userEmail ) {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: 'Validation Email Sent',
+      subHeader: 'Please validate your Email',
+      message: 'An OTP has been sent to: <br>' + userEmail ,
+      buttons: ['OK']
+    });
+  
+    await alert.present();
+  }
+  
+
+  sendEmail(){
+    this.showLoading = true;
+    this._accountService.sendValidationEmail(this.AD.Email).subscribe( res=>
+      {
+        this.showLoading = false;
+        this.presentAlertEmailSent(this.AD.Email);
+      });
   }
 
 
