@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient,  HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 
+
 @Injectable()
 export class accountService
 {
@@ -19,8 +20,11 @@ export class accountService
           };
 
 
-          var response = this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/UserAccountFull/user', postData, options );
+         var response = this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/UserAccountFull/user',
+                           postData, options );
         
+
+
           return response;
          
     

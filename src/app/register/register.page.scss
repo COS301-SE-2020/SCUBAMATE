@@ -1,0 +1,177 @@
+$darkBlue : #264653 ;
+$lightBlue : #2A9D8F ;
+$orange: #F4A261 ; 
+$red: #E76F51 ;
+$yellow : #E9C46A ;
+$inputBackgroundColor: #181e21;
+$darkRed: #d66853;
+
+ion-content.background{
+    --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
+}
+
+.productHeader {
+    --background: transparent;
+}
+
+  .registerFormDiv{
+    background-color: rgba(38, 70, 83, 0.5);
+    width: 70%;
+    margin: auto;
+    border-bottom: solid white 0.5px;
+    border-top: solid white 0.5px;
+    text-align: center;
+    padding-bottom: 40px ;
+    margin-bottom: 50px;
+  
+  
+      #divHead{
+          font-size:  30px ;
+          font-family: 'Righteous';
+          display: swap ;
+          color: white;
+          margin-bottom: 20px;
+      }
+  
+    .subLabel{
+      font-size:  20px ;
+      font-family: 'Barlow Semi Condensed', sans-serif;
+      color: white;
+      border-bottom: solid white 0.5px;
+      border-top: solid white 0.5px;
+    }
+  
+    input[type=submit]{
+      margin-top: 40px;
+      margin-bottom: 50px;
+      width: 30%;
+      background-color: $red  ;
+      border: none;
+      color: #FFFFFF;
+      text-align: center;
+      font-size: 18px;
+      cursor: pointer;
+      padding: 5px;
+      margin:auto;
+    }
+  
+     input[type=submit]:hover{
+      background-color: $darkRed ;
+      font-family: 'Righteous';
+      display: swap ;
+    }
+  
+  }
+
+
+
+
+.item{
+    --ion-background-color:  rgba(0,0,0,0);
+  //  border-top-left-radius: 5px;
+  //  border-top-right-radius: 5px;
+
+    .FormErrorControlMessage{
+        color: #ff5b71 ;
+    }
+    
+}
+
+table{
+  margin: auto;
+  width: 99%;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  text-align: center;
+  position: relative;
+  border-collapse: collapse; 
+  background-color: #222428  ;
+  -moz-box-shadow:     3px 3px 2px 3px $lightBlue;
+  -webkit-box-shadow:  3px 3px 2px 3px $lightBlue;
+  box-shadow:          3px 3px 2px 3px $lightBlue;
+
+ th, td {
+ overflow-y:hidden;
+ top: 0;
+ }
+
+ tr{
+   background-color: #222428 ;
+   color: white;
+ }
+
+
+  td{
+      padding: 5px;
+      font-family: 'Barlow Semi Condensed', sans-serif;
+      text-align: left;
+      padding-left:20px;
+
+     
+  }
+
+
+  th{
+       background-color: #222428 ;
+       color: $orange ;
+       padding: 10px;
+       position: sticky;
+       top: 0;
+       font-family: 'Righteous';
+       display: swap ;
+       font-size: larger;
+ }
+
+ tr:hover{
+   background-color: $darkBlue ;
+   font-size: large ;
+ }
+
+ th:hover{
+   background-color: #222428 ;
+   color: $orange ;
+   padding: 10px;
+   position: sticky;
+   top: 0;
+   font-family: 'Righteous';
+   display: swap ;
+   font-size: larger;
+ }
+
+ td:hover{
+   color: $lightBlue;
+   font-weight: bold;
+ }
+
+
+} 
+
+.searchableSelect{
+  background-color: #222428 ;
+
+
+}
+
+.searchableSelectInput{
+  margin-top:10px;
+  width:100%;
+  background-color: #222428 ;
+  color:white;
+}
+
+.searchableSelectLabel{
+  color: white;
+  font-size: large;
+  margin: auto;
+}
+
+ion-button{
+    float:right;
+    --border-radius: 100% ;
+    margin-left: 7%;
+    margin-right: 7%;
+    width: 50px;
+    height:50px;
+    padding:0;
+
+}

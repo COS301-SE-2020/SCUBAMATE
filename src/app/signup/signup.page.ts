@@ -45,8 +45,9 @@ export interface SignUpClassI {
 })
 export class SignupPage implements OnInit {
 
-  constructor(private _diveService: diveService, private _accountService : accountService, private router: Router) { }
-
+  /*********************************************
+                Global Variables
+  *********************************************/
   uuidValue:string;
   base64textString : string;
   showLoading : Boolean = false; 
@@ -54,13 +55,23 @@ export class SignupPage implements OnInit {
   SpecializationLst : string[];
   QualificationLst: string[];
   CenterLst : string[];
-
   userSpecialisation : string[];
 
   //which type of account
   signUpDiver: Boolean = false;
   signUpInstructor: Boolean = false ; 
   ShowAccountChoice : Boolean = true;
+
+
+
+  /////////////////////////////////////////////////
+
+
+  constructor(private _diveService: diveService, 
+              private _accountService : accountService, 
+              private router: Router) { }
+
+
 
 
   ngOnInit() {
