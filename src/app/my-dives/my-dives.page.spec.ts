@@ -2,10 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MyDivesPage } from './my-dives.page';
-
-import { accountService } from '../service/account.service';
-import { diveService } from '../service/dive.service';
-import { weatherService } from '../service/weather.service';
+import { HttpClient,  HttpHeaders } from '@angular/common/http';
+import { AppModule } from '../app.module';
 
 describe('MyDivesPage', () => {
   let component: MyDivesPage;
@@ -14,7 +12,8 @@ describe('MyDivesPage', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ MyDivesPage ],
-      imports: [IonicModule.forRoot(), RouterTestingModule, accountService, diveService, weatherService]
+      imports: [IonicModule.forRoot(), RouterTestingModule, AppModule],
+
     }).compileComponents();
 
     fixture = TestBed.createComponent(MyDivesPage);

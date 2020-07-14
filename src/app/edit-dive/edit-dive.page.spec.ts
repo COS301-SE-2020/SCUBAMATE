@@ -2,10 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EditDivePage } from './edit-dive.page';
-
-import { accountService } from '../service/account.service';
-import { diveService } from '../service/dive.service';
-import { weatherService } from '../service/weather.service';
+import { AppModule } from '../app.module';
 
 describe('EditDivePage', () => {
   let component: EditDivePage;
@@ -14,7 +11,7 @@ describe('EditDivePage', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ EditDivePage ],
-      imports: [IonicModule.forRoot(), RouterTestingModule, accountService, diveService, weatherService]
+      imports: [IonicModule.forRoot(), RouterTestingModule, AppModule]
     }).compileComponents();
 
     fixture = TestBed.createComponent(EditDivePage);
