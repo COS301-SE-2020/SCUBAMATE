@@ -91,7 +91,6 @@ exports.handler = async (event, context) => {
         {
             const expiryDate = new Date(data.Item.Expires);
             const today = new Date();
-            console.log("Compare: " + today + " and " + expiryDate  + " " + compareDates(today,expiryDate));
             if(compareDates(today,expiryDate))
             {
                 statusCode = 403;
@@ -99,11 +98,7 @@ exports.handler = async (event, context) => {
             }
                 
         }
-            
-        console.log("status is now: " + statusCode) ;
-
     } catch (error) {
-        console.error(error);
         statusCode = 403;
         responseBody = "Invalid Access Token ";
     }
@@ -123,8 +118,7 @@ exports.handler = async (event, context) => {
             }
         };
         
-        try{
-            //search for all the dive logs 
+        try{ 
             var res = await documentClient.scan(diveParams).promise();
             if(res.Items.length == 0){
                  responseBody = "Could not find dive";

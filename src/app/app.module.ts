@@ -8,8 +8,10 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { FlashCardComponent } from '../app/components/flash-card/flash-card.component';
 
-
+//forms
+import { ReactiveFormsModule, FormsModule } from '@angular/forms' ;
 
 //api
 import { HttpClientModule } from '@angular/common/http';
@@ -18,21 +20,33 @@ import { HttpClientModule } from '@angular/common/http';
 //services 
 import { accountService } from './service/account.service';
 import { diveService } from './service/dive.service';
+import { weatherService } from './service/weather.service';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+
+//validators
+import { AgeValidator } from './validators/age' ;
 
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent,
+    FlashCardComponent],
   entryComponents: [],
   imports: [BrowserModule,
             IonicModule.forRoot(), 
             AppRoutingModule,
-            HttpClientModule],
+            HttpClientModule,
+            FormsModule,
+            ReactiveFormsModule],
   providers: [
     StatusBar,
     SplashScreen,
     accountService,
     diveService,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    weatherService,
+    AgeValidator,
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    Geolocation
   ],
   bootstrap: [AppComponent]
 })

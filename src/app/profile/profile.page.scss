@@ -6,8 +6,76 @@ $yellow : #E9C46A ;
 $inputBackgroundColor: #181e21;
 
 
+#EmailLink{
+  color: $red;
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
+
+   
+}
+
+#EmailLink:hover{
+  color: $orange;
+}
+
+.diveCenterIMG{
+  width: 110px;
+  height: 110px;
+  margin: auto;
+  margin-top: 20%;
+  margin-bottom: 20px;
+}
+
+ion-button{
+  float:right;
+  margin-right: 7%;
+  width: 50px;
+  height:50px;
+  padding:0;
+
+}
+
+.searchableSelect{
+  background-color: white;
+  border-radius: 1px;
+  text-align: left;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 100%;
+  height:100%;
+
+  input{
+      width: 100%;
+      margin: auto;
+      border: none;
+      font-size: medium;
+  }
+
+}
+
+.searchableSelect{
+  background-color: #222428 ;
+
+
+}
+
+.searchableSelectInput{
+  margin-top:10px;
+  width:100%;
+  background-color: #222428 ;
+  color:white;
+}
+
+.searchableSelectLabel{
+  color: white;
+  font-size: small;
+  margin: auto;
+}
+
 ion-content.background{
-  --background: url(../../assets/images/whale.jpg) 0 0/100% 100% no-repeat;
+  --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
 }
 
 .productHeader {
@@ -26,20 +94,34 @@ ion-grid {
   }
 }
 
-#checkListDiv{
-  background-color: rgba(38, 70, 83, 0.5);
+#Credentials{
+  padding: 0;
+  background-color: rgba(38, 70, 83, 0.6);
   margin: auto;
   border-bottom: solid white 0.5px;
   border-top: solid white 0.5px;
   width:  70% ;
   padding: 0;
   margin-top: 30px;
-  padding: 20px;
+}
+
+#checkListDiv{
+  background-color: rgba(38, 70, 83, 0.6);
+  margin: auto;
+  border-bottom: solid white 0.5px;
+  border-top: solid white 0.5px;
+  width:  70% ;
+  padding: 0;
+  margin-top: 30px;
+  padding: 0px;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 #ProfileInfo{
-  background-color: rgba(38, 70, 83, 0.5);
+  background-color: rgba(38, 70, 83, 0.6);
   margin: auto;
+  margin-top: 30px;
   border-bottom: solid white 0.5px;
   border-top: solid white 0.5px;
   width:  70% ;
@@ -65,14 +147,6 @@ ion-grid {
     padding-top: 20px;
   }
 
-  #userProfile{
-    object-fit: cover;
-    width: 150px;
-    height: 150px;
-    margin: auto;
-    margin-top: 5%;
-    margin-bottom: 2%;
-  }
 
   
 
@@ -85,6 +159,20 @@ ion-grid {
   }
 
 
+}
+
+
+#userProfile{
+//  object-fit: cover;
+  width: 160px;
+  height: 160px;
+  margin: auto;
+  margin-top: 5%;
+  margin-bottom: 2%;
+
+  border-radius: 100% !important;
+  overflow: hidden;
+  
 }
 
 .subLabel{
@@ -112,6 +200,31 @@ ion-grid {
   margin-bottom: 20px;
   margin-top: 15px; 
   margin-left: 20px;
+}
+
+.divSubHead{
+  font-size:  25px ;
+  font-family: 'Righteous';
+  display: swap ;
+  color: white;
+  width: 100%;
+  margin: auto;
+  margin-bottom: 20px;
+  margin-top: 15px; 
+}
+
+.divHeadSection{
+  background-color: rgba(38, 70, 83, 0.9);
+  padding-left: 25px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.divBodySection{
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 table{
@@ -165,3 +278,19 @@ table{
  }
 
 } 
+
+#EmailVerificationDiv{
+  width: 80%;
+  margin: auto;
+  color: white;
+  text-align: center;
+  background-color: $inputBackgroundColor;
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  padding: 10px;
+  border-radius: 10px;
+
+  ion-icon{
+    float: right;
+  }
+  
+}

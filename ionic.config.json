@@ -1,5 +1,7 @@
 {
   "name": "scubamate",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

@@ -1,13 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { diveService } from '../service/dive.service';
+//import { FlashCardComponent } from '../components/flash-card/flash-card.component';
 
 export interface Dive{
-  Diver : string; 
-  Location : string ;
-  DateOf : string   ;
-  Weather : string ;
-  Buddy: string   ; 
+  FirstName : string ;
+  LastName : string ;
+  DiveSite : string ;
+  DiveType : string;
+  DiveDate : string ;
+  TimeIn : string ;
+  TimeOut : string ;
+  Buddy : string;
+  Weather : string[]  ;
 }
 
 export interface DiveSite{
@@ -31,33 +36,15 @@ export class ExplorePage implements OnInit {
   showSites : boolean ;
   showCenters : boolean ;
   showFeed  : boolean ;
-
-
-  //hardcoded public feed -> remove later
-  pubLst: Dive[] = [{Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"},
-                    {Diver: "Melissa Greg" , Location: "Shelly Beacg", DateOf:"02/02/2020", Weather:"20% Visibility Sunny", Buddy:"Andrew Michaels"}
-                  ];
-
-  constructor(private router: Router, private _diveService: diveService) { }
-
+  showLoading : boolean;
+  pubLst: Dive[] ; 
   loginLabel:string ;
 
+  
+  constructor(private router: Router, private _diveService: diveService) { }
+
+ 
+ 
   ngOnInit() {
     //setup what gets displayed
     this.showFeed = true;
@@ -71,6 +58,13 @@ export class ExplorePage implements OnInit {
     }else{
       this.loginLabel = "Sign Out";
     }
+
+    this.showLoading = true ; 
+    this._diveService.getPublicDives().subscribe(res =>{
+      this.pubLst = res;
+      this.showLoading = false ;
+    });
+
   }
 
   ionViewWillEnter(){
@@ -85,6 +79,13 @@ export class ExplorePage implements OnInit {
     }else{
       this.loginLabel = "Sign Out";
     }
+
+    this.showLoading = true ; 
+    this._diveService.getPublicDives().subscribe(res =>{
+      console.log(res);
+      this.pubLst = res.PublicDiveLogs;
+      this.showLoading = false ;
+    });
   }
 
   loginClick(){
@@ -99,30 +100,36 @@ export class ExplorePage implements OnInit {
 
 
 
+
   /// code to edit what gets displayed
   displayDiveSites(){
+    this.showLoading = true;
     //setup what gets displayed
     this.showFeed =  false;
     this.showSites = true;
     this.showCenters = false;
 
-    this._diveService.getDiveSites().subscribe(
+    this._diveService.getDiveSites("*").subscribe(
       data => {
           console.log(data);
-          this.siteLst = data.DiveSiteList ; 
+          this.siteLst = data.ReturnedList ; 
+          this.showLoading = false;
       }
     ); //end DiveSite req
+    
   }
 
   displayDiveCenters(){
+    this.showLoading = true;
     this.showFeed =  false;
     this.showSites = false;
     this.showCenters= true;
 
-    this._diveService.getDiveCenters().subscribe(
+    this._diveService.getDiveCenters("*").subscribe(
       data => {
           console.log(data);
-          this.centerLst = data.DiveCenterList ; 
+          this.centerLst = data.ReturnedList ; 
+          this.showLoading = false;
       }
     ); //end DiveType req
   }

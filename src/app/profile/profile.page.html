@@ -2,70 +2,112 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@100&family=Righteous&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
-
 </head>
-
-
-<ion-header no-border slot="fixed">
- 
-</ion-header>
+<ion-header no-border slot="fixed"></ion-header>
 <ion-toolbar class="productHeader" transparent slot="fixed">
+  
   <ul>
     <li style="float:right;"><a routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >{{loginLabel}}</a></li>
-    <li style="margin-top:5px; margin-bottom:5px;right:0;float:right;"><ion-searchbar animated></ion-searchbar></li>        
-      <li style="float:left;margin-left:20px;"><a routerLink="/home" >Home</a></li>  
+    <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo">  
+    <li style="float:left;margin-left:20px;"><a routerLink="/home" >Home</a></li>  
       <li style="float:left;"><a routerLink="/explore">Explore</a></li>  
       <li style="float:left;"><a routerLink="/weather">Weather</a></li> 
       <li style="float:left;"><a routerLink="/my-dives">My Dives</a></li>
-      <li style="float:left;"><a routerLink="/profile">My Account</a></li>   
-</ul>
+      <li style="float:left;"><a routerLink="/profile">My Account</a></li>  
+      <ion-progress-bar type="indeterminate" *ngIf="showLoading"></ion-progress-bar>   
+    </ul>
+  
 </ion-toolbar>
 
+
 <ion-content fullscreen class="background" no-scroll padding >
-  
-  <div >
-    <ion-grid id="ProfileInfo" *ngIf="viewProfile">
+  <div *ngIf='showAD'>
+
+    <div id="EmailVerificationDiv" *ngIf='showAccountVerifiedMessage'>
+      <ion-icon name="close" (click)="showAccountVerifiedMessage=false"></ion-icon>
+      <label id="EmailVerificationMsg">Your email {{AD.Email}} has not yet been verified. <br>
+         Click <span (click)="sendEmail()" id="EmailLink">Here</span> to resend email.</label>
+      
+    </div>
+
+    <ion-grid id="ProfileInfo" *ngIf='showAD'>
       <ion-row>
-        <ion-col id="leftPane" col-4 >
+        <ion-col id="leftPane">
           <div>
-              <ion-img src="../assets/images/STDuser.jpg" id="userProfile"></ion-img>
+              <ion-img src={{AD.ProfilePhoto}} id="userProfile" ></ion-img>
               <ion-label class="infoLabel" id="names" > {{AD.FirstName}}  {{AD.LastName}}</ion-label> <br>
-              <ion-button color="dark" id="editBtn" ><ion-icon name="pencil-outline"></ion-icon></ion-button>
-          
+              <ion-button color="dark" id="editBtn" routerLink="/edit-profile" routerDirection="root" ><ion-icon name="pencil-outline"></ion-icon></ion-button>
+              
           </div>
         </ion-col>
-        <ion-col style="padding-right:0;" >
+     <ion-col style="padding-right:0;" >
           <div id="acountInfo1">
-            <ion-label class="subLabel"> User Information </ion-label> <br>
-            <ion-label class="infoLabel" id="email" >Email: {{AD.Email}} </ion-label> <br>
-            <ion-label class="infoLabel" id="birth" >Birthday: {{AD.DateOfBirth}} </ion-label> <br>
-            <ion-label class="infoLabel" id="status"   >Viewable Status: {{AD.PublicStatus}} </ion-label> <br>
+            <ion-label class="divHead"> User Information </ion-label> <br>
+            <div class="divBodySection">
+              <ion-label class="infoLabel" id="email" >Email: {{AD.Email}} </ion-label> <br>
+              <ion-label class="infoLabel" id="instructorNum" *ngIf='AD.InstructorNumber' >Instructor Number: {{AD.InstructorNumber}} </ion-label> <br>
+              <ion-label class="infoLabel" id="birth" >Date of Birth: {{AD.DateOfBirth}} </ion-label> <br>
+              <ion-label class="infoLabel" id="status"   >Viewable Status: {{AD.PublicStatus}} </ion-label><br>
+              <ion-label class="infoLabel" id="accverified"   >Account Verified:
+                 
+                 <ion-icon name="close" *ngIf='!AD.AccountVerified'  ></ion-icon>
+                 <ion-icon name="checkmark" *ngIf='AD.AccountVerified'></ion-icon>
 
-            <ion-label class="infoLabel" id="qual" >Qualificaton: *** </ion-label> <br>
-            <ion-label class="infoLabel" id="spes" >Specialisation: *** </ion-label> <br><br>
+                </ion-label><br> <br>
 
-          </div>
+            </div>
+            </div>
         </ion-col>
         <ion-col col-8 id="acountInfo2" >
           <div>
-            <ion-label class="subLabel" > Account Type </ion-label> <br>
-            
-            <ion-label class="infoLabel" id="accType" >Account Type: {{AD.AccountType}} </ion-label> <br><br>
-
             </div>
         </ion-col>
+        <!--<ion-col  id="acountInfo2" *ngIf='AD.DiveCentre' >
+            <ion-img src='../../assets/images/DiveCenters/{{AD.DiveCentre}}.png' class="diveCenterIMG" ></ion-img>
+        </ion-col>-->
       </ion-row>
     </ion-grid> <!-- View Profile -->
   </div>
 
+  <div id="Credentials" *ngIf='showAD'>
+    <div class="divHeadSection">
+      <ion-label class="divHead"> Diver Credentials </ion-label>
+    </div>
+      <div class="divBodySection">
+        <ion-label class="divSubHead"> {{AD.AccountType}} </ion-label>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-label class="infoLabel" id="spes" *ngIf='AD.Specialisation'>Specialisation: <br> <ion-label class="infoLabel" *ngFor="let s of AD.Specialisation"><ion-icon name="play-outline"></ion-icon> {{s}}<br></ion-label></ion-label>
+            </ion-col>
+            <ion-col>
+              <ion-label class="infoLabel" id="qual" *ngIf='AD.Qualification'>Qualificaton: <br><ion-icon name="play-outline"></ion-icon>{{AD.Qualification}} </ion-label> <br><br>
+              <ion-label class="infoLabel" id="qual" *ngIf='AD.DiveCentre'>Center: <br><ion-icon name="play-outline"></ion-icon>{{AD.DiveCentre}} </ion-label> <br><br>
+            </ion-col>
+            
+          </ion-row>
+        </ion-grid>
+    </div>
+  </div>
+
   <div id="checkListDiv">
-    <ion-label class="divHead"> Checklist </ion-label> <br>
-      <ion-item>
-        <ion-label>Dive Type*</ion-label>
-        <ion-select placeholder="Select One" #diveType (ionChange)="onChooseDive( diveType.value, $event)">
-          <ion-select-option *ngFor='let t of typeLst'> {{ t }}</ion-select-option>
-        </ion-select>
-      </ion-item>
+    <div class="divHeadSection">
+      <ion-label class="divHead"> Checklist </ion-label>
+    </div>
+    <div class="divBodySection">
+     
+    <ion-button (click)="onChooseDive( diveType.value, $event)">
+      <ion-icon name="search"></ion-icon>
+    </ion-button><br>
+
+   
+      <div class="searchableSelect">
+        <ion-label class="searchableSelectLabel">Dive Type</ion-label>
+        <input list="diveTypes" class="searchableSelectInput" placeholder="Search by a Dive Type" #diveType>
+        <datalist id="diveTypes" >
+            <option *ngFor='let t of DiveTypeLst' value={{t}}></option>
+        </datalist>
+      </div>
  
 
     <ion-grid id="CheckListsInfo">
@@ -94,8 +136,9 @@
           </table>
         </ion-col>
       </ion-row>
+    
     </ion-grid>
-
+  </div>
   </div>
 
 
