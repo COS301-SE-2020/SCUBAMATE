@@ -9,12 +9,14 @@ exports.handler = async (event, context, callback) => {
     let statusCode =0;
 
     let body = JSON.parse(event.body);
+    var DiveID = body.DiveID;
     var AccessToken = body.AccessToken;
     var Buddy = body.Buddy;
     var InstructorLink = body.InstructorLink;
     var Description = body.Description;
     var DivePublicStatus = body.DivePublicStatus;
-    
+    const guid = AccessToken.substring(0,36);
+
     function compareDates(t,e)
     {
         console.log(t.getFullYear());
@@ -76,57 +78,47 @@ exports.handler = async (event, context, callback) => {
 
         return true;
     }
-    
+
     //Verify AccessToken 
-    try {
-        const params = {
-            TableName: "Scubamate",
-            ProjectionExpression: "Expires,AccountGuid",
-            FilterExpression: "#acc = :AccessToken",
-            ExpressionAttributeNames:{
-                "#acc" : "AccessToken"
-            },
-            ExpressionAttributeValues:{
-                ":AccessToken" : AccessToken
-            }
-        };
-        
-        const data = await documentClient.scan(params).promise();
-        if(data.Items[0].AccountGuid)
-        {
-            //console.log("Account: " + data.Items[0].AccountGuid);
-            var AccountGuid = data.Items[0].AccountGuid;
+    const params = {
+        TableName: "Scubamate",
+        Key: {
+            "AccountGuid": guid
         }
-        if( data.Items[0].Expires) // check if it's undefined
+    }
+
+    try {     
+        const data = await documentClient.get(params).promise();
+        
+        if( data.Item.Expires) // check if it's undefined
         {
-            const expiryDate = new Date(data.Items[0].Expires);
+            const expiryDate = new Date(data.Item.Expires);
             const today = new Date();
-            //console.log("Compare: " + today + " and " + expiryDate  + " " + compareDates(today,expiryDate));
+            console.log("Compare: " + today + " and " + expiryDate  + " " + compareDates(today,expiryDate));
             if(compareDates(today,expiryDate))
             {
                 statusCode = 403;
                 responseBody = "Access Token Expired!";
             }
-            
+                
         }
-        
-        //console.log("status is now: " + statusCode) ;
+            
+        console.log("status is now: " + statusCode) ;
 
     } catch (error) {
         console.error(error);
         statusCode = 403;
-        responseBody = "Invalid Access Token";
+        responseBody = "Invalid Access Token ";
     }
 
+    
     // Only update dive if access token is verified
     if(statusCode==0){
-    var DiveID = body.DiveID;
-
         const params = {
             TableName: "Dives",
             Key: {
                 'DiveID' : DiveID,
-                'AccountGuid' : AccountGuid,
+                'AccountGuid' : gui,
             },
             UpdateExpression: 'set Buddy = :bud, InstructorLink = :il, Description = :des, DivePublicStatus = :dp',
             ExpressionAttributeValues: {
@@ -141,7 +133,7 @@ exports.handler = async (event, context, callback) => {
             responseBody = "Successfully updated dive!";
             statusCode = 201;
         }catch(err){
-            responseBody = "Unable to update dive. "+ err+" "+ DiveID;
+            responseBody = "Unable to update dive. "+ err;
             statusCode = 403;
         } 
     }
@@ -160,3 +152,6 @@ exports.handler = async (event, context, callback) => {
     return response;
     
 }
+
+
+
