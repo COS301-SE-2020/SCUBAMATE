@@ -11,7 +11,6 @@
   
   <ul>
     <li style="float:right;"><a routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >{{loginLabel}}</a></li>
-    <li style="margin-top:5px; margin-bottom:5px;right:0;float:right;"><ion-searchbar animated></ion-searchbar></li>        
     <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo">  
     <li style="float:left;margin-left:20px;"><a routerLink="/home" >Home</a></li>  
       <li style="float:left;"><a routerLink="/explore">Explore</a></li>  
@@ -40,7 +39,7 @@
             </div>
             <div class="row">
                 <button  class="orangeButton" style="margin-left:5%;" routerLink="/signup">Sign Up <span></span></button>
-           <button (click)="sendEmail()">Send Email</button>
+           <!--<button (click)="sendEmail()">Send Email</button>-->
               </div>
           </div>
       </div>

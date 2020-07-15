@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-
 import { accountService } from '../service/account.service';
 import { diveService } from '../service/dive.service';
 import * as CryptoJS from 'crypto-js';  
 import { UUID } from 'angular2-uuid';
 import { Binary } from '@angular/compiler';
 import { Router } from '@angular/router';
-
 
 
 //forms
@@ -43,15 +41,12 @@ export interface SignInstructor {
 }
 
 
-
-
 @Component({
-  selector: 'app-signup',
-  templateUrl: './signup.page.html',
-  styleUrls: ['./signup.page.scss'],
+  selector: 'app-register',
+  templateUrl: './register.page.html',
+  styleUrls: ['./register.page.scss'],
 })
-export class SignupPage implements OnInit {
-
+export class RegisterPage implements OnInit {
 
  /*********************************************
                 Global Variables
@@ -367,6 +362,5 @@ InstructorSubmit(){
 }
 
   
-
 
 }

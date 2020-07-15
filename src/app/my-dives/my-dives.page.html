@@ -26,21 +26,15 @@
   
   <table style="margin:auto;"  >
     <tr>
-      <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th>
-          <ion-button id="addBtn" routerLink="/log-dive" style="margin-right:15px;  margin-top: 10px;" >
-            <ion-icon name="add"></ion-icon>
-          </ion-button>
-        </th>
-    </tr>
-    <tr>
       <th> Dive Date </th>
       <th> Dive Site </th>
       <th> TimeIn </th>
       <th> Buddy </th>
+      <th>
+        <ion-button id="addBtn" routerLink="/log-dive" style="margin-right:15px;  margin-top: 10px;" >
+          <ion-icon name="add"></ion-icon>
+        </ion-button>
+      </th>
     </tr>
     <tr *ngFor='let d of diveLst' > 
       <td> {{d.DiveDate}}  </td>

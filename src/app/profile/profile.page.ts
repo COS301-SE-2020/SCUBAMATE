@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { accountService } from '../service/account.service';
 import { diveService } from '../service/dive.service';
+import { AlertController } from '@ionic/angular';
 
 
 
@@ -34,7 +35,7 @@ export interface DiveType{
 export class ProfilePage implements OnInit {
 
   loginLabel:string ;
-  AD : AccountDetails ; 
+  AD ;//: AccountDetails ; 
   DiveTypeLst: []; 
   OptionalList : String[];
   EquipmentList : String[];
@@ -45,7 +46,9 @@ export class ProfilePage implements OnInit {
   showLoading: Boolean;
   showAD : Boolean = false  ;
 
-  constructor( private router: Router, private _accountService: accountService,  private _diveService: diveService) {}
+  showAccountVerifiedMessage : Boolean ; 
+
+  constructor( public alertController : AlertController , private router: Router, private _accountService: accountService,  private _diveService: diveService) {}
   
   ngOnInit() {
     this.viewProfile = true;
@@ -70,6 +73,12 @@ export class ProfilePage implements OnInit {
             this.AD.PublicStatus = "Public";
           }else{
             this.AD.PublicStatus = "Private";
+          }
+
+          if(res.VerifiedEmail){
+            this.showAccountVerifiedMessage = false ;
+          }else{
+            this.showAccountVerifiedMessage = true ;
           }
 
           this.showLoading = false;
@@ -104,9 +113,22 @@ export class ProfilePage implements OnInit {
       this.loginLabel = "Sign Out";
     }
 
+    
+
     this._accountService.getUser().subscribe(res => {
       console.log(res);
       this.AD = res;
+      if (res.PublicStatus == true){
+        this.AD.PublicStatus = "Public";
+      }else{
+        this.AD.PublicStatus = "Private";
+      }
+      
+      if(res.VerifiedEmail){
+        this.showAccountVerifiedMessage = false ;
+      }else{
+        this.showAccountVerifiedMessage = true ;
+      }
     })
     this._diveService.getDiveTypes("*").subscribe(
       data => {
@@ -152,6 +174,28 @@ export class ProfilePage implements OnInit {
   goToEdit(){
     console.log("in edit func");
     this.router.navigate(["/edit-profile"]);
+  }
+
+  async presentAlertEmailSent( userEmail ) {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: 'Validation Email Sent',
+      subHeader: 'Please validate your Email',
+      message: 'An OTP has been sent to: <br>' + userEmail ,
+      buttons: ['OK']
+    });
+  
+    await alert.present();
+  }
+  
+
+  sendEmail(){
+    this.showLoading = true;
+    this._accountService.sendValidationEmail(this.AD.Email).subscribe( res=>
+      {
+        this.showLoading = false;
+        this.presentAlertEmailSent(this.AD.Email);
+      });
   }
 
 
