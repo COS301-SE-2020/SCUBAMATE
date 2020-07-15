@@ -23,6 +23,9 @@ import { diveService } from './service/dive.service';
 import { weatherService } from './service/weather.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 
+//validators
+import { AgeValidator } from './validators/age' ;
+
 
 @NgModule({
   declarations: [
@@ -41,6 +44,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
     accountService,
     diveService,
     weatherService,
+    AgeValidator,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     Geolocation
   ],

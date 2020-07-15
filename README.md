@@ -6,7 +6,8 @@
 "Scubamate" is a scuba diving companion app, designed to aid divers, and diving instructors with administrative tasks, such as checking weather information, logging dives, and planning diving trips.
 
 ## Software Requirements Specification 
- * <a href="https://www.overleaf.com/read/gnsygbdtvctw">Overleaf - LaTex</a>
+ * <a href="https://www.overleaf.com/read/gnsygbdtvctw">SRS: Overleaf - LaTex</a>
+ * <a href="https://www.overleaf.com/read/shbywrwqfcvw">Coding Standards: Overleaf - LaTex</a>
 
 ## Project Management Tools
 * <a href="https://team-anti-virus.slack.com">Slack</a>
@@ -20,9 +21,6 @@
     Most of our project is done using AWS hosted resources such as Lambda, API Gateway, S3 for storage and DynamoDB.
     Thus the only installation required is to download the master branch of the git which contains our front-end (Angular, Ionic and TypeScript) code, then run this command in the terminal:
     $npm install
-    $cordova telemetry on
-    $ionic cordova plugin add cordova-plugin-geolocation
-    $npm install @ionic-native/geolocation
     Then to run the application:
     $ionic serve
     The first compilation will take a few seconds and then it will automatically open in your browser on localhost:8100.

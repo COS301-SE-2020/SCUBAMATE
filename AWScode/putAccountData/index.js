@@ -1,8 +1,6 @@
 'use strict'
 const AWS = require('aws-sdk');
 AWS.config.update({region: "af-south-1"});
-const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
-const s3 = new AWS.S3({apiVersion: '2006-03-01'});
 
 exports.handler = async (event, context, callback) => {
 
@@ -37,23 +35,30 @@ exports.handler = async (event, context, callback) => {
     const extension = contentType.substring(startExt, contentType.length);
     
     const startIndex = ProfilePhoto.indexOf(",")+1;
+    
     const encodedImage = ProfilePhoto.substring(startIndex, ProfilePhoto.length);
-    const decodedImage = Buffer.from(encodedImage, 'base64');
+    const decodedImage = Buffer.from(encodedImage.replace(/^data:image\/\w+;base64,/, ""),'base64')
+  
     const filePath = "profilephoto" + AccountGuid + "."+extension;
+    
     let profileLink ="https://profilephoto-imagedatabase-scubamate.s3.af-south-1.amazonaws.com/"+filePath;
+
     const paramsImage = {
       "Body": decodedImage,
       "Bucket": "profilephoto-imagedatabase-scubamate",
       "Key": filePath,
-      "Content-Type" : contentType
+      "ContentEncoding": 'base64',
+      "ContentType" : contentType
     };
     
     const s3 = new AWS.S3({apiVersion: '2006-03-01'});
-    s3.upload(paramsImage, function(err, data){
+    s3.putObject(paramsImage, function(err, data){
         if(err) {
+            /* Default image if image upload fails */
             profileLink ="https://profilephoto-imagedatabase-scubamate.s3.af-south-1.amazonaws.com/image2.jpg";
         }
     });
+    
     
     
     //
@@ -74,6 +79,7 @@ exports.handler = async (event, context, callback) => {
     
     var flag = false;
     
+    const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
     try{
         const ryker = await documentClient.scan(emailParams).promise();
         var maily = ryker.Items[0].Email;
@@ -136,5 +142,3 @@ exports.handler = async (event, context, callback) => {
     return response;
     
 }
-
-
