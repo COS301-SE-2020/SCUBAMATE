@@ -118,7 +118,7 @@ exports.handler = async (event, context, callback) => {
             TableName: "Dives",
             Key: {
                 'DiveID' : DiveID,
-                'AccountGuid' : gui,
+                'AccountGuid' : guid,
             },
             UpdateExpression: 'set Buddy = :bud, InstructorLink = :il, Description = :des, DivePublicStatus = :dp',
             ExpressionAttributeValues: {
