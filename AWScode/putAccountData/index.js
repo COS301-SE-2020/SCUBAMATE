@@ -3,30 +3,26 @@ const AWS = require('aws-sdk');
 AWS.config.update({region: "af-south-1"});
 
 exports.handler = async (event, context, callback) => {
-
-    let responseBody = "";
-    let statusCode =0;
-
-    let body = JSON.parse(event.body);
+    
+    const body = JSON.parse(event.body);
     const AccountGuid = body.AccountGuid;
-    const AccountType = "Diver";
     const FirstName = body.FirstName;
     const LastName = body.LastName;
     const Email = body.Email;
-    
     const DateOfBirth = body.DateOfBirth;
     const ProfilePhoto = body.ProfilePhoto;
     const Password = body.Password;
     const PublicStatus = body.PublicStatus;
     
+    const AccountType = "Diver";
+    
     const Qualification = body.Qualification;
     const Specialisation = body.Specialisation;
     
-    //hashes the password using the Email as a salt
-    var crypto = require('crypto');
-    var hash = crypto.pbkdf2Sync(Password, Email, 1000, 64, 'sha512').toString('hex');
+    const crypto = require('crypto');
+    const hash = crypto.pbkdf2Sync(Password, Email, 1000, 64, 'sha512').toString('hex');
     
-    /* data:image/png;base64, is send at the front of ProfilePhoto thus find the first , */
+   /* data:image/png;base64, is send at the front of ProfilePhoto thus find the first , */
     const startContentType = ProfilePhoto.indexOf(":")+1;
     const endContentType = ProfilePhoto.indexOf(";");
     const contentType = ProfilePhoto.substring(startContentType, endContentType);
@@ -37,7 +33,7 @@ exports.handler = async (event, context, callback) => {
     const startIndex = ProfilePhoto.indexOf(",")+1;
     
     const encodedImage = ProfilePhoto.substring(startIndex, ProfilePhoto.length);
-    const decodedImage = Buffer.from(encodedImage.replace(/^data:image\/\w+;base64,/, ""),'base64')
+    const decodedImage = Buffer.from(encodedImage.replace(/^data:image\/\w+;base64,/, ""),'base64');
   
     const filePath = "profilephoto" + AccountGuid + "."+extension;
     
@@ -59,10 +55,7 @@ exports.handler = async (event, context, callback) => {
         }
     });
     
-    
-    
-    //
-    //Email checking
+    /*Email duplicate checking*/
     const emailParams = {
         TableName: "Scubamate",
         ProjectionExpression: "Email",
@@ -76,58 +69,53 @@ exports.handler = async (event, context, callback) => {
     };
     
     
-    
-    var flag = false;
-    
+    let dupFlag = false;
+    let responseBody;
+    let statusCode;
     const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
     try{
-        const ryker = await documentClient.scan(emailParams).promise();
-        var maily = ryker.Items[0].Email;
-        if (maily)
+        const dataEmail = await documentClient.scan(emailParams).promise();
+        if (dataEmail.Items.length !=0 )
         {
             statusCode = 403;
             responseBody = "Email already taken";
-            flag = true;
+            dupFlag = true;
         }
         
     }catch(err){
-        
+        responseBody = "Email could not be checked.";
+        dupFlag = true;
     }
     
-    const params = {
-        TableName: "Scubamate",
-        Item: {
-            AccountGuid : AccountGuid,
-            AccountType: AccountType, 
-            FirstName: FirstName,
-            LastName: LastName, 
-            Email: Email, 
-            DateOfBirth: DateOfBirth,
-            Password: hash, 
-            ProfilePhoto: profileLink,
-            PublicStatus: PublicStatus,
-            Qualification: Qualification,
-            Specialisation: Specialisation,
-            EmailVerified: false,
-            AccountVerified: false
-        }
-    }
-
-    try{
-        if (!flag)
-        {
+    if(!dupFlag){
+        const params = {
+            TableName: "Scubamate",
+            Item: {
+                AccountGuid : AccountGuid,
+                AccountType: AccountType, 
+                FirstName: FirstName,
+                LastName: LastName, 
+                Email: Email, 
+                DateOfBirth: DateOfBirth,
+                Password: hash, 
+                ProfilePhoto: profileLink,
+                PublicStatus: PublicStatus,
+                EmailVerified: false,
+                AccountVerified: false,
+                Qualification: Qualification,
+                Specialisation: Specialisation
+            }
+        };
+    
+        try{
             const data = await documentClient.put(params).promise();
             responseBody = "Successfully added account!";
             statusCode = 201;
-        }
-    }catch(err){
-        if (!flag)
-        {
-        responseBody = "Unable to create account";
-        statusCode = 403;
+        }catch(err){
+            responseBody = "Unable to create account";
+            statusCode = 403;
         }
     }
-
     const response = {
         statusCode: statusCode,
         headers: {
