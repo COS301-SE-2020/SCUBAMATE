@@ -77,7 +77,7 @@
       <div class="thecard" >
         <div class="thefront">
           <ion-card  >
-            <img src="../../assets/images/DiveSites/{{d.DiveSite}}.jpg" />
+            <img class="cardFeedIMG" src="../../assets/images/DiveSites/{{d.DiveSite}}.jpg" />
               <ion-card-content>
               <ion-card-title>
                   {{d.FirstName}} {{d.LastName}}
@@ -102,20 +102,28 @@
         <div class="theback">
           <ion-card  >
               <ion-card-content>
-              <ion-card-title>
-                {{d.FirstName}} {{d.LastName}}
-                </ion-card-title>
-              <p>
-                <b>Site:</b> {{d.DiveSite}} <br>
-                <b>Type:</b> {{d.DiveType}} <br>
-                <b>Date:</b> {{d.DiveDate}} <br>
-                <b>Time:</b> {{d.TimeIn}} - {{d.TimeOut}} <br>
-                <b>Buddy:</b> {{d.Buddy.substring(0, d.Buddy.indexOf("(") -1 )}} <br>
-                <b>Weather:</b> <br>{{d.Weather[0]}} <br>
-                             {{d.Weather[1]}} <br>
-                             {{d.Weather[2]}} <br>
-                <img class="weatherIMG" src="../../assets/images/Weather/{{d.Weather[2]}}.png" />
-              </p>
+              
+               
+                <ion-item-divider style="--background:rgba(38, 70, 83, 0.5);" >
+                  <ion-card-title >
+                    {{d.FirstName}} {{d.LastName}}
+                  </ion-card-title>
+                </ion-item-divider>
+                <ion-item-divider >
+                   <b class="WeatherDescriptionCard">{{d.Weather[2]}} </b> 
+                   <img class="weatherIMG" src="../../assets/images/Weather/{{d.Weather[2]}}.png" />
+                </ion-item-divider>
+                <p style="padding-left: 20px;">
+                  Wind:                         {{d.Weather[0]}} <br>
+                  Moon Phase:                   {{d.Weather[1]}} <br><br>
+
+                <b class="WeatherDescriptionCard">Site:</b> {{d.DiveSite}} <br>
+                  <b class="WeatherDescriptionCard">Type:</b> {{d.DiveType}} <br>
+                  <b class="WeatherDescriptionCard">Date:</b> {{d.DiveDate}} <br>
+                  <b class="WeatherDescriptionCard">Time:</b> {{d.TimeIn}} - {{d.TimeOut}} <br>
+                  <b class="WeatherDescriptionCard">Buddy:</b> {{d.Buddy.substring(0, d.Buddy.indexOf("(") -1 )}}
+                </p>
+              
             </ion-card-content>
           </ion-card>
         </div>

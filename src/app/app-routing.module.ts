@@ -46,7 +46,11 @@ const routes: Routes = [
   {
     path: 'edit-dive',
     loadChildren: () => import('./edit-dive/edit-dive.module').then( m => m.EditDivePageModule)
+  },  {
+    path: 'temp',
+    loadChildren: () => import('./temp/temp.module').then( m => m.TempPageModule)
   }
+
 ];
 
 @NgModule({
