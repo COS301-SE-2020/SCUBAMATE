@@ -32,9 +32,11 @@
 
     <ion-grid id="ProfileInfo" *ngIf='showAD'>
       <ion-row>
-        <ion-col id="leftPane">
+        <ion-col id="leftPane" style="padding-top:2%;">
           <div>
+            <div id="profileSurroundDiv">
               <ion-img src={{AD.ProfilePhoto}} id="userProfile" ></ion-img>
+            </div>
               <ion-label class="infoLabel" id="names" > {{AD.FirstName}}  {{AD.LastName}}</ion-label> <br>
               <ion-button color="dark" id="editBtn" routerLink="/edit-profile" routerDirection="root" ><ion-icon name="pencil-outline"></ion-icon></ion-button>
               

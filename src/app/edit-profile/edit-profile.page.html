@@ -12,7 +12,6 @@
 <ion-toolbar class="productHeader" transparent slot="fixed">
   <ul>
     <li style="float:right;"><a routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >{{loginLabel}}</a></li>
-    <li style="margin-top:5px; margin-bottom:5px;right:0;float:right;"><ion-searchbar animated></ion-searchbar></li>        
     <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo">
      <li style="float:left;margin-left:20px;"><a routerLink="/home" >Home</a></li>  
       <li style="float:left;"><a routerLink="/explore">Explore</a></li>  
@@ -35,12 +34,22 @@
    <form [formGroup]="userForm" *ngIf="showData">
      <ion-grid>
        <ion-row >
-         <ion-col  id="leftPane">
+         <ion-col  id="leftPane" size="4">
+           <label class="subLabel">Profile Photo</label>
            <div id="profileSurroundDiv">
             <ion-img src={{userObj.ProfilePhoto}} id="userProfile" ></ion-img>
            </div>
+              <ion-item color="transparent" lines="none">
+                <ion-button expand="full" (click)="f.click()" style="margin:auto;">
+                  <ion-icon lazy="true" name="image"></ion-icon>
+                  <ion-label slot="end">Change Profile Photo</ion-label>
+                </ion-button>
+                  <input class="ion-hide" #f type="file" (change)="onFileSelected($event)" id="file-input"
+                    accept="image/png, image/jpeg">
+
+               </ion-item>
          </ion-col>
-         <ion-col  id="rightPane">
+         <ion-col  id="rightPane" size="7">
           <ion-row>
             <ion-col>
               <ion-item color="dark">
@@ -79,19 +88,7 @@
               </ion-item>
             </ion-col>
           </ion-row>
-          <ion-row>
-            <ion-col>
-              <ion-item color="dark">
-                <ion-button expand="full" (click)="f.click()">
-                  <ion-icon lazy="true" name="image"></ion-icon>
-                  <ion-label slot="end">Change Profile Photo</ion-label>
-                </ion-button>
-                  <input class="ion-hide" #f type="file" (change)="onFileSelected($event)" id="file-input"
-                    accept="image/png, image/jpeg">
-    
-             </ion-item>
-            </ion-col>
-          </ion-row>
+
           <ion-row style="padding-top:30px;">
             <input type="submit" value="Apply" (click)="UpdateSubmit()">
           </ion-row>

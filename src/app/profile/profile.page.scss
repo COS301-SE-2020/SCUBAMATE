@@ -163,17 +163,29 @@ ion-grid {
 
 
 #userProfile{
-//  object-fit: cover;
   width: 160px;
   height: 160px;
   margin: auto;
-  margin-top: 5%;
-  margin-bottom: 2%;
-
+  margin-top: 6%;
+  margin-bottom: 6%;
   border-radius: 100% !important;
   overflow: hidden;
   
 }
+
+#profileSurroundDiv{
+  width:180px;
+  height:180px;
+  padding:0;
+  margin: auto;
+  margin-top: 2%;
+  margin-bottom: 3%;
+  border-radius: 100% !important;
+  overflow: hidden;
+  background-color:  rgba(24, 30, 33, 0.4) ;
+  text-align: center;
+}
+
 
 .subLabel{
   font-size:  20px ;
