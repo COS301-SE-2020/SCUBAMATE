@@ -3,7 +3,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { FlashCardComponent } from './flash-card.component';
 
-describe('FlashCardComponent', () => {
+fdescribe('FlashCardComponent', () => {
   let component: FlashCardComponent;
   let fixture: ComponentFixture<FlashCardComponent>;
 
@@ -18,7 +18,7 @@ describe('FlashCardComponent', () => {
     fixture.detectChanges();
   }));
 
-  it('should create', () => {
+  fit('should create', () => {
     expect(component).toBeTruthy();
   });
 });
