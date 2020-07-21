@@ -11,7 +11,8 @@ exports.handler = async (event, context) => {
     let body = JSON.parse(event.body)
     //var AccessToken = JSON.parse(JSON.stringify(event, null, 2)).body; 
     const AccessToken = body.AccessToken; 
-    console.log(AccessToken)
+    console.log(AccessToken);
+    const guid = AccessToken.substring(0,36);
 
     function compareDates(t,e)
     {
@@ -76,28 +77,19 @@ exports.handler = async (event, context) => {
     }
 
     //Verify AccessToken 
-    try {
-        const params = {
-            TableName: "Scubamate",
-            ProjectionExpression: "Expires,AccountGuid",
-            FilterExpression: "#acc = :AccessToken",
-            ExpressionAttributeNames:{
-                "#acc" : "AccessToken"
-            },
-            ExpressionAttributeValues:{
-                ":AccessToken" : AccessToken
-            }
-        };
-            
-        const data = await documentClient.scan(params).promise();
-        if(data.Items[0].AccountGuid)
-        {
-            console.log("Account thing: " + data.Items[0].AccountGuid);
-            var AccountGuid = data.Items[0].AccountGuid;
+    const params = {
+        TableName: "Scubamate",
+        Key: {
+            "AccountGuid": guid
         }
-        if( data.Items[0].Expires) // check if it's undefined
+    }
+
+    try {     
+        const data = await documentClient.get(params).promise();
+        
+        if( data.Item.Expires) // check if it's undefined
         {
-            const expiryDate = new Date(data.Items[0].Expires);
+            const expiryDate = new Date(data.Item.Expires);
             const today = new Date();
             console.log("Compare: " + today + " and " + expiryDate  + " " + compareDates(today,expiryDate));
             if(compareDates(today,expiryDate))
@@ -113,20 +105,20 @@ exports.handler = async (event, context) => {
     } catch (error) {
         console.error(error);
         statusCode = 403;
-        responseBody = "Invalid Access Token "+AccessToken;
+        responseBody = "Invalid Access Token ";
     }
     
     //Only proceed if access token is valid
     if(statusCode==0){
         var diveParams = {
             TableName: "Dives",
-            ProjectionExpression: "DiveSiteLink, DiveDate, Weather, TimeIn , TimeOut, Buddy",
+            ProjectionExpression: "DiveID, AccountGuid, DiveTypeLink, DiveSite, DiveDate, Weather, TimeIn , TimeOut, Buddy",
             FilterExpression: "#acc = :acc",
             ExpressionAttributeNames:{
                 "#acc" : "AccountGuid"
             },
             ExpressionAttributeValues:{
-                ":acc" : AccountGuid,
+                ":acc" : guid,
             }
         };
         
@@ -135,15 +127,15 @@ exports.handler = async (event, context) => {
             responseBody = await documentClient.scan(diveParams).promise();
             if(responseBody.Items[0].Buddy)
             {
-                responseBody = JSON.stringify(responseBody);
+                responseBody = responseBody;
                 statusCode = 201;
             }
             else{
-                responseBody = "No diver logs found";
+                responseBody = "No diver logs found.";
                 statusCode = 404;
             }
         }catch(err){
-            responseBody = "No diver logs found";
+            responseBody = "No diver logs found " + err;
             statusCode = 404;
         } 
     }
@@ -156,7 +148,7 @@ exports.handler = async (event, context) => {
             "Access-Control-Allow-Methods" : "OPTIONS,POST,GET",
             "Access-Control-Allow-Credentials" : true
         },
-        body : responseBody,
+        body : JSON.stringify(responseBody),
         isBase64Encoded: false
     };
     

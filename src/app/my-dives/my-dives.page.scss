@@ -12,6 +12,7 @@ ion-content.background{
 
 
 table{
+  margin: auto;
    width: 70%;
    margin: 30px;
    text-align: center;
@@ -23,18 +24,18 @@ table{
    box-shadow:          3px 3px 2px 3px $lightBlue;
 
   th, td {
-  padding: 0.25rem;
   overflow-y:hidden;
   top: 0;
   }
 
-   tr{
-     background-color: $inputBackgroundColor ;
-     color: white;
-   }
+  tr{
+    background-color: $inputBackgroundColor ;
+    color: white;
+  }
+
 
    td{
-       padding: 10px;
+       padding: 5px;
        font-family: 'Barlow Semi Condensed', sans-serif;
    }
 
@@ -54,64 +55,48 @@ table{
     font-size: large ;
   }
 
+  th:hover{
+    background-color: $inputBackgroundColor ;
+    color: $orange ;
+    padding: 10px;
+    position: sticky;
+    top: 0;
+    font-family: 'Righteous';
+    display: swap ;
+    font-size: larger;
+  }
+
   td:hover{
     color: $lightBlue;
     font-weight: bold;
   }
 
+  tr:first-child th{
+   // background-color: rgba(38, 70, 83, 0.3);
+    padding: 0;
+    margin:0;
+
+    :hover{
+      background-color: rgba(38, 70, 83, 0.3);
+    }
+
+  }
+
  } 
-
-.search-container {
-    float: right;
-    background-color: rgba(38, 70, 83, 0.7);
-    margin-right: 30px;
-    padding: 10px;
-    position: static;
-    border-radius:2%;
-  }
-  
-  .search-container input[type=text] {
-    padding: 6px;
-    margin-top: 8px;
-    font-size: 17px;
-    border: none;
-  }
-  
-  .search-container button {
-    float: right;
-    padding: 6px 10px;
-    margin-top: 8px;
-    margin-right: 16px;
-    background: #ddd;
-    font-size: 17px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .search-container button:hover {
-    background: #ccc;
-  }
-
-  
 
   .productHeader {
     --background: transparent;
 }
 
 
-.addDive{
-  color: white;
-  background-color: rgba(38, 70, 83, 0.8);
-  margin-right: 30px;
-  padding: 10px;
-  font-family: 'Barlow Semi Condensed', sans-serif;
-  font-size: larger;
-  width:20%;
-  text-align: center ;
 
+ion-button{
+  float:right;
+  --border-radius: 100% ;
+  margin-right: 7%;
+  width: 50px;
+  height:50px;
+  padding:0;
 
-  ion-button {
-    margin-right: 10%;
-  }
 }
 

@@ -5,8 +5,10 @@
 ## Overview 
 "Scubamate" is a scuba diving companion app, designed to aid divers, and diving instructors with administrative tasks, such as checking weather information, logging dives, and planning diving trips.
 
-## Software Requirements Specification 
- * <a href="https://www.overleaf.com/read/gnsygbdtvctw">Overleaf - LaTex</a>
+## Software Requirements Specification and Other Documents
+ * <a href="https://www.overleaf.com/read/nyqbrfjqbdtt">SRS: Overleaf - LaTex</a>
+ * <a href="https://www.overleaf.com/read/shbywrwqfcvw">Coding Standards: Overleaf - LaTex</a>
+ * <a href="https://www.overleaf.com/read/wrrjwwdgfgfn">User Manual: Overleaf - LaTex</a>
 
 ## Project Management Tools
 * <a href="https://team-anti-virus.slack.com">Slack</a>
@@ -53,6 +55,8 @@
         <br>
         - Merging branches on github
         <br>
+        - Edit Account and Edit Dive Lambda functions
+        <br>
     </details>
 
 
@@ -69,13 +73,13 @@
         <br>
         - Unit Testing
         <br> 
-        - Insert data
+        - Integration Testing
         <br>
-        - Insert data
+        - Architectural Design Documment: Quality Requirements
         <br>
-        - Insert data
+        - Weather extraction for functionality of application
         <br>
-        - Insert data
+        - Assisting UI Design for COVID, BLM & GBV
         <br>
     </details>
 

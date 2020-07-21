@@ -69,6 +69,38 @@ ul {
       border-bottom-width: 3px  ;
     }
 
+    #navLogo{
+      width:12%;
+      height: 100%;
+      float:left;
+      padding-left: 14px;
+      padding-top: 10px;
+    }
+
+  }
+
+  //Lookahead Input Elements
+  .searchableSelect{
+    background-color: white;
+    border-radius: 1px;
+    text-align: left;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 100%;
+    height: 100%;
+  
+    input{
+        width: 100%;
+        margin: auto;
+        border: none;
+        font-size: medium;
+    }
+  
+  }
+  
+  .searchableSelectLabel{
+    font-size: small;
   }
   
   

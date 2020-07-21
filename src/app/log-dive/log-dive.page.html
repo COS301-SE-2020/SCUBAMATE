@@ -10,32 +10,46 @@
 </ion-header>
 <ion-toolbar class="productHeader" transparent slot="fixed">
   <ul>
-    <li><a routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >{{loginLabel}}</a></li>
-      <li><a routerLink="/profile">Profile</a></li>
-      <li><a routerLink="/my-dives">My Dives</a></li>
-      <li><a routerLink="/weather">Weather</a></li>
-      <li><a routerLink="/explore">Explore</a></li>
-      <li><a routerLink="/home" >Home</a></li>
-</ul>
+    <li style="float:right;"><a routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >{{loginLabel}}</a></li>
+    <li style="margin-top:5px; margin-bottom:5px;right:0;float:right;"><ion-searchbar animated></ion-searchbar></li>        
+    <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo">
+    <li style="float:left;margin-left:20px;"><a routerLink="/home" >Home</a></li>  
+      <li style="float:left;"><a routerLink="/explore">Explore</a></li>  
+      <li style="float:left;"><a routerLink="/weather">Weather</a></li> 
+      <li style="float:left;"><a routerLink="/my-dives">My Dives</a></li>
+      <li style="float:left;"><a routerLink="/profile">My Account</a></li>
+      <ion-progress-bar type="indeterminate" *ngIf="showLoading" ></ion-progress-bar>   
+  </ul>
+  
 </ion-toolbar>
 
 <ion-content fullscreen class="background" no-scroll padding >
- 
+  
   <div id="newDiveDiv">
     <ion-label id="divHead">Log a new Dive</ion-label>
 
-    <form (submit)="onSubmit(desc.value, siteOf.value, dateOf.value, timeIn.value, timeOut.value, diveType.value, bud.value, vis.value, dep.value, aTemp.value, sTemp.value, bTemp.value,  $event)">
+    <form (submit)="onSubmit(public.checked , desc.value, siteOf.value, dateOf.value, timeIn.value, timeOut.value, diveType.value, bud.value, vis.value, dep.value, aTemp.value, sTemp.value, bTemp.value,  $event)">
     <div id="locationInfo">
       <ion-label class="subLabel"> Dive Location </ion-label>
       <ion-grid>
         <ion-row>
-          <ion-col>
-            <ion-item >
-              <ion-label>Dive Site*</ion-label>
-              <ion-select placeholder="Select One" #siteOf required >
-                <ion-select-option *ngFor='let s of siteLst'> {{ s }}</ion-select-option>
-              </ion-select>
-            </ion-item>
+          <ion-col >
+            <div class="searchableSelect">
+              <ion-label class="searchableSelectLabel">Dive Site</ion-label><br>
+                <input list="diveSites"  placeholder="Insert A Dive Site" #siteOf>
+                <datalist id="diveSites" >
+                    <option *ngFor='let s of DiveSiteLst' value={{s}}></option>
+                </datalist>
+            </div>
+            </ion-col>
+            <ion-col >
+            <div class="searchableSelect">
+              <ion-label class="searchableSelectLabel">Dive Type</ion-label>
+              <input list="diveTypes"  placeholder="Insert A Dive Type" #diveType>
+              <datalist id="diveTypes" >
+                  <option *ngFor='let t of DiveTypeLst' value={{t}}></option>
+              </datalist>
+            </div>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -47,7 +61,7 @@
           <ion-col>
             <ion-item>
               <ion-label position="stacked">Date of Dive*</ion-label>
-              <ion-input type="date" #dateOf></ion-input>
+              <ion-input type="date" #dateOf value={{currentDate}}></ion-input>
             </ion-item>
           </ion-col>
         </ion-row>
@@ -68,19 +82,19 @@
       </ion-grid>
     </div> <!-- end of dateTimeDive -->
     <div id="conditions">
-      <ion-label class="subLabel"> Water Temperature (°C)</ion-label>
+      <ion-label class="subLabel">Temperature (°C)</ion-label>
       <ion-grid>
         <ion-row>
           <ion-col>
             <ion-item>
               <ion-label position="floating">Air Temperature</ion-label>
-              <ion-input type="number" #aTemp ></ion-input>
+              <ion-input type="number" #aTemp value={{MaxTempAPI}}></ion-input>
             </ion-item>
           </ion-col>
           <ion-col>
             <ion-item>
               <ion-label position="floating">Surface Temperature</ion-label>
-              <ion-input type="number" #sTemp></ion-input>
+              <ion-input type="number" #sTemp value={{MinTempAPI}}></ion-input>
             </ion-item>
           </ion-col>
         </ion-row>
@@ -88,7 +102,7 @@
         <ion-col>
           <ion-item>
             <ion-label position="floating">Bottom Temperature</ion-label>
-            <ion-input type="number" #bTemp ></ion-input>
+            <ion-input type="number" #bTemp value={{MinTempAPI}}></ion-input>
           </ion-item>
         </ion-col>
         <ion-col>
@@ -102,19 +116,20 @@
       <ion-grid>
         <ion-row>
           <ion-col>
-            <ion-item>
-              <ion-label>Dive Type*</ion-label>
-              <ion-select placeholder="Select One" #diveType required>
-                <ion-select-option *ngFor='let t of typeLst'> {{ t }}</ion-select-option>
-              </ion-select>
-            </ion-item>
-          </ion-col>
-          <ion-col>
-            <ion-item>
-              <ion-label position="floating">Buddy</ion-label>
-              <ion-input type="text" #bud></ion-input>
-            </ion-item>
-          </ion-col>
+              <div class="searchableSelect">
+                <ion-label class="searchableSelectLabel">Buddy</ion-label>
+                <input list="buddylst"  placeholder="Insert Buddy" (keypress)="buddyListFinder($event.target.value)" #bud>
+                <datalist id="buddylst" >
+                    <option *ngFor='let b of BuddyLst' value={{b}}></option>
+                </datalist>
+              </div>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Do you want this dive to be logged publicly?</ion-label>
+                <ion-checkbox color="dark"  #public ></ion-checkbox>
+              </ion-item>
+            </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>

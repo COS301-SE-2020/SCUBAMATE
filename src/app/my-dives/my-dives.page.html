@@ -10,48 +10,39 @@
 </ion-header>
 <ion-toolbar class="productHeader" transparent slot="fixed">
   <ul>
-    <li><a routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >{{loginLabel}}</a></li>
-      <li><a routerLink="/profile">Profile</a></li>
-      <li><a routerLink="/my-dives">My Dives</a></li>
-      <li><a routerLink="/weather">Weather</a></li>
-      <li><a routerLink="/explore">Explore</a></li>
-      <li><a routerLink="/home" >Home</a></li>
+    <li style="float:right;"><a routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >{{loginLabel}}</a></li>
+    <li style="margin-top:5px; margin-bottom:5px;right:0;float:right;"><ion-searchbar animated></ion-searchbar></li>          
+    <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo">
+    <li style="float:left;margin-left:20px;"><a routerLink="/home" >Home</a></li>  
+      <li style="float:left;"><a routerLink="/explore">Explore</a></li>  
+      <li style="float:left;"><a routerLink="/weather">Weather</a></li> 
+      <li style="float:left;"><a routerLink="/my-dives">My Dives</a></li>
+      <li style="float:left;"><a routerLink="/profile">My Account</a></li> 
+      <ion-progress-bar type="indeterminate" *ngIf="showLoading"></ion-progress-bar>  
 </ul>
 </ion-toolbar>
 
 <ion-content fullscreen class="background" no-scroll padding >
-  <div class="search-container" style="position: fixed;margin-left: 75%;">
-    <form action="">
-      <input type="text" placeholder="Search.." name="search">
-      <button type="submit"><i class="fa fa-search"></i></button>
-    </form>
-  </div>
-
-  <div class="addDive" style="position: fixed;margin-left: 75%;margin-top:100px;">
-        <ion-button routerLink="/log-dive" >
+  
+  <table style="margin:auto;"  >
+    <tr>
+      <th> Dive Date </th>
+      <th> Dive Site </th>
+      <th> TimeIn </th>
+      <th> Buddy </th>
+      <th>
+        <ion-button id="addBtn" routerLink="/log-dive" style="margin-right:15px;  margin-top: 10px;" >
           <ion-icon name="add"></ion-icon>
         </ion-button>
-        <ion-label>Add a new Dive</ion-label>
-    </div>
-
-
-  <div class="tableContainer">
-  <table id="feed"  >
-    <tr>
-      <th> Buddy </th>
-      <th> TimeIn </th>
-      <th> TimeOut </th>
-      <th> DiveDate </th>
-      <th> Weather</th>
+      </th>
     </tr>
-    <tr *ngFor='let d of diveLst'> 
-      <td> {{d.Buddy}} </td>
-      <td> {{d.TimeIn}}  </td>
-      <td> {{d.TimeOut}}  </td>
+    <tr *ngFor='let d of diveLst' > 
       <td> {{d.DiveDate}}  </td>
-      <td> {{d.Weather}}  </td>
+      <td> {{d.DiveSite}} </td>
+      <td> {{d.TimeIn}}  </td>
+      <td> {{d.Buddy}} </td>
+      <td> <ion-button color="dark" id="editBtn" (click)="goToEdit(d.DiveID)" ><ion-icon name="pencil-outline"></ion-icon></ion-button></td>
     </tr>
 </table>
-</div>
 
 </ion-content>

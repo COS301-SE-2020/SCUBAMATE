@@ -1,6 +1,296 @@
-body{
-    background-image: url("../../assets/images/sea.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-  
+$darkBlue : #264653 ;
+$lightBlue : #2A9D8F ;
+$orange: #F4A261 ; 
+$red: #E76F51 ;
+$yellow : #E9C46A ;
+$inputBackgroundColor: #181e21;
+
+
+#EmailLink{
+  color: $red;
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
+
+   
+}
+
+#EmailLink:hover{
+  color: $orange;
+}
+
+.diveCenterIMG{
+  width: 110px;
+  height: 110px;
+  margin: auto;
+  margin-top: 20%;
+  margin-bottom: 20px;
+}
+
+ion-button{
+  float:right;
+  margin-right: 7%;
+  width: 50px;
+  height:50px;
+  padding:0;
+
+}
+
+.searchableSelect{
+  background-color: white;
+  border-radius: 1px;
+  text-align: left;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 100%;
+  height:100%;
+
+  input{
+      width: 100%;
+      margin: auto;
+      border: none;
+      font-size: medium;
   }
+
+}
+
+.searchableSelect{
+  background-color: #222428 ;
+
+
+}
+
+.searchableSelectInput{
+  margin-top:10px;
+  width:100%;
+  background-color: #222428 ;
+  color:white;
+}
+
+.searchableSelectLabel{
+  color: white;
+  font-size: small;
+  margin: auto;
+}
+
+ion-content.background{
+  --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
+}
+
+.productHeader {
+  --background: transparent;
+}
+
+ion-grid {
+  --ion-grid-padding: 0px;
+  ion-row {
+      padding: 0px;
+  }
+
+  ion-col {
+      padding: 0px;
+      width:100%;
+  }
+}
+
+#Credentials{
+  padding: 0;
+  background-color: rgba(38, 70, 83, 0.6);
+  margin: auto;
+  border-bottom: solid white 0.5px;
+  border-top: solid white 0.5px;
+  width:  70% ;
+  padding: 0;
+  margin-top: 30px;
+}
+
+#checkListDiv{
+  background-color: rgba(38, 70, 83, 0.6);
+  margin: auto;
+  border-bottom: solid white 0.5px;
+  border-top: solid white 0.5px;
+  width:  70% ;
+  padding: 0;
+  margin-top: 30px;
+  padding: 0px;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+#ProfileInfo{
+  background-color: rgba(38, 70, 83, 0.6);
+  margin: auto;
+  margin-top: 30px;
+  border-bottom: solid white 0.5px;
+  border-top: solid white 0.5px;
+  width:  70% ;
+  padding: 0;
+  height: 80%;
+  display: block;
+
+  #leftPane{
+    background-color: rgba(38, 70, 83, 0.9);
+    height: inherit  ;
+    margin:0;
+    text-align: center;
+    padding-bottom: 1%;
+  }
+
+  #acountInfo1{
+    padding-left: 20px;
+    padding-top: 20px;
+    padding-right:0;
+  }
+
+  #acountInfo2{
+    padding-top: 20px;
+  }
+
+
+  
+
+
+
+  #editBtn{
+    float:right;
+    margin-right: 5%;
+    margin-top:3%;
+  }
+
+
+}
+
+
+#userProfile{
+//  object-fit: cover;
+  width: 160px;
+  height: 160px;
+  margin: auto;
+  margin-top: 5%;
+  margin-bottom: 2%;
+
+  border-radius: 100% !important;
+  overflow: hidden;
+  
+}
+
+.subLabel{
+  font-size:  20px ;
+  font-weight: bold;
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  color: white;
+  border-bottom: solid white 0.5px;
+  border-top: solid white 0.5px;
+}
+
+.infoLabel{
+  font-size:  18px ;
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  color: white;
+}
+
+.divHead{
+  font-size:  30px ;
+  font-family: 'Righteous';
+  display: swap ;
+  color: white;
+  width: 100%;
+  margin: auto;
+  margin-bottom: 20px;
+  margin-top: 15px; 
+  margin-left: 20px;
+}
+
+.divSubHead{
+  font-size:  25px ;
+  font-family: 'Righteous';
+  display: swap ;
+  color: white;
+  width: 100%;
+  margin: auto;
+  margin-bottom: 20px;
+  margin-top: 15px; 
+}
+
+.divHeadSection{
+  background-color: rgba(38, 70, 83, 0.9);
+  padding-left: 25px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.divBodySection{
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+table{
+  width: 90%;
+  text-align: left;
+  position: relative;
+  margin-top: 30px;
+  border-collapse: collapse; 
+  background-color: $inputBackgroundColor ;
+  -moz-box-shadow:     3px 3px 2px 3px $lightBlue;
+  -webkit-box-shadow:  3px 3px 2px 3px $lightBlue;
+  box-shadow:          3px 3px 2px 3px $lightBlue;
+
+ th, td {
+ padding: 0.25rem;
+ overflow-y:hidden;
+ top: 0;
+ }
+
+  tr{
+    background-color: $inputBackgroundColor ;
+    color: white;
+    padding: 20x;
+  }
+
+  td{
+      padding: 10px;
+      font-family: 'Barlow Semi Condensed', sans-serif;
+  }
+
+  th{
+       background-color: $inputBackgroundColor ;
+       color: $orange ;
+       padding: 10px;
+       position: sticky;
+       top: 0;
+       font-family: 'Righteous';
+       display: swap ;
+       font-size: larger;
+       text-align: center;
+ }
+
+ tr:hover{
+   background-color: $darkBlue ;
+   font-size: large ;
+ }
+
+ td:hover{
+   color: $lightBlue;
+   font-weight: bold;
+ }
+
+} 
+
+#EmailVerificationDiv{
+  width: 80%;
+  margin: auto;
+  color: white;
+  text-align: center;
+  background-color: $inputBackgroundColor;
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  padding: 10px;
+  border-radius: 10px;
+
+  ion-icon{
+    float: right;
+  }
+  
+}

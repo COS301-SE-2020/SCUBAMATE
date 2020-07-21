@@ -1,0 +1,23 @@
+
+$lightBlue : #2A9D8F ;
+$darkBlue : #264653 ;
+
+ion-content.background{
+    --background: url(../../assets/images/beach.jpg) 0 0/100% 100% no-repeat;
+}
+
+.FormErrorControlMessage{
+    color: red;
+    font-size: smaller;
+}
+
+.item{
+    --ion-background-color: #264653;
+    width: 40% ;
+    margin: auto;
+    color: white;
+    
+}
+
+
+

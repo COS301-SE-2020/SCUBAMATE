@@ -10,69 +10,173 @@
 </ion-header>
 <ion-toolbar class="productHeader" transparent slot="fixed">
   <ul>
-     <li><a routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >{{loginLabel}}</a></li>
-      <li><a routerLink="/profile">Profile</a></li>
-      <li><a routerLink="/my-dives">My Dives</a></li>
-      <li><a routerLink="/weather">Weather</a></li>
-      <li><a routerLink="/explore">Explore</a></li>
-      <li><a routerLink="/home" >Home</a></li>
+    <li style="float:right;"><a routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >{{loginLabel}}</a></li>
+    <li style="margin-top:5px; margin-bottom:5px;right:0;float:right;"><ion-searchbar animated></ion-searchbar></li>        
+    <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo"> 
+    <li style="float:left;margin-left:20px;"><a routerLink="/home" >Home</a></li>  
+      <li style="float:left;"><a routerLink="/explore">Explore</a></li>  
+      <li style="float:left;"><a routerLink="/weather">Weather</a></li> 
+      <li style="float:left;"><a routerLink="/my-dives">My Dives</a></li>
+      <li style="float:left;"><a routerLink="/profile">My Account</a></li>
+      <ion-progress-bar type="indeterminate" *ngIf="showLoading"></ion-progress-bar>   
 </ul>
 </ion-toolbar>
 
 <ion-content fullscreen class="background" no-scroll padding >
-  <div class="search-container" style="position: fixed;margin-left: 75%;">
-    <form action="">
-      <input type="text" placeholder="Search.." name="search">
-      <button type="submit"><i class="fa fa-search"></i></button>
-    </form>
-  </div>
+
+<!--
+<ion-radio-group color="dark" slot="fixed" style="width:100%;margin-top:-15px;" >
+  <ion-row>
+    <ion-col style="padding:0;padding-left:10%;padding-right:2px;">
+         <ion-item color="dark" (click)="displayFeed()" style="width:100%;--border-radius:27px;">
+            <ion-label>Public Feed</ion-label>
+            <ion-radio value="feed"></ion-radio>
+       </ion-item>
+     </ion-col>
+
+    <ion-col style="padding:0;padding-right:2px;">
+        <ion-item color="dark" (click)="displayDiveCenters()" style="width:100%;--border-radius:27px;">
+            <ion-label>Dive Centers</ion-label>
+            <ion-radio value="centers" ></ion-radio>
+       </ion-item>
+    </ion-col>
+
+    <ion-col style="padding:0;padding-right:10%;">
+        <ion-item color="dark" (click)="displayDiveSites()" style="width:100%;--border-radius:27px;">
+            <ion-label>Dive Sites</ion-label>
+            <ion-radio value="sites"></ion-radio>
+       </ion-item>
+    </ion-col>
+
+</ion-row>
+</ion-radio-group>
+-->
+<ion-radio-group color="dark" slot="fixed" style="width:20%;margin-top:2%;margin-left:2%;" >
+  <ion-row>
+    <ion-item color="dark"  (click)="displayFeed()" style="width:100%;--border-radius:27px;" >
+      <ion-label>Public Feed</ion-label>
+      <ion-radio value="feed" ></ion-radio>
+    </ion-item>
+
+    <ion-item color="dark"  (click)="displayDiveCenters()" style="width:100%;--border-radius:27px;margin-top:8px;">
+      <ion-label>Dive Centers</ion-label>
+      <ion-radio value="centers"></ion-radio>
+    </ion-item>
+    <ion-item color="dark"  (click)="displayDiveSites()" style="width:100%;--border-radius:27px;margin-top:8px;">
+      <ion-label>Dive Sites</ion-label>
+      <ion-radio value="sites" ></ion-radio>
+    </ion-item>
+</ion-row>
+</ion-radio-group>
 
 
-  <!--<div class="tableContainer">
-  <table id="feed"  >
-    <tr>
-      <th> Diver</th>
-      <th> Location </th>
-      <th> Date </th>
-      <th> Weather </th>
-      <th> Buddy </th>
-    </tr>
-    <tr *ngFor='let d of pubLst'> 
-      <td> {{d.Diver}} </td>
-      <td> {{d.Location}} </td>
-      <td> {{d.DateOf}}  </td>
-      <td> {{d.Weather}}  </td>
-      <td> {{d.Buddy}}  </td>
-    </tr>
-</table>
-</div>-->
 
-<!--<ion-list>
-  <ion-item *ngFor="let d of pubLst">
-    <ion-thumbnail slot="start">
-      <ion-img ></ion-img>
-    </ion-thumbnail>
-    <ion-label>{{  d.Location  }}</ion-label>
-  </ion-item>
-</ion-list>-->
+<ion-grid class="contentContainer" *ngIf='showFeed'>
+  <ion-row>
+    <ion-col *ngFor="let d of pubLst" style="margin:0;" >
+      <div class="thecard" >
+        <div class="thefront">
+          <ion-card  >
+            <img class="cardFeedIMG" src="../../assets/images/DiveSites/{{d.DiveSite}}.jpg" />
+              <ion-card-content>
+              <ion-card-title>
+                  {{d.FirstName}} {{d.LastName}}
+                </ion-card-title>
+              <p>
+                <ion-grid>
+                  <ion-row>
+                    <ion-col>
+                      {{d.DiveSite}}  <br>
+                      {{d.DiveType}}  <br>
+                      {{d.DiveDate}}
+                    </ion-col>
+                    <ion-col>
+                      <img class="weatherIMG" src="../../assets/images/Weather/{{d.Weather[2]}}.png" />
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </p>
+            </ion-card-content>
+          </ion-card>
+        </div>
+        <div class="theback">
+          <ion-card  >
+              <ion-card-content>
+              
+               
+                <ion-item-divider style="--background:rgba(38, 70, 83, 0.5);" >
+                  <ion-card-title >
+                    {{d.FirstName}} {{d.LastName}}
+                  </ion-card-title>
+                </ion-item-divider>
+                <ion-item-divider >
+                   <b class="WeatherDescriptionCard">{{d.Weather[2]}} </b> 
+                   <img class="weatherIMG" src="../../assets/images/Weather/{{d.Weather[2]}}.png" />
+                </ion-item-divider>
+                <p style="padding-left: 20px;">
+                  Wind:                         {{d.Weather[0]}} <br>
+                  Moon Phase:                   {{d.Weather[1]}} <br><br>
 
-<div id="classContainer" style="margin-right:30%;margin-left:10%;">
+                <b class="WeatherDescriptionCard">Site:</b> {{d.DiveSite}} <br>
+                  <b class="WeatherDescriptionCard">Type:</b> {{d.DiveType}} <br>
+                  <b class="WeatherDescriptionCard">Date:</b> {{d.DiveDate}} <br>
+                  <b class="WeatherDescriptionCard">Time:</b> {{d.TimeIn}} - {{d.TimeOut}} <br>
+                  <b class="WeatherDescriptionCard">Buddy:</b> {{d.Buddy.substring(0, d.Buddy.indexOf("(") -1 )}}
+                </p>
+              
+            </ion-card-content>
+          </ion-card>
+        </div>
+      </div>
+    </ion-col>
+</ion-row>
+
+</ion-grid>
+
+
+
+<!--
+<div id="classContainer" style="margin-right:5%;margin-left:30%;margin-top:20px;" *ngIf='showFeed'>
   <ion-item *ngFor="let d of pubLst" style="width:45%; margin: auto;margin-left:1%;display: inline-block;" >
     <ion-card  >
       <img src="../../assets/images/jellyfish.jpg" />
         <ion-card-content>
         <ion-card-title>
-            {{d.Diver }}
+            {{d.FirstName}} {{d.LastName}}
           </ion-card-title>
         <p>
-          {{d.Location}} <br>
-          {{d.Weather}}  <br>
-          {{d.Buddy}}  <br>
-          {{d.DateOf}}
+          {{d.DiveSite}} <br>
+          {{d.DiveType}} <br>
+          {{d.DiveDate}}
         </p>
       </ion-card-content>
     </ion-card>
   </ion-item>
+</div>
+-->
+
+
+
+<div class="tableContainer"  *ngIf='showSites'>
+  <table id="feed"  >
+    <tr>
+      <th> Dive Sites </th>
+    </tr>
+    <tr *ngFor='let d of siteLst'> 
+      <td> {{d}} </td>
+    </tr>
+</table>
+</div>
+
+<div class="tableContainer"  *ngIf='showCenters'>
+  <table id="feed"  >
+    <tr>
+      <th> Dive Centers </th>
+    </tr>
+    <tr *ngFor='let d of centerLst'> 
+      <td> {{d}} </td>
+    </tr>
+</table>
 </div>
 
 </ion-content>
