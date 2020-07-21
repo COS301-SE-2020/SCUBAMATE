@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { WeatherPage } from './weather.page';
 import { AppModule } from '../app.module';
 
-describe('WeatherPage', () => {
+fdescribe('WeatherPage', () => {
   let component: WeatherPage;
   let fixture: ComponentFixture<WeatherPage>;
 
@@ -19,7 +19,24 @@ describe('WeatherPage', () => {
     fixture.detectChanges();
   }));
 
-  it('should create', () => {
+  fit('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  fit('Testing Weather Components', () => {
+    expect(component.ngOnInit).toBeTruthy();
+    expect(component.Coordinates).toBeDefined();
+    expect(component.Key).toBeDefined();
+    expect(component.Weather).toBeDefined();
+    expect(component.tempList).toBeDefined();
+    //expect(component.tempDate).toBeDefined();
+    //expect(component.weatherDate).toBeInstanceOf(String);
+    expect(component.loginLabel).toBeDefined();
+  });
+
+  fit('Testing Weather Functionality', () => {
+    expect(component.ngOnInit).toBeTruthy();
+    expect(component.ionViewWillEnter).toBeTruthy();
+    expect(component.loginClick).toBeTruthy();
   });
 });
