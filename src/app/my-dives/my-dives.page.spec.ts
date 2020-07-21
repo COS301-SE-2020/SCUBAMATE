@@ -5,7 +5,7 @@ import { MyDivesPage } from './my-dives.page';
 import { HttpClient,  HttpHeaders } from '@angular/common/http';
 import { AppModule } from '../app.module';
 
-describe('MyDivesPage', () => {
+fdescribe('MyDivesPage', () => {
   let component: MyDivesPage;
   let fixture: ComponentFixture<MyDivesPage>;
 
@@ -21,7 +21,20 @@ describe('MyDivesPage', () => {
     fixture.detectChanges();
   }));
 
-  it('should create', () => {
+  fit('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  fit('Testing My-Dives Components', () => {
+    expect(component.diveLst).toBeDefined();
+    expect(component.loginLabel).toBeDefined();
+    expect(component.showLoading).toBeFalse();
+  });
+
+  fit('Testing My-Dives Functionality', () => {
+    expect(component.ngOnInit).toBeTruthy();
+    expect(component.ionViewWillEnter).toBeTruthy();
+    expect(component.loginClick).toBeTruthy();
+    expect(component.goToEdit).toBeTruthy();
   });
 });
