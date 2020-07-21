@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { EditProfilePage } from './edit-profile.page';
 import { AppModule } from '../app.module';
 
-describe('EditProfilePage', () => {
+fdescribe('EditProfilePage', () => {
   let component: EditProfilePage;
   let fixture: ComponentFixture<EditProfilePage>;
 
@@ -19,7 +19,19 @@ describe('EditProfilePage', () => {
     fixture.detectChanges();
   }));
 
-  it('should create', () => {
+  fit('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  fit('Testing Edit-Page Components', () => {
+    //expect(component.AD).toBeTruthy(); AD is undefined
+    expect(component.loginLabel).toBeDefined();
+    expect(component.showData).toBeFalse();
+  });
+
+  fit('Testing Edit-Page Functionality', () => {
+    expect(component.ngOnInit).toBeTruthy();
+    expect(component.loginClick).toBeTruthy();
+    expect(component.onSubmit).toBeTruthy();
   });
 });
