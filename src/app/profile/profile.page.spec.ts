@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ProfilePage } from './profile.page';
 import { AppModule } from '../app.module';
 
-describe('ProfilePage', () => {
+fdescribe('ProfilePage', () => {
   let component: ProfilePage;
   let fixture: ComponentFixture<ProfilePage>;
 
@@ -19,7 +19,28 @@ describe('ProfilePage', () => {
     fixture.detectChanges();
   }));
 
-  it('should create', () => {
+  fit('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  fit('Testing Profile Components', () => {
+    expect(component.loginLabel).toBeDefined();
+    //expect(component.AD).toBeDefined();
+    //expect(component.DiveTypeLst).toBeDefined();
+    //expect(component.OptionalList).toBeDefined();
+    //expect(component.EquipmentList).toBeDefined();
+    expect(component.viewChecklist).toBeFalse();
+    expect(component.viewProfile).toBeDefined();
+    expect(component.editProfile).toBeDefined();
+    expect(component.showLoading).toBeDefined();
+    expect(component.showAD).toBeFalse();
+  });
+
+  fit('Testing Profile Functionality', () => {
+    expect(component.ngOnInit).toBeTruthy();
+    expect(component.ionViewWillEnter).toBeTruthy();
+    expect(component.loginClick).toBeTruthy();
+    expect(component.onChooseDive).toBeTruthy();
+    expect(component.goToEdit).toBeTruthy();
   });
 });
