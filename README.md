@@ -55,6 +55,8 @@
         <br>
         - Merging branches on github
         <br>
+        - Edit Account and Edit Dive Lambda functions
+        <br>
     </details>
 
 
