@@ -22,4 +22,23 @@ describe('EditDivePage', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('Testing Edit-Dive Component', () => {
+    expect(component.showLoading).toBeFalsy();
+    expect(component.showUser).toBeFalse();
+    expect(component.DiveTypeLst).toBeDefined();
+    expect(component.DiveSiteLst).toBeDefined();
+    expect(component.BuddyLst).toBeDefined();
+    expect(component.loginLabel).toBeDefined();
+    expect(component.CurrentDive).toBeDefined();
+  });
+
+  it('Testing Edit-Dive Functionality', () => {
+    expect(component.ngOnInit).toBeTruthy();
+    expect(component.ionViewWillEnter).toBeTruthy();
+    expect(component.loginClick).toBeTruthy();
+    expect(component.onSubmit).toBeTruthy();
+    expect(component.buddyListFinder).toBeTruthy();
+    expect(component.getDiveInfo).toBeTruthy();
+  });
 });
