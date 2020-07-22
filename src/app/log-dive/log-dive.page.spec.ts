@@ -25,7 +25,7 @@ var validData = {
   bottomT: 7, 
 };
 
-fdescribe('LogDivePage', () => {
+describe('LogDivePage', () => {
   let component: LogDivePage;
   let fixture: ComponentFixture<LogDivePage>;
   let accService: accountService;
@@ -49,11 +49,11 @@ fdescribe('LogDivePage', () => {
     weatService = new weatherService(http, router);
   }));
 
-  fit('Succesfully Created Log-Dive Page', () => {
+  it('Succesfully Created Log-Dive Page', () => {
     expect(component).toBeTruthy();
   });
 
-  fit('Testing Log-Dive Components', () => {
+  it('Testing Log-Dive Components', () => {
     expect(component.uuidValue).toBeUndefined();
     expect(component.showLoading).toBeFalse();
     expect(component.DiveTypeLst).toBeDefined();
@@ -71,7 +71,7 @@ fdescribe('LogDivePage', () => {
     expect(component.loginLabel).toBeDefined();
   });
 
-  fit('Testing ngOnInit()', () => {
+  it('Testing ngOnInit()', () => {
     component.ngOnInit();
     expect(component.cDate).toBeInstanceOf(Date);
     expect(component.currentDate).toBeDefined();
@@ -97,16 +97,16 @@ fdescribe('LogDivePage', () => {
     
   });
 
-  fit('Testing ionViewWillEnter()', () => {
+  it('Testing ionViewWillEnter()', () => {
     component.ionViewWillEnter();
     expect(component.loginLabel).toBe("Login");
   });
 
-  fit('Testing loginClick()', () => {
+  it('Testing loginClick()', () => {
     component.loginClick();
   });
 
-  fit('Testing onSubmit()', () => {
+  it('Testing onSubmit()', () => {
     //component.onSubmit(validData.pub, validData.desc, validData.site, validData.date, validData.timeIn, validData.timeOut, validData.diveType, validData.buddy, validData.vis, validData.dep, validData.aT, validData.surfaceT, validData.bottomT, event);
     expect(component.uuidValue).toBeUndefined();
     let weatherSpy = spyOn(weatService, 'getLogWeather').and.callThrough();
@@ -116,7 +116,7 @@ fdescribe('LogDivePage', () => {
     expect(component.showLoading).toBeFalse();
   });
 
-  fit('Testing buddyListFinder()', () => {
+  it('Testing buddyListFinder()', () => {
     component.buddyListFinder("John Cena");
     let accountSpy = spyOn(accService, 'lookAheadBuddy').and.callThrough();
     expect(accountSpy).toBeDefined();
@@ -124,7 +124,7 @@ fdescribe('LogDivePage', () => {
     expect(component.showLoading).toBeTrue();
   });
 
-  fit('Testing Log-Dive Functionality', () => {
+  it('Testing Log-Dive Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.ionViewWillEnter).toBeTruthy();
     expect(component.loginClick).toBeTruthy();
