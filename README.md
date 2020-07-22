@@ -39,7 +39,7 @@
  * <a href="https://giselenadine.github.io/">giselenadine.github.io</a>
  * Email : u18012583@tuks.co.za
  * <details>
-     <summary><b>Responsibiities</b></summary>
+     <summary><b>Responsibities</b></summary>
      <br>
         - SRS Document: Introduction
         <br>
@@ -65,7 +65,7 @@
  * <a href="https://u17021627.github.io/">u17021627.github.io</a>
  * Email : u17021627@tuks.co.za
  * <details>
-     <summary><b>Responsibiities</b></summary>
+     <summary><b>Responsibities</b></summary>
      <br>
         - SRS Document: Trace-ability Matrix
         <br>
@@ -88,7 +88,7 @@
  * <a href="https://u18020519.github.io/">u18020519.github.io</a>
  * Email : u18020519@tuks.co.za
  * <details>
-     <summary><b>Responsibiities</b></summary>
+     <summary><b>Responsibities</b></summary>
      <br>
         - SRS Document: Functional Requirements 
         <br>
@@ -111,7 +111,7 @@
  * <a href="https://jamesjenkinsferrett.github.io/">jamesjenkinsferrett.github.io</a>
  * Email : u18047701@tuks.co.za
  * <details>
-     <summary><b>Responsibiities</b></summary>
+     <summary><b>Responsibities</b></summary>
      <br>
         - SRS Document: Introduction.
         <br>
@@ -132,9 +132,9 @@
  * <a href="https://carmenjvr.github.io/">carmenjvr.github.io</a>
  * Email : u18000836@tuks.co.za
  * <details>
-     <summary><b>Responsibiities</b></summary>
+     <summary><b>Responsibities</b></summary>
         <br> 
-        - All Angular Ionic Frontend code
+        - All Angular Ionic Front end code
         <br>
         - SRS Document: Functional Requirements
         <br>
