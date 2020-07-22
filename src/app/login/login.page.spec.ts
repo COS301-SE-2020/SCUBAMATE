@@ -12,7 +12,7 @@ var validData = {
   pass: "Scuba@AWS301!"
 };
 
-fdescribe('LoginPage', () => {
+describe('LoginPage', () => {
   let component: LoginPage;
   let fixture: ComponentFixture<LoginPage>;
   let accService: accountService;
@@ -32,36 +32,36 @@ fdescribe('LoginPage', () => {
     accService = new accountService(http, router);
   }));
 
-  fit('Succesfully Created Login Page', () => {
+  it('Succesfully Created Login Page', () => {
     expect(component).toBeTruthy();
   });
 
-  fit('Testing Login Components', () => {
+  it('Testing Login Components', () => {
     expect(component.ngOnInit).toBeDefined();
     expect(component.loginLabel).toBeDefined();
   });
 
-  fit('Testing ngOnInit()', () => {
+  it('Testing ngOnInit()', () => {
     component.ngOnInit();
     expect(component.loginLabel).toBe("Login");
   });
 
-  fit('Testing ionViewWillEnter()', () => {
+  it('Testing ionViewWillEnter()', () => {
     component.ionViewWillEnter();
     expect(component.loginLabel).toBe("Login");
   });
 
-  fit('Testing loginClick()', () => {
+  it('Testing loginClick()', () => {
     component.loginClick();
   });
 
-  fit('Testing onSubmit()', () => {
+  it('Testing onSubmit()', () => {
     component.onSubmit(validData.email, validData.pass, event);
     let accountSpy = spyOn(accService, 'logUser').and.callThrough();
     expect(accountSpy).toBeDefined();
   });
 
-  fit('Testing Login Functionality', () => {
+  it('Testing Login Functionality', () => {
     expect(component.ngOnInit).toBeDefined();
     expect(component.ionViewWillEnter).toBeDefined();
     expect(component.loginClick).toBeTruthy();

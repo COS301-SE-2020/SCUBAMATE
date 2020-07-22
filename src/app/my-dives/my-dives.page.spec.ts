@@ -7,9 +7,14 @@ import { AppModule } from '../app.module';
 import { Router } from '@angular/router';
 import { diveService } from '../service/dive.service';
 
-const diveServiceSpy = jasmine.createSpyObj('diveService', ['dive']);
+var validData = {
+  diveID: "D0e0bc54b-bc03-68ad-1835-8357a51ac815"
+};
+let divService: diveService;
+let http: HttpClient;
+let router; Router;
 
-describe('MyDivesPage', () => {
+fdescribe('MyDivesPage', () => {
   let component: MyDivesPage;
   let fixture: ComponentFixture<MyDivesPage>;
 
@@ -17,48 +22,52 @@ describe('MyDivesPage', () => {
     TestBed.configureTestingModule({
       declarations: [ MyDivesPage ],
       imports: [IonicModule.forRoot(), RouterTestingModule, AppModule],
-      providers: [{provide: diveService, useValue: diveServiceSpy}
-      ]
+      providers: [diveService]
     }).compileComponents();
 
     fixture = TestBed.createComponent(MyDivesPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    divService = new diveService(http, router);
   }));
 
-  it('Successfully Created My-Dives Page', () => {
+  fit('Successfully Created My-Dives Page', () => {
     expect(component).toBeTruthy();
   });
 
-  it('Testing My-Dives Components', () => {
+  fit('Testing My-Dives Components', () => {
     expect(component.diveLst).toBeDefined();
     expect(component.loginLabel).toBeInstanceOf(String);
     expect(component.showLoading).toBeInstanceOf(Boolean);
   });
 
-  it('Testing ngOnInit()', () => {
+  fit('Testing ngOnInit()', () => {
     component.ngOnInit();
     expect(component.loginLabel).toBe("Login");
+    let diveSpy = spyOn(divService, 'getPrivateDive').and.callThrough();
+    expect(diveSpy).toBeDefined();
     expect(component.diveLst).toBeDefined();
     expect(component.showLoading).toBeFalse();
   });
 
-  it('Testing ionViewWillEnter()', () => {
+  fit('Testing ionViewWillEnter()', () => {
     component.ionViewWillEnter();
     expect(component.loginLabel).toBe("Login");
+    let diveSpy = spyOn(divService, 'getPrivateDive').and.callThrough();
+    expect(diveSpy).toBeDefined();
     expect(component.diveLst).toBeDefined();
     expect(component.showLoading).toBeFalse();
   });
 
-  it('Testing loginClick()', () => {
+  fit('Testing loginClick()', () => {
     component.loginClick();
   });
 
-  it('Testing goToEdit()', () => {
-    component.goToEdit("");
+  fit('Testing goToEdit()', () => {
+    component.goToEdit(validData.diveID);
   });
 
-  it('Testing My-Dives Functionality', () => {
+  fit('Testing My-Dives Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.ionViewWillEnter).toBeTruthy();
     expect(component.loginClick).toBeTruthy();
