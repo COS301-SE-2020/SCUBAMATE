@@ -17,7 +17,7 @@ describe('WeatherPage', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ WeatherPage ],
-      imports: [IonicModule.forRoot(), RouterTestingModule, AppModule],
+      imports: [IonicModule.forRoot(), RouterTestingModule.withRoutes([]), AppModule],
       providers: [weatherService]
     }).compileComponents();
 
@@ -25,6 +25,7 @@ describe('WeatherPage', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     weatService = new weatherService(http, router);
+    router = TestBed.get(Router);
   }));
 
   it('Successfully Created Weather Page', () => {
@@ -62,7 +63,9 @@ describe('WeatherPage', () => {
   });
 
   it('Testing loginClick()', () => {
+    let navigateSpy = spyOn(router, 'navigate');
     component.loginClick();
+    expect(navigateSpy).toHaveBeenCalledWith(['login']);
   });
 
   it('Testing Weather Functionality', () => {
