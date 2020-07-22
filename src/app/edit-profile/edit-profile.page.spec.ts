@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { EditProfilePage } from './edit-profile.page';
 import { AppModule } from '../app.module';
 
-fdescribe('EditProfilePage', () => {
+describe('EditProfilePage', () => {
   let component: EditProfilePage;
   let fixture: ComponentFixture<EditProfilePage>;
 
@@ -19,32 +19,32 @@ fdescribe('EditProfilePage', () => {
     fixture.detectChanges();
   }));
 
-  fit('Successfully Created Edit-Profile Page', () => {
+  it('Successfully Created Edit-Profile Page', () => {
     expect(component).toBeTruthy();
   });
 
-  fit('Testing Edit-Page Components', () => {
+  it('Testing Edit-Page Components', () => {
     expect(component.AD).toBeUndefined();
     expect(component.loginLabel).toBeDefined();
     expect(component.showData).toBeFalse();
   });
 
-  fit('Testing ngOnInit()', () => {
+  it('Testing ngOnInit()', () => {
     component.ngOnInit();
     expect(component.loginLabel).toBe("Login");
     expect(component.showData).toBeFalse();
     expect(component.AD).toBeUndefined();
   });
 
-  fit('Testing loginClick()', () => {
+  it('Testing loginClick()', () => {
     component.loginClick();
   });
 
-  fit('Testing onSubmit()', () => {
+  it('Testing onSubmit()', () => {
     component.onSubmit("", "", "", false, event);
   });
 
-  fit('Testing Edit-Page Functionality', () => {
+  it('Testing Edit-Page Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.loginClick).toBeTruthy();
     expect(component.onSubmit).toBeTruthy();

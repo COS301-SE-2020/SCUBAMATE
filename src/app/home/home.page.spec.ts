@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HomePage } from './home.page';
 import { AppModule } from '../app.module';
 
-fdescribe('HomePage', () => {
+describe('HomePage', () => {
   let component: HomePage;
   let fixture: ComponentFixture<HomePage>;
 
@@ -19,34 +19,34 @@ fdescribe('HomePage', () => {
     fixture.detectChanges();
   }));
 
-  fit('Successfully Created Home Page', () => {
+  it('Successfully Created Home Page', () => {
     expect(component).toBeTruthy();
   });
 
-  fit('Testing Home Components', () => {
+  it('Testing Home Components', () => {
     expect(component.siteLst).toBeUndefined();
     expect(component.loginLabel).toBeDefined();
   });
 
-  fit('Testing ngOnInit()', () => {
+  it('Testing ngOnInit()', () => {
     component.ngOnInit();
     expect(component.loginLabel).toBe("Login");
   });
 
-  fit('Testing ionViewWillEnter()', () => {
+  it('Testing ionViewWillEnter()', () => {
     component.ionViewWillEnter();
     expect(component.loginLabel).toBe("Login");
   });
 
-  fit('Testing loginClick()', () => {
+  it('Testing loginClick()', () => {
     component.loginClick();
   });
 
-  fit('Testing sendEmail()', () => {
+  it('Testing sendEmail()', () => {
     component.sendEmail();
   });
 
-  fit('Testing Home Functionality', () => {
+  it('Testing Home Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.ionViewWillEnter).toBeTruthy();
     expect(component.loginClick).toBeTruthy();
