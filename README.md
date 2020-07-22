@@ -55,7 +55,15 @@
         <br>
         - Merging branches on github
         <br>
-        - Edit Account and Edit Dive Lambda functions
+        - Edit Account Lambda functions
+        <br>
+        - Edit Dive Lambda functions
+        <br>
+        - SRS Document: Deployment Model
+        <br>
+        - User Manual Document: Simple Deployment Model
+        <br>
+        - Code Standards Document
         <br>
     </details>
 
