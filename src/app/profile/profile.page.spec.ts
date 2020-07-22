@@ -98,7 +98,9 @@ describe('ProfilePage', () => {
   });
 
   it('Testing goToEdit()', () => {
+    let navigateSpy = spyOn(router, 'navigate');
     component.goToEdit();
+    expect(navigateSpy).toHaveBeenCalledWith(['/edit-profile']);
   });
 
   it('Testing Profile Functionality', () => {
