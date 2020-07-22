@@ -24,7 +24,7 @@ describe('EditProfilePage', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ EditProfilePage ],
-      imports: [IonicModule.forRoot(), RouterTestingModule, AppModule],
+      imports: [IonicModule.forRoot(), RouterTestingModule.withRoutes([]), AppModule],
       providers: [accountService]
     }).compileComponents();
 
@@ -32,6 +32,7 @@ describe('EditProfilePage', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     accService = new accountService(http, router);
+    router = TestBed.get(Router);
   }));
 
   it('Successfully Created Edit-Profile Page', () => {
@@ -54,7 +55,9 @@ describe('EditProfilePage', () => {
   });
 
   it('Testing loginClick()', () => {
+    let navigateSpy = spyOn(router, 'navigate');
     component.loginClick();
+    expect(navigateSpy).toHaveBeenCalledWith(['login']);
   });
 
   it('Testing onSubmit()', () => {
