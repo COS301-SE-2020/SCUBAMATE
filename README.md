@@ -133,18 +133,14 @@
  * Email : u18000836@tuks.co.za
  * <details>
      <summary><b>Responsibiities</b></summary>
-     <br>
+        <br> 
+        - All Angular Ionic Frontend code
+        <br>
         - SRS Document: Functional Requirements
         <br>
         - SRS Document: Use Cases
-        <br> 
-        - Angular Ionic Frontend
         <br>
-        - Insert data
-        <br>
-        - Insert data
-        <br>
-        - Insert data
+        - User Manual
         <br>
     </details>
 
