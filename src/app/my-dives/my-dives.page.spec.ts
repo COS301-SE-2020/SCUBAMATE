@@ -21,7 +21,7 @@ describe('MyDivesPage', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ MyDivesPage ],
-      imports: [IonicModule.forRoot(), RouterTestingModule, AppModule],
+      imports: [IonicModule.forRoot(), RouterTestingModule.withRoutes([]), AppModule],
       providers: [diveService]
     }).compileComponents();
 
@@ -29,6 +29,7 @@ describe('MyDivesPage', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     divService = new diveService(http, router);
+    router = TestBed.get(Router);
   }));
 
   it('Successfully Created My-Dives Page', () => {
@@ -60,7 +61,9 @@ describe('MyDivesPage', () => {
   });
 
   it('Testing loginClick()', () => {
+    let navigateSpy = spyOn(router, 'navigate');
     component.loginClick();
+    expect(navigateSpy).toHaveBeenCalledWith(['login']);
   });
 
   it('Testing goToEdit()', () => {
