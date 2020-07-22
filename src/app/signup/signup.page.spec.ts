@@ -36,7 +36,7 @@ describe('SignupPage', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ SignupPage ],
-      imports: [IonicModule.forRoot(), RouterTestingModule, AppModule],
+      imports: [IonicModule.forRoot(), RouterTestingModule.withRoutes([]), AppModule],
       providers: [accountService, diveService, weatherService]
     }).compileComponents();
 
@@ -46,6 +46,7 @@ describe('SignupPage', () => {
     accService = new accountService(http, router);
     divService = new diveService(http, router);
     weatService = new weatherService(http, router);
+    router = TestBed.get(Router);
   }));
 
   it('Successfully Created Sign Up Page', () => {
