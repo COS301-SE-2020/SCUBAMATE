@@ -37,7 +37,7 @@ describe('LogDivePage', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ LogDivePage ],
-      imports: [IonicModule.forRoot(), RouterTestingModule, AppModule],
+      imports: [IonicModule.forRoot(), RouterTestingModule.withRoutes([]), AppModule],
       providers: [accountService, diveService, weatherService]
     }).compileComponents();
 
@@ -47,6 +47,7 @@ describe('LogDivePage', () => {
     accService = new accountService(http, router);
     divService = new diveService(http, router);
     weatService = new weatherService(http, router);
+    router = TestBed.get(Router);
   }));
 
   it('Succesfully Created Log-Dive Page', () => {
@@ -103,7 +104,9 @@ describe('LogDivePage', () => {
   });
 
   it('Testing loginClick()', () => {
+    let navigateSpy = spyOn(router, 'navigate');
     component.loginClick();
+    expect(navigateSpy).toHaveBeenCalledWith(['login']);
   });
 
   it('Testing onSubmit()', () => {
