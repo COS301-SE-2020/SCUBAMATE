@@ -3,8 +3,9 @@ import { IonicModule } from '@ionic/angular';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SignupPage } from './signup.page';
 import { AppModule } from '../app.module';
+import { ExplorePage } from '../explore/explore.page';
 
-describe('SignupPage', () => {
+fdescribe('SignupPage', () => {
   let component: SignupPage;
   let fixture: ComponentFixture<SignupPage>;
 
@@ -19,25 +20,77 @@ describe('SignupPage', () => {
     fixture.detectChanges();
   }));
 
-  it('should create', () => {
+  fit('Successfully Created Sign Up Page', () => {
     expect(component).toBeTruthy();
   });
 
-  it('Testing SignUp Components', () => {
-    //expect(component.uuidValue).toBeDefined();
-    //expect(component.base64textString).toBeDefined();
+  fit('Testing SignUp Components', () => {
+    expect(component.uuidValue).toBeUndefined();
+    expect(component.base64textString).toBeUndefined();
     expect(component.showLoading).toBeFalse();
     expect(component.showSpecialization).toBeFalse();
-    //expect(component.SpecializationLst).toBeDefined();
-    //expect(component.QualificationLst).toBeDefined();
-    //expect(component.CenterLst).toBeDefined();
+    expect(component.SpecializationLst).toBeUndefined();
+    expect(component.QualificationLst).toBeUndefined();
+    expect(component.CenterLst).toBeUndefined();
     expect(component.userSpecialisation).toBeDefined();
     expect(component.signUpDiver).toBeFalse();
     expect(component.signUpInstructor).toBeFalse();
-    //expect(component.ShowAccountChoice).toBeFalse();
+    expect(component.ShowAccountChoice).toBeTrue();
   });
 
-  it('Testing SignUp Functionality', () => {
+  fit('Testing ngOnInit()', () => {
+    component.ngOnInit();
+    expect(component.showSpecialization).toBeFalse();
+    expect(component.userSpecialisation).toBeDefined();
+    expect(component.signUpDiver).toBeFalse();
+    expect(component.signUpInstructor).toBeFalse();
+    expect(component.ShowAccountChoice).toBeTrue();
+  });
+
+  fit('Testing ShowRelatedForm()', () => {
+    component.ShowRelatedForm("Diver");
+    expect(component.signUpDiver).toBeTrue();
+    expect(component.signUpInstructor).toBeFalse();
+  });
+
+  fit('Testing SpecializationListFinder()', () => {
+    component.SpecializationListFinder("");
+    expect(component.showLoading).toBeFalse();
+    expect(component.SpecializationLst).toBeUndefined();
+  });
+
+  fit('Testing QualificationListFinder()', () => {
+    component.QualificationListFinder("");
+    expect(component.showLoading).toBeFalse();
+    expect(component.QualificationLst).toBeUndefined();
+  });
+
+  fit('Testing CenterListFinder()', () => {
+    component.CenterListFinder("");
+    expect(component.showLoading).toBeFalse();
+    expect(component.CenterLst).toBeUndefined();
+  });
+
+  fit('Testing addSpecialisation()', () => {
+    component.addSpecialisation("");
+    expect(component.showSpecialization).toBeFalse();
+  });
+
+  // fit('Testing onFileSelected()', () => {
+  //   component.onFileSelected(event);
+  // });
+
+  fit('Testing onSubmitDiver()', () => {
+    component.onSubmitDiver("", "", "", "", "", false, "", "", "", event);
+    expect(component.uuidValue).toBeUndefined();
+  });
+
+  fit('Testing onSubmitInstructor()', () => {
+    component.onSubmitInstructor("", "", "", "", "", "", false, "", "", "", event);
+    expect(component.uuidValue).toBeUndefined();
+  });
+
+  fit('Testing SignUp Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.ShowRelatedForm).toBeTruthy();
     expect(component.SpecializationListFinder).toBeTruthy();
