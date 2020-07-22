@@ -3,20 +3,35 @@ import { IonicModule } from '@ionic/angular';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EditProfilePage } from './edit-profile.page';
 import { AppModule } from '../app.module';
+import { accountService } from '../service/account.service';
+import { HttpClient} from '@angular/common/http';
+import { Router } from '@angular/router';
+
+var validData = {
+  birthD: "1990-05-06",
+  firstN: "Harry",
+  lName: "Potter",
+  public: false
+};
 
 describe('EditProfilePage', () => {
   let component: EditProfilePage;
   let fixture: ComponentFixture<EditProfilePage>;
+  let accService: accountService;
+  let http: HttpClient;
+  let router; Router;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ EditProfilePage ],
-      imports: [IonicModule.forRoot(), RouterTestingModule, AppModule]
+      imports: [IonicModule.forRoot(), RouterTestingModule, AppModule],
+      providers: [accountService]
     }).compileComponents();
 
     fixture = TestBed.createComponent(EditProfilePage);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    accService = new accountService(http, router);
   }));
 
   it('Successfully Created Edit-Profile Page', () => {
@@ -31,6 +46,8 @@ describe('EditProfilePage', () => {
 
   it('Testing ngOnInit()', () => {
     component.ngOnInit();
+    let accountSpy = spyOn(accService, 'getUser').and.callThrough();
+    expect(accountSpy).toBeDefined();
     expect(component.loginLabel).toBe("Login");
     expect(component.showData).toBeFalse();
     expect(component.AD).toBeUndefined();
@@ -41,7 +58,9 @@ describe('EditProfilePage', () => {
   });
 
   it('Testing onSubmit()', () => {
-    component.onSubmit("", "", "", false, event);
+    component.onSubmit(validData.birthD, validData.firstN, validData.lName, validData.public, event);
+    let accountSpy = spyOn(accService, 'editUser').and.callThrough();
+    expect(accountSpy).toBeDefined();
   });
 
   it('Testing Edit-Page Functionality', () => {
