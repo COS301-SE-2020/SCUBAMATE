@@ -23,7 +23,7 @@ describe('ProfilePage', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ProfilePage ],
-      imports: [IonicModule.forRoot(), RouterTestingModule, AppModule],
+      imports: [IonicModule.forRoot(), RouterTestingModule.withRoutes([]), AppModule],
       providers: [accountService, diveService]
     }).compileComponents();
 
@@ -32,6 +32,7 @@ describe('ProfilePage', () => {
     fixture.detectChanges();
     accService = new accountService(http, router);
     divService = new diveService(http, router);
+    router = TestBed.get(Router);
   }));
 
   it('Succesfully Created Profile Page', () => {
@@ -80,9 +81,11 @@ describe('ProfilePage', () => {
     expect(component.showLoading).toBeTrue();
   });
 
-  // fit('Testing loginClick()', () => {
-  //   component.loginClick();
-  // });
+  it('Testing loginClick()', () => {
+    let navigateSpy = spyOn(router, 'navigate');
+    component.loginClick();
+    expect(navigateSpy).toHaveBeenCalledWith(['login']);
+  });
 
   it('Testing onChooseDive()', () => {
     component.onChooseDive(validData.diveT, event);
