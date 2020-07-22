@@ -7,7 +7,7 @@ import { accountService } from '../service/account.service';
 import { HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
 
-fdescribe('HomePage', () => {
+describe('HomePage', () => {
   let component: HomePage;
   let fixture: ComponentFixture<HomePage>;
   let accService: accountService;
@@ -27,36 +27,36 @@ fdescribe('HomePage', () => {
     accService = new accountService(http, router);
   }));
 
-  fit('Successfully Created Home Page', () => {
+  it('Successfully Created Home Page', () => {
     expect(component).toBeTruthy();
   });
 
-  fit('Testing Home Components', () => {
+  it('Testing Home Components', () => {
     expect(component.siteLst).toBeUndefined();
     expect(component.loginLabel).toBeDefined();
   });
 
-  fit('Testing ngOnInit()', () => {
+  it('Testing ngOnInit()', () => {
     component.ngOnInit();
     expect(component.loginLabel).toBe("Login");
   });
 
-  fit('Testing ionViewWillEnter()', () => {
+  it('Testing ionViewWillEnter()', () => {
     component.ionViewWillEnter();
     expect(component.loginLabel).toBe("Login");
   });
 
-  fit('Testing loginClick()', () => {
+  it('Testing loginClick()', () => {
     component.loginClick();
   });
 
-  fit('Testing sendEmail()', () => {
+  it('Testing sendEmail()', () => {
     component.sendEmail();
     let accountSpy = spyOn(accService, 'sendValidationEmail').and.callThrough();
     expect(accountSpy).toBeDefined();
   });
 
-  fit('Testing Home Functionality', () => {
+  it('Testing Home Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.ionViewWillEnter).toBeTruthy();
     expect(component.loginClick).toBeTruthy();

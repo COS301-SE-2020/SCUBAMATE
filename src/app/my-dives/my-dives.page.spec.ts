@@ -14,7 +14,7 @@ let divService: diveService;
 let http: HttpClient;
 let router; Router;
 
-fdescribe('MyDivesPage', () => {
+describe('MyDivesPage', () => {
   let component: MyDivesPage;
   let fixture: ComponentFixture<MyDivesPage>;
 
@@ -31,17 +31,17 @@ fdescribe('MyDivesPage', () => {
     divService = new diveService(http, router);
   }));
 
-  fit('Successfully Created My-Dives Page', () => {
+  it('Successfully Created My-Dives Page', () => {
     expect(component).toBeTruthy();
   });
 
-  fit('Testing My-Dives Components', () => {
+  it('Testing My-Dives Components', () => {
     expect(component.diveLst).toBeDefined();
     expect(component.loginLabel).toBeInstanceOf(String);
     expect(component.showLoading).toBeInstanceOf(Boolean);
   });
 
-  fit('Testing ngOnInit()', () => {
+  it('Testing ngOnInit()', () => {
     component.ngOnInit();
     expect(component.loginLabel).toBe("Login");
     let diveSpy = spyOn(divService, 'getPrivateDive').and.callThrough();
@@ -50,7 +50,7 @@ fdescribe('MyDivesPage', () => {
     expect(component.showLoading).toBeFalse();
   });
 
-  fit('Testing ionViewWillEnter()', () => {
+  it('Testing ionViewWillEnter()', () => {
     component.ionViewWillEnter();
     expect(component.loginLabel).toBe("Login");
     let diveSpy = spyOn(divService, 'getPrivateDive').and.callThrough();
@@ -59,15 +59,15 @@ fdescribe('MyDivesPage', () => {
     expect(component.showLoading).toBeFalse();
   });
 
-  fit('Testing loginClick()', () => {
+  it('Testing loginClick()', () => {
     component.loginClick();
   });
 
-  fit('Testing goToEdit()', () => {
+  it('Testing goToEdit()', () => {
     component.goToEdit(validData.diveID);
   });
 
-  fit('Testing My-Dives Functionality', () => {
+  it('Testing My-Dives Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.ionViewWillEnter).toBeTruthy();
     expect(component.loginClick).toBeTruthy();

@@ -3,27 +3,42 @@ import { IonicModule } from '@ionic/angular';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ProfilePage } from './profile.page';
 import { AppModule } from '../app.module';
+import { accountService } from '../service/account.service';
+import { diveService } from '../service/dive.service';
+import { HttpClient} from '@angular/common/http';
+import { Router } from '@angular/router';
 
-describe('ProfilePage', () => {
+var validData = {
+  diveT: "Reef Dive"
+};
+
+fdescribe('ProfilePage', () => {
   let component: ProfilePage;
   let fixture: ComponentFixture<ProfilePage>;
+  let accService: accountService;
+  let http: HttpClient;
+  let router; Router;
+  let divService: diveService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ProfilePage ],
-      imports: [IonicModule.forRoot(), RouterTestingModule, AppModule]
+      imports: [IonicModule.forRoot(), RouterTestingModule, AppModule],
+      providers: [accountService, diveService]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ProfilePage);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    accService = new accountService(http, router);
+    divService = new diveService(http, router);
   }));
 
-  it('Succesfully Created Profile Page', () => {
+  fit('Succesfully Created Profile Page', () => {
     expect(component).toBeTruthy();
   });
 
-  it('Testing Profile Components', () => {
+  fit('Testing Profile Components', () => {
     expect(component.loginLabel).toBeDefined();
     expect(component.AD).toBeUndefined();
     expect(component.DiveTypeLst).toBeUndefined();
@@ -36,11 +51,15 @@ describe('ProfilePage', () => {
     expect(component.showAD).toBeFalse();
   });
 
-  it('Testing ngOnInit()', () => {
+  fit('Testing ngOnInit()', () => {
     component.ngOnInit();
     expect(component.viewProfile).toBeTrue();
     expect(component.editProfile).toBeFalse();
     expect(component.loginLabel).toBe("Login");
+    let accountSpy = spyOn(accService, 'getUser').and.callThrough();
+    expect(accountSpy).toBeDefined();
+    let diveSpy = spyOn(divService, 'getDiveTypes').and.callThrough();
+    expect(diveSpy).toBeDefined();
     expect(component.showLoading).toBeTrue();
     expect(component.showAD).toBeFalse();
     expect(component.AD).toBeUndefined();
@@ -52,6 +71,10 @@ describe('ProfilePage', () => {
     expect(component.viewProfile).toBeTrue();
     expect(component.editProfile).toBeFalse();
     expect(component.loginLabel).toBe("Login");
+    let accountSpy = spyOn(accService, 'getUser').and.callThrough();
+    expect(accountSpy).toBeDefined();
+    let diveSpy = spyOn(divService, 'getDiveTypes').and.callThrough();
+    expect(diveSpy).toBeDefined();
     expect(component.AD).toBeUndefined();
     expect(component.DiveTypeLst).toBeUndefined();
     expect(component.showLoading).toBeTrue();
@@ -61,19 +84,21 @@ describe('ProfilePage', () => {
   //   component.loginClick();
   // });
 
-  it('Testing onChooseDive()', () => {
-    component.onChooseDive("", event);
+  fit('Testing onChooseDive()', () => {
+    component.onChooseDive(validData.diveT, event);
+    let diveSpy = spyOn(divService, 'getCheckList').and.callThrough();
+    expect(diveSpy).toBeDefined();
     expect(component.showLoading).toBeTrue();
     expect(component.viewChecklist).toBeFalse();
     expect(component.OptionalList).toBeUndefined();
     expect(component.EquipmentList).toBeUndefined();
   });
 
-  it('Testing goToEdit()', () => {
+  fit('Testing goToEdit()', () => {
     component.goToEdit();
   });
 
-  it('Testing Profile Functionality', () => {
+  fit('Testing Profile Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.ionViewWillEnter).toBeTruthy();
     expect(component.loginClick).toBeTruthy();
