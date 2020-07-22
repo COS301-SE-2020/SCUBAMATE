@@ -19,21 +19,58 @@ describe('ProfilePage', () => {
     fixture.detectChanges();
   }));
 
-  it('should create', () => {
+  it('Succesfully Created Profile Page', () => {
     expect(component).toBeTruthy();
   });
 
   it('Testing Profile Components', () => {
     expect(component.loginLabel).toBeDefined();
-    //expect(component.AD).toBeDefined();
-    //expect(component.DiveTypeLst).toBeDefined();
-    //expect(component.OptionalList).toBeDefined();
-    //expect(component.EquipmentList).toBeDefined();
+    expect(component.AD).toBeUndefined();
+    expect(component.DiveTypeLst).toBeUndefined();
+    expect(component.OptionalList).toBeUndefined();
+    expect(component.EquipmentList).toBeUndefined();
     expect(component.viewChecklist).toBeFalse();
     expect(component.viewProfile).toBeDefined();
     expect(component.editProfile).toBeDefined();
     expect(component.showLoading).toBeDefined();
     expect(component.showAD).toBeFalse();
+  });
+
+  it('Testing ngOnInit()', () => {
+    component.ngOnInit();
+    expect(component.viewProfile).toBeTrue();
+    expect(component.editProfile).toBeFalse();
+    expect(component.loginLabel).toBe("Login");
+    expect(component.showLoading).toBeTrue();
+    expect(component.showAD).toBeFalse();
+    expect(component.AD).toBeUndefined();
+    expect(component.DiveTypeLst).toBeUndefined();
+  });
+  
+  it('Testing ionViewWillEnter()', () => {
+    component.ionViewWillEnter();
+    expect(component.viewProfile).toBeTrue();
+    expect(component.editProfile).toBeFalse();
+    expect(component.loginLabel).toBe("Login");
+    expect(component.AD).toBeUndefined();
+    expect(component.DiveTypeLst).toBeUndefined();
+    expect(component.showLoading).toBeTrue();
+  });
+
+  // fit('Testing loginClick()', () => {
+  //   component.loginClick();
+  // });
+
+  it('Testing onChooseDive()', () => {
+    component.onChooseDive("", event);
+    expect(component.showLoading).toBeTrue();
+    expect(component.viewChecklist).toBeFalse();
+    expect(component.OptionalList).toBeUndefined();
+    expect(component.EquipmentList).toBeUndefined();
+  });
+
+  it('Testing goToEdit()', () => {
+    component.goToEdit();
   });
 
   it('Testing Profile Functionality', () => {
