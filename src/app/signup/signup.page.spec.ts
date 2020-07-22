@@ -24,7 +24,7 @@ var validData = {
   iNum: "9989889"
 };
 
-fdescribe('SignupPage', () => {
+describe('SignupPage', () => {
   let component: SignupPage;
   let fixture: ComponentFixture<SignupPage>;
   let accService: accountService;
@@ -48,11 +48,11 @@ fdescribe('SignupPage', () => {
     weatService = new weatherService(http, router);
   }));
 
-  fit('Successfully Created Sign Up Page', () => {
+  it('Successfully Created Sign Up Page', () => {
     expect(component).toBeTruthy();
   });
 
-  fit('Testing SignUp Components', () => {
+  it('Testing SignUp Components', () => {
     expect(component.uuidValue).toBeUndefined();
     expect(component.base64textString).toBeUndefined();
     expect(component.showLoading).toBeFalse();
@@ -66,7 +66,7 @@ fdescribe('SignupPage', () => {
     expect(component.ShowAccountChoice).toBeTrue();
   });
 
-  fit('Testing ngOnInit()', () => {
+  it('Testing ngOnInit()', () => {
     component.ngOnInit();
     expect(component.showSpecialization).toBeFalse();
     expect(component.userSpecialisation).toBeDefined();
@@ -75,13 +75,13 @@ fdescribe('SignupPage', () => {
     expect(component.ShowAccountChoice).toBeTrue();
   });
 
-  fit('Testing ShowRelatedForm()', () => {
+  it('Testing ShowRelatedForm()', () => {
     component.ShowRelatedForm("Diver");
     expect(component.signUpDiver).toBeTrue();
     expect(component.signUpInstructor).toBeFalse();
   });
 
-  fit('Testing SpecializationListFinder()', () => {
+  it('Testing SpecializationListFinder()', () => {
     component.SpecializationListFinder("Wreck Diver");
     let accountSpy = spyOn(accService, 'getSpecializations').and.callThrough();
     expect(accountSpy).toBeDefined();
@@ -89,7 +89,7 @@ fdescribe('SignupPage', () => {
     expect(component.SpecializationLst).toBeUndefined();
   });
 
-  fit('Testing QualificationListFinder()', () => {
+  it('Testing QualificationListFinder()', () => {
     component.QualificationListFinder("Advanced Open Water Diver");
     let accountSpy = spyOn(accService, 'getQualifications').and.callThrough();
     expect(accountSpy).toBeDefined();
@@ -97,7 +97,7 @@ fdescribe('SignupPage', () => {
     expect(component.QualificationLst).toBeUndefined();
   });
 
-  fit('Testing CenterListFinder()', () => {
+  it('Testing CenterListFinder()', () => {
     component.CenterListFinder("Reefteach");
     let diveSpy = spyOn(divService, 'getDiveCenters').and.callThrough();
     expect(diveSpy).toBeDefined();
@@ -105,7 +105,7 @@ fdescribe('SignupPage', () => {
     expect(component.CenterLst).toBeUndefined();
   });
 
-  fit('Testing addSpecialisation()', () => {
+  it('Testing addSpecialisation()', () => {
     component.addSpecialisation("Ice Master");
     expect(component.showSpecialization).toBeTrue();
   });
@@ -114,7 +114,7 @@ fdescribe('SignupPage', () => {
   //   component.onFileSelected(event);
   // });
 
-  fit('Testing onSubmitDiver()', () => {
+  it('Testing onSubmitDiver()', () => {
     component.onSubmitDiver(validData.qualification, validData.specialization, validData.bday, validData.firstN, validData.lastN, validData.pub, validData.email, validData.pass, validData.cPass, event);
     let accountSpy = spyOn(accService, 'insertUserDiver').and.callThrough();
     expect(accountSpy).toBeDefined();
@@ -123,7 +123,7 @@ fdescribe('SignupPage', () => {
     expect(component.uuidValue).toBeDefined();
   });
 
-  fit('Testing onSubmitInstructor()', () => {
+  it('Testing onSubmitInstructor()', () => {
     component.onSubmitInstructor(validData.qualification, validData.center, validData.iNum, validData.bday, validData.firstN, validData.lastN, validData.pub, validData.email, validData.pass, validData.cPass, event);
     let accountSpy = spyOn(accService, 'insertUserInstructor').and.callThrough();
     expect(accountSpy).toBeDefined();
@@ -132,7 +132,7 @@ fdescribe('SignupPage', () => {
     expect(component.uuidValue).toBeDefined();
   });
 
-  fit('Testing SignUp Functionality', () => {
+  it('Testing SignUp Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.ShowRelatedForm).toBeTruthy();
     expect(component.SpecializationListFinder).toBeTruthy();

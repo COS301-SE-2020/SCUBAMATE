@@ -12,7 +12,7 @@ var validData = {
   diveT: "Reef Dive"
 };
 
-fdescribe('ProfilePage', () => {
+describe('ProfilePage', () => {
   let component: ProfilePage;
   let fixture: ComponentFixture<ProfilePage>;
   let accService: accountService;
@@ -34,11 +34,11 @@ fdescribe('ProfilePage', () => {
     divService = new diveService(http, router);
   }));
 
-  fit('Succesfully Created Profile Page', () => {
+  it('Succesfully Created Profile Page', () => {
     expect(component).toBeTruthy();
   });
 
-  fit('Testing Profile Components', () => {
+  it('Testing Profile Components', () => {
     expect(component.loginLabel).toBeDefined();
     expect(component.AD).toBeUndefined();
     expect(component.DiveTypeLst).toBeUndefined();
@@ -51,7 +51,7 @@ fdescribe('ProfilePage', () => {
     expect(component.showAD).toBeFalse();
   });
 
-  fit('Testing ngOnInit()', () => {
+  it('Testing ngOnInit()', () => {
     component.ngOnInit();
     expect(component.viewProfile).toBeTrue();
     expect(component.editProfile).toBeFalse();
@@ -84,7 +84,7 @@ fdescribe('ProfilePage', () => {
   //   component.loginClick();
   // });
 
-  fit('Testing onChooseDive()', () => {
+  it('Testing onChooseDive()', () => {
     component.onChooseDive(validData.diveT, event);
     let diveSpy = spyOn(divService, 'getCheckList').and.callThrough();
     expect(diveSpy).toBeDefined();
@@ -94,11 +94,11 @@ fdescribe('ProfilePage', () => {
     expect(component.EquipmentList).toBeUndefined();
   });
 
-  fit('Testing goToEdit()', () => {
+  it('Testing goToEdit()', () => {
     component.goToEdit();
   });
 
-  fit('Testing Profile Functionality', () => {
+  it('Testing Profile Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.ionViewWillEnter).toBeTruthy();
     expect(component.loginClick).toBeTruthy();
