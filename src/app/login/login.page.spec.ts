@@ -22,7 +22,7 @@ describe('LoginPage', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ LoginPage ],
-      imports: [IonicModule.forRoot(), RouterTestingModule, AppModule],
+      imports: [IonicModule.forRoot(), RouterTestingModule.withRoutes([]), AppModule],
       providers: [accountService]
     }).compileComponents();
 
@@ -30,6 +30,7 @@ describe('LoginPage', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     accService = new accountService(http, router);
+    router = TestBed.get(Router);
   }));
 
   it('Succesfully Created Login Page', () => {
@@ -52,7 +53,9 @@ describe('LoginPage', () => {
   });
 
   it('Testing loginClick()', () => {
+    let navigateSpy = spyOn(router, 'navigate');
     component.loginClick();
+    expect(navigateSpy).toHaveBeenCalledWith(['login']);
   });
 
   it('Testing onSubmit()', () => {
