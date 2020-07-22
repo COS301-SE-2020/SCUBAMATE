@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HomePage } from './home.page';
 import { AppModule } from '../app.module';
 
-describe('HomePage', () => {
+fdescribe('HomePage', () => {
   let component: HomePage;
   let fixture: ComponentFixture<HomePage>;
 
@@ -19,16 +19,34 @@ describe('HomePage', () => {
     fixture.detectChanges();
   }));
 
-  it('should create', () => {
+  fit('Successfully Created Home Page', () => {
     expect(component).toBeTruthy();
   });
 
-  it('Testing Home Components', () => {
-    //expect(component.siteLst).toBeDefined();
+  fit('Testing Home Components', () => {
+    expect(component.siteLst).toBeUndefined();
     expect(component.loginLabel).toBeDefined();
   });
 
-  it('Testing Home Functionality', () => {
+  fit('Testing ngOnInit()', () => {
+    component.ngOnInit();
+    expect(component.loginLabel).toBe("Login");
+  });
+
+  fit('Testing ionViewWillEnter()', () => {
+    component.ionViewWillEnter();
+    expect(component.loginLabel).toBe("Login");
+  });
+
+  fit('Testing loginClick()', () => {
+    component.loginClick();
+  });
+
+  fit('Testing sendEmail()', () => {
+    component.sendEmail();
+  });
+
+  fit('Testing Home Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.ionViewWillEnter).toBeTruthy();
     expect(component.loginClick).toBeTruthy();
