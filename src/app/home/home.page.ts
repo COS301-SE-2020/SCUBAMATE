@@ -50,7 +50,7 @@ export class HomePage implements OnInit {
   }
 
   sendEmail(){
-    this._accountService.sendValidationEmail("carmenjvrensburg07@gmail.com").subscribe( res =>{
+    this._accountService.sendValidationEmail("").subscribe( res =>{
       console.log("In res");
       console.log(res);
     }) 
