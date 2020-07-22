@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { LoginPage } from './login.page';
 import { AppModule } from '../app.module';
 
-fdescribe('LoginPage', () => {
+describe('LoginPage', () => {
   let component: LoginPage;
   let fixture: ComponentFixture<LoginPage>;
 
@@ -19,16 +19,16 @@ fdescribe('LoginPage', () => {
     fixture.detectChanges();
   }));
 
-  fit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  fit('Testing Login Components', () => {
+  it('Testing Login Components', () => {
     expect(component.ngOnInit).toBeDefined();
     expect(component.loginLabel).toBeDefined();
   });
 
-  fit('Testing Login Functionality', () => {
+  it('Testing Login Functionality', () => {
     expect(component.ngOnInit).toBeDefined();
     expect(component.ionViewWillEnter).toBeDefined();
     expect(component.loginClick).toBeTruthy();

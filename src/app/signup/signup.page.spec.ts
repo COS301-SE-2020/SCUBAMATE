@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { SignupPage } from './signup.page';
 import { AppModule } from '../app.module';
 
-fdescribe('SignupPage', () => {
+describe('SignupPage', () => {
   let component: SignupPage;
   let fixture: ComponentFixture<SignupPage>;
 
@@ -19,11 +19,11 @@ fdescribe('SignupPage', () => {
     fixture.detectChanges();
   }));
 
-  fit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  fit('Testing SignUp Components', () => {
+  it('Testing SignUp Components', () => {
     //expect(component.uuidValue).toBeDefined();
     //expect(component.base64textString).toBeDefined();
     expect(component.showLoading).toBeFalse();
@@ -37,7 +37,7 @@ fdescribe('SignupPage', () => {
     //expect(component.ShowAccountChoice).toBeFalse();
   });
 
-  fit('Testing SignUp Functionality', () => {
+  it('Testing SignUp Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.ShowRelatedForm).toBeTruthy();
     expect(component.SpecializationListFinder).toBeTruthy();

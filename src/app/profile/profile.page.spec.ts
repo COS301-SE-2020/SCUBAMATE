@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ProfilePage } from './profile.page';
 import { AppModule } from '../app.module';
 
-fdescribe('ProfilePage', () => {
+describe('ProfilePage', () => {
   let component: ProfilePage;
   let fixture: ComponentFixture<ProfilePage>;
 
@@ -19,11 +19,11 @@ fdescribe('ProfilePage', () => {
     fixture.detectChanges();
   }));
 
-  fit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  fit('Testing Profile Components', () => {
+  it('Testing Profile Components', () => {
     expect(component.loginLabel).toBeDefined();
     //expect(component.AD).toBeDefined();
     //expect(component.DiveTypeLst).toBeDefined();
@@ -36,7 +36,7 @@ fdescribe('ProfilePage', () => {
     expect(component.showAD).toBeFalse();
   });
 
-  fit('Testing Profile Functionality', () => {
+  it('Testing Profile Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.ionViewWillEnter).toBeTruthy();
     expect(component.loginClick).toBeTruthy();

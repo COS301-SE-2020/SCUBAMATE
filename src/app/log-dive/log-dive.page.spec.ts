@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { LogDivePage } from './log-dive.page';
 import { AppModule } from '../app.module';
 
-fdescribe('LogDivePage', () => {
+describe('LogDivePage', () => {
   let component: LogDivePage;
   let fixture: ComponentFixture<LogDivePage>;
 
@@ -19,11 +19,11 @@ fdescribe('LogDivePage', () => {
     fixture.detectChanges();
   }));
 
-  fit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  fit('Testing Log-Dive Components', () => {
+  it('Testing Log-Dive Components', () => {
     //expect(component.uuidValue).toBeInstanceOf(String);
     expect(component.showLoading).toBeFalse();
     expect(component.DiveTypeLst).toBeDefined();
@@ -41,7 +41,7 @@ fdescribe('LogDivePage', () => {
     expect(component.loginLabel).toBeDefined();
   });
 
-  fit('Testing Log-Dive Functionality', () => {
+  it('Testing Log-Dive Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.ionViewWillEnter).toBeTruthy();
     expect(component.loginClick).toBeTruthy();
