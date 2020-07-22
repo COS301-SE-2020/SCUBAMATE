@@ -5,7 +5,7 @@ import { SignupPage } from './signup.page';
 import { AppModule } from '../app.module';
 import { ExplorePage } from '../explore/explore.page';
 
-fdescribe('SignupPage', () => {
+describe('SignupPage', () => {
   let component: SignupPage;
   let fixture: ComponentFixture<SignupPage>;
 
@@ -20,11 +20,11 @@ fdescribe('SignupPage', () => {
     fixture.detectChanges();
   }));
 
-  fit('Successfully Created Sign Up Page', () => {
+  it('Successfully Created Sign Up Page', () => {
     expect(component).toBeTruthy();
   });
 
-  fit('Testing SignUp Components', () => {
+  it('Testing SignUp Components', () => {
     expect(component.uuidValue).toBeUndefined();
     expect(component.base64textString).toBeUndefined();
     expect(component.showLoading).toBeFalse();
@@ -38,7 +38,7 @@ fdescribe('SignupPage', () => {
     expect(component.ShowAccountChoice).toBeTrue();
   });
 
-  fit('Testing ngOnInit()', () => {
+  it('Testing ngOnInit()', () => {
     component.ngOnInit();
     expect(component.showSpecialization).toBeFalse();
     expect(component.userSpecialisation).toBeDefined();
@@ -47,31 +47,31 @@ fdescribe('SignupPage', () => {
     expect(component.ShowAccountChoice).toBeTrue();
   });
 
-  fit('Testing ShowRelatedForm()', () => {
+  it('Testing ShowRelatedForm()', () => {
     component.ShowRelatedForm("Diver");
     expect(component.signUpDiver).toBeTrue();
     expect(component.signUpInstructor).toBeFalse();
   });
 
-  fit('Testing SpecializationListFinder()', () => {
+  it('Testing SpecializationListFinder()', () => {
     component.SpecializationListFinder("");
     expect(component.showLoading).toBeFalse();
     expect(component.SpecializationLst).toBeUndefined();
   });
 
-  fit('Testing QualificationListFinder()', () => {
+  it('Testing QualificationListFinder()', () => {
     component.QualificationListFinder("");
     expect(component.showLoading).toBeFalse();
     expect(component.QualificationLst).toBeUndefined();
   });
 
-  fit('Testing CenterListFinder()', () => {
+  it('Testing CenterListFinder()', () => {
     component.CenterListFinder("");
     expect(component.showLoading).toBeFalse();
     expect(component.CenterLst).toBeUndefined();
   });
 
-  fit('Testing addSpecialisation()', () => {
+  it('Testing addSpecialisation()', () => {
     component.addSpecialisation("");
     expect(component.showSpecialization).toBeFalse();
   });
@@ -80,17 +80,17 @@ fdescribe('SignupPage', () => {
   //   component.onFileSelected(event);
   // });
 
-  fit('Testing onSubmitDiver()', () => {
+  it('Testing onSubmitDiver()', () => {
     component.onSubmitDiver("", "", "", "", "", false, "", "", "", event);
     expect(component.uuidValue).toBeUndefined();
   });
 
-  fit('Testing onSubmitInstructor()', () => {
+  it('Testing onSubmitInstructor()', () => {
     component.onSubmitInstructor("", "", "", "", "", "", false, "", "", "", event);
     expect(component.uuidValue).toBeUndefined();
   });
 
-  fit('Testing SignUp Functionality', () => {
+  it('Testing SignUp Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.ShowRelatedForm).toBeTruthy();
     expect(component.SpecializationListFinder).toBeTruthy();
