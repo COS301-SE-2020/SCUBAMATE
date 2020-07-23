@@ -18,7 +18,12 @@ describe('FlashCardComponent', () => {
     fixture.detectChanges();
   }));
 
-  it('should create', () => {
+  it('Successfully Created Flas-Card Page', () => {
     expect(component).toBeTruthy();
   });
+
+  it('Testing flip()', () => {
+    component.flip();
+    expect(component.flipped).toBe(true);
+  }); 
 });

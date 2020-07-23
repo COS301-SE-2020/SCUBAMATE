@@ -139,7 +139,7 @@ export class diveService
         "AccessToken" : localStorage.getItem("accessToken")
       }
 
-      return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/publicDives/getpublicdives', PostData , options); 
+      return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/getpublicdives', PostData , options); 
 
     }
 
