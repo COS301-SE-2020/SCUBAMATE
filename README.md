@@ -133,7 +133,7 @@
         <br>
         - Configuration of some of the endpoints in API-Gateway.
         <br>
-        - Editing of Demo 1 video.
+        - Editing of Demo videos.
         <br>
     </details>
 
