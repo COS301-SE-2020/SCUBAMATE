@@ -14,8 +14,10 @@
 * <a href="https://team-anti-virus.slack.com">Slack</a>
 * <a href="https://app.clickup.com/2536654/home/landing">ClickUp</a>
 
-## Demo 1 Video Link
+## Demo Video Links
 * <a href="https://drive.google.com/drive/folders/14hiS32Kgk8xqgvmLkFV33a35PGvYcp6Y?usp=sharing">TeamAV Demo 1</a>
+* <a href="https://drive.google.com/drive/folders/1f9AQtVqOS0MdEosUH1uwPVwZdO6j9OvS?usp=sharing">TeamAV Demo 2</a>
+
 
 
 ## Installation Instructions
