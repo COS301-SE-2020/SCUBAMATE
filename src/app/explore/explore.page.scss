@@ -131,10 +131,12 @@ table{
   transform-style: preserve-3d;
   transition: all 0.5s ease;
   word-wrap: break-word;
+  cursor: pointer;
 }
 
 .thecard:active{
   transform: rotateY(180deg);
+  cursor: pointer;
 }
 
 .thefront{

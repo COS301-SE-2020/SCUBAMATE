@@ -12,13 +12,13 @@
 <ion-toolbar class="productHeader" transparent slot="fixed">
   <ul>
     <li style="float:right;"><a routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >{{loginLabel}}</a></li>
-    <li style="margin-top:5px; margin-bottom:5px;right:0;float:right;"><ion-searchbar animated></ion-searchbar></li>        
     <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo">
      <li style="float:left;margin-left:20px;"><a routerLink="/home" >Home</a></li>  
       <li style="float:left;"><a routerLink="/explore">Explore</a></li>  
       <li style="float:left;"><a routerLink="/weather">Weather</a></li> 
       <li style="float:left;"><a routerLink="/my-dives">My Dives</a></li>
-      <li style="float:left;"><a routerLink="/profile">My Account</a></li>   
+      <li style="float:left;"><a routerLink="/profile">My Account</a></li> 
+      <ion-progress-bar type="indeterminate" *ngIf="showLoading"></ion-progress-bar>  
 </ul>
 </ion-toolbar>
 
@@ -27,68 +27,78 @@
 
 
  <div id="newUser">
-    <ion-label id="divHead">Edit Account</ion-label>
+   <div class="divHeadSection">
+    <ion-label id="divHead" >Edit Account</ion-label>
+   </div>
+    
+   <form [formGroup]="userForm" *ngIf="showData">
+     <ion-grid>
+       <ion-row >
+         <ion-col  id="leftPane" size="4">
+           <label class="subLabel">Profile Photo</label>
+           <div id="profileSurroundDiv">
+            <ion-img src={{userObj.ProfilePhoto}} id="userProfile" ></ion-img>
+           </div>
+              <ion-item color="transparent" lines="none">
+                <ion-button expand="full" (click)="f.click()" style="margin:auto;">
+                  <ion-icon lazy="true" name="image"></ion-icon>
+                  <ion-label slot="end">Change Profile Photo</ion-label>
+                </ion-button>
+                  <input class="ion-hide" #f type="file" (change)="onFileSelected($event)" id="file-input"
+                    accept="image/png, image/jpeg">
 
-    <form (submit)="onSubmit(birthD.value,  FirstName.value , LastName.value, public.checked,   $event)" *ngIf="showData">
-      <div id="diveType">
-        <ion-label class="subLabel"> Account Type </ion-label>
-        <ion-grid>
+               </ion-item>
+         </ion-col>
+         <ion-col  id="rightPane" size="7">
           <ion-row>
             <ion-col>
-              <ion-item>
-                <ion-label>Account*</ion-label>
-                <ion-select value={{AD.AccountType}} #accountType required readonly>
-                  <ion-select-option value="Diver">Diver</ion-select-option>
-                  <ion-select-option value="Instructor">Instructor</ion-select-option>
-                </ion-select>
-              </ion-item>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </div><!-- end of dive Type-->
-      <div id="userInfo">
-        <ion-label class="subLabel"> User Information </ion-label>
-        <ion-grid>
-          <ion-row>
-            <ion-col>
-              <ion-item>
-                <ion-label position="stacked">First Name*</ion-label>
-                <ion-input type="text" #FirstName  value={{AD.FirstName}}></ion-input>
-              </ion-item>
-            </ion-col>
-            <ion-col>
-              <ion-item>
-                <ion-label position="stacked">Last Name*</ion-label>
-                <ion-input type="text" #LastName value={{AD.LastName}}></ion-input>
+              <ion-item color="dark">
+                <ion-label  position="floating">First Name         
+                  <b *ngIf="!userForm.controls.firstName.valid  && (userForm.controls.firstName.dirty )" class="FormErrorControlMessage">* Please enter a valid name  </b>
+                </ion-label>
+                <ion-input formControlName="firstName" type="text" value={{userObj.FirstName}} [(ngModel)]="userObj.FirstName"  [class.invalid]="!userForm.controls.firstName.valid && (userForm.controls.firstName.dirty )"></ion-input>
               </ion-item>
             </ion-col>
           </ion-row>
           <ion-row>
             <ion-col>
-              <ion-item>
-                <ion-label position="stacked">Email*</ion-label>
-                <ion-input type="email" #emailI value={{AD.Email}} readonly></ion-input>
-              </ion-item>
-            </ion-col>
-            <ion-col>
-              <ion-item>
-                <ion-label position="stacked">Date of birth</ion-label>
-                <ion-input type="date" #birthD value={{AD.DateOfBirth}}></ion-input>
+              <ion-item color="dark">
+                <ion-label  position="floating">Last Name
+                  <b *ngIf="!userForm.controls.lastName.valid  && (userForm.controls.lastName.dirty )" class="FormErrorControlMessage">* Please enter a valid name  </b>
+                </ion-label>
+                <ion-input formControlName="lastName" type="text" value={{userObj.LastName}} [(ngModel)]="userObj.LastName"  [class.invalid]="!userForm.controls.lastName.valid && (userForm.controls.lastName.dirty )"></ion-input>
               </ion-item>
             </ion-col>
           </ion-row>
           <ion-row>
             <ion-col>
-              <ion-item>
+              <ion-item color="dark">
                 <ion-label position="stacked">Do you want your account to be public?</ion-label>
-                <ion-checkbox color="dark" disabled="false" #public checked={{AD.PublicStatus}}></ion-checkbox>
+                <ion-checkbox color="dark" formControlName="publicStatus" checked={{AD.PublicStatus}} [(ngModel)]="userObj.PublicStatus" ></ion-checkbox>
               </ion-item>
             </ion-col>
           </ion-row>
-        </ion-grid>
-      </div> <!-- end of dateTimeDive -->
-      <input type="submit" value="Apply">
-    </form>
+          <ion-row>
+            <ion-col>
+              <ion-item color="dark">
+                <ion-label  position="stacked">Date of Birth
+                  <b *ngIf="!userForm.controls.birthday.valid  && (userForm.controls.birthday.dirty )" class="FormErrorControlMessage">* Please enter a valid name  </b>
+                </ion-label>
+                <ion-input formControlName="birthday" type="date" value={{userObj.DateOfBirth}}  [(ngModel)]="userObj.DateOfBirth"  [class.invalid]="!userForm.controls.birthday.valid && (userForm.controls.birthday.dirty )"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row style="padding-top:30px;">
+            <input type="submit" value="Apply" (click)="UpdateSubmit()">
+          </ion-row>
+
+         </ion-col>
+       </ion-row>
+     </ion-grid>
+   </form>
+  
+
 
  </div> <!-- end newUser Div-->
 </ion-content>

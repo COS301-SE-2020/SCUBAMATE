@@ -11,8 +11,7 @@
 <ion-toolbar class="productHeader" transparent slot="fixed">
   <ul>
     <li style="float:right;"><a routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >{{loginLabel}}</a></li>
-    <li style="margin-top:5px; margin-bottom:5px;right:0;float:right;"><ion-searchbar animated></ion-searchbar></li>        
-    <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo">
+   <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo">
     <li style="float:left;margin-left:20px;"><a routerLink="/home" >Home</a></li>  
       <li style="float:left;"><a routerLink="/explore">Explore</a></li>  
       <li style="float:left;"><a routerLink="/weather">Weather</a></li> 
@@ -28,24 +27,24 @@
   <div id="newDiveDiv">
     <ion-label id="divHead">Log a new Dive</ion-label>
 
-    <form (submit)="onSubmit(public.checked , desc.value, siteOf.value, dateOf.value, timeIn.value, timeOut.value, diveType.value, bud.value, vis.value, dep.value, aTemp.value, sTemp.value, bTemp.value,  $event)">
+    <form [formGroup]="diveForm">
     <div id="locationInfo">
       <ion-label class="subLabel"> Dive Location </ion-label>
       <ion-grid>
         <ion-row>
           <ion-col >
-            <div class="searchableSelect">
+            <div class="searchableSelect" color="dark" >
               <ion-label class="searchableSelectLabel">Dive Site</ion-label><br>
-                <input list="diveSites"  placeholder="Insert A Dive Site" #siteOf>
+                <input list="diveSites" formControlName="DiveSite" class="searchableSelectInput" [(ngModel)]="diveObj.DiveSite"  placeholder="Insert A Dive Site" #siteOf>
                 <datalist id="diveSites" >
                     <option *ngFor='let s of DiveSiteLst' value={{s}}></option>
                 </datalist>
             </div>
             </ion-col>
             <ion-col >
-            <div class="searchableSelect">
+            <div class="searchableSelect" color="dark">
               <ion-label class="searchableSelectLabel">Dive Type</ion-label>
-              <input list="diveTypes"  placeholder="Insert A Dive Type" #diveType>
+              <input list="diveTypes" formControlName="DiveTypeLink" class="searchableSelectInput" [(ngModel)]="diveObj.DiveTypeLink"  placeholder="Insert A Dive Type" #diveType>
               <datalist id="diveTypes" >
                   <option *ngFor='let t of DiveTypeLst' value={{t}}></option>
               </datalist>
@@ -59,23 +58,25 @@
       <ion-grid>
         <ion-row>
           <ion-col>
-            <ion-item>
-              <ion-label position="stacked">Date of Dive*</ion-label>
-              <ion-input type="date" #dateOf value={{currentDate}}></ion-input>
+            <ion-item color="dark">
+              <ion-label  position="stacked">Date of Dive
+                <b *ngIf="!diveForm.controls.DiveDate.valid  && (diveForm.controls.DiveDate.dirty )" class="FormErrorControlMessage">* Please enter a valid name  </b>
+              </ion-label>
+              <ion-input formControlName="DiveDate" type="date" value={{currentDate}} [(ngModel)]="diveObj.DiveDate"  [class.invalid]="!diveForm.controls.DiveDate.valid && (diveForm.controls.DiveDate.dirty )"></ion-input>
             </ion-item>
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>
-            <ion-item>
+            <ion-item color="dark">
               <ion-label position="stacked">Time In*</ion-label>
-              <ion-input type="time" #timeIn></ion-input>
+              <ion-input type="time" #timeIn formControlName="TimeIn"  [(ngModel)]="diveObj.TimeIn"  [class.invalid]="!diveForm.controls.TimeIn.valid && (diveForm.controls.TimeIn.dirty )"></ion-input>
             </ion-item>
           </ion-col>
           <ion-col>
-            <ion-item>
+            <ion-item color="dark">
               <ion-label position="stacked">Time Out*</ion-label>
-              <ion-input type="time" #timeOut></ion-input>
+              <ion-input type="time" #timeOut formControlName="TimeOut"  [(ngModel)]="diveObj.TimeOut"  [class.invalid]="!diveForm.controls.TimeOut.valid && (diveForm.controls.TimeOut.dirty )"></ion-input>
             </ion-item>
           </ion-col>
         </ion-row>
@@ -86,23 +87,23 @@
       <ion-grid>
         <ion-row>
           <ion-col>
-            <ion-item>
+            <ion-item color="dark">
               <ion-label position="floating">Air Temperature</ion-label>
-              <ion-input type="number" #aTemp value={{MaxTempAPI}}></ion-input>
+              <ion-input type="number" #aTemp value={{MaxTempAPI}}  formControlName="AirTemp"  [(ngModel)]="diveObj.AirTemp"  [class.invalid]="!diveForm.controls.AirTemp.valid && (diveForm.controls.AirTemp.dirty )"></ion-input>
             </ion-item>
           </ion-col>
           <ion-col>
-            <ion-item>
+            <ion-item color="dark">
               <ion-label position="floating">Surface Temperature</ion-label>
-              <ion-input type="number" #sTemp value={{MinTempAPI}}></ion-input>
+              <ion-input type="number" #sTemp value={{MinTempAPI}} formControlName="SurfaceTemp"  [(ngModel)]="diveObj.SurfaceTemp"  [class.invalid]="!diveForm.controls.SurfaceTemp.valid && (diveForm.controls.SurfaceTemp.dirty )"></ion-input>
             </ion-item>
           </ion-col>
         </ion-row>
         <ion-row>
         <ion-col>
-          <ion-item>
+          <ion-item color="dark">
             <ion-label position="floating">Bottom Temperature</ion-label>
-            <ion-input type="number" #bTemp value={{MinTempAPI}}></ion-input>
+            <ion-input type="number" #bTemp value={{MinTempAPI}} formControlName="BottomTemp"  [(ngModel)]="diveObj.BottomTemp"  [class.invalid]="!diveForm.controls.BottomTemp.valid && (diveForm.controls.BottomTemp.dirty )"></ion-input>
           </ion-item>
         </ion-col>
         <ion-col>
@@ -118,45 +119,45 @@
           <ion-col>
               <div class="searchableSelect">
                 <ion-label class="searchableSelectLabel">Buddy</ion-label>
-                <input list="buddylst"  placeholder="Insert Buddy" (keypress)="buddyListFinder($event.target.value)" #bud>
+                <input list="buddylst" formControlName="Buddy" class="searchableSelectInput" [(ngModel)]="diveObj.Buddy" placeholder="Insert Buddy" (keypress)="buddyListFinder($event.target.value)" #bud>
                 <datalist id="buddylst" >
                     <option *ngFor='let b of BuddyLst' value={{b}}></option>
                 </datalist>
               </div>
             </ion-col>
             <ion-col>
-              <ion-item>
+              <ion-item color="dark">
                 <ion-label position="stacked">Do you want this dive to be logged publicly?</ion-label>
-                <ion-checkbox color="dark"  #public ></ion-checkbox>
+                <ion-checkbox color="dark"  #public formControlName="DivePublicStatus"  [(ngModel)]="diveObj.DivePublicStatus"  [class.invalid]="!diveForm.controls.DivePublicStatus.valid && (diveForm.controls.DivePublicStatus.dirty )" ></ion-checkbox>
               </ion-item>
             </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>
-            <ion-item>
+            <ion-item color="dark">
               <ion-label position="floating">Visibility (m)</ion-label>
-              <ion-input type="number" #vis></ion-input>
+              <ion-input type="number" #vis formControlName="Visibility"  [(ngModel)]="diveObj.Visibility"  [class.invalid]="!diveForm.controls.Visibility.valid && (diveForm.controls.Visibility.dirty )"></ion-input>
             </ion-item>
           </ion-col>
           <ion-col>
-            <ion-item>
+            <ion-item color="dark">
               <ion-label position="floating">Depth (m)</ion-label>
-              <ion-input type="number" #dep></ion-input>
+              <ion-input type="number" #dep formControlName="Depth"  [(ngModel)]="diveObj.Depth"  [class.invalid]="!diveForm.controls.Depth.valid && (diveForm.controls.Depth.dirty )"></ion-input>
             </ion-item>
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>
-            <ion-item>
+            <ion-item color="dark">
               <ion-label position="floating">Dive Description</ion-label>
-              <ion-textarea #desc></ion-textarea>
+              <ion-textarea #desc formControlName="Description"  [(ngModel)]="diveObj.Description"  [class.invalid]="!diveForm.controls.Description.valid && (diveForm.controls.Description.dirty )"></ion-textarea>
             </ion-item>
           </ion-col>
         </ion-row>
       </ion-grid>
     </div> <!-- end of diveDetails-->
    
-    <input type="submit" value="Log Dive">
+    <input type="submit" value="Log Dive" (click)="DiveLogSubmit()">
 
     </form>
   </div>  <!--End of newDiveDiv -->

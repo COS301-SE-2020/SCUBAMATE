@@ -7,6 +7,11 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import * as CryptoJS from 'crypto-js';  
 import { UUID } from 'angular2-uuid';
 
+//forms
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { AlertController } from '@ionic/angular';
+
 
 export interface DiveLog{
   DiveID : string; 
@@ -25,7 +30,7 @@ export interface DiveLog{
   DiveSite: string;
   Description: string ;
   InstructorLink: "-" ;
-  Weather: String[] ;//["10 mph East", "FullMoon","Windy", "high: 1.20m"]  ;
+  Weather: String[] ;
   DivePublicStatus: Boolean;
 }
 
@@ -37,8 +42,11 @@ export interface DiveLog{
 })
 export class LogDivePage implements OnInit {
 
-   uuidValue:string;
-   showLoading: Boolean;
+  /*********************************************
+                Global Variables
+  *********************************************/
+    uuidValue:string;
+    showLoading: Boolean;
     DiveTypeLst: [];
     DiveSiteLst: [];
     BuddyLst:[];
@@ -49,6 +57,12 @@ export class LogDivePage implements OnInit {
     MoonPhase : string ;
     WeatherDescription: string ; 
     WindSpeed : string;
+
+    //Form Groups
+  diveForm;
+  diveObj: DiveLog;
+
+  /********************************************/
   
    Key = {
     "key": null
@@ -58,7 +72,60 @@ export class LogDivePage implements OnInit {
     Longitude: null
   };
   loginLabel:string ;
-  constructor(private _accountService : accountService, private router: Router, private _diveService: diveService, private _weatherService: weatherService,private geolocation: Geolocation ) {}
+
+
+  constructor(private _accountService : accountService, private router: Router, private _diveService: diveService, private _weatherService: weatherService,private geolocation: Geolocation, public formBuilder: FormBuilder, public alertController : AlertController ) {
+
+    //generate GUID
+    this.uuidValue=UUID.UUID();
+
+     //Diver Form
+     this.diveObj ={
+      DiveID :  "D"+ this.uuidValue,
+      AccessToken: localStorage.getItem("accessToken"),
+      Approved: false,
+      DiveDate: "",
+      TimeIn: "",
+      TimeOut: "",
+      Visibility:"",
+      Depth: "",
+      Buddy: "",
+      DiveTypeLink: "",
+      AirTemp: 0 ,
+      SurfaceTemp: 0 ,
+      BottomTemp: 0 ,
+      DiveSite: "",
+      Description: "",
+      InstructorLink: "-" ,
+      Weather: [] ,
+      DivePublicStatus: false
+    }
+
+
+    this.diveForm = formBuilder.group({
+      DiveID: ['', Validators.required],
+      AccessToken: ['', Validators.required],
+      Approved: [],
+      DiveDate: ['', Validators.required],
+      TimeIn: ['', Validators.required],
+      TimeOut: ['', Validators.required],
+      Visibility:['', Validators.required],
+      Depth: ['', Validators.required],
+      Buddy: ['', Validators.required],
+      DiveTypeLink: ['', Validators.required],
+      AirTemp: ['', Validators.required],
+      SurfaceTemp: ['', Validators.required],
+      BottomTemp: ['', Validators.required],
+      DiveSite: ['', Validators.required],
+      Description: ['', Validators.required],
+      InstructorLink: [''] ,
+      Weather: [''] ,
+      DivePublicStatus: ['']
+    }); 
+
+
+
+  }
   
   ngOnInit() {
      this.cDate = new Date();
@@ -202,7 +269,6 @@ export class LogDivePage implements OnInit {
                 
                 console.log(res);
                 this.showLoading = false;
-               // location.reload();
                this.router.navigate(['my-dives']);
                 console.log("after nav");
               })
@@ -230,6 +296,63 @@ export class LogDivePage implements OnInit {
           }
         ); //end Buddy req
     }
+
+  }
+
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: 'Invalid Log',
+      message: 'Please provide all required information to complete the Dive Log',
+      buttons: ['OK']
+    });
+  
+    await alert.present();
+  }
+
+  async presentSuccessAlert() {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: 'Successful Log',
+      message: 'Your dive has been logged',
+      buttons: ['OK']
+    });
+  
+    await alert.present();
+  }
+
+  DiveLogSubmit(){
+    this.diveObj.Weather =  [this.WindSpeed, this.MoonPhase, this.WeatherDescription] ; 
+    this.diveObj.AirTemp = Number(this.diveObj.AirTemp );
+    this.diveObj.SurfaceTemp = Number(this.diveObj.SurfaceTemp );
+    this.diveObj.BottomTemp = Number(this.diveObj.BottomTemp );
+    this.diveObj.InstructorLink = "-";
+    this.diveObj.Visibility = this.diveObj.Visibility + "m";
+    this.diveObj.Depth = this.diveObj.Depth + "m";
+    console.log(this.diveObj);
+
+  /*  if( !this.diveForm.valid ){
+      this.presentAlert();
+    }else{
+ 
+
+      console.log(this.diveObj);
+     
+
+
+    } */
+
+    this.showLoading = true;
+    this._diveService.logDive(this.diveObj).subscribe( res =>{
+                
+      console.log(res);
+      this.showLoading = false;
+      this.presentSuccessAlert();
+      this.router.navigate(['my-dives']);
+    });
+
+
+
 
   }
 
