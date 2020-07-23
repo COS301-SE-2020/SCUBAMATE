@@ -87,9 +87,9 @@
         <br>
         - Architectural Design Documment: Quality Requirements
         <br>
-        - Weather extraction for functionality of application
+        - Architectural Design Documment: Event-Driven Architecture
         <br>
-        - Insert data
+        - Weather extraction for functionality of application
         <br>
     </details>
 
