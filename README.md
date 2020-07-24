@@ -125,7 +125,7 @@
      <br>
         - SRS Document: Introduction.
         <br>
-         SRS Document: User Charactaristics and Overview.
+        - SRS Document: User Charactaristics and Overview.
         <br>
         - Lambda function for Login (including server side password hashing, and unique access token generation).
         <br> 
@@ -134,6 +134,10 @@
         - Configuration of some of the endpoints in API-Gateway.
         <br>
         - Editing of Demo videos.
+        <br>
+        - SRS Document: Client-Server Architecture
+        <br>
+        - Lambda Function and API Gateway for Checklist functionality
         <br>
     </details>
 
