@@ -3,20 +3,30 @@ const AWS = require('aws-sdk');
 AWS.config.update({region: "af-south-1"});
 
 exports.handler = async (event, context) => {
+    const ddb = new AWS.DynamoDB({apiVersion:"2012-08-10"});
+    const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
 
-    const body = JSON.parse(event.body);
+    /*
+    Retrieves AccessToken 
+    */
+    let body = JSON.parse(event.body)
     const AccessToken = body.AccessToken; 
     console.log(body.AccessToken);
-    const GuidSize = 36;
-    const AccountGuid = AccessToken.substring(0,GuidSize);
+    const guidLength = 36;
+    const guid = AccessToken.substring(0,guidLength);
+    
+    let responseBody = "";
+    let statusCode =0;
 
-    /* Verify AccessToken  */
+    /*
+        Verify Access Token
+    */
     const params = {
         TableName: "Scubamate",
         Key: {
-            "AccountGuid": AccountGuid
+            "AccountGuid": guid
         }
-    };
+    }
     
     function compareDates(t,e){
         let returnBool;
@@ -46,36 +56,42 @@ exports.handler = async (event, context) => {
         }
         return returnBool;
     }
-    let responseBody;
-    const undef = 0;
-    let statusCode = undef;
-    const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
-    
+
     try {     
         const data = await documentClient.get(params).promise();
         
-        if((data.Item.AccessToken).toString().trim() != AccessToken){
-            statusCode = 403;
-            responseBody = "Invalid Access Token" ;
-        }
-        else if(data.Item.Expires){
+        /* check if it's undefined */
+        if(typeof data.Item !== 'undefined' && data.Item){ 
             const expiryDate = new Date(data.Item.Expires);
             const today = new Date();
-            if(compareDates(today,expiryDate))
-            {
-                responseBody = "Access Token Expired!";
+            console.log("Compare: " + today + " and " + expiryDate  + " " + compareDates(today,expiryDate));
+            if((data.Item.AccessToken).toString().trim() != AccessToken){
                 statusCode = 403;
-            }  
+                responseBody = "Invalid Access Token" ;
+            }
+            if(compareDates(today,expiryDate)){
+                statusCode = 403;
+                responseBody = "Access Token Expired!";
+            }
         }
+        else
+        {
+            statusCode = 403;
+            responseBody = "Invalid Access Token";   
+        }
+            
+        console.log("status is now: " + statusCode) ;
 
-    } catch (err) {
+    } catch (error) {
+        console.error(error);
         statusCode = 403;
-        responseBody = "Invalid Access Token";
+        responseBody = "Invalid Access Token. " + error;
     }
 
-    //Only proceed if access token is valid
-    if(statusCode==undef){
-
+    /*
+    Only proceed if access token is valid
+    */
+    if(statusCode==0){
         var diveParams = {
             TableName: "Dives",
             ProjectionExpression: "AccountGuid, DiveSite, DiveDate, DivePublicStatus, DiveTypeLink, Weather, TimeIn , TimeOut, Buddy",
@@ -91,13 +107,12 @@ exports.handler = async (event, context) => {
         try {
             console.log("Scanning...");
             const dives = await documentClient.scan(diveParams).promise();
-            if(!dives.Items[0].AccountGuid)
-            {
+            if(dives.Items.length==0){
                 responseBody = "No public dives found :(";
                 statusCode = 404;
             }
             else{
-                //now add the name and surname of the diver
+                /*now add the name and surname of the diver*/
                 console.log("Scan succeeded.");
                 var accounts = [];
                 dives.Items.forEach(function(dive) {
@@ -106,25 +121,22 @@ exports.handler = async (event, context) => {
                 });
                 console.log("length: " + accounts.length)
 
-                for(var i=0; i<accounts.length && statusCode==0; i++)
-                {
-                    var acc = accounts[i];
+                for(var i=0; i<accounts.length && statusCode==0; i++) {
+                    let account = accounts[i];
                     var accountParams = {
                         TableName: "Scubamate",
                         Key: {
-                            "AccountGuid": acc
+                            "AccountGuid": account
                         }
                     }
                     
                     try{
-                        var acc = await documentClient.get(accountParams).promise();
-                        console.log(acc.Item.FirstName + " " + acc.Item.LastName); //Is stringset
-                        if(i == 0)
-                        {
+                        let acc = await documentClient.get(accountParams).promise();
+                        console.log(acc.Item.FirstName + " " + acc.Item.LastName); 
+                        if(i == 0){
                             responseBody += '{ "PublicDiveLogs" : ['
                         }
-                        else
-                        {
+                        else{
                             responseBody += ",";
                         }
                         responseBody += '{ "FirstName" : "' + acc.Item.FirstName + '",' +
@@ -137,25 +149,19 @@ exports.handler = async (event, context) => {
                                             '"Buddy" : "' + dives.Items[i].Buddy + '",' +
                                             '"Weather" : [';
                                             
-                        for(var j=0; j<dives.Items[i].Weather.length; j++)
-                        {
-                            if(j == 0)
-                            {
+                        for(var j=0; j<dives.Items[i].Weather.length; j++){
+                            if(j == 0){
                                 responseBody += '"' + dives.Items[i].Weather[j] + '"';
                             }
-                            else
-                            {
+                            else{
                                 responseBody += ',"' + dives.Items[i].Weather[j] + '"';
                             }
-                            
                         }
                         responseBody += ']}';
 
-                        if(i==accounts.length-1)
-                        {
+                        if(i==accounts.length-1){
                             responseBody += ']}';
                         }
-
                 
                     }catch(err){
                         var temp = responseBody;
@@ -174,17 +180,14 @@ exports.handler = async (event, context) => {
                 //     documentClient.scan(diveParams, onScan);
                 // }
     
-                if(statusCode == 0)
-                {    
+                if(statusCode == 0){    
                     responseBody = JSON.parse(responseBody);
                     statusCode = 200;
                 }
             }
         } 
-        catch(err)
-        {
-            if(statusCode == 0)
-            {
+        catch(err){
+            if(statusCode == 0){
                 console.error("Unable to scan the table. Error JSON:", JSON.stringify(err, null, 2), );
                 responseBody = "No public dives found " + err + " " + responseBody;
                 statusCode = 404;
@@ -192,7 +195,11 @@ exports.handler = async (event, context) => {
         }
         
     }   
-
+    
+  
+    /*
+    Final response to be sent back
+    */
     const response = {
         statusCode: statusCode,
         headers: {
@@ -208,3 +215,4 @@ exports.handler = async (event, context) => {
     return response;
 
 };
+
