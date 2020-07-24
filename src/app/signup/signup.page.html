@@ -4,112 +4,347 @@
   <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
 
 </head>
-
 <ion-header no-border slot="fixed">
- 
+  
 </ion-header>
 <ion-toolbar class="productHeader" transparent slot="fixed">
+  
   <ul>
-    <li style="margin-top:5px; margin-bottom:5px;right:0;float:right;"><ion-searchbar animated></ion-searchbar></li>        
-      <li style="float:left;margin-left:20px;"><a routerLink="/home" >Home</a></li>  
+       <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo">  
+    <li style="float:left;margin-left:20px;"><a routerLink="/home" >Home</a></li>  
       <li style="float:left;"><a routerLink="/explore">Explore</a></li>  
       <li style="float:left;"><a routerLink="/weather">Weather</a></li> 
       <li style="float:left;"><a routerLink="/my-dives">My Dives</a></li>
-      <li style="float:left;"><a routerLink="/profile">My Account</a></li>   
-</ul>
+      <li style="float:left;"><a routerLink="/profile">My Account</a></li>  
+  </ul>
 </ion-toolbar>
-
 <ion-content fullscreen class="background" no-scroll padding >
  
- <div id="newUser">
-    <ion-label id="divHead">Sign Up</ion-label>
+  <div class="registerFormDiv" *ngIf="ShowAccountChoice" style="margin-top:20px;">
+    <ion-label id="divHead"> Account Type </ion-label>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-item color="dark">
+            <ion-label>Choose your Account Type</ion-label>
+            <ion-select  #accountType required  (ionChange)="ShowRelatedForm($event.target.value)">
+              <ion-select-option value="Diver">Diver</ion-select-option>
+              <ion-select-option value="Instructor">Instructor</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+   </div> <!-- End of Account Choice-->
+ 
+   <!--Diver Signup Form-->
+  <div class="registerFormDiv" *ngIf="signUpDiver">
+    <ion-label id="divHead">Diver Sign Up </ion-label>
 
-    <form (submit)="onSubmit(birthD.value, accountType.value, FirstName.value , LastName.value, public.checked, emailI.value, Password.value, cPassword.value, $event)">
-      <div id="diveType">
-        <ion-label class="subLabel"> Account Type </ion-label>
-        <ion-grid>
-          <ion-row>
-            <ion-col>
-              <ion-item>
-                <ion-label>Account*</ion-label>
-                <ion-select placeholder="Select One" #accountType required>
-                  <ion-select-option value="Diver">Diver</ion-select-option>
-                  <ion-select-option value="Instructor">Instructor</ion-select-option>
-                </ion-select>
-              </ion-item>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </div><!-- end of dive Type-->
-      <div id="userInfo">
+    <form [formGroup]="diverForm" >
+      <div>  
         <ion-label class="subLabel"> User Information </ion-label>
         <ion-grid>
           <ion-row>
             <ion-col>
-              <ion-item>
-                <ion-label position="stacked">First Name*</ion-label>
-                <ion-input type="text" #FirstName ></ion-input>
-              </ion-item>
-            </ion-col>
-            <ion-col>
-              <ion-item>
-                <ion-label position="stacked">Last Name*</ion-label>
-                <ion-input type="text" #LastName ></ion-input>
-              </ion-item>
-            </ion-col>
+                <ion-item color="dark">
+                  <ion-label  position="floating">First Name         
+                    <b *ngIf="!diverForm.controls.firstName.valid  && (diverForm.controls.firstName.dirty )" class="FormErrorControlMessage">* Please enter a valid name  </b>
+                  </ion-label>
+                  <ion-input formControlName="firstName" type="text"  [(ngModel)]="diverObj.FirstName"  [class.invalid]="!diverForm.controls.firstName.valid && (diverForm.controls.firstName.dirty )"></ion-input>
+                </ion-item>
+        
+           </ion-col>
+           <ion-col>
+            <ion-item color="dark">
+              <ion-label  position="floating">Last Name
+                <b *ngIf="!diverForm.controls.lastName.valid  && (diverForm.controls.lastName.dirty )" class="FormErrorControlMessage">* Please enter a valid name  </b>
+              </ion-label>
+              <ion-input formControlName="lastName" type="text"  [(ngModel)]="diverObj.LastName"  [class.invalid]="!diverForm.controls.lastName.valid && (diverForm.controls.lastName.dirty )"></ion-input>
+            </ion-item>
+    
+           </ion-col>
           </ion-row>
           <ion-row>
             <ion-col>
-              <ion-item>
-                <ion-label position="stacked">Email*</ion-label>
-                <ion-input type="email" #emailI></ion-input>
-              </ion-item>
-            </ion-col>
-            <ion-col>
-              <ion-item>
-                <ion-label position="stacked">Date of birth</ion-label>
-                <ion-input type="date" #birthD></ion-input>
-              </ion-item>
-            </ion-col>
+                <ion-item color="dark">
+                  <ion-label  position="floating">Email         
+                    <b *ngIf="!diverForm.controls.email.valid  && (diverForm.controls.email.dirty )" class="FormErrorControlMessage">* Please enter a valid email  </b>
+                  </ion-label>
+                  <ion-input formControlName="email" type="email"  [(ngModel)]="diverObj.Email"  [class.invalid]="!diverForm.controls.email.valid && (diverForm.controls.email.dirty )"></ion-input>
+                </ion-item>
+
+           </ion-col>
+           <ion-col>
+            <ion-item color="dark">
+              <ion-label  position="stacked">Date of Birth
+                <b *ngIf="!diverForm.controls.birthday.valid  && (diverForm.controls.birthday.dirty )" class="FormErrorControlMessage">* Please enter a valid name  </b>
+              </ion-label>
+              <ion-input formControlName="birthday" type="date"  [(ngModel)]="diverObj.DateOfBirth"  [class.invalid]="!diverForm.controls.birthday.valid && (diverForm.controls.birthday.dirty )"></ion-input>
+            </ion-item>
+    
+           </ion-col>
           </ion-row>
           <ion-row>
             <ion-col>
-              <ion-item>
+              <ion-item color="dark">
                 <ion-label position="stacked">Do you want your dives to be logged publicly?</ion-label>
-                <ion-checkbox color="dark" disabled="false" #public ></ion-checkbox>
+                <ion-checkbox color="dark" disabled="false" formControlName="publicStatus" [(ngModel)]="diverObj.PublicStatus" ></ion-checkbox>
               </ion-item>
             </ion-col>
             <ion-col>
-              <ion-item>
+              <ion-item color="dark">
                 <ion-label position="stacked">Profile Picture</ion-label>
-                <ion-input type="file" accept="image/*" (change)="onFileSelected($event)" ></ion-input> <!--removed id-->
+                <ion-input type="file" accept="image/*" formControlName="profile" (change)="onFileSelected($event)" ></ion-input> 
               </ion-item>
             </ion-col>
           </ion-row>
         </ion-grid>
-      </div> <!-- end of dateTimeDive -->
-      <div id="passSetup">
+      </div>
+      <div>
         <ion-label class="subLabel">Password Setup </ion-label>
         <ion-grid>
           <ion-row>
             <ion-col>
-              <ion-item>
-                <ion-label position="stacked">Password*</ion-label>
-                <ion-input type="password" #Password></ion-input>
+              
+              <ion-item color="dark">
+                <ion-label position="floating">Password
+                  <p *ngIf="!diverForm.controls.password.valid  && (diverForm.controls.password.dirty )" class="FormErrorControlMessage">Must be 6 digits long and contain A-Z,a-z,1-9 and a special Character </p>
+                </ion-label>
+                <ion-input formControlName="password" type="password" [(ngModel)]="diverObj.Password" [class.invalid]="!diverForm.controls.password.valid && (diverForm.controls.password.dirty)"></ion-input>
               </ion-item>
+            
             </ion-col>
             <ion-col>
-              <ion-item>
-                <ion-label position="stacked">Confirm Password*</ion-label>
-                <ion-input type="password" #cPassword></ion-input>
+              
+              <ion-item color="dark">
+                <ion-label position="floating">Confirm Password
+                  <p class="FormErrorControlMessage" *ngIf="!diverForm.controls.confirmPassword.valid  && (diverForm.controls.confirmPassword.dirty )">* Passwords do not match</p>
+                </ion-label>
+                <ion-input formControlName="confirmPassword" type="password"  [class.invalid]="!diverForm.controls.confirmPassword.valid && (diverForm.controls.confirmPassword.dirty)"></ion-input>
               </ion-item>
+          
             </ion-col>
           </ion-row>
         </ion-grid>
       </div> <!-- end of passSetup-->
-      <input type="submit" value="Sign Up">
+      <div >
+        <ion-label class="subLabel"> Diver Credentials </ion-label>
+        <ion-grid>
+          <ion-row>
+            <ion-col >
+              <div class="searchableSelect" color="dark">
+                <ion-label class="searchableSelectLabel">Qualification</ion-label><br>
+                  <input list="diveQ" formControlName="qualification" [(ngModel)]="diverObj.Qualification"  placeholder="Insert Your Qualification" class="searchableSelectInput" #Qual (keypress)="QualificationListFinder($event.target.value)">
+                  <datalist id="diveQ" >
+                      <option *ngFor='let q of QualificationLst' value={{q}}></option>
+                  </datalist>
+              </div>
+              </ion-col>
+          </ion-row>
+          <ion-row >
+            <div class="searchableSelect" >
+              <ion-row>
+                <ion-col>
+                  <ion-label class="searchableSelectLabel" >Add Specialisations</ion-label>
+                  <input list="diveS"  placeholder="Add Your Specialisation"  [(ngModel)]="specialisationInputField" formControlName="specialisation" #Spec (input)="SpecializationListFinder()" class="searchableSelectInput" >
+                    <datalist id="diveS">
+                        <option *ngFor='let s of SpecializationLst' value={{s}}></option>
+                    </datalist>
+                </ion-col>
+                <ion-col>
+                  <ion-button id="addBtn" #addBtn (click)="addSpecialisation(Spec.value)"   >
+                    <ion-icon name="add"></ion-icon>
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+              </div>
+          </ion-row>
+          <ion-row *ngIf="showSpecialization">
+                  <table>
+                    <th>
+                      Specialisation
+                    </th>
+                    <tr *ngFor='let us of userSpecialisation'>
+                      <td>{{ us }}</td>
+                      <td>
+                        <ion-button (click)="removeSpecialisation(us)" color="dark">
+                          <ion-icon name="trash-bin"></ion-icon>
+                        </ion-button>
+                      </td>
+                    </tr>
+                    <tr></tr>
+                  </table>
+          </ion-row>
+        </ion-grid>
+      </div><!-- end of dive credentials-->
+      <input type="submit" value="Sign Up" (click)="DiverSubmit()">
     </form>
+  </div>
 
- </div> <!-- end newUser Div-->
-</ion-content>
+     <!--Instructor Signup Form-->
+     <div class="registerFormDiv" *ngIf="signUpInstructor">
+      <ion-label id="divHead">Instructor Sign Up </ion-label>
   
+      <form [formGroup]="instructorForm" >
+        <div>  
+          <ion-label class="subLabel"> User Information </ion-label>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                  <ion-item color="dark">
+                    <ion-label  position="floating">First Name         
+                      <b *ngIf="!instructorForm.controls.firstName.valid  && (instructorForm.controls.firstName.dirty )" class="FormErrorControlMessage">* Please enter a valid name  </b>
+                    </ion-label>
+                    <ion-input formControlName="firstName" type="text"  [(ngModel)]="instructorObj.FirstName"  [class.invalid]="!instructorForm.controls.firstName.valid && (instructorForm.controls.firstName.dirty )"></ion-input>
+                  </ion-item>
+          
+             </ion-col>
+             <ion-col>
+              <ion-item color="dark">
+                <ion-label  position="floating">Last Name
+                  <b *ngIf="!instructorForm.controls.lastName.valid  && (instructorForm.controls.lastName.dirty )" class="FormErrorControlMessage">* Please enter a valid name  </b>
+                </ion-label>
+                <ion-input formControlName="lastName" type="text"  [(ngModel)]="instructorObj.LastName"  [class.invalid]="!instructorForm.controls.lastName.valid && (instructorForm.controls.lastName.dirty )"></ion-input>
+              </ion-item>
+      
+             </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                  <ion-item color="dark">
+                    <ion-label  position="floating">Email         
+                      <b *ngIf="!instructorForm.controls.email.valid  && (instructorForm.controls.email.dirty )" class="FormErrorControlMessage">* Please enter a valid email  </b>
+                    </ion-label>
+                    <ion-input formControlName="email" type="email"  [(ngModel)]="instructorObj.Email"  [class.invalid]="!instructorForm.controls.email.valid && (instructorForm.controls.email.dirty )"></ion-input>
+                  </ion-item>
+  
+             </ion-col>
+             <ion-col>
+              <ion-item color="dark">
+                <ion-label  position="stacked">Date of Birth
+                  <b *ngIf="!instructorForm.controls.birthday.valid  && (instructorForm.controls.birthday.dirty )" class="FormErrorControlMessage">* Please enter a valid name  </b>
+                </ion-label>
+                <ion-input formControlName="birthday" type="date"  [(ngModel)]="instructorObj.DateOfBirth"  [class.invalid]="!instructorForm.controls.birthday.valid && (instructorForm.controls.birthday.dirty )"></ion-input>
+              </ion-item>
+      
+             </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-item color="dark">
+                  <ion-label position="stacked">Do you want your dives to be logged publicly?</ion-label>
+                  <ion-checkbox color="dark" disabled="false" formControlName="publicStatus" [(ngModel)]="instructorObj.PublicStatus" ></ion-checkbox>
+                </ion-item>
+              </ion-col>
+              <ion-col>
+                <ion-item color="dark">
+                  <ion-label position="stacked">Profile Picture</ion-label>
+                  <ion-input type="file" accept="image/*" formControlName="profile" (change)="onFileSelected($event)" ></ion-input> <!--removed id-->
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+        <div>
+          <ion-label class="subLabel">Password Setup </ion-label>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                
+                <ion-item color="dark">
+                  <ion-label position="floating">Password
+                    <p *ngIf="!instructorForm.controls.password.valid  && (instructorForm.controls.password.dirty )" class="FormErrorControlMessage">Must be 6 digits long and contain A-Z,a-z,1-9 and a special Character </p>
+                  </ion-label>
+                  <ion-input formControlName="password" type="password" [(ngModel)]="instructorObj.Password" [class.invalid]="!instructorForm.controls.password.valid && (instructorForm.controls.password.dirty)"></ion-input>
+                </ion-item>
+              
+              </ion-col>
+              <ion-col>
+                
+                <ion-item color="dark">
+                  <ion-label position="floating">Confirm Password
+                    <p class="FormErrorControlMessage" *ngIf="!instructorForm.controls.confirmPassword.valid  && (instructorForm.controls.confirmPassword.dirty )">* Passwords do not match</p>
+                  </ion-label>
+                  <ion-input formControlName="confirmPassword" type="password"  [class.invalid]="!instructorForm.controls.confirmPassword.valid && (instructorForm.controls.confirmPassword.dirty)"></ion-input>
+                </ion-item>
+            
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div> <!-- end of passSetup-->
+        <div >
+          <ion-label class="subLabel"> Diver Credentials </ion-label>
+          <ion-grid>
+            <ion-row>
+              <ion-col >
+                <div class="searchableSelect">
+                  <ion-label class="searchableSelectLabel">Dive Center</ion-label><br>
+                    <input list="diveC"  placeholder="Insert Your Dive Center" formControlName="diveCenter" [(ngModel)]="instructorObj.DiveCentre"  #Cent (keypress)="CenterListFinder($event.target.value)" class="searchableSelectInput">
+                    <datalist id="diveC" >
+                        <option *ngFor='let c of CenterLst' value={{c}}></option>
+                    </datalist>
+                </div>
+                </ion-col>
+                <ion-col>
+                  <ion-item color="dark">
+                    <ion-label position="floating">Instructor Number
+                      <p *ngIf="!instructorForm.controls.instructorNumber.valid  && (instructorForm.controls.instructorNumber.dirty )" class="FormErrorControlMessage">Invalid Number </p>
+                    </ion-label>
+                    <ion-input formControlName="instructorNumber" type="text" [(ngModel)]="instructorObj.InstructorNumber" [class.invalid]="!instructorForm.controls.instructorNumber.valid && (instructorForm.controls.instructorNumber.dirty)"></ion-input>
+                  </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col >
+                <div class="searchableSelect" color="dark">
+                  <ion-label class="searchableSelectLabel">Qualification</ion-label><br>
+                    <input list="diveQ" formControlName="qualification" [(ngModel)]="instructorObj.Qualification"  placeholder="Insert Your Qualification" class="searchableSelectInput" #Qual (keypress)="QualificationListFinder($event.target.value)">
+                    <datalist id="diveQ" >
+                        <option *ngFor='let q of QualificationLst' value={{q}}></option>
+                    </datalist>
+                </div>
+                </ion-col>
+            </ion-row>
+            <ion-row >
+              <div class="searchableSelect" >
+                <ion-row>
+                  <ion-col>
+                    <ion-label class="searchableSelectLabel" >Add Specialisations</ion-label>
+                    <input list="diveS"  placeholder="Add Your Specialisation" formControlName="specialisation"  [(ngModel)]="specialisationInputField" formControlName="specialisation" #Spec (input)="SpecializationListFinder()" class="searchableSelectInput" >
+                      <datalist id="diveS">
+                          <option *ngFor='let s of SpecializationLst' value={{s}}></option>
+                      </datalist>
+                  </ion-col>
+                  <ion-col>
+                    <ion-button id="addBtn" #addBtn (click)="addSpecialisation(Spec.value)"   >
+                      <ion-icon name="add"></ion-icon>
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
+                </div>
+            </ion-row>
+            <ion-row *ngIf="showSpecialization">
+                    <table>
+                      <th>
+                        Specialisation
+                      </th>
+                      <tr *ngFor='let us of userSpecialisation'>
+                        <td>{{ us }}</td>
+                        <td>
+                          <ion-button (click)="removeSpecialisation(us)" color="dark">
+                            <ion-icon name="trash-bin"></ion-icon>
+                          </ion-button>
+                        </td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+            </ion-row>
+          </ion-grid>
+        </div><!-- end of dive credentials-->
+        <input type="submit" value="Sign Up" (click)="InstructorSubmit()">
+      </form>
+    </div>
+
+
+</ion-content>

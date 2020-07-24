@@ -3,61 +3,72 @@ const AWS = require('aws-sdk');
 AWS.config.update({region: "af-south-1"});
 
 exports.handler = async (event, context) => {
-    const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
-
-    //properly formatted response
-    let statusCode =0;
-    let body = JSON.parse(event.body);
-    var ItemType = body.ItemType; //Would be DS- Dive Sites, DT- Dive Type, DC- Dive Centre
-    const UserEntry = body.UserEntry; //Letters entered by user so far (in case of lookahead else must be *)
     
-    let responseBody = "";
+    const body = JSON.parse(event.body);
+    /* To distiguish search: DS- Dive Sites, DT- Dive Type, DC- Dive Centre, C- Courses/Qualifications , S- Specialisation */
+    const ItemType = body.ItemType+"-"; 
+    /* Letters entered by user so far (in case of lookahead else must be * for full list) */
+    const UserEntry = body.UserEntry; 
     
-    if(UserEntry.toString().trim() != '*'){
-       ItemType = ItemType+"-"+UserEntry;
+    let filter = 'begins_with(#itemT , :itemT) AND contains(#itemT , :user)';
+    let expressVal = {
+            ':itemT': ItemType,
+            ':user': UserEntry,
+        };
+        
+    if(UserEntry.toString().trim() === '*'){
+       filter = 'begins_with(#itemT , :itemT)';
+       expressVal = {
+            ':itemT': ItemType,
+        };
     }
+    
     const params = {
-        TableName: 'Scubamate',
-        FilterExpression: 'begins_with(#itemT , :itemT)',
+        TableName: 'DiveInfo',
+        FilterExpression: filter,
         ExpressionAttributeNames: {
             '#itemT': 'ItemType',
         },
-        ExpressionAttributeValues: {
-            ':itemT': ItemType,
-        },
+        ExpressionAttributeValues: expressVal,
     };
-
+    
+    let statusCode;
+    let responseBody;
+    const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
+    
     try{
         const data = await documentClient.scan(params).promise();
-        var tmp = [];
+        let tmp = [];
         data.Items.forEach(function(item) {
             tmp.push(item.Name);
         });
+        
         if(tmp.length == 0){
             responseBody = "No Results Found For: "+UserEntry;
             statusCode = 404;
         }
         else{
-            var returnList = [];
+            let returnList = [];
             returnList.push({ReturnedList: tmp});
             responseBody = returnList[0];
             statusCode = 200;
         }
         
     }catch(err){
-        responseBody = "Unable to get data ";
+        responseBody = "Unable to get data: "+err;
         statusCode = 403;
     }
 
     const response = {
         statusCode: statusCode,
         headers: {
-            "Content-Type" : "application/json",
-            "access-control-allow-origin" : "*"
+            "Access-Control-Allow-Origin" : "*",
+            "Access-Control-Allow-Methods" : "OPTIONS,POST,GET",
+            "Access-Control-Allow-Credentials" : true,
+            "Content-Type" : "application/json"
         },
         body : JSON.stringify(responseBody),
         isBase64Encoded: false
-    }
-
+    };
     return response;
-}
+};

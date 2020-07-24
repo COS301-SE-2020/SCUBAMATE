@@ -5,15 +5,19 @@
 ## Overview 
 "Scubamate" is a scuba diving companion app, designed to aid divers, and diving instructors with administrative tasks, such as checking weather information, logging dives, and planning diving trips.
 
-## Software Requirements Specification 
- * <a href="https://www.overleaf.com/read/gnsygbdtvctw">Overleaf - LaTex</a>
+## Software Requirements Specification and Other Documents
+ * <a href="https://www.overleaf.com/read/nyqbrfjqbdtt">SRS with Architectural Design: Overleaf - LaTex</a>
+ * <a href="https://www.overleaf.com/read/shbywrwqfcvw">Coding Standards: Overleaf - LaTex</a>
+ * <a href="https://www.overleaf.com/read/wrrjwwdgfgfn">User Manual: Overleaf - LaTex</a>
 
 ## Project Management Tools
 * <a href="https://team-anti-virus.slack.com">Slack</a>
 * <a href="https://app.clickup.com/2536654/home/landing">ClickUp</a>
 
-## Demo 1 Video Link
+## Demo Video Links
 * <a href="https://drive.google.com/drive/folders/14hiS32Kgk8xqgvmLkFV33a35PGvYcp6Y?usp=sharing">TeamAV Demo 1</a>
+* <a href="https://drive.google.com/drive/folders/1f9AQtVqOS0MdEosUH1uwPVwZdO6j9OvS?usp=sharing">TeamAV Demo 2</a>
+
 
 
 ## Installation Instructions
@@ -37,7 +41,7 @@
  * <a href="https://giselenadine.github.io/">giselenadine.github.io</a>
  * Email : u18012583@tuks.co.za
  * <details>
-     <summary><b>Responsibiities</b></summary>
+     <summary><b>Responsibilities </b></summary>
      <br>
         - SRS Document: Introduction
         <br>
@@ -53,6 +57,16 @@
         <br>
         - Merging branches on github
         <br>
+        - Edit Account Lambda functions
+        <br>
+        - Edit Dive Lambda functions
+        <br>
+        - SRS Document: Deployment Model
+        <br>
+        - User Manual Document: Simple Deployment Model
+        <br>
+        - Code Standards Document
+        <br>
     </details>
 
 
@@ -61,7 +75,7 @@
  * <a href="https://u17021627.github.io/">u17021627.github.io</a>
  * Email : u17021627@tuks.co.za
  * <details>
-     <summary><b>Responsibiities</b></summary>
+     <summary><b>Responsibilities</b></summary>
      <br>
         - SRS Document: Trace-ability Matrix
         <br>
@@ -69,13 +83,13 @@
         <br>
         - Unit Testing
         <br> 
-        - Insert data
+        - Integration Testing
         <br>
-        - Insert data
+        - Architectural Design Documment: Quality Requirements
         <br>
-        - Insert data
+        - Architectural Design Documment: Event-Driven Architecture
         <br>
-        - Insert data
+        - Weather extraction for functionality of application
         <br>
     </details>
 
@@ -84,11 +98,11 @@
  * <a href="https://u18020519.github.io/">u18020519.github.io</a>
  * Email : u18020519@tuks.co.za
  * <details>
-     <summary><b>Responsibiities</b></summary>
+     <summary><b>Responsibilities</b></summary>
      <br>
-        - SRS Document: Functional Requirements 
+        - SRS Document: Functional Requirements, Use Cases
         <br>
-        - SRS Document: Use Cases
+        - Architectural Design Document: N-tier Diagram and Object-Persistence Diagram
         <br>
         - Created the foundation of our very first Lambda functions (in node js) that get account information as well as adding a new account. I also connected these to API Gateway for testing.
         <br> 
@@ -98,7 +112,7 @@
         <br>
         - Another Lambda function that I implemented was the retrieving of dive logs from a specific user. This function only expects an access token that is first verified and returns the user's list of dives.
         <br>
-        - This diveLogHistory Lambda function was also connected to API Gateway and configured accordingly. 
+        - I also created the get public dives Lambda function.
         <br>
     </details>
 
@@ -107,11 +121,11 @@
  * <a href="https://jamesjenkinsferrett.github.io/">jamesjenkinsferrett.github.io</a>
  * Email : u18047701@tuks.co.za
  * <details>
-     <summary><b>Responsibiities</b></summary>
+     <summary><b>Responsibilities</b></summary>
      <br>
         - SRS Document: Introduction.
         <br>
-         SRS Document: User Charactaristics and Overview.
+        - SRS Document: User Charactaristics and Overview.
         <br>
         - Lambda function for Login (including server side password hashing, and unique access token generation).
         <br> 
@@ -119,7 +133,11 @@
         <br>
         - Configuration of some of the endpoints in API-Gateway.
         <br>
-        - Editing of Demo 1 video.
+        - Editing of Demo videos.
+        <br>
+        - SRS Document: Client-Server Architecture
+        <br>
+        - Lambda Function and API Gateway for Checklist functionality
         <br>
     </details>
 
@@ -128,21 +146,20 @@
  * <a href="https://carmenjvr.github.io/">carmenjvr.github.io</a>
  * Email : u18000836@tuks.co.za
  * <details>
-     <summary><b>Responsibiities</b></summary>
-     <br>
+     <summary><b>Responsibilities</b></summary>
+        <br> 
+        - All Angular Ionic Front end code
+        <br>
         - SRS Document: Functional Requirements
         <br>
         - SRS Document: Use Cases
-        <br> 
-        - Angular Ionic Frontend
         <br>
-        - Insert data
-        <br>
-        - Insert data
-        <br>
-        - Insert data
+        - User Manual
         <br>
     </details>
 
-# Testing Instructions
- TBC
+## Testing Instructions
+     Scubamate will make use of automated unit/integration testing software being Jasmine and Karma. By using Jasmine and Karma the unit/integration tests would always be performed to ensured that the system remains on a consistent standard. Jasmine as a frame work provides suites with essential functions such as describe(), taking the test case as a name and a function to be performed as the second parameter. Other functions to be included will be it() which is the more case specific function that handles the individual trial. Finally expect() is the last method used and concatenation with a matcher to test whether the case has succeeded or failed. <br>
+     Run Unit Test: <br>
+     $ng test <br>
+    The first compilation will take a few seconds and then it will automatically open in your browser on localhost:9876.

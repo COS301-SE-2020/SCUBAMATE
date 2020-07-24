@@ -68,6 +68,7 @@ exports.handler = async (event, context) => {
             if((data.Item.AccessToken).toString().trim() != AccessToken){
                 statusCode = 403;
                 responseBody = "Invalid Access Token" ;
+
             }
             if(compareDates(today,expiryDate)){
                 statusCode = 403;
@@ -78,6 +79,7 @@ exports.handler = async (event, context) => {
         {
             statusCode = 403;
             responseBody = "Invalid Access Token";   
+
         }
             
         console.log("status is now: " + statusCode) ;

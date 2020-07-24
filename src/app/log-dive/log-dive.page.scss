@@ -5,6 +5,28 @@ $red: #E76F51 ;
 $yellow : #E9C46A ;
 $inputBackgroundColor: #181e21;
 
+.searchableSelect{
+  background-color: white;
+  border-radius: 1px;
+  text-align: left;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 100%;
+  height: 100%;
+
+  input{
+      width: 100%;
+      margin: auto;
+      border: none;
+      font-size: medium;
+  }
+
+}
+
+.searchableSelectLabel{
+  font-size: small;
+}
 
 ion-content.background{
   --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
@@ -60,4 +82,27 @@ ion-content.background{
     display: swap ;
   }
 
+}
+
+.FormErrorControlMessage{
+  color: #ff5b71 ;
+}
+
+.searchableSelect{
+  background-color: #222428 ;
+
+
+}
+
+.searchableSelectInput{
+  margin-top:10px;
+  width:100%;
+  background-color: #222428 ;
+  color:white;
+}
+
+.searchableSelectLabel{
+  color: white;
+  font-size: large;
+  margin: auto;
 }
