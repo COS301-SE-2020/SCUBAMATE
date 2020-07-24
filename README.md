@@ -100,9 +100,9 @@
  * <details>
      <summary><b>Responsibilities</b></summary>
      <br>
-        - SRS Document: Functional Requirements 
+        - SRS Document: Functional Requirements, Use Cases
         <br>
-        - SRS Document: Use Cases
+        - Architectural Design Document: N-tier Diagram and Object-Persistence Diagram
         <br>
         - Created the foundation of our very first Lambda functions (in node js) that get account information as well as adding a new account. I also connected these to API Gateway for testing.
         <br> 
@@ -112,7 +112,7 @@
         <br>
         - Another Lambda function that I implemented was the retrieving of dive logs from a specific user. This function only expects an access token that is first verified and returns the user's list of dives.
         <br>
-        - This diveLogHistory Lambda function was also connected to API Gateway and configured accordingly. 
+        - I also created the get public dives Lambda function.
         <br>
     </details>
 
