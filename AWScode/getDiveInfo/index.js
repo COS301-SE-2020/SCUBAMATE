@@ -8,7 +8,7 @@ exports.handler = async (event, context) => {
     /* To distiguish search: DS- Dive Sites, DT- Dive Type, DC- Dive Centre, C- Courses/Qualifications , S- Specialisation */
     const ItemType = body.ItemType+"-"; 
     /* Letters entered by user so far (in case of lookahead else must be * for full list) */
-    const UserEntry = body.UserEntry; 
+    const UserEntry = (body.UserEntry).toLowerCase(); 
     
     let filter = 'begins_with(#itemT , :itemT) AND contains(#itemT , :user)';
     let expressVal = {
