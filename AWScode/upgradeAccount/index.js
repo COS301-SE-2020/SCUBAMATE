@@ -12,7 +12,7 @@ exports.handler = async (event, context, callback) => {
     const GuidSize = 36;
     const AccountGuid = AccessToken.substring(0,GuidSize);
     
-    /* Verify AdminAccessToken  */
+    /* Verify AccessToken  */
     const params = {
         TableName: "Scubamate",
         Key: {
