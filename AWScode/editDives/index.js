@@ -96,7 +96,7 @@ exports.handler = async (event, context, callback) => {
         try{
             const data = await documentClient.update(params).promise();
             responseBody = "Successfully updated dive!";
-            statusCode = 201;
+            statusCode = 200;
         }catch(err){
             responseBody = "Unable to update dive. "+ err;
             statusCode = 403;
