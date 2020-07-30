@@ -77,43 +77,45 @@ exports.handler = async (event, context, callback) => {
         statusCode = 403;
         responseBody = "Invalid Access Token";
     }
-    /* Put new image */
-    /* data:image/png;base64, is send at the front of ProfilePhoto thus find the first , */
-    const startContentType = ProfilePhoto.indexOf(":")+1;
-    const endContentType = ProfilePhoto.indexOf(";");
-    const contentType = ProfilePhoto.substring(startContentType, endContentType);
-    
-    const startExt = contentType.indexOf("/")+1;
-    const extension = contentType.substring(startExt, contentType.length);
-    
-    const startIndex = ProfilePhoto.indexOf(",")+1;
-    
-    const encodedImage = ProfilePhoto.substring(startIndex, ProfilePhoto.length);
-    const decodedImage = Buffer.from(encodedImage.replace(/^data:image\/\w+;base64,/, ""),'base64');
-  
-    const filePath = "profilephoto" + AccountGuid + "."+extension;
-    
-    let profileLink ="https://profilephoto-imagedatabase-scubamate.s3.af-south-1.amazonaws.com/"+filePath;
-
-    const paramsImage = {
-      "Body": decodedImage,
-      "Bucket": "profilephoto-imagedatabase-scubamate",
-      "Key": filePath,
-      "ContentEncoding": 'base64',
-      "ContentType" : contentType
-    };
-    
-    const s3 = new AWS.S3({apiVersion: '2006-03-01'});
-    s3.putObject(paramsImage, function(err, data){
-        if(err) {
-            responseBody = "Could not update image.";
-            statusCode = 500;
-        }
-    });
     
     
     /* Only update account if access token is verified */
     if(statusCode==undef){
+        
+        /* Put new image */
+        /* data:image/png;base64, is send at the front of ProfilePhoto thus find the first , */
+        const startContentType = ProfilePhoto.indexOf(":")+1;
+        const endContentType = ProfilePhoto.indexOf(";");
+        const contentType = ProfilePhoto.substring(startContentType, endContentType);
+        
+        const startExt = contentType.indexOf("/")+1;
+        const extension = contentType.substring(startExt, contentType.length);
+        
+        const startIndex = ProfilePhoto.indexOf(",")+1;
+        
+        const encodedImage = ProfilePhoto.substring(startIndex, ProfilePhoto.length);
+        const decodedImage = Buffer.from(encodedImage.replace(/^data:image\/\w+;base64,/, ""),'base64');
+      
+        const filePath = "profilephoto" + AccountGuid + "."+extension;
+        
+        let profileLink ="https://profilephoto-imagedatabase-scubamate.s3.af-south-1.amazonaws.com/"+filePath;
+    
+        const paramsImage = {
+          "Body": decodedImage,
+          "Bucket": "profilephoto-imagedatabase-scubamate",
+          "Key": filePath,
+          "ContentEncoding": 'base64',
+          "ContentType" : contentType
+        };
+        
+        const s3 = new AWS.S3({apiVersion: '2006-03-01'});
+        s3.putObject(paramsImage, function(err, data){
+            if(err) {
+                responseBody = "Could not update image.";
+                statusCode = 500;
+            }
+        });
+        
         const params = {
             TableName: "Scubamate",
             Key: {
@@ -131,7 +133,7 @@ exports.handler = async (event, context, callback) => {
         try{
             const data = await documentClient.update(params).promise();
             responseBody = "Successfully updated account!";
-            statusCode = 201;
+            statusCode = 200;
         }catch(err){
             responseBody = "Unable to update account."+ err +" ";
             statusCode = 403;
@@ -152,3 +154,6 @@ exports.handler = async (event, context, callback) => {
     return response;
     
 };
+
+
+
