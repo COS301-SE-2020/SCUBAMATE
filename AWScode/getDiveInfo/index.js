@@ -16,11 +16,13 @@ exports.handler = async (event, context) => {
             ':user': UserEntry,
         };
         
-    if(UserEntry.toString().trim() === '*'){
+    let pagination = true;
+    if(UserEntry.toString().trim() === '*' && ItemType.toString().trim() != 'DT-'){
        filter = 'begins_with(#itemT , :itemT)';
        expressVal = {
             ':itemT': ItemType,
         };
+        pagination = false;
     }
     
     const params = {
@@ -39,9 +41,20 @@ exports.handler = async (event, context) => {
     try{
         const data = await documentClient.scan(params).promise();
         let tmp = [];
-        data.Items.forEach(function(item) {
-            tmp.push(item.Name);
-        });
+        
+        if(pagination){
+            const numOfItems = 10;
+            for(let i=0;i<numOfItems;i++){
+                if(data.Items[i]!=null){
+                    tmp.push(data.Items[i].Name);
+                }
+            }
+        }
+        else{
+            data.Items.forEach(function(item) {
+                 tmp.push(item.Name);
+            });
+        }
         
         if(tmp.length == 0){
             responseBody = "No Results Found For: "+UserEntry;
