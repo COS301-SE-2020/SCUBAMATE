@@ -6,67 +6,57 @@
 
 <ion-content fullscreen no-scroll padding >
 
-  <form [formGroup]="myForm">
-    
-    <ion-item >
-      <ion-label  position="floating">First Name</ion-label>
-      <ion-input formControlName="firstName" type="text" color="Primary"  [(ngModel)]="inputValues.firstName"  [class.invalid]="!myForm.controls.firstName.valid && (myForm.controls.firstName.dirty )"></ion-input>
-  </ion-item>
+<div id="formSpace">
+    <div id="progressBarSpace">
+     
 
-  <ion-item *ngIf="!myForm.controls.firstName.valid  && (myForm.controls.firstName.dirty )">
-      <p class="FormErrorControlMessage">Please enter a valid name.</p>
-  </ion-item>
+      
+   <!-- <ion-fab id="firstStep" >
+        <ion-fab-button>
+          <ion-icon name="person-circle"></ion-icon> 
+        </ion-fab-button>
+      </ion-fab>
 
-  <ion-item>
-      <ion-label position="floating">Last Name</ion-label>
-      <ion-input formControlName="lastName" type="text" [class.invalid]="!myForm.controls.lastName.valid && (myForm.controls.age.dirty )"></ion-input>
-  </ion-item>
+      <ion-fab id="secondStep" >
+        <ion-fab-button>
+          <ion-icon name="body"></ion-icon> 
+        </ion-fab-button>
+      </ion-fab>
 
-  <ion-item *ngIf="!myForm.controls.lastName.valid  && (myForm.controls.lastName.dirty )">
-      <p class="FormErrorControlMessage">Please enter a valid name.</p>
-  </ion-item>
+      <ion-fab  id="thirdStep">
+        <ion-fab-button>
+          <ion-icon name="star"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
 
-  <ion-item>
-      <ion-label position="floating">Age</ion-label>
-      <ion-input formControlName="age" type="number" [class.invalid]="!myForm.controls.age.valid && (myForm.controls.age.dirty)"></ion-input>
-  </ion-item>
+      <ion-fab id="forthStep" >
+        <ion-fab-button>
+          <ion-icon name="checkmark-circle"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
 
-  <ion-item *ngIf="!myForm.controls.age.valid  && (myForm.controls.age.dirty )">
-      <p class="FormErrorControlMessage">Please enter a valid age.</p>
-  </ion-item>
+     -->  
+      
 
-  <ion-item>
-    <ion-label position="floating">Email</ion-label>
-    <ion-input formControlName="email" type="email"  [class.invalid]="!myForm.controls.email.valid && (myForm.controls.email.dirty)"></ion-input>
-  </ion-item>
-
-  <ion-item *ngIf="!myForm.controls.email.valid  && (myForm.controls.email.dirty )">
-      <p class="FormErrorControlMessage">Please enter a valid Email.</p>
-  </ion-item>
-
-  <ion-item>
-    <ion-label position="floating">Password</ion-label>
-    <ion-input formControlName="password" type="password"  [class.invalid]="!myForm.controls.password.valid && (myForm.controls.password.dirty)"></ion-input>
-  </ion-item>
-
-  <ion-item *ngIf="!myForm.controls.password.valid  && (myForm.controls.password.dirty )">
-      <p class="FormErrorControlMessage">Password not Secure. Must be 6 digits long and contain A-Z,a-z,1-9 and a special Character </p>
-  </ion-item>
+      
 
 
-  <ion-item>
-    <ion-label position="floating">Confirm Password</ion-label>
-    <ion-input formControlName="confirmPassword" type="password"  [class.invalid]="!myForm.controls.confirmPassword.valid && (myForm.controls.confirmPassword.dirty)"></ion-input>
-  </ion-item>
+      <ion-progress-bar value="0.5"></ion-progress-bar>
 
-  <ion-item *ngIf="!myForm.controls.confirmPassword.valid  && (myForm.controls.confirmPassword.dirty )">
-      <p class="FormErrorControlMessage">Passwords do not match</p>
-  </ion-item>
-    
-  <button (click)="onSubmit()">Submit this form</button>
-  </form>
+      <mat-horizontal-stepper>
+        <mat-step label="Step 1">
+          <p>Put down your phones.</p>
+        </mat-step>
+        <mat-step label="Step 2" >
+          <p>Socialize with each other.</p>
+        </mat-step>
+        <mat-step label="Step 3">
+          <p>You're welcome.</p>
+        </mat-step>
+      </mat-horizontal-stepper>
 
-
+    </div>
+</div>
 
 
 

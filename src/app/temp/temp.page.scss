@@ -6,18 +6,28 @@ ion-content.background{
     --background: url(../../assets/images/beach.jpg) 0 0/100% 100% no-repeat;
 }
 
-.FormErrorControlMessage{
-    color: red;
-    font-size: smaller;
+#formSpace{
+    margin: auto;
+    margin-top: 30px;
+    padding: 10px;
+    padding-top:30px;
+    width:50%;
+    height:70%;
+    background-color: $darkBlue;
 }
 
-.item{
-    --ion-background-color: #264653;
-    width: 40% ;
-    margin: auto;
-    color: white;
-    
+#progressBarSpace{
+    width:80%;
+    margin:auto;
+
+    #forthStep{
+        background-color: red;
+        display: inline;
+        margin-left: 60%;
+        
+    }
 }
+
 
 
 

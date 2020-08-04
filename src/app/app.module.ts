@@ -10,6 +10,8 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { FlashCardComponent } from '../app/components/flash-card/flash-card.component';
 
+import { MatStepperModule} from '@angular/material/stepper';
+
 //forms
 import { ReactiveFormsModule, FormsModule } from '@angular/forms' ;
 
@@ -37,7 +39,8 @@ import { AgeValidator } from './validators/age' ;
             AppRoutingModule,
             HttpClientModule,
             FormsModule,
-            ReactiveFormsModule],
+            ReactiveFormsModule,
+            MatStepperModule],
   providers: [
     StatusBar,
     SplashScreen,
