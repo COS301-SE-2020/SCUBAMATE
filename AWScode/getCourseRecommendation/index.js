@@ -70,10 +70,6 @@ exports.handler = async (event, context) => {
             responseBody = "Access Token Expired!";
             statusCode = 403;
         }
-        else if(!data.Item.EmailVerified){
-            statusCode = 403;
-            responseBody = "Account Email Not Verified.";
-        }
         else{
             /* Get List Of Courses */
             const paramsCourse = {
