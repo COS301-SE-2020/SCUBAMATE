@@ -321,17 +321,22 @@ DiverSubmit(){
   if(!this.diverForm.valid || this.userSpecialisation.length == 0 ){
     this.presentAlert();
   }else{
+    this.showLoading = true;
     this.diverObj.Specialisation = this.userSpecialisation ;
     
     this._accountService.insertUserDiver( this.diverObj ).subscribe( res =>{
-      console.log("Sending Diver Info");
-      
-      this.showLoading = true;
-      this._accountService.sendValidationEmail(this.diverObj.Email).subscribe( res => {
-        this.showLoading = false;
-        this.presentAlertEmailSent(this.diverObj.Email);
+      console.log(res);
+      localStorage.setItem("accessToken", res.AccessToken) ; 
 
-        this.router.navigate(['login']);
+      console.log("Sending Diver Email");
+      
+      
+      this._accountService.sendValidationEmail(this.diverObj.Email).subscribe( res => {
+        
+        this.presentAlertEmailSent(this.diverObj.Email);
+        this.showLoading = false;
+
+        this.router.navigate(['home']);
       });
     },  err => this.presentAlertEmail()); 
 

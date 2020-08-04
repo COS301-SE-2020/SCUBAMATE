@@ -20,7 +20,11 @@ export class TempPage implements OnInit {
   //Global Variables
   //myInput: string ;
   myForm; 
+  firstPageVisible : boolean ;
+  secondPageVisible: boolean;
+  thirdPageVisible: boolean;
 
+  ProgressColor : string; 
 
 
   inputValues: UserValues  ; 
@@ -59,6 +63,11 @@ export class TempPage implements OnInit {
   
 
   ngOnInit() {
+    this.ProgressColor = "success"; 
+    this.firstPageVisible = true;
+    this.secondPageVisible = false;
+    this.thirdPageVisible = false;
+
   }
 
   async presentAlert() {
@@ -72,15 +81,54 @@ export class TempPage implements OnInit {
     await alert.present();
   }
 
+ 
+
   onSubmit(){
 
     if(!this.myForm.valid){
+      this.ProgressColor = "danger";
         this.presentAlert();
+        
     }
 
   }
 
- 
+  nextPage(){
+    console.log("Next");
+      if(this.firstPageVisible){
+       
+          this.firstPageVisible = false;
+          this.secondPageVisible = true;
+          this.thirdPageVisible = false;
+        
+        
+      }else if(this.secondPageVisible){
+        this.firstPageVisible = false;
+        this.secondPageVisible = false;
+        this.thirdPageVisible = true;
+      }else if (this.thirdPageVisible){
+        this.firstPageVisible = false;
+        this.secondPageVisible = false;
+        this.thirdPageVisible = true;
+      }
+  }
+
+  previousPage(){
+    console.log("Prev");
+    if(this.firstPageVisible){
+      this.firstPageVisible = true;
+      this.secondPageVisible = false;
+      this.thirdPageVisible = false;
+    }else if(this.secondPageVisible){
+      this.firstPageVisible = true;
+      this.secondPageVisible = false;
+      this.thirdPageVisible = false;
+    }else if (this.thirdPageVisible){
+      this.firstPageVisible = false;
+      this.secondPageVisible = true;
+      this.thirdPageVisible = false;
+    }
+  }
 
  
 

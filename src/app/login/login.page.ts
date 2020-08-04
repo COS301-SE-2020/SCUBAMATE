@@ -71,7 +71,7 @@ export class LoginPage implements OnInit {
       console.log(res);
       console.log(res.Data[0].AccessToken)
       localStorage.setItem("accessToken", res.Data[0].AccessToken) ; 
-      localStorage.setItem("accountType", res.Data[1].AccountType)  ;
+     // localStorage.setItem("accountType", res.Data[1].AccountType)  ;
       this.router.navigate(['home']);
       //console.log(res.body.AccessToken); 
     });
