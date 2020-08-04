@@ -85,7 +85,6 @@ exports.handler = async (event, context) => {
             
             const AccountType = data.Item.AccountType;
             let incompleteResponse ={
-                "AccountType": AccountType,
                 "AccountVerified": data.Item.AccountVerified,
                 "DateOfBirth": data.Item.DateOfBirth,
                 "Email": data.Item.Email,
@@ -93,13 +92,11 @@ exports.handler = async (event, context) => {
                 "FirstName": data.Item.FirstName,
                 "LastName": data.Item.LastName,
                 "PublicStatus": data.Item.PublicStatus,
-                "Qualification,": data.Item.Qualification,
-                "Specialisation": data.Item.Specialisation,
+                "CompletedCourses": data.Item.CompletedCourses,
                 "ProfilePhoto":"N/A"
             };
             if(AccountType.trim() === "Instructor"){
                 incompleteResponse ={
-                    "AccountType": AccountType,
                     "AccountVerified": data.Item.AccountVerified,
                     "DateOfBirth": data.Item.DateOfBirth,
                     "Email": data.Item.Email,
@@ -109,8 +106,7 @@ exports.handler = async (event, context) => {
                     "PublicStatus": data.Item.PublicStatus,
                     "DiveCentre": data.Item.DiveCentre,
                     "InstructorNumber": data.Item.InstructorNumber,
-                    "Qualification,": data.Item.Qualification,
-                    "Specialisation": data.Item.Specialisation,
+                    "CompletedCourses,": data.Item.CompletedCourses,
                     "ProfilePhoto":"N/A"
                 };
             }
@@ -125,24 +121,36 @@ exports.handler = async (event, context) => {
                 const startIndexContentType = (data.Item.ProfilePhoto).lastIndexOf(".")+1;
                 const contentType = data.Item.ProfilePhoto.substring(startIndexContentType, data.Item.ProfilePhoto.length);
                 let base64Image = "data:image/"+contentType+";base64," +binaryFile.Body.toString('base64'); 
-                
-                let completeResponse ={
-                    "AccountType": AccountType,
-                    "AccountVerified": data.Item.AccountVerified,
-                    "DateOfBirth": data.Item.DateOfBirth,
-                    "Email": data.Item.Email,
-                    "EmailVerified": data.Item.EmailVerified,
-                    "FirstName": data.Item.FirstName,
-                    "LastName": data.Item.LastName,
-                    "PublicStatus": data.Item.PublicStatus,
-                    "DiveCentre": data.Item.DiveCentre,
-                    "InstructorNumber": data.Item.InstructorNumber,
-                    "Qualification,": data.Item.Qualification,
-                    "Specialisation": data.Item.Specialisation,
-                    "ProfilePhoto": base64Image
-                };
-                
-                responseBody = completeResponse;
+                if(AccountType.trim() === "Instructor"){
+                    let completeResponse ={
+                        "AccountVerified": data.Item.AccountVerified,
+                        "DateOfBirth": data.Item.DateOfBirth,
+                        "Email": data.Item.Email,
+                        "EmailVerified": data.Item.EmailVerified,
+                        "FirstName": data.Item.FirstName,
+                        "LastName": data.Item.LastName,
+                        "PublicStatus": data.Item.PublicStatus,
+                        "DiveCentre": data.Item.DiveCentre,
+                        "InstructorNumber": data.Item.InstructorNumber,
+                        "CompletedCourses": data.Item.CompletedCourses,
+                        "ProfilePhoto": base64Image
+                    };
+                    responseBody = completeResponse;
+                }
+                else{
+                    let completeResponse ={
+                        "AccountVerified": data.Item.AccountVerified,
+                        "DateOfBirth": data.Item.DateOfBirth,
+                        "Email": data.Item.Email,
+                        "EmailVerified": data.Item.EmailVerified,
+                        "FirstName": data.Item.FirstName,
+                        "LastName": data.Item.LastName,
+                        "PublicStatus": data.Item.PublicStatus,
+                        "CompletedCourses": data.Item.CompletedCourses,
+                        "ProfilePhoto": base64Image
+                    };
+                    responseBody = completeResponse;
+                }
             }
             catch(err){
                 responseBody = incompleteResponse;
