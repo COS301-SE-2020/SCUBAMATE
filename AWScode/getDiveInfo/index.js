@@ -5,7 +5,7 @@ AWS.config.update({region: "af-south-1"});
 exports.handler = async (event, context) => {
     
     const body = JSON.parse(event.body);
-    /* To distiguish search: DS- Dive Sites, DT- Dive Type, DC- Dive Centre, C- Courses/Qualifications , S- Specialisation */
+    /* To distiguish search: DS- Dive Sites, DT- Dive Type, DC- Dive Centre, C- Courses */
     const ItemType = body.ItemType+"-"; 
     /* Letters entered by user so far (in case of lookahead else must be * for full list) */
     const UserEntry = (body.UserEntry).toLowerCase(); 
