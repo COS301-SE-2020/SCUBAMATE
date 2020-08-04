@@ -88,13 +88,13 @@ exports.handler = async (event, context) => {
         try{
             /*search for all the dive logs */
             responseBody = await documentClient.scan(diveParams).promise();
-            if(typeof responseBody.Item !== 'undefined' && responseBody.Item)
+            if((typeof responseBody.Items !== 'undefined') && responseBody.Items.length >0)
             {
                 responseBody = responseBody;
                 statusCode = 201;
             }
             else{
-                responseBody = "No diver logs found.";
+                responseBody = "No diver logs found";
                 statusCode = 404;
             }
         }catch(err){
@@ -119,4 +119,3 @@ exports.handler = async (event, context) => {
     return response;
 
 };
-
