@@ -72,7 +72,7 @@ exports.handler = async (event, context) => {
         }
         else if(!data.Item.EmailVerified){
             statusCode = 403;
-            responseBody = "Account Email Not Verified - Can't Upgrade Until Email Is Verified";
+            responseBody = "Account Email Not Verified.";
         }
         else{
             /* Get List Of Courses */
