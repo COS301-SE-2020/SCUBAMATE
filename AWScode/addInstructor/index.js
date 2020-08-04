@@ -18,13 +18,11 @@ exports.handler = async (event, context, callback) => {
     const InstructorNumber = body.InstructorNumber;
     const DiveCentre = body.DiveCentre;
     
-    const Qualification = body.Qualification;
-    const Specialisation = body.Specialisation;
+    const CompletedCourses = body.CompletedCourses;
     
     const crypto = require('crypto');
     const hash = crypto.pbkdf2Sync(Password, Email, 1000, 64, 'sha512').toString('hex');
     
-   
     
     /*Email duplicate checking*/
     const emailParams = {
@@ -56,19 +54,44 @@ exports.handler = async (event, context, callback) => {
         responseBody = "Email could not be checked.";
         dupFlag = true;
     }
-    
+    function contains(arr,search){
+        let returnBool = false;
+        arr.forEach(function(item) {
+            if(item==search){
+                returnBool=true;
+            }
+        });
+        return returnBool;
+    }
     if(!dupFlag){
+        
         /* Check Qualification */
-        const paramsQualification = {
+            
+        const paramsCourse = {
             TableName: "DiveInfo",
-            Key: {
-            "ItemType": "C-"+Qualification.toLowerCase()
+            FilterExpression: 'begins_with(#itemT , :itemT) AND  #qualT == :qualT',
+            ExpressionAttributeNames: {
+                '#itemT': 'ItemType',
+                '#qualT' : 'QualificationType'
+            },
+            ExpressionAttributeValues: {
+                ':itemT': "C-",
+                ':qualT': "Instructor",
             }
         };
-
         try{
-            const dataQ = await documentClient.get(paramsQualification).promise();
-            if(dataQ.Item.QualificationType.toString() === "Instructor"){
+            const dataQ = await documentClient.get(paramsCourse).promise();
+            let qualified = false;
+            CompletedCourses.forEach(function(item) {
+                /*For each completed course
+                Check if it is in the courses retrieved
+                */
+                if(contains(dataQ.Items, item.Name)){
+                    qualified = true;
+                }
+            });
+            
+            if(qualified){
                 /* data:image/png;base64, is send at the front of ProfilePhoto thus find the first , */
                 const startContentType = ProfilePhoto.indexOf(":")+1;
                 const endContentType = ProfilePhoto.indexOf(";");
@@ -118,8 +141,7 @@ exports.handler = async (event, context, callback) => {
                         PublicStatus: PublicStatus,
                         EmailVerified: false,
                         AccountVerified: false,
-                        Qualification: Qualification,
-                        Specialisation: Specialisation
+                        CompletedCourses: CompletedCourses
                     }
                 };
             
