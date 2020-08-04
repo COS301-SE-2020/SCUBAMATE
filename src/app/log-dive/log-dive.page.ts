@@ -342,6 +342,8 @@ export class LogDivePage implements OnInit {
 
     } */
 
+    /*localStorage.setItem("Backup", JSON.stringify(this.diveObj));
+    console.log("The Following is in a cookie: " + localStorage.getItem("Backup"));*/
     this.showLoading = true;
     this._diveService.logDive(this.diveObj).subscribe( res =>{
                 
