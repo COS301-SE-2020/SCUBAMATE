@@ -40,6 +40,15 @@ exports.handler = async (event, context, callback) => {
         }
         return returnBool;
     }
+    function contains(arr,search){
+        let returnBool = false;
+        arr.forEach(function(item) {
+            if(item==search){
+                returnBool=true;
+            }
+        });
+        return returnBool;
+    }
     let responseBody;
     const undef = 0;
     let statusCode = undef;
@@ -62,27 +71,42 @@ exports.handler = async (event, context, callback) => {
             responseBody = "Access Token Expired!";
             statusCode = 403;
         }
-        else if(!data.Item.AccountVerified){
-            statusCode = 403;
-            responseBody = "Account Not Verified by Admin - Ask "+DiveCentre+" to Verify";
-        }
         else if(!data.Item.EmailVerified){
             statusCode = 403;
             responseBody = "Account Email Not Verified - Can't Upgrade Until Email Is Verified";
         }
+        else if(data.Item.CompletedCourses.length==0){
+            statusCode = 403;
+            responseBody = "Account Email Not Verified - Can't Upgrade Until Email Is Verified";
+        }
         else{
-            // /* Check Qualification */
-            const paramsQualification = {
+            /* Check Qualification */
+            
+            const paramsCourse = {
                 TableName: "DiveInfo",
-                Key: {
-                "ItemType": "C-"+data.Item.Qualification.toLowerCase()
+                FilterExpression: 'begins_with(#itemT , :itemT) AND  #qualT == :qualT',
+                ExpressionAttributeNames: {
+                    '#itemT': 'ItemType',
+                    '#qualT' : 'QualificationType'
+                },
+                ExpressionAttributeValues: {
+                    ':itemT': "C-",
+                    ':qualT': "Instructor",
                 }
             };
-
             try{
-                const dataQ = await documentClient.get(paramsQualification).promise();
-                if(dataQ.Item.QualificationType.toString() === "Instructor"){
-                    
+                const dataQ = await documentClient.get(paramsCourse).promise();
+                let qualified = false;
+                data.Item.CompletedCourses.forEach(function(item) {
+                    /*For each completed course
+                    Check if it is in the courses retrieved
+                    */
+                    if(contains(dataQ.Items, item.Name)){
+                        qualified = true;
+                    }
+                });
+                
+                if(qualified){
                     const AccountType = "Instructor";
                     const params = {
                         TableName: "Scubamate",
@@ -115,6 +139,7 @@ exports.handler = async (event, context, callback) => {
                 responseBody = "Unable to check qualification verified "+err;
                 statusCode = 403;
             } 
+            
         }
 
     } catch (err) {
