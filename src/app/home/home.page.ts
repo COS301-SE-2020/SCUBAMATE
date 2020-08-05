@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { diveService } from '../service/dive.service';
 import { accountService } from '../service/account.service';
 
-
 export interface DiveSite{
   diveSite: string;
 }

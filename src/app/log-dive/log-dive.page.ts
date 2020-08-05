@@ -6,6 +6,7 @@ import { weatherService } from '../service/weather.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import * as CryptoJS from 'crypto-js';  
 import { UUID } from 'angular2-uuid';
+import {ConnectionService} from 'ng-connection-service';
 
 //forms
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -58,6 +59,8 @@ export class LogDivePage implements OnInit {
     WeatherDescription: string ; 
     WindSpeed : string;
 
+    isConnected = true;  
+    noInternetConnection: boolean;
     //Form Groups
   diveForm;
   diveObj: DiveLog;
@@ -74,8 +77,16 @@ export class LogDivePage implements OnInit {
   loginLabel:string ;
 
 
-  constructor(private _accountService : accountService, private router: Router, private _diveService: diveService, private _weatherService: weatherService,private geolocation: Geolocation, public formBuilder: FormBuilder, public alertController : AlertController ) {
-
+  constructor(private _accountService : accountService, private router: Router, private _diveService: diveService, private _weatherService: weatherService,private geolocation: Geolocation, public formBuilder: FormBuilder, public alertController : AlertController, private connectionService: ConnectionService) {
+    this.connectionService.monitor().subscribe(isConnected => {  
+      this.isConnected = isConnected;  
+      if (this.isConnected) {  
+        this.noInternetConnection=false;  
+      }  
+      else {  
+        this.noInternetConnection=true;  
+      }  
+    });
     //generate GUID
     this.uuidValue=UUID.UUID();
 
@@ -121,9 +132,7 @@ export class LogDivePage implements OnInit {
       InstructorLink: [''] ,
       Weather: [''] ,
       DivePublicStatus: ['']
-    }); 
-
-
+    });
 
   }
   
@@ -341,21 +350,19 @@ export class LogDivePage implements OnInit {
 
 
     } */
-
-    /*localStorage.setItem("Backup", JSON.stringify(this.diveObj));
-    console.log("The Following is in a cookie: " + localStorage.getItem("Backup"));*/
+    localStorage.setItem("Backup", JSON.stringify(this.diveObj));
+    if(this.noInternetConnection){
+      console.log("The Following is in localstorage: " + localStorage.getItem("Backup"));
+    }
     this.showLoading = true;
     this._diveService.logDive(this.diveObj).subscribe( res =>{
                 
       console.log(res);
       this.showLoading = false;
       this.presentSuccessAlert();
+      localStorage.removeItem("Backup");
       this.router.navigate(['my-dives']);
     });
-
-
-
-
   }
 
 

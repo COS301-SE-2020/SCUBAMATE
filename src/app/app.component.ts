@@ -29,7 +29,7 @@ export class AppComponent{
       else {  
         this.noInternetConnection=true;  
       }  
-    }) 
+    });
   }
 
   initializeApp() {
