@@ -20,6 +20,7 @@ export class AppComponent{
     private statusBar: StatusBar,
     private connectionService: ConnectionService
   ) {
+    this.initializeApp();
     this.connectionService.monitor().subscribe(isConnected => {  
       this.isConnected = isConnected;  
       if (this.isConnected) {  
@@ -29,7 +30,6 @@ export class AppComponent{
         this.noInternetConnection=true;  
       }  
     }) 
-    this.initializeApp();
   }
 
   initializeApp() {
