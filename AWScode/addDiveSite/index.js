@@ -64,7 +64,7 @@ exports.handler = async (event, context, callback) => {
             responseBody = "Access Token Expired!";
             statusCode = 403;
         }
-        else if(data.Item.AccountType != "SuperAdmin"){
+        else if(data.Item.AccountType != "Admin" || data.Item.AccountType != "SuperAdmin"){
             statusCode = 403;
             responseBody = "Account doesn't have correct privileges";
         }
@@ -145,3 +145,5 @@ exports.handler = async (event, context, callback) => {
     return response;
     
 };
+
+
