@@ -95,6 +95,7 @@ export class TempPage implements OnInit {
 
   nextPage(){
     console.log("Next");
+
       if(this.firstPageVisible){
        
           this.firstPageVisible = false;

@@ -125,11 +125,11 @@ export class PlanningPage implements OnInit {
 
   }
 
-  divetypeListFinder( inText : string){
-    console.log(inText);
-    if(inText.length >= 3){
+  divetypeListFinder( ){
+  
+    if(this.SearchDiveCheckList.length >= 3){
       this.showLoading = true;
-      this._diveService.getDiveTypes(inText).subscribe(
+      this._diveService.getDiveTypes(this.SearchDiveCheckList).subscribe(
         data => {
             console.log(data);
             this.DiveTypeLst = data.ReturnedList ; 

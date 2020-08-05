@@ -62,7 +62,7 @@
         <ion-row>
           <div class="searchableSelect">
             <ion-label class="searchableSelectLabel">Dive Type</ion-label>
-            <input list="diveTypes" [(ngModel)]="SearchDiveCheckList" class="searchableSelectInput" (keypress)="divetypeListFinder($event.target.value)" placeholder="Search by a Dive Type" #diveType>
+            <input list="diveTypes" [(ngModel)]="SearchDiveCheckList" class="searchableSelectInput" (keypress)="divetypeListFinder()" placeholder="Search by a Dive Type" #diveType>
             <datalist id="diveTypes" >
                 <option *ngFor='let t of DiveTypeLst' value={{t}}></option>
             </datalist>

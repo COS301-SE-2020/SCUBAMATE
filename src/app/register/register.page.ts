@@ -21,8 +21,7 @@ export interface SignUpDiver {
   Password: string;
   ProfilePhoto: string;
   PublicStatus: boolean;
-  Specialisation: string[];
-  Qualification: string;
+  Courses: string[];
 }
 
 export interface SignInstructor {
@@ -36,8 +35,7 @@ export interface SignInstructor {
   PublicStatus: boolean;
   InstructorNumber: string;
   DiveCentre: string;
-  Specialisation: string[];
-  Qualification: string;
+  Courses: string[];
 }
 
 
@@ -72,7 +70,25 @@ export class RegisterPage implements OnInit {
 
   //Signup Objects 
   diverObj: SignUpDiver;
-  instructorObj  : SignInstructor; 
+  instructorObj  : SignInstructor;
+  
+  //Page navigation
+  DiverFirstPageVisible : boolean ;
+  DiverSecondPageVisible: boolean;
+  DiverThirdPageVisible: boolean;
+  DiverFourthPageVisible: boolean;
+
+  InstructorFirstPageVisible : boolean ;
+  InstructorSecondPageVisible: boolean;
+  InstructorThirdPageVisible: boolean;
+  InstructorFourthPageVisible: boolean;
+
+  //course 
+  CourseLst : string[];
+  showCourses: Boolean = false;
+  userCourses : string[];
+  courseInputField: string = "";
+  courseValid: Boolean;
 
   /********************************************/
 
@@ -101,10 +117,9 @@ export class RegisterPage implements OnInit {
       FirstName: "",
       LastName: "",
       Password: "",
-      ProfilePhoto: "",
+      ProfilePhoto: "../assets/images/STDuser.jpg",
       PublicStatus: false ,
-      Specialisation: [],
-      Qualification: "" 
+      Courses: []
     }
 
     this.diverForm = formBuilder.group({
@@ -116,8 +131,7 @@ export class RegisterPage implements OnInit {
       birthday: ['', Validators.required],
       profile: [],
       publicStatus: [] ,
-      qualification: ['', Validators.required],
-      specialisation: []
+      courses: [],
     }, {validator: this.matchingPasswords('password', 'confirmPassword')}); 
 
 
@@ -129,12 +143,11 @@ export class RegisterPage implements OnInit {
       FirstName: "",
       LastName: "",
       Password: "",
-      ProfilePhoto: "",
+      ProfilePhoto:  "../assets/images/STDuser.jpg",
       PublicStatus: false ,
       InstructorNumber: "",
       DiveCentre: "",
-      Specialisation: [],
-      Qualification: "" 
+      Courses: []
     }
 
     this.instructorForm = formBuilder.group({
@@ -146,8 +159,7 @@ export class RegisterPage implements OnInit {
       birthday: ['', Validators.required],
       profile: [],
       publicStatus: [] ,
-      qualification: ['', Validators.required],
-      specialisation: [],
+      courses: [],
       instructorNumber: ['', Validators.compose([Validators.minLength(3), Validators.required])],
       diveCenter: ['', Validators.required]
     }, {validator: this.matchingPasswords('password', 'confirmPassword')}); 
@@ -162,30 +174,23 @@ export class RegisterPage implements OnInit {
     this.signUpDiver = false;
     this.signUpInstructor = false;
     this.ShowAccountChoice = true;
+
+    this.DiverFirstPageVisible = true;
+    this.DiverSecondPageVisible = false;
+    this.DiverThirdPageVisible = false;
+    this.DiverFourthPageVisible = false;
+
+    this.InstructorFirstPageVisible = true;
+    this.InstructorSecondPageVisible = false;
+    this.InstructorThirdPageVisible = false;
+    this.InstructorFourthPageVisible = false;
+
+    this.showCourses = false;
+    this.userCourses = new Array();
+    this.courseValid = false;
   }
 
-  onFileSelected(event) {
-    let me = this;
-    let file = event.target.files[0];
-    let reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function () {
-      //console.log(reader.result);
-      let s = reader.result ; 
-      me.base64textString = reader.result.toString() ;
-
-      if(me.signUpDiver)
-      {
-        me.diverObj.ProfilePhoto = me.base64textString;
-      }else{
-        me.instructorObj.ProfilePhoto = me.base64textString;
-      }
-      
-    };
-    reader.onerror = function (error) {
-      console.log('Error: ', error);
-    };
- }
+  
 
   ShowRelatedForm(targetValue : string){
   console.log(targetValue);
@@ -311,13 +316,14 @@ async presentAlertEmailSent( userEmail ) {
 
 
 DiverSubmit(){
+  this.diverObj.Courses = this.userCourses;
   console.log(this.diverObj);
 
-  if(!this.diverForm.valid || this.userSpecialisation.length == 0 ){
+  if(!this.diverForm.valid ){
     this.presentAlert();
   }else{
-    this.diverObj.Specialisation = this.userSpecialisation ;
-    
+   
+    this.diverObj.Courses = this.userCourses;
     this._accountService.insertUserDiver( this.diverObj ).subscribe( res =>{
       console.log("Sending Diver Info");
       
@@ -338,12 +344,13 @@ DiverSubmit(){
 
 
 InstructorSubmit(){
-
-  if(!this.instructorForm.valid || this.userSpecialisation.length == 0 ){
+  this.instructorObj.Courses = this.userCourses;
+console.log(this.instructorObj);
+  if(!this.instructorForm.valid){
     this.presentAlert();
   }else{
-    this.instructorObj.Specialisation = this.userSpecialisation ;
-    console.log(this.instructorObj);
+    
+    
     
     this._accountService.insertUserInstructor( this.instructorObj ).subscribe( res =>{
       console.log("Sending Instructor Info");
@@ -360,6 +367,173 @@ InstructorSubmit(){
 
   }
 }
+
+
+
+///new code
+nextPage(){
+  
+  if(this.signUpDiver)
+  {
+    if(this.DiverFirstPageVisible){
+     
+      this.DiverFirstPageVisible = false;
+      this.DiverSecondPageVisible = true;
+      this.DiverThirdPageVisible = false;
+    }else if(this.DiverSecondPageVisible){
+      this.DiverFirstPageVisible = false;
+      this.DiverSecondPageVisible = false;
+      this.DiverThirdPageVisible = true;
+    }else if (this.DiverThirdPageVisible){
+      this.DiverFirstPageVisible = false;
+      this.DiverSecondPageVisible = false;
+      this.DiverThirdPageVisible = true;
+    }
+
+
+  }else{  //Instructor Pages
+
+    if(this.InstructorFirstPageVisible){
+     
+      this.InstructorFirstPageVisible = false;
+      this.InstructorSecondPageVisible = true;
+      this.InstructorThirdPageVisible = false;
+      this.InstructorFourthPageVisible = false;
+    }else if(this.InstructorSecondPageVisible){
+      this.InstructorFirstPageVisible = false;
+      this.InstructorSecondPageVisible = false;
+      this.InstructorThirdPageVisible = true;
+      this.InstructorFourthPageVisible = false;
+    }else if (this.InstructorThirdPageVisible){
+      this.InstructorFirstPageVisible = false;
+      this.InstructorSecondPageVisible = false;
+      this.InstructorThirdPageVisible = false;
+      this.InstructorFourthPageVisible = true;
+    }
+    
+
+
+
+  }
+    
+}
+
+previousPage(){
+  
+
+  if(this.signUpDiver)
+  {
+      if(this.DiverFirstPageVisible){
+        this.DiverFirstPageVisible = true;
+        this.DiverSecondPageVisible = false;
+        this.DiverThirdPageVisible = false;
+      }else if(this.DiverSecondPageVisible){
+        this.DiverFirstPageVisible = true;
+        this.DiverSecondPageVisible = false;
+        this.DiverThirdPageVisible = false;
+      }else if (this.DiverThirdPageVisible){
+        this.DiverFirstPageVisible = false;
+        this.DiverSecondPageVisible = true;
+        this.DiverThirdPageVisible = false;
+      }
+   }else{ //instructor pages
+    if(this.InstructorFirstPageVisible){
+      this.InstructorFirstPageVisible = true;
+      this.InstructorSecondPageVisible = false;
+      this.InstructorThirdPageVisible = false;
+      this.InstructorFourthPageVisible = false;
+    }else if(this.InstructorSecondPageVisible){
+      this.InstructorFirstPageVisible = true;
+      this.InstructorSecondPageVisible = false;
+      this.InstructorThirdPageVisible = false;
+      this.InstructorFourthPageVisible = false;
+    }else if (this.InstructorThirdPageVisible){
+      this.InstructorFirstPageVisible = false;
+      this.InstructorSecondPageVisible = true;
+      this.InstructorThirdPageVisible = false;
+      this.InstructorFourthPageVisible = false;
+    }else if (this.InstructorFourthPageVisible){
+      this.InstructorFirstPageVisible = false;
+      this.InstructorSecondPageVisible = false;
+      this.InstructorThirdPageVisible = true;
+      this.InstructorFourthPageVisible = false;
+    }
+   }
+}
+
+onFileSelected(event) {
+  let me = this;
+  let file = event.target.files[0];
+  let reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = function () {
+    //console.log(reader.result);
+    let s = reader.result ; 
+    me.base64textString = reader.result.toString() ;
+
+    console.log(me.diverObj.ProfilePhoto);
+    if(me.signUpDiver){
+      me.diverObj.ProfilePhoto = me.base64textString;
+    }else{
+      me.instructorObj.ProfilePhoto = me.base64textString;
+    }
+    
+    console.log(me.diverObj.ProfilePhoto);
+   
+    
+  };
+  reader.onerror = function (error) {
+    console.log('Error: ', error);
+  };
+}
+
+CourseListFinder(){
+
+  if(this.courseInputField.length >= 2)
+ {
+     this.showLoading = true;
+     this._diveService.getDiveCourses(this.courseInputField).subscribe(
+       data => {
+         console.log("Course search for: " + this.courseInputField);
+           console.log(data);
+           this.CourseLst = data.ReturnedList ; 
+           this.showLoading = false;
+       }
+     ); //end Buddy req
+ }
+ 
+ }
+
+ addCourse(){
+  if(this.courseInputField.length >= 2)
+  {
+   const index: number = this.userCourses.indexOf(this.courseInputField);
+   if (index == -1) {
+     this.userCourses.push(this.courseInputField);
+     this.showCourses = true;
+   }
+    this.courseInputField = "";
+    this.courseValid = true;
+  }
+ 
+  console.log("Course Added: ");
+  console.log(this.userCourses);
+  
+ }
+
+ removeCourse(s : string){
+  const index: number = this.userCourses.indexOf(s);
+  if (index !== -1) {
+    this.userCourses.splice(index, 1);
+
+    if (this.userCourses.length == 0){
+      this.courseValid = false;
+    }
+  }  
+
+  this.CourseLst = [] ;
+}
+
 
   
 
