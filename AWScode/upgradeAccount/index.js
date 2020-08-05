@@ -84,7 +84,7 @@ exports.handler = async (event, context, callback) => {
             
             const paramsCourse = {
                 TableName: "DiveInfo",
-                FilterExpression: 'begins_with(#itemT , :itemT) AND  #qualT == :qualT',
+                FilterExpression: 'begins_with(#itemT , :itemT) AND  #qualT = :qualT',
                 ExpressionAttributeNames: {
                     '#itemT': 'ItemType',
                     '#qualT' : 'QualificationType'
