@@ -69,7 +69,7 @@ exports.handler = async (event, context, callback) => {
             
         const paramsCourse = {
             TableName: "DiveInfo",
-            FilterExpression: 'begins_with(#itemT , :itemT) AND  #qualT == :qualT',
+            FilterExpression: 'begins_with(#itemT , :itemT) AND #qualT = :qualT',
             ExpressionAttributeNames: {
                 '#itemT': 'ItemType',
                 '#qualT' : 'QualificationType'
@@ -80,86 +80,92 @@ exports.handler = async (event, context, callback) => {
             }
         };
         try{
-            const dataQ = await documentClient.get(paramsCourse).promise();
+            const dataQ = await documentClient.scan(paramsCourse).promise();
             let qualified = false;
-            CompletedCourses.forEach(function(item) {
-                /*For each completed course
-                Check if it is in the courses retrieved
-                */
-                if(contains(dataQ.Items, item.Name)){
-                    qualified = true;
-                }
-            });
-            
-            if(qualified){
-                /* data:image/png;base64, is send at the front of ProfilePhoto thus find the first , */
-                const startContentType = ProfilePhoto.indexOf(":")+1;
-                const endContentType = ProfilePhoto.indexOf(";");
-                const contentType = ProfilePhoto.substring(startContentType, endContentType);
-                
-                const startExt = contentType.indexOf("/")+1;
-                const extension = contentType.substring(startExt, contentType.length);
-                
-                const startIndex = ProfilePhoto.indexOf(",")+1;
-                
-                const encodedImage = ProfilePhoto.substring(startIndex, ProfilePhoto.length);
-                const decodedImage = Buffer.from(encodedImage.replace(/^data:image\/\w+;base64,/, ""),'base64');
-              
-                const filePath = "profilephoto" + AccountGuid + "."+extension;
-                
-                let profileLink ="https://profilephoto-imagedatabase-scubamate.s3.af-south-1.amazonaws.com/"+filePath;
-            
-                const paramsImage = {
-                  "Body": decodedImage,
-                  "Bucket": "profilephoto-imagedatabase-scubamate",
-                  "Key": filePath,
-                  "ContentEncoding": 'base64',
-                  "ContentType" : contentType
-                };
-                
-                const s3 = new AWS.S3({apiVersion: '2006-03-01'});
-                s3.putObject(paramsImage, function(err, data){
-                    if(err) {
-                        /* Default image if image upload fails */
-                        profileLink ="https://profilephoto-imagedatabase-scubamate.s3.af-south-1.amazonaws.com/image2.jpg";
-                    }
-                });
-                
-                const params = {
-                    TableName: "Scubamate",
-                    Item: {
-                        AccountGuid : AccountGuid,
-                        AccountType: AccountType, 
-                        FirstName: FirstName,
-                        InstructorNumber : InstructorNumber,
-                        LastName: LastName, 
-                        Email: Email, 
-                        DateOfBirth: DateOfBirth,
-                        DiveCentre : DiveCentre,
-                        Password: hash, 
-                        ProfilePhoto: profileLink,
-                        PublicStatus: PublicStatus,
-                        EmailVerified: false,
-                        AccountVerified: false,
-                        CompletedCourses: CompletedCourses
-                    }
-                };
-            
-                try{
-                    const data = await documentClient.put(params).promise();
-                    responseBody = "Successfully added account!";
-                    statusCode = 201;
-                }catch(err){
-                    responseBody = "Unable to create account";
-                    statusCode = 403;
-                }
+            if(typeof CompletedCourses == "undefined"){
+                responseBody = "Invalid Request Body."
+                statusCode = 400;
             }
             else{
-                responseBody = "Incorrect qualification to be an instructor.";
-                statusCode = 404;
+                CompletedCourses.forEach(function(item) {
+                    /*For each completed course
+                    Check if it is in the courses retrieved
+                    */
+                    if(contains(dataQ.Items, item.Name)){
+                        qualified = true;
+                    }
+                });
+                if(qualified){
+                    /* data:image/png;base64, is send at the front of ProfilePhoto thus find the first , */
+                    const startContentType = ProfilePhoto.indexOf(":")+1;
+                    const endContentType = ProfilePhoto.indexOf(";");
+                    const contentType = ProfilePhoto.substring(startContentType, endContentType);
+                    
+                    const startExt = contentType.indexOf("/")+1;
+                    const extension = contentType.substring(startExt, contentType.length);
+                    
+                    const startIndex = ProfilePhoto.indexOf(",")+1;
+                    
+                    const encodedImage = ProfilePhoto.substring(startIndex, ProfilePhoto.length);
+                    const decodedImage = Buffer.from(encodedImage.replace(/^data:image\/\w+;base64,/, ""),'base64');
+                  
+                    const filePath = "profilephoto" + AccountGuid + "."+extension;
+                    
+                    let profileLink ="https://profilephoto-imagedatabase-scubamate.s3.af-south-1.amazonaws.com/"+filePath;
+                
+                    const paramsImage = {
+                      "Body": decodedImage,
+                      "Bucket": "profilephoto-imagedatabase-scubamate",
+                      "Key": filePath,
+                      "ContentEncoding": 'base64',
+                      "ContentType" : contentType
+                    };
+                    
+                    const s3 = new AWS.S3({apiVersion: '2006-03-01'});
+                    s3.putObject(paramsImage, function(err, data){
+                        if(err) {
+                            /* Default image if image upload fails */
+                            profileLink ="https://profilephoto-imagedatabase-scubamate.s3.af-south-1.amazonaws.com/image2.jpg";
+                        }
+                    });
+                    
+                    const params = {
+                        TableName: "Scubamate",
+                        Item: {
+                            AccountGuid : AccountGuid,
+                            AccountType: AccountType, 
+                            FirstName: FirstName,
+                            InstructorNumber : InstructorNumber,
+                            LastName: LastName, 
+                            Email: Email, 
+                            DateOfBirth: DateOfBirth,
+                            DiveCentre : DiveCentre,
+                            Password: hash, 
+                            ProfilePhoto: profileLink,
+                            PublicStatus: PublicStatus,
+                            EmailVerified: false,
+                            AccountVerified: false,
+                            CompletedCourses: CompletedCourses
+                        }
+                    };
+                
+                    try{
+                        const data = await documentClient.put(params).promise();
+                        responseBody = "Successfully added account!";
+                        statusCode = 201;
+                    }catch(err){
+                        responseBody = "Unable to create account";
+                        statusCode = 403;
+                    }
+                }
+                else{
+                    responseBody = "Incorrect qualification to be an instructor.";
+                    statusCode = 404;
+                }
             }
+            
         }catch(err){
-            responseBody = "Unable to check qualification verified "+err;
+            responseBody = "Unable to check qualification verified : "+err;
             statusCode = 403;
         } 
             
