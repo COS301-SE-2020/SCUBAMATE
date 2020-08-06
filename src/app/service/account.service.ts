@@ -176,5 +176,19 @@ export class accountService
    
     }
 
+    upgradeToInstructor(postData): Observable<any>{
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        })
+      };
+
+  
+      console.log(postData);
+
+     return  this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/UserAccountFull/upgradeaccount', postData, options );
+   
+    }
+
 
 }

@@ -568,7 +568,7 @@ sendVerifiedEmail(e : string ){
     {
       console.log("Validated Email Sent");
       this.showLoading = false;
-      location.reload();
+      this.router.navigate(['home']);
     });
 }
 

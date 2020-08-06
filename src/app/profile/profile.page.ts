@@ -15,11 +15,12 @@ export interface AccountDetails{
   Password: string ;
   DateOfBirth: string ;
   FirstName: string ;
-  AccountType: string ;
+  CompletedCourses: string[] ;
   LastName: string ;
   Email: string ;
   Specialisation: string[];
   Qualification: string;
+  DiveCentre: string;
 }
 
 export interface DiveType{
@@ -44,6 +45,7 @@ export class ProfilePage implements OnInit {
   editProfile : Boolean; 
   showLoading: Boolean;
   showAD : Boolean = false  ;
+  accountType : string;
 
   showAccountVerifiedMessage : Boolean ; 
 
@@ -61,7 +63,7 @@ export class ProfilePage implements OnInit {
       this.router.navigate(['login']);
       this.loginLabel = "Login";
     }else{
-      this.loginLabel = "Sign Out";
+      this.loginLabel = "Log Out";
     
 
         this._accountService.getUser().subscribe(res => {
@@ -81,9 +83,25 @@ export class ProfilePage implements OnInit {
           }
 
           this.showLoading = false;
-          this.showAD = true; 
+          this.showAD = true;
           
-        }) 
+          
+          if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+            this.accountType = "Instructor"
+          }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+            this.accountType = "Diver"
+          }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+            this.accountType = "Admin"
+          }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+            this.accountType = "SuperAdmin"
+          }else{
+            this.accountType = "*Diver"
+          }
+          
+        });
+
+
+
 
 
 
@@ -104,7 +122,7 @@ export class ProfilePage implements OnInit {
       this.router.navigate(['login']);
       this.loginLabel = "Login";
     }else{
-      this.loginLabel = "Sign Out";
+      this.loginLabel = "Log Out";
     
 
         this._accountService.getUser().subscribe(res => {
@@ -124,9 +142,27 @@ export class ProfilePage implements OnInit {
           }
 
           this.showLoading = false;
+          this.showAD = true;
+          
+          
+          if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+            this.accountType = "Instructor"
+          }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+            this.accountType = "Diver"
+          }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+            this.accountType = "Admin"
+          }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+            this.accountType = "SuperAdmin"
+          }else{
+            this.accountType = "*Diver"
+          }
+          
+        
+
+          this.showLoading = false;
           this.showAD = true; 
           
-        }) 
+        }) ;
 
 
 

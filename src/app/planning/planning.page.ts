@@ -11,6 +11,14 @@ export interface CkeckListItemObj {
   Checked : Boolean; 
 }
 
+export interface CourseObj {
+  MinAgeRequired: number,
+  RequiredCourses: string[],
+  CourseType: string,
+  QualificationType: string,
+  Name: string,
+}
+
 @Component({
   selector: 'app-planning',
   templateUrl: './planning.page.html',
@@ -36,6 +44,11 @@ export class PlanningPage implements OnInit {
   PersonalList :  CkeckListItemObj[] = new Array(); 
   itemToAdd : String ; 
 
+  suggestedCourseFullList: CourseObj[] = new Array(); 
+  suggestedCourseThreeList: CourseObj[] = new Array(); 
+
+  showCourses : boolean ;
+
   ////
 
   loginLabel:string ;
@@ -43,6 +56,7 @@ export class PlanningPage implements OnInit {
   constructor(public alertController : AlertController ,private router: Router, private _accountService: accountService,  private _diveService: diveService) { }
 
   ngOnInit() {
+  this.showCourses = false ;
   this.itemToAdd = "";
   this.SearchDiveCheckList = "" ;
     this.showLoading = false;
@@ -54,7 +68,17 @@ export class PlanningPage implements OnInit {
       this.loginLabel = "Log Out";
     }
 
-   
+
+    //get Suggested Courses
+    this._diveService.getSuggestedCourses().subscribe(res =>{
+      console.log("Suggestions Received")
+      this.suggestedCourseFullList = res.Courses;
+
+      this.getRandomThreeCourses();
+      
+    });
+  
+    
 
   }
 
@@ -68,6 +92,13 @@ export class PlanningPage implements OnInit {
     }else{
       this.loginLabel = "Log Out";
     }
+
+    //get Suggested Courses
+    this._diveService.getSuggestedCourses().subscribe(res =>{
+      console.log("Suggestions Received")
+      this.suggestedCourseFullList = res;
+    });
+
   }
 
   loginClick(){
@@ -176,5 +207,27 @@ export class PlanningPage implements OnInit {
     this.showLoading = false ;
 
   }
+
+  
+   
+
+  generateRandom(max : number){
+    return Math.floor(Math.random()*(max-1)+1);
+  }
+
+  getRandomThreeCourses(){
+    this.showCourses = false ;
+      var l1 = this.generateRandom(this.suggestedCourseFullList.length);
+      var l2 = this.generateRandom(this.suggestedCourseFullList.length);
+      var l3 = this.generateRandom(this.suggestedCourseFullList.length);
+     
+      this.suggestedCourseThreeList[0] = this.suggestedCourseFullList[l1];
+      this.suggestedCourseThreeList[1] = this.suggestedCourseFullList[l2];
+      this.suggestedCourseThreeList[2] = this.suggestedCourseFullList[l3];
+
+    this.showCourses = true ;
+  }
+
+  
 
 }
