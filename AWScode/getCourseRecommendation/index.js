@@ -74,9 +74,11 @@ exports.handler = async (event, context) => {
             /* Get List Of Courses */
             const paramsCourse = {
                 TableName: 'DiveInfo',
+                ProjectionExpression: "#name,MinAgeRequired, RequiredCourses, CourseType, QualificationType", 
                 FilterExpression: 'begins_with(#itemT , :itemT)',
                 ExpressionAttributeNames: {
                     '#itemT': 'ItemType',
+                    '#name':"Name"
                 },
                 ExpressionAttributeValues: {
                     ':itemT': "C-",
