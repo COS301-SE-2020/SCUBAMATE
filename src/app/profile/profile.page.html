@@ -92,56 +92,7 @@
     </div>
   </div>
 
-  <div id="checkListDiv">
-    <div class="divHeadSection">
-      <ion-label class="divHead"> Checklist </ion-label>
-    </div>
-    <div class="divBodySection">
-     
-    <ion-button (click)="onChooseDive( diveType.value, $event)">
-      <ion-icon name="search"></ion-icon>
-    </ion-button><br>
-
-   
-      <div class="searchableSelect">
-        <ion-label class="searchableSelectLabel">Dive Type</ion-label>
-        <input list="diveTypes" class="searchableSelectInput" placeholder="Search by a Dive Type" #diveType>
-        <datalist id="diveTypes" >
-            <option *ngFor='let t of DiveTypeLst' value={{t}}></option>
-        </datalist>
-      </div>
- 
-
-    <ion-grid id="CheckListsInfo">
-      <ion-row>
-        <ion-col>
-          <table *ngIf='viewChecklist'>
-            <tr>
-              <th>Equipment</th>
-            </tr>
-            <tr *ngFor='let e of EquipmentList'>
-              <td>{{ e }}</td>
-              <td><ion-checkbox color="dark"></ion-checkbox></td>
-            </tr>
-            <tr></tr>
-          </table>
-        </ion-col>
-        <ion-col>
-          <table *ngIf='viewChecklist'>
-            <tr>
-              <th>Optional</th>
-            </tr>
-            <tr *ngFor='let o of OptionalList' > 
-              <td>{{ o }}</td>
-              <td><ion-checkbox color="dark"></ion-checkbox></td>
-            </tr>
-          </table>
-        </ion-col>
-      </ion-row>
-    
-    </ion-grid>
-  </div>
-  </div>
-
+  
+  
 
 </ion-content>

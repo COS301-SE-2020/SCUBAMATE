@@ -76,6 +76,7 @@ ion-content.background{
   --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
 }
 
+
 .productHeader {
   --background: transparent;
 }
@@ -101,6 +102,7 @@ ion-grid {
   width:  70% ;
   padding: 0;
   margin-top: 30px;
+  margin-bottom: 50px;
 }
 
 #checkListDiv{
@@ -117,7 +119,7 @@ ion-grid {
 }
 
 #ProfileInfo{
-  background-color: rgba(38, 70, 83, 0.6);
+  background-color: rgba(38, 70, 83, 0.8);
   margin: auto;
   margin-top: 30px;
   border-bottom: solid white 0.5px;

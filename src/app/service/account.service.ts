@@ -155,7 +155,24 @@ export class accountService
 
       console.log(postData);
 
-     return  this.httpClient.post('https://10n4obqtkh.execute-api.af-south-1.amazonaws.com/eSendInit/emailsender', postData, options );
+     return  this.httpClient.post('https://10n4obqtkh.execute-api.af-south-1.amazonaws.com/email/emailsender', postData, options );
+   
+    }
+
+    confirmEmailValidation(newUserEmail : string): Observable<any>{
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        })
+      };
+
+      var postData ={
+        Email : newUserEmail
+      }
+
+      console.log(postData);
+
+     return  this.httpClient.post('https://10n4obqtkh.execute-api.af-south-1.amazonaws.com/email/emailresponder', postData, options );
    
     }
 

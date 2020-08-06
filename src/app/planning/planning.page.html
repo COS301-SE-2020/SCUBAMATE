@@ -101,7 +101,7 @@
             </ion-col>
           </ion-row>
 
-          <ion-row *ngIf='viewChecklist && viewPersonalAdded'><label class="checkListHead">Extra</label></ion-row>
+          <ion-row *ngIf='viewChecklist && viewPersonalAdded'><label class="checkListHead">Custom</label></ion-row>
           <ion-row *ngIf='viewChecklist && viewPersonalAdded' class="checkListTableRow">
             <ion-col *ngFor='let p of PersonalList' size="12" size-md="6" size-lg="6">
               
@@ -113,34 +113,6 @@
 
       </ion-grid>
 
-   <!-- <ion-grid id="CheckListsInfo">
-      <ion-row>
-        <ion-col>
-          <table *ngIf='viewChecklist'>
-            <tr>
-              <th>Equipment</th>
-            </tr>
-            <tr *ngFor='let e of EquipmentList'>
-              <td>{{ e }}</td>
-              <td><ion-checkbox color="dark"></ion-checkbox></td>
-            </tr>
-            <tr></tr>
-          </table>
-        </ion-col>
-        <ion-col>
-          <table *ngIf='viewChecklist'>
-            <tr>
-              <th>Optional</th>
-            </tr>
-            <tr *ngFor='let o of OptionalList' > 
-              <td>{{ o }}</td>
-              <td><ion-checkbox color="dark"></ion-checkbox></td>
-            </tr>
-          </table>
-        </ion-col>
-      </ion-row>
-    
-    </ion-grid>-->
   </div>
   </div>
 

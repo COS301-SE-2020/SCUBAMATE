@@ -360,13 +360,16 @@ DiverSubmit(){
       console.log("Sending Diver Email");
       
       
-      this._accountService.sendValidationEmail(this.diverObj.Email).subscribe( res => {
-        
-        this.presentAlertEmailSent(this.diverObj.Email);
-        this.showLoading = false;
+    /**   this._accountService.sendValidationEmail(this.diverObj.Email).subscribe( res => {
 
+        localStorage.setItem("otp", res.OTP) ; 
+        console.log("Sending Diver Email");
+       this.presentAlertEmailSent(this.diverObj.Email);
+        this.showLoading = false;
         this.router.navigate(['home']);
-      });
+
+      }); */
+      this.sendEmail(this.diverObj.Email);
     },  err => this.presentAlertEmail()); 
 
 
@@ -385,15 +388,21 @@ InstructorSubmit(){
     console.log(this.instructorObj);
     
     this._accountService.insertUserInstructor( this.instructorObj ).subscribe( res =>{
+      console.log(res);
+      localStorage.setItem("accessToken", res.AccessToken) ; 
+
       console.log("Sending Instructor Info");
       
       this.showLoading = true;
-      this._accountService.sendValidationEmail(this.instructorObj.Email).subscribe( res => {
+     /* this._accountService.sendValidationEmail(this.instructorObj.Email).subscribe( res => {
+
+        localStorage.setItem("otp", res.OTP) ; 
         this.showLoading = false;
         this.presentAlertEmailSent(this.instructorObj.Email);
+        this.router.navigate(['home']);
 
-        this.router.navigate(['login']);
-      });
+      });*/
+      this.sendEmail(this.instructorObj.Email);
     },  err => this.presentAlertEmail()); 
 
 
@@ -537,6 +546,115 @@ CourseListFinder(){
   }  
 
   this.CourseLst = [] ;
+}
+
+
+sendEmail( e : string){
+     
+  this.showLoading = true;
+  this._accountService.sendValidationEmail(e).subscribe( res=>
+    {
+      console.log("Email Sent");
+      localStorage.setItem("otp", res.OTP);
+      this.showLoading = false;
+      this.presentOTPPrompt(e);
+    });
+}
+
+sendVerifiedEmail(e : string ){
+     
+  this.showLoading = true;
+  this._accountService.confirmEmailValidation(e).subscribe( res=>
+    {
+      console.log("Validated Email Sent");
+      this.showLoading = false;
+      location.reload();
+    });
+}
+
+async presentAlertOtpOk( e : string ) {
+  const alert = await this.alertController.create({
+    cssClass: 'errorAlert',
+    header: 'Validation Complete',
+    subHeader: 'Account Email Verified: ',
+    message:  e,
+    buttons: ['Done']
+  });
+
+  await alert.present();
+  this.sendVerifiedEmail(e);
+}
+
+async presentAlertOtpWrong( e : string) {
+  const alert = await this.alertController.create({
+    cssClass: 'errorAlert',
+    header: 'Validation Failed',
+    subHeader: 'Account Email Not Validated',
+    message: 'Invalid OTP provided' ,
+    buttons: [
+      {
+        text: 'Cancel',
+        role: 'cancel',
+        cssClass: 'secondary',
+        handler: () => {
+          console.log('Confirm Cancel');
+        }
+      }, {
+        text: 'Retry',
+        handler: () => {
+          console.log("Retry OTP" );
+          this.sendEmail(e);
+          
+
+        }
+      }
+    ]
+  });
+
+  await alert.present();
+}
+
+
+
+async presentOTPPrompt(e : string) {
+  const alert = await this.alertController.create({
+    cssClass: 'my-custom-class',
+    header: 'Email Verification',
+    subHeader: 'A new OTP has been sent to: ',
+    message:  e,
+    inputs: [
+      {
+        name: 'otpEntered',
+        type: 'text',
+        placeholder: 'OTP Here'
+      }
+    ],
+    buttons: [
+      {
+        text: 'Cancel',
+        role: 'cancel',
+        cssClass: 'secondary',
+        handler: () => {
+          console.log('Confirm Cancel');
+        }
+      }, {
+        text: 'Confirm',
+        handler: data => {
+          console.log(data);
+          console.log("OTP Entered:" + data['otpEntered']);
+
+          if(localStorage.getItem("otp")!= data['otpEntered']){
+            this.presentAlertOtpWrong(e);
+          }else{
+            this.presentAlertOtpOk(e);
+          }
+
+        }
+      }
+    ]
+  });
+
+  await alert.present();
 }
 
 

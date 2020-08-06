@@ -5,7 +5,6 @@ import { diveService } from '../service/dive.service';
 import { AlertController } from '@ionic/angular';
 
 
-
 export interface AccountDetails{
   ItemType: string ;
   AccessToken: string;
@@ -75,7 +74,7 @@ export class ProfilePage implements OnInit {
             this.AD.PublicStatus = "Private";
           }
 
-          if(res.VerifiedEmail){
+          if(res.EmailVerified){
             this.showAccountVerifiedMessage = false ;
           }else{
             this.showAccountVerifiedMessage = true ;
@@ -86,15 +85,6 @@ export class ProfilePage implements OnInit {
           
         }) 
 
-        this._diveService.getDiveTypes("*").subscribe(
-          data => {
-              console.log(data);
-              this.DiveTypeLst = data.ReturnedList ; 
-              console.log("In type");
-              this.showLoading = false;
-
-          }
-        ); //end DiveType req
 
 
       }
@@ -105,39 +95,42 @@ export class ProfilePage implements OnInit {
   ionViewWillEnter(){
     this.viewProfile = true;
     this.editProfile = false;
+    this.loginLabel ="Login";
+    this.showLoading = true;
+    this.showAD = false; 
+
     if(!localStorage.getItem("accessToken"))
     {
       this.router.navigate(['login']);
       this.loginLabel = "Login";
     }else{
       this.loginLabel = "Sign Out";
-    }
-
     
 
-    this._accountService.getUser().subscribe(res => {
-      console.log(res);
-      this.AD = res;
-      if (res.PublicStatus == true){
-        this.AD.PublicStatus = "Public";
-      }else{
-        this.AD.PublicStatus = "Private";
-      }
-      
-      if(res.VerifiedEmail){
-        this.showAccountVerifiedMessage = false ;
-      }else{
-        this.showAccountVerifiedMessage = true ;
-      }
-    })
-    this._diveService.getDiveTypes("*").subscribe(
-      data => {
-          console.log(data);
-          this.DiveTypeLst = data.ReturnedList ; 
-          console.log("In type");
+        this._accountService.getUser().subscribe(res => {
+          console.log("res");
+          console.log(res);
+          this.AD = res;
+          if (res.PublicStatus == true){
+            this.AD.PublicStatus = "Public";
+          }else{
+            this.AD.PublicStatus = "Private";
+          }
+
+          if(res.EmailVerified){
+            this.showAccountVerifiedMessage = false ;
+          }else{
+            this.showAccountVerifiedMessage = true ;
+          }
+
           this.showLoading = false;
+          this.showAD = true; 
+          
+        }) 
+
+
+
       }
-    ); //end DiveType req
   }
 
   loginClick(){
@@ -150,52 +143,120 @@ export class ProfilePage implements OnInit {
     }
   }
 
-  onChooseDive( DT: string , event: Event  )
-  {
-    this.showLoading= true;
-    var RequestData = {
-      "DiveType" : DT
-    }
-
-    console.log(RequestData);
-
-    this.showLoading= true;
-    this._diveService.getCheckList(RequestData).subscribe( res =>{
-      this.viewChecklist = false ; 
-      this.OptionalList = res.Optional;
-      this.EquipmentList = res.Equipment;
-      this.viewChecklist = true ; 
-      this.showLoading= false;
-    });
-
-
-  }
 
   goToEdit(){
     console.log("in edit func");
     this.router.navigate(["/edit-profile"]);
   }
 
-  async presentAlertEmailSent( userEmail ) {
+  
+
+  sendEmail(){
+     
+    this.showLoading = true;
+    this._accountService.sendValidationEmail(this.AD.Email).subscribe( res=>
+      {
+        console.log("Email Sent");
+        localStorage.setItem("otp", res.OTP);
+        this.showLoading = false;
+        this.presentOTPPrompt();
+      });
+  }
+
+  sendVerifiedEmail(){
+     
+    this.showLoading = true;
+    this._accountService.confirmEmailValidation(this.AD.Email).subscribe( res=>
+      {
+        console.log("Validated Email Sent");
+        this.showLoading = false;
+        location.reload();
+      });
+  }
+
+  async presentAlertOtpOk( ) {
     const alert = await this.alertController.create({
       cssClass: 'errorAlert',
-      header: 'Validation Email Sent',
-      subHeader: 'Please validate your Email',
-      message: 'An OTP has been sent to: <br>' + userEmail ,
-      buttons: ['OK']
+      header: 'Validation Complete',
+      subHeader: 'Account Email Verified: ',
+      message:  this.AD.Email,
+      buttons: ['Done']
+    });
+  
+    await alert.present();
+    this.sendVerifiedEmail();
+  }
+
+  async presentAlertOtpWrong( ) {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: 'Validation Failed',
+      subHeader: 'Account Email Not Validated',
+      message: 'Invalid OTP provided' ,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Retry',
+          handler: () => {
+            console.log("Retry OTP" );
+            this.sendEmail();
+            
+
+          }
+        }
+      ]
     });
   
     await alert.present();
   }
-  
 
-  sendEmail(){
-    this.showLoading = true;
-    this._accountService.sendValidationEmail(this.AD.Email).subscribe( res=>
-      {
-        this.showLoading = false;
-        this.presentAlertEmailSent(this.AD.Email);
-      });
+
+
+  async presentOTPPrompt() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Email Verification',
+      subHeader: 'A new OTP has been sent to: ',
+      message:  this.AD.Email,
+      inputs: [
+        {
+          name: 'otpEntered',
+          type: 'text',
+          placeholder: 'OTP Here'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Confirm',
+          handler: data => {
+            console.log(data);
+            console.log("OTP Entered:" + data['otpEntered']);
+
+            if(localStorage.getItem("otp")!= data['otpEntered']){
+              this.presentAlertOtpWrong();
+            }else{
+              this.presentAlertOtpOk();
+            }
+
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
 
