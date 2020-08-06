@@ -142,7 +142,7 @@ export class LogDivePage implements OnInit {
     {
       this.loginLabel = "Login";
     }else{
-      this.loginLabel = "Sign Out";
+      this.loginLabel = "Log Out";
     }
 
      this._diveService.getDiveSites("*").subscribe(
@@ -203,7 +203,7 @@ export class LogDivePage implements OnInit {
     {
       this.loginLabel = "Login";
     }else{
-      this.loginLabel = "Sign Out";
+      this.loginLabel = "Log Out";
     }
   }
 

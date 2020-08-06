@@ -33,7 +33,7 @@ export class MyDivesPage implements OnInit {
     {
       this.loginLabel = "Login";
     }else{
-      this.loginLabel = "Sign Out";
+      this.loginLabel = "Log Out";
     }
 
     console.log("Do a Private search:");
@@ -70,7 +70,7 @@ export class MyDivesPage implements OnInit {
     {
       this.loginLabel = "Login";
     }else{
-      this.loginLabel = "Sign Out";
+      this.loginLabel = "Log Out";
     }
 
     console.log("Do a Private search:");

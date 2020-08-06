@@ -96,7 +96,7 @@ export class EditDivePage implements OnInit {
       {
         this.loginLabel = "Login";
       }else{
-        this.loginLabel = "Sign Out";
+        this.loginLabel = "Log Out";
       }
 
 
@@ -111,7 +111,7 @@ export class EditDivePage implements OnInit {
     {
       this.loginLabel = "Login";
     }else{
-      this.loginLabel = "Sign Out";
+      this.loginLabel = "Log Out";
     }
   }
 
