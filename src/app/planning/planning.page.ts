@@ -77,6 +77,40 @@ export class PlanningPage implements OnInit {
       this.getRandomThreeCourses();
       
     });
+
+
+    //get Custom CheckList If it exists
+    this._accountService.getCustomChecklist().subscribe(res =>{
+      
+      console.log(res);
+      
+      if(res.Equipment){
+        console.log("Custom List Received");
+
+
+        this.EquipmentList = res.Equipment ; 
+        this.OptionalList = res.Optional ;
+
+        if(res.Custom.length > 0 ){
+          this.PersonalList = res.Custom ;
+          this.viewPersonalAdded = true; 
+
+        }else{
+          this.viewPersonalAdded = false; 
+
+        }
+
+        this.viewChecklist = true;
+      }else{
+        console.log("No Custom List Yet");
+        this.viewChecklist = false;
+      }
+      
+
+    }, err =>{
+      this.viewChecklist = false;
+      this.viewPersonalAdded = false; 
+    });
   
     
 
@@ -171,17 +205,13 @@ export class PlanningPage implements OnInit {
     }
   }
 
-  ShowCurrentList(){
-    console.log("In");
-    console.log(this.OptionalList);
-  }
 
   toggleCheckList(){
     this.viewChecklist = !this.viewChecklist ; 
   }
 
   showAddInput(){
-    this.viewAddInput = true ; 
+    this.viewAddInput = !this.viewAddInput  ; 
   }
 
   addItem(){
@@ -226,6 +256,60 @@ export class PlanningPage implements OnInit {
       this.suggestedCourseThreeList[2] = this.suggestedCourseFullList[l3];
 
     this.showCourses = true ;
+  }
+
+
+  async presentAlertOk( ) {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: 'Checklist Saved',
+      message:  'Checklist saved for future use',
+      buttons: ['Done']
+    });
+  
+    await alert.present();
+
+  }
+
+
+  async presentAlertFail( ) {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: 'Checklist Not Saved',
+      subHeader: 'Oops! Something went wrong' ,
+      message:  'Please retry saving checklist',
+      buttons: ['Continue']
+    });
+  
+    await alert.present();
+
+  }
+
+  saveChecklist(){
+
+    if(!this.viewPersonalAdded){
+      this.PersonalList = []; 
+    }
+
+    var customList = {
+      "AccessToken": localStorage.getItem("accessToken"),
+      "Equipment": this.EquipmentList ,
+      "Optional": this.OptionalList , 
+      "Custom" : this.PersonalList
+    } ;
+
+    console.log(customList);
+
+
+    this._accountService.storeCustomChecklist(customList).subscribe( res => {
+        console.log(res);
+        this.presentAlertOk();
+    }, err =>{
+        this.presentAlertFail();
+    });
+
+
+
   }
 
   

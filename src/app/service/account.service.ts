@@ -190,5 +190,31 @@ export class accountService
    
     }
 
+    getCustomChecklist(): Observable<any>{
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }) 
+      };
+
+      var PostData = {
+        "AccessToken" : localStorage.getItem("accessToken")
+      }
+      return this.httpClient.post('https://a8dptkt6md.execute-api.af-south-1.amazonaws.com/ChecklistPen/getcustomchecklist', PostData, options );
+ 
+    }
+
+    storeCustomChecklist(PostData): Observable<any>{
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }) 
+      };
+
+      
+      return this.httpClient.post('https://a8dptkt6md.execute-api.af-south-1.amazonaws.com/ChecklistPen/putcustomchecklist', PostData, options );
+ 
+    }
+
 
 }
