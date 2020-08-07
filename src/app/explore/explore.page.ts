@@ -56,7 +56,7 @@ export class ExplorePage implements OnInit {
     {
       this.loginLabel = "Login";
     }else{
-      this.loginLabel = "Sign Out";
+      this.loginLabel = "Log Out";
     }
 
     this.showLoading = true ; 
@@ -77,7 +77,7 @@ export class ExplorePage implements OnInit {
     {
       this.loginLabel = "Login";
     }else{
-      this.loginLabel = "Sign Out";
+      this.loginLabel = "Log Out";
     }
 
     this.showLoading = true ; 

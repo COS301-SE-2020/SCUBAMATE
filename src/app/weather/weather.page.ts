@@ -55,7 +55,7 @@ export class WeatherPage implements OnInit {
     {
       this.loginLabel = "Login";
     }else{
-      this.loginLabel = "Sign Out";
+      this.loginLabel = "Log Out";
     }
 
     this.geolocation.getCurrentPosition().then((resp) => {
@@ -105,7 +105,7 @@ export class WeatherPage implements OnInit {
     {
       this.loginLabel = "Login";
     }else{
-      this.loginLabel = "Sign Out";
+      this.loginLabel = "Log Out";
     }
   }
 

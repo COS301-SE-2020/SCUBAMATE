@@ -6,6 +6,13 @@ ion-content.background{
     --background: url(../../assets/images/beach.jpg) 0 0/100% 100% no-repeat;
 }
 
+
+ion-button:hover{
+    color: $lightBlue;
+    border-radius: 25px;
+    font-weight: bold;
+}
+
 .FormErrorControlMessage{
     color: red;
     font-size: smaller;
@@ -19,5 +26,70 @@ ion-content.background{
     
 }
 
+@mixin formPage{
+    background-color: $lightBlue;
+    width: 80% ;
+    margin: auto;
+    text-align: center;
+}
 
+#firstFormPage{
+    @include formPage;
+    margin-bottom: 0 ;
+}
+
+#secondFormPage{
+    @include formPage;
+    margin-bottom: 0 ;
+}
+
+#thirdFormPage{
+    @include formPage;
+    margin-bottom: 0 ;
+}
+
+#formNavControlDiv{
+    @include formPage;
+    margin-top: 0;
+    padding-bottom: 20px;
+    padding-top: 10px;
+
+
+    button{
+        background-color: red;
+        color: white;
+        margin: auto;
+        width: 30%;
+        font-size: 20px;
+    }
+
+}
+
+@mixin stepsCircle{
+    border-radius: 100%;
+    background-color: $darkBlue;
+    color: white;
+    border-style: solid;
+    border-color: #2dd36f;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    width: 40px;
+    height:40px;
+    padding:5px;
+    margin-left:50%;
+}
+
+
+.step1{
+    @include stepsCircle ; 
+}
+
+.step2{
+    @include stepsCircle ; 
+}
+
+.step3{
+    @include stepsCircle ; 
+}
 

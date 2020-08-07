@@ -32,7 +32,7 @@
 
     <ion-grid id="ProfileInfo" *ngIf='showAD'>
       <ion-row>
-        <ion-col id="leftPane" style="padding-top:2%;">
+        <ion-col class="leftPane" style="padding-top:2%;">
           <div>
             <div id="profileSurroundDiv">
               <ion-img src={{AD.ProfilePhoto}} id="userProfile" ></ion-img>
@@ -73,18 +73,30 @@
 
   <div id="Credentials" *ngIf='showAD'>
     <div class="divHeadSection">
-      <ion-label class="divHead"> Diver Credentials </ion-label>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12" size-sm="6" size-md="6" size-lg="6">
+            <ion-label class="divHead" > {{accountType}} Credentials </ion-label>
+          </ion-col>
+          <ion-col size="12" size-sm="6" size-md="6" size-lg="6" *ngIf="accountType=='Diver'">
+            <ion-button color="dark" style="width:fit-content;" routerLink="/upgrade-instructor">
+              <ion-icon name="arrow-up-outline"></ion-icon>
+              Upgrade
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </div>
       <div class="divBodySection">
-        <ion-label class="divSubHead"> {{AD.AccountType}} </ion-label>
         <ion-grid>
           <ion-row>
-            <ion-col>
-              <ion-label class="infoLabel" id="spes" *ngIf='AD.Specialisation'>Specialisation: <br> <ion-label class="infoLabel" *ngFor="let s of AD.Specialisation"><ion-icon name="play-outline"></ion-icon> {{s}}<br></ion-label></ion-label>
+            <ion-col class="leftPane" *ngIf='AD.DiveCentre != undefined'>
+              <ion-label class="infoLabel" id="qual" >Center: <br><ion-icon name="play-outline"></ion-icon>{{AD.DiveCentre}} </ion-label> <br><br>
             </ion-col>
             <ion-col>
-              <ion-label class="infoLabel" id="qual" *ngIf='AD.Qualification'>Qualificaton: <br><ion-icon name="play-outline"></ion-icon>{{AD.Qualification}} </ion-label> <br><br>
-              <ion-label class="infoLabel" id="qual" *ngIf='AD.DiveCentre'>Center: <br><ion-icon name="play-outline"></ion-icon>{{AD.DiveCentre}} </ion-label> <br><br>
+              <ion-label class="infoLabel" *ngFor="let cc of AD.CompletedCourses">
+                <ion-icon name="play-outline"></ion-icon> {{cc}}
+              </ion-label><br>
             </ion-col>
             
           </ion-row>
@@ -92,56 +104,7 @@
     </div>
   </div>
 
-  <div id="checkListDiv">
-    <div class="divHeadSection">
-      <ion-label class="divHead"> Checklist </ion-label>
-    </div>
-    <div class="divBodySection">
-     
-    <ion-button (click)="onChooseDive( diveType.value, $event)">
-      <ion-icon name="search"></ion-icon>
-    </ion-button><br>
-
-   
-      <div class="searchableSelect">
-        <ion-label class="searchableSelectLabel">Dive Type</ion-label>
-        <input list="diveTypes" class="searchableSelectInput" placeholder="Search by a Dive Type" #diveType>
-        <datalist id="diveTypes" >
-            <option *ngFor='let t of DiveTypeLst' value={{t}}></option>
-        </datalist>
-      </div>
- 
-
-    <ion-grid id="CheckListsInfo">
-      <ion-row>
-        <ion-col>
-          <table *ngIf='viewChecklist'>
-            <tr>
-              <th>Equipment</th>
-            </tr>
-            <tr *ngFor='let e of EquipmentList'>
-              <td>{{ e }}</td>
-              <td><ion-checkbox color="dark"></ion-checkbox></td>
-            </tr>
-            <tr></tr>
-          </table>
-        </ion-col>
-        <ion-col>
-          <table *ngIf='viewChecklist'>
-            <tr>
-              <th>Optional</th>
-            </tr>
-            <tr *ngFor='let o of OptionalList' > 
-              <td>{{ o }}</td>
-              <td><ion-checkbox color="dark"></ion-checkbox></td>
-            </tr>
-          </table>
-        </ion-col>
-      </ion-row>
-    
-    </ion-grid>
-  </div>
-  </div>
-
+  
+  
 
 </ion-content>
