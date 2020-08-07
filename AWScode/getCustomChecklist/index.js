@@ -8,7 +8,10 @@ const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
 
 exports.handler = async (event, context) => {
     
-    let AccessToken = event.AccessToken;
+    let body = JSON.parse(event.body);
+    
+    const AccessToken = body.AccessToken;
+    //let AccessToken = event.AccessToken;
     let responseBody = "";
     let statusCode = 0;
     
@@ -50,6 +53,12 @@ exports.handler = async (event, context) => {
     // TODO implement
     const response = {
         statusCode: statusCode,
+        headers: {
+            "Access-Control-Allow-Origin" : "*",
+            "Access-Control-Allow-Methods" : "OPTIONS,POST,GET",
+            "Access-Control-Allow-Credentials" : true,
+            "Content-Type" : "application/json"
+        },
         body: JSON.stringify(responseBody),
     };
     return response;
