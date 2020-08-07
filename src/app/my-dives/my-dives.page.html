@@ -45,4 +45,12 @@
     </tr>
 </table>
 
+
+<div class="PopUpMessageDiv" *ngIf='!showDiveList'>
+  <ion-icon name="close" (click)="showDiveList=true"></ion-icon>
+  <label class="PopUpMessageMsg">You have no Logged Dives yet<br>
+     Start <span routerLink="/log-dive" class="PopUpMessageLink">Logging Dives</span> to view them here.</label>
+  
+</div>
+
 </ion-content>
