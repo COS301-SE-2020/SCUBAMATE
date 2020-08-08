@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { diveService } from '../service/dive.service';
 //import { FlashCardComponent } from '../components/flash-card/flash-card.component';
+import {ConnectionService} from 'ng-connection-service';
+import { Location } from '@angular/common';
 
 export interface Dive{
   FirstName : string ;
@@ -40,8 +42,23 @@ export class ExplorePage implements OnInit {
   pubLst: Dive[] ; 
   loginLabel:string ;
 
+  //Internet Connectivity check
+  isConnected = true;  
+  noInternetConnection: boolean;
+
   
-  constructor(private router: Router, private _diveService: diveService) { }
+  constructor(private router: Router, private _diveService: diveService, private connectionService: ConnectionService, private location: Location) { 
+    this.connectionService.monitor().subscribe(isConnected => {  
+      this.isConnected = isConnected;  
+      if (this.isConnected) {  
+        this.noInternetConnection=false;
+      }  
+      else {  
+        this.noInternetConnection=true;
+        this.router.navigate(['no-internet']);
+      }  
+    });
+  }
 
  
  

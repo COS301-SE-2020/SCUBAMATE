@@ -5,7 +5,8 @@ import * as CryptoJS from 'crypto-js';
 import { UUID } from 'angular2-uuid';
 import { Binary } from '@angular/compiler';
 import { Router } from '@angular/router';
-
+import {ConnectionService} from 'ng-connection-service';
+import { Location } from '@angular/common';
 
 //forms
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -74,6 +75,10 @@ export class RegisterPage implements OnInit {
   diverObj: SignUpDiver;
   instructorObj  : SignInstructor; 
 
+  //Internet Connectivity check
+  isConnected = true;  
+  noInternetConnection: boolean;
+
   /********************************************/
 
   matchingPasswords(passwordKey: string, passwordConfirmationKey: string ) {
@@ -86,7 +91,7 @@ export class RegisterPage implements OnInit {
     }
   }
 
-  constructor(private _diveService: diveService,  private _accountService : accountService,  private router: Router, public formBuilder: FormBuilder, public alertController : AlertController) {
+  constructor(private _diveService: diveService,  private _accountService : accountService,  private router: Router, public formBuilder: FormBuilder, public alertController : AlertController, private connectionService: ConnectionService, private location: Location) {
 
     
     //generate GUID
@@ -151,6 +156,17 @@ export class RegisterPage implements OnInit {
       instructorNumber: ['', Validators.compose([Validators.minLength(3), Validators.required])],
       diveCenter: ['', Validators.required]
     }, {validator: this.matchingPasswords('password', 'confirmPassword')}); 
+
+    this.connectionService.monitor().subscribe(isConnected => {  
+      this.isConnected = isConnected;  
+      if (this.isConnected) {  
+        this.noInternetConnection=false;
+      }  
+      else {  
+        this.noInternetConnection=true;
+        this.router.navigate(['no-internet']);
+      }  
+    });
 
 
   } //End of Constructor

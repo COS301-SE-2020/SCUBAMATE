@@ -2,7 +2,6 @@ import { Component} from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import {ConnectionService} from 'ng-connection-service';
 
 @Component({
   selector: 'app-root',
@@ -11,25 +10,12 @@ import {ConnectionService} from 'ng-connection-service';
 })
 export class AppComponent{
 
-  isConnected = true;  
-  noInternetConnection: boolean;
-
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar,
-    private connectionService: ConnectionService
+    private statusBar: StatusBar
   ) {
     this.initializeApp();
-    this.connectionService.monitor().subscribe(isConnected => {  
-      this.isConnected = isConnected;  
-      if (this.isConnected) {  
-        this.noInternetConnection=false;  
-      }  
-      else {  
-        this.noInternetConnection=true;  
-      }  
-    });
   }
 
   initializeApp() {

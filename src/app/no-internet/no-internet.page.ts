@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ConnectionService} from 'ng-connection-service';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-no-internet',
@@ -11,12 +12,12 @@ export class NoInternetPage implements OnInit {
   loginLabel:string ;
   isConnected = true;  
   noInternetConnection: boolean;
-  constructor(private connectionService: ConnectionService, private router: Router) {
+  constructor(private connectionService: ConnectionService, private router: Router, private location: Location) {
     this.connectionService.monitor().subscribe(isConnected => {  
       this.isConnected = isConnected;  
       if (this.isConnected) {  
         this.noInternetConnection=false;
-        this.router.navigate(['log-dive']);
+        this.location.back();
       }  
       else {  
         this.noInternetConnection=true;

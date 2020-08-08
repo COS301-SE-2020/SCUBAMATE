@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { accountService } from '../service/account.service';
-
-
+import {ConnectionService} from 'ng-connection-service';
+import { Location } from '@angular/common';
 
 //forms
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -40,7 +40,11 @@ export class EditProfilePage implements OnInit {
  
    /********************************************/
 
-  constructor(private _accountService : accountService, private router: Router, public formBuilder: FormBuilder, public alertController : AlertController) {
+   //Internet Connectivity check
+  isConnected = true;  
+  noInternetConnection: boolean;
+
+  constructor(private _accountService : accountService, private router: Router, public formBuilder: FormBuilder, public alertController : AlertController, private connectionService: ConnectionService, private location: Location) {
 
     this.showLoading = true;
     this._accountService.getUser().subscribe(res => {
@@ -70,7 +74,18 @@ export class EditProfilePage implements OnInit {
     this.showData = true;
     this.showLoading = false;
     
-    }); 
+    });
+
+    this.connectionService.monitor().subscribe(isConnected => {  
+      this.isConnected = isConnected;  
+      if (this.isConnected) {  
+        this.noInternetConnection=false;
+      }  
+      else {  
+        this.noInternetConnection=true;
+        this.router.navigate(['no-internet']);
+      }  
+    });
   }
 
   ngOnInit() {

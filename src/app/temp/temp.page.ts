@@ -4,7 +4,9 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { AgeValidator } from '../validators/age';
 import { AlertController } from '@ionic/angular';
 import { PRIMARY_OUTLET } from '@angular/router';
-
+import {ConnectionService} from 'ng-connection-service';
+import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 export interface UserValues{
   firstName: string
@@ -21,7 +23,9 @@ export class TempPage implements OnInit {
   //myInput: string ;
   myForm; 
 
-
+  //Internet Connectivity check
+  isConnected = true;  
+  noInternetConnection: boolean;
 
   inputValues: UserValues  ; 
 
@@ -37,7 +41,7 @@ export class TempPage implements OnInit {
     }
   }
 
-  constructor(public formBuilder: FormBuilder, public alertController : AlertController) { 
+  constructor(public formBuilder: FormBuilder, public alertController : AlertController, private connectionService: ConnectionService, private location: Location, private router: Router) { 
 
     this.inputValues = {
       firstName : ""
@@ -52,6 +56,16 @@ export class TempPage implements OnInit {
       confirmPassword: ['', Validators.required]},
       {validator: this.matchingPasswords('password', 'confirmPassword')}); 
     
+      this.connectionService.monitor().subscribe(isConnected => {  
+        this.isConnected = isConnected;  
+        if (this.isConnected) {  
+          this.noInternetConnection=false;
+        }  
+        else {  
+          this.noInternetConnection=true;
+          this.router.navigate(['no-internet']);
+        }  
+      });
     
     }/** End of Constructor */
 

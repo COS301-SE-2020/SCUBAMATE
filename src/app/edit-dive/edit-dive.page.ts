@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { diveService } from '../service/dive.service';
 import { Router } from '@angular/router';
 import { accountService } from '../service/account.service';
-
+import {ConnectionService} from 'ng-connection-service';
+import { Location } from '@angular/common';
 
 //forms
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -62,10 +63,14 @@ export class EditDivePage implements OnInit {
   diveForm;
   diveObj: EditDiveLog;
 
+  //Internet connectivity check
+  isConnected = true;  
+  noInternetConnection: boolean;
+
   /********************************************/
 
 
-  constructor(private _accountService : accountService , private router: Router, private _diveService: diveService, public formBuilder: FormBuilder, public alertController : AlertController) { 
+  constructor(private _accountService : accountService , private router: Router, private _diveService: diveService, public formBuilder: FormBuilder, public alertController : AlertController, private connectionService: ConnectionService, private location: Location) { 
 
      //Dive Form
      this.diveObj ={
@@ -83,8 +88,16 @@ export class EditDivePage implements OnInit {
       DivePublicStatus: []
     }); 
 
-
-
+    this.connectionService.monitor().subscribe(isConnected => {  
+      this.isConnected = isConnected;  
+      if (this.isConnected) {  
+        this.noInternetConnection=false;
+      }  
+      else {  
+        this.noInternetConnection=true;
+        this.router.navigate(['no-internet']);
+      }  
+    });
 
   }
 
