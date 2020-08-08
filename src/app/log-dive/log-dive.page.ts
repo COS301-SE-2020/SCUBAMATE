@@ -84,7 +84,8 @@ export class LogDivePage implements OnInit {
         this.noInternetConnection=false;  
       }  
       else {  
-        this.noInternetConnection=true;  
+        this.noInternetConnection=true;
+        this.router.navigate(['no-internet']);
       }  
     });
     //generate GUID
@@ -351,9 +352,6 @@ export class LogDivePage implements OnInit {
 
     } */
     localStorage.setItem("Backup", JSON.stringify(this.diveObj));
-    if(this.noInternetConnection){
-      console.log("The Following is in localstorage: " + localStorage.getItem("Backup"));
-    }
     this.showLoading = true;
     this._diveService.logDive(this.diveObj).subscribe( res =>{
                 
