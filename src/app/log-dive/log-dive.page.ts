@@ -418,17 +418,17 @@ export class LogDivePage implements OnInit {
   }
 
   automaticallySendLog(){
-    // console.log("Will automatically send log and then route as per norm.");
-    // var log = JSON.parse(localStorage.getItem("Backup"));
-    // this.showLoading = true;
-    // this._diveService.logDive(log).subscribe( res =>{
+    console.log("Will automatically send log and then route as per norm.");
+    var log = JSON.parse(localStorage.getItem("Backup"));
+    this.showLoading = true;
+    this._diveService.logDive(log).subscribe( res =>{
                 
-    //   console.log(res);
-    //   this.showLoading = false;
-    //   this.presentSuccessAlert();
-    //   localStorage.removeItem("Backup");
-    //   this.router.navigate(['my-dives']);
-    // });
+      console.log(res);
+      this.showLoading = false;
+      this.presentSuccessAlert();
+      localStorage.removeItem("Backup");
+      this.router.navigate(['my-dives']);
+    });
   }
 
 }
