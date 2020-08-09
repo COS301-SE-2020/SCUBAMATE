@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd} from '@angular/router';
 import { diveService } from '../service/dive.service';
 import { accountService } from '../service/account.service';
 import { weatherService } from '../service/weather.service';
@@ -7,6 +7,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import * as CryptoJS from 'crypto-js';  
 import { UUID } from 'angular2-uuid';
 import {ConnectionService} from 'ng-connection-service';
+import { filter } from 'rxjs/operators';
 
 //forms
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -61,6 +62,7 @@ export class LogDivePage implements OnInit {
 
     isConnected = true;  
     noInternetConnection: boolean;
+    previousUrl: string;
     //Form Groups
   diveForm;
   diveObj: DiveLog;
@@ -135,6 +137,25 @@ export class LogDivePage implements OnInit {
       DivePublicStatus: ['']
     });
 
+    router.events.pipe(
+      filter(event => event instanceof NavigationEnd)  
+    ).subscribe((event: NavigationEnd) => {
+      console.log(event.url);
+      if(event.url == '/no-internet'){
+        console.log("Calling saveTempLog");
+        this.saveTempLog();
+      }
+      else if(event.url == '/log-dive'){
+        console.log("Calling checkComplete");
+        // if(this.checkCompleteLog() == false){
+        //   console.log("Not complete form, calling restore");
+        //   this.restoreDive();
+        // }
+        // else{
+        //   console.log("Form complete, can automatically submit");
+        // }
+      }
+    });
   }
   
   ngOnInit() {
@@ -351,7 +372,6 @@ export class LogDivePage implements OnInit {
 
 
     } */
-    localStorage.setItem("Backup", JSON.stringify(this.diveObj));
     this.showLoading = true;
     this._diveService.logDive(this.diveObj).subscribe( res =>{
                 
@@ -363,5 +383,52 @@ export class LogDivePage implements OnInit {
     });
   }
 
+  saveTempLog(){
+    this.diveObj.Weather =  [this.WindSpeed, this.MoonPhase, this.WeatherDescription] ; 
+    this.diveObj.AirTemp = Number(this.diveObj.AirTemp );
+    this.diveObj.SurfaceTemp = Number(this.diveObj.SurfaceTemp );
+    this.diveObj.BottomTemp = Number(this.diveObj.BottomTemp );
+    this.diveObj.InstructorLink = "-";
+    this.diveObj.Visibility = this.diveObj.Visibility;
+    this.diveObj.Depth = this.diveObj.Depth;
+    localStorage.setItem("Backup", JSON.stringify(this.diveObj));
+    console.log("Saving the temp log to localstorage: " + localStorage.getItem("Backup"));
+  }
+
+  checkCompleteLog(){
+    // var log;
+    // if(localStorage.getItem("Backup")){
+    //   log = JSON.parse(localStorage.getItem("Backup"));
+    //   if(log.DiveSite == "" || log.DiveType == "" || log.DiveDate == "" || log.TimeIn == "" || log.TimeOut == "" || log.Buddy == "" || log.Visibility == "" || log.Depth == "" || log.Description == ""){
+    //     return false;
+    //   }
+    //   else return true;
+    // }
+  }
+
+  restoreDive(){
+    // var log = JSON.parse(localStorage.getItem("Backup"));
+    // this.diveObj.Weather =  [this.WindSpeed, this.MoonPhase, this.WeatherDescription]; 
+    // this.diveObj.AirTemp = Number(log.AirTemp);
+    // this.diveObj.SurfaceTemp = Number(log.SurfaceTemp);
+    // this.diveObj.BottomTemp = Number(log.BottomTemp);
+    // this.diveObj.InstructorLink = "-";
+    // this.diveObj.Visibility = log.Visibility;
+    // this.diveObj.Depth = log.Depth;
+  }
+
+  automaticallySendLog(){
+    // console.log("Will automatically send log and then route as per norm.");
+    // var log = JSON.parse(localStorage.getItem("Backup"));
+    // this.showLoading = true;
+    // this._diveService.logDive(log).subscribe( res =>{
+                
+    //   console.log(res);
+    //   this.showLoading = false;
+    //   this.presentSuccessAlert();
+    //   localStorage.removeItem("Backup");
+    //   this.router.navigate(['my-dives']);
+    // });
+  }
 
 }
