@@ -153,6 +153,7 @@ export class LogDivePage implements OnInit {
         }
         else{
           console.log("Form complete, can automatically submit");
+          this.automaticallySendLog();
         }
       }
     });
@@ -420,6 +421,8 @@ export class LogDivePage implements OnInit {
   automaticallySendLog(){
     console.log("Will automatically send log and then route as per norm.");
     var log = JSON.parse(localStorage.getItem("Backup"));
+    log.Visibility += "m";
+    log.Depth += "m";
     this.showLoading = true;
     this._diveService.logDive(log).subscribe( res =>{
                 
