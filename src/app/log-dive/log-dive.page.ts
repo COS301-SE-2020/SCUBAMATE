@@ -407,14 +407,14 @@ export class LogDivePage implements OnInit {
   }
 
   restoreDive(){
-    // var log = JSON.parse(localStorage.getItem("Backup"));
-    // this.diveObj.Weather =  [this.WindSpeed, this.MoonPhase, this.WeatherDescription]; 
-    // this.diveObj.AirTemp = Number(log.AirTemp);
-    // this.diveObj.SurfaceTemp = Number(log.SurfaceTemp);
-    // this.diveObj.BottomTemp = Number(log.BottomTemp);
-    // this.diveObj.InstructorLink = "-";
-    // this.diveObj.Visibility = log.Visibility;
-    // this.diveObj.Depth = log.Depth;
+    var log = JSON.parse(localStorage.getItem("Backup"));
+    this.diveObj.Weather =  [this.WindSpeed, this.MoonPhase, this.WeatherDescription]; 
+    this.diveObj.AirTemp = Number(log.AirTemp);
+    this.diveObj.SurfaceTemp = Number(log.SurfaceTemp);
+    this.diveObj.BottomTemp = Number(log.BottomTemp);
+    this.diveObj.InstructorLink = "-";
+    this.diveObj.Visibility = log.Visibility;
+    this.diveObj.Depth = log.Depth;
   }
 
   automaticallySendLog(){
