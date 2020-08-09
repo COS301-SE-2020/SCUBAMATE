@@ -147,13 +147,13 @@ export class LogDivePage implements OnInit {
       }
       else if(event.url == '/log-dive'){
         console.log("Calling checkComplete");
-        // if(this.checkCompleteLog() == false){
-        //   console.log("Not complete form, calling restore");
-        //   this.restoreDive();
-        // }
-        // else{
-        //   console.log("Form complete, can automatically submit");
-        // }
+        if(this.checkCompleteLog() == false){
+          console.log("Not complete form, calling restore");
+          this.restoreDive();
+        }
+        else{
+          console.log("Form complete, can automatically submit");
+        }
       }
     });
   }
@@ -396,14 +396,14 @@ export class LogDivePage implements OnInit {
   }
 
   checkCompleteLog(){
-    // var log;
-    // if(localStorage.getItem("Backup")){
-    //   log = JSON.parse(localStorage.getItem("Backup"));
-    //   if(log.DiveSite == "" || log.DiveType == "" || log.DiveDate == "" || log.TimeIn == "" || log.TimeOut == "" || log.Buddy == "" || log.Visibility == "" || log.Depth == "" || log.Description == ""){
-    //     return false;
-    //   }
-    //   else return true;
-    // }
+    var log;
+    if(localStorage.getItem("Backup")){
+      log = JSON.parse(localStorage.getItem("Backup"));
+      if(log.DiveSite == "" || log.DiveType == "" || log.DiveDate == "" || log.TimeIn == "" || log.TimeOut == "" || log.Buddy == "" || log.Visibility == "" || log.Depth == "" || log.Description == ""){
+        return false;
+      }
+      else return true;
+    }
   }
 
   restoreDive(){
