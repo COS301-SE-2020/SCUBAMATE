@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 const AWS = require('aws-sdk');
 AWS.config.update({region: "af-south-1"});
 
@@ -6,11 +6,11 @@ exports.handler = async (event, context) => {
 
     const body = JSON.parse(event.body); 
     /* Indication of what to search for: Instructors and Divers(A) or just instructors  (I) */
-    const ItemType = body.ItemType; 
+    const ItemType = body.ItemType+"-"; 
     /* Letters entered by user so far */
     let UserEntry = body.UserEntry; 
     
-    const validItemTypes = ["DS-","DT-","DC-","C-"];
+    const validItemTypes = ["A-","I-"];
     function contains(arr,search){
         let returnBool = false;
         arr.forEach(function(item) {
