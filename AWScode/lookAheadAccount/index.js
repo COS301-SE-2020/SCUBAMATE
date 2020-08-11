@@ -21,6 +21,8 @@ exports.handler = async (event, context) => {
         return returnBool;
     }
     
+ 
+    
     let statusCode;
     let responseBody;
     if(contains(validItemTypes, ItemType)){
@@ -74,15 +76,19 @@ exports.handler = async (event, context) => {
         try{
             const data = await documentClient.scan(params).promise();
             var tmp = [];
-            data.Items.forEach(function(item) {
-                if(ItemType.trim() ==="I"){
-                     tmp.push(item.FirstName+ " "+ item.LastName+" ("+item.Email+") -"+item.DiveCentre);
+            const numOfItems = 10;
+            
+            for(let i=0;i<numOfItems;i++){
+                if(data.Items[i]!=null){
+                    if(ItemType.trim() ==="I"){
+                        tmp.push(data.Items[i].FirstName+ " "+ data.Items[i].LastName+" ("+data.Items[i].Email+") -"+data.Items[i].DiveCentre);
+                    }
+                    else{
+                        tmp.push(data.Items[i].FirstName+ " "+ data.Items[i].LastName+" ("+data.Items[i].Email+")");
+                        
+                    }
                 }
-                else{
-                    tmp.push(item.FirstName+ " "+ item.LastName+" ("+item.Email+")");
-                    
-                }
-            });
+            }
             if(tmp.length == 0){
                 responseBody = "No Results Found For: "+ UserEntry;
                 statusCode = 404;
