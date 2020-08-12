@@ -93,7 +93,7 @@ exports.handler = async (event, context) => {
                 const dataC = await documentClient.scan(paramsCourses).promise();
                 if(dataC.length == 0 ){
                     responseBody = "No Courses Need to be Verified";
-                    statusCode =200;
+                    statusCode = 404;
                 }
                 else {
                     let tmp = [];
@@ -106,14 +106,15 @@ exports.handler = async (event, context) => {
                     });
                     if(tmp.length ==0){
                         responseBody = "No Courses Need to be Verified";
+                        statusCode =404;
                         
                     }
                     else{
                         let returnList = [];
                         returnList.push({UnverifiedCourses: tmp});
                         responseBody = returnList[0];
+                        statusCode =200;
                     }
-                    statusCode =200;
                 }
             
             }
