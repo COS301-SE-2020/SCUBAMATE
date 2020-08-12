@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 const AWS = require('aws-sdk');
 AWS.config.update({region: "af-south-1"});
 
@@ -6,7 +6,7 @@ exports.handler = async (event, context, callback) => {
     
     const body = JSON.parse(event.body);
     const AccessToken = body.AccessToken;
-    const AccountGuid = body.AccountGuid;
+    const Email = body.Email;
     const Name = body.Name;
 
     const GuidSize = 36;
@@ -73,18 +73,35 @@ exports.handler = async (event, context, callback) => {
             responseBody = "Account doesn't have correct privileges";
         }
         else{
-            /*First check to see if centre and account exists */        
-            const tparams = {
+            /*First check to see if account exists */
+            let AccountGuid = undef;
+            const eParams = {
                 TableName: "Scubamate",
-                Key: {
-                    "AccountGuid": AccountGuid
+                FilterExpression: "#em = :em",
+                ProjectionExpression: "AccountGuid",
+                ExpressionAttributeNames:{
+                    '#em' : 'Email'
+                },
+                ExpressionAttributeValues:{
+                    ':em' : Email
                 }
-            };
-            const accdata = await documentClient.get(tparams).promise();
-            if(typeof accdata.Item === 'undefined'){
+            };     
+            try{
+                const accdata = await documentClient.scan(eParams).promise();
+                if(typeof accdata.Items === 'undefined'){
+                    statusCode = 403;
+                    responseBody = "Account doesn't exist. " + Email;
+                }
+                else
+                {
+                    AccountGuid = accdata.Items[0].AccountGuid;
+                }
+            }catch(err){ 
                 statusCode = 403;
-                responseBody = "Account doesn't exist ";
-            }
+                responseBody = "Account doesn't exist. " + err;
+            }       
+
+            /*Now check to see if centre exists */  
             const ItemType = "DC-"+Name.toLowerCase();         
             const cparams = {
                 TableName: "DiveInfo",
@@ -115,7 +132,7 @@ exports.handler = async (event, context, callback) => {
                 try{
                     const d = await documentClient.update(typeParams).promise();
                 }catch(err){
-                    responseBody =  "Account doesn't exist " + err;
+                    responseBody =  "Account doesn't exist " + err ;
                     statusCode = 403;
                 }
             }
@@ -171,7 +188,7 @@ exports.handler = async (event, context, callback) => {
 /*
 {
     "AccessToken" : "d1d7391d-c035-28ab-0193-68a7d263d4be112edcec2f52db363e338c1969a2c4dad5f933433c4284638a18e8c1612a4e9b3d",
-    "AccountGuid" : "3105aa3a-f05e-74bd-8209-489b2ed744e8",
+    "Email" : "isobel.bosman@gmail.com",
     "Name" : "test dive centre"
 }
  */
