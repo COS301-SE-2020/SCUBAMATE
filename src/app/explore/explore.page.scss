@@ -198,14 +198,33 @@ table{
   color: $inputBackgroundColor;
   width: 100%;
   margin: auto;
-  margin-bottom: 20px;
   margin-top: 7%; 
   border-bottom: solid $inputBackgroundColor 0.5px;
   border-top: solid $inputBackgroundColor  0.5px;
   padding: 10px;
+  margin-bottom: 5px;
+  right: 0;
+  bottom: 0;
+}
+
+.ViewDiveCenterLink{
+  font-size:  15px ;
+  color: $lightBlue ;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 20px;
+  float: right;
 }
 
 .DiveCenterDescription{
   margin-bottom: 10px;
   overflow: hidden;
 }
+
+#loadMoreBtn{
+  width : 80%;
+  margin-top: 20px;
+  margin-bottom: 40px; 
+  margin: auto;
+}
+

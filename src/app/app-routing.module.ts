@@ -62,6 +62,10 @@ const routes: Routes = [
   {
     path: 'upgrade-instructor',
     loadChildren: () => import('./upgrade-instructor/upgrade-instructor.module').then( m => m.UpgradeInstructorPageModule)
+  },
+  {
+    path: 'dive-center-information',
+    loadChildren: () => import('./dive-center-information/dive-center-information.module').then( m => m.DiveCenterInformationPageModule)
   }
 
 

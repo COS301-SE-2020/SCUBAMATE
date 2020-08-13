@@ -37,11 +37,12 @@ export class ExplorePage implements OnInit {
                 Global Variables
   *********************************************/
   siteLst: DiveSite[] ;
-  centerLst: DiveCenter[] ;
+  centerLst: DiveCenter[] = new Array() ;
   showSites : boolean ;
   showCenters : boolean ;
-  showFeed  : boolean ;
+  showFeed  : boolean = true;
   showLoading : boolean;
+  showMoreCenters : boolean = true ;
   pubLst: Dive[] ; 
   loginLabel:string ;
 
@@ -63,6 +64,7 @@ export class ExplorePage implements OnInit {
     this.showFeed = true;
     this.showSites = false;
     this.showCenters = false;
+    this.centerLst = [];
 
     this.loginLabel ="Login";
     if(!localStorage.getItem("accessToken"))
@@ -133,17 +135,36 @@ export class ExplorePage implements OnInit {
   }
 
   displayDiveCenters(){
-    this.showLoading = true;
+    
 
     this.showFeed =  false;
     this.showSites = false;
     this.showCenters= true;
 
-    this._diveService.getExtendedDiveCenters("*", 1).subscribe(
+    this.loadCenters();
+  }
+
+  displayFeed(){
+    this.showFeed =  true;
+    this.showSites = false;
+    this.showCenters = false;
+  }
+
+  loadCenters(){
+    this.showLoading = true;
+
+
+
+    this._diveService.getExtendedDiveCenters("*", this.CentersPage).subscribe(
       data => {
-          console.log(data);
-          this.centerLst = data.ReturnedList ; 
-          //this.CentersPage++ ;
+
+            this.centerLst.push(...data.ReturnedList);
+          
+            console.log("Loading for Page " + this.CentersPage );
+            console.log("Current List");
+            console.log( this.centerLst);
+
+          this.CentersPage++ ;
 
 
           for(var y=0; y < this.centerLst.length ; y++ ){
@@ -153,14 +174,23 @@ export class ExplorePage implements OnInit {
           }
 
           this.showLoading = false;
+      }, err =>{
+        if(err.error){
+          this.showLoading = false;
+
+          if(err.error == "No Results Found For: *")
+          {
+            this.showMoreCenters = false;
+          }
+        }
       }
-    ); //end DiveType req
+    ); //end ExtendedDiveCenters req
+
   }
 
-  displayFeed(){
-    this.showFeed =  true;
-    this.showSites = false;
-    this.showCenters = false;
+  ViewMoreDiveCenter( DC : string){
+    localStorage.setItem("ViewDiveCenter", DC) ;
+    this.router.navigate(['dive-center-information']);
   }
 
 
