@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { diveService } from '../service/dive.service';
 import { accountService } from '../service/account.service';
 
 
@@ -51,7 +50,7 @@ export class HomePage implements OnInit {
 
   sendEmail(){
     this._accountService.sendValidationEmail("").subscribe( res =>{
-      console.log("In res");
+      console.log("Email sent successfully.");
       console.log(res);
     }) 
   }
