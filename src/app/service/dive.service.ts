@@ -206,4 +206,39 @@ export class diveService
 
     }
 
+    getUnverifiedCourses(): Observable<any>{
+
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+    
+      var PostData = {
+        "AccessToken" : localStorage.getItem("accessToken")
+      }
+
+      return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/getunverifiedcourses', PostData , options); 
+
+
+
+    }
+
+    VerifyCourse(PostData): Observable<any>{
+
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+    
+     
+
+      return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/confirmcourse', PostData , options); 
+
+
+
+    }
+
+
 }

@@ -27,6 +27,12 @@ export interface DiveType{
   diveType : string ;
 }
 
+export interface UnverifiedCourse{
+  DiveID : string ;
+  AccountGuid: string ;
+  Approved: boolean ;
+}
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
@@ -34,11 +40,15 @@ export interface DiveType{
 })
 export class ProfilePage implements OnInit {
 
+  /*********************************************
+                Global Variables
+  *********************************************/
   loginLabel:string ;
   AD ;//: AccountDetails ; 
   DiveTypeLst: []; 
   OptionalList : String[];
   EquipmentList : String[];
+  UnverifiedLst: UnverifiedCourse[] ;
  
   viewChecklist : Boolean = false ; 
   viewProfile : Boolean;
@@ -48,6 +58,8 @@ export class ProfilePage implements OnInit {
   accountType : string;
 
   showAccountVerifiedMessage : Boolean ; 
+
+  /********************************************/
 
   constructor( public alertController : AlertController , private router: Router, private _accountService: accountService,  private _diveService: diveService) {}
   
@@ -293,6 +305,26 @@ export class ProfilePage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  loadUnverifiedCourses(){
+    this.showLoading = true ;
+
+    this._diveService.getUnverifiedCourses().subscribe( res =>{
+
+      this.UnverifiedLst = res;
+      this.showLoading = false ;
+
+    }, err=>{
+
+      this.showLoading = false ;
+
+    });
+
+  }
+
+  confirmUnverifiedCourse( diveID : string){
+    
   }
 
 

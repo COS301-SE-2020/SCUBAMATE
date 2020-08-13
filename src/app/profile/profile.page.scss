@@ -306,3 +306,36 @@ table{
   }
   
 }
+
+
+#UnverifiedListsInfo{
+    
+
+  .UnverifiedListHead{
+    font-size:  20px ;
+    font-weight: bold;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    color: white;
+    border-bottom: solid white 0.5px;
+    border-top: solid white 0.5px;
+    margin-top:10px;
+    width:100%;
+    padding-left: 2%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  .UnverifiedListTableRow{
+    background-color: $inputBackgroundColor ;
+    color: white;
+    padding: 5px;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    cursor: pointer;
+  }
+
+  .UnverifiedListTableRow :hover{
+    color: $lightBlue;
+    font-weight: bold;
+  }
+
+}
