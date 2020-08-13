@@ -100,8 +100,23 @@ export class accountService
           "ItemType" : "A" ,
           "UserEntry" : entry
         } ;
-        console.log("Buddy Req");
-        console.log(body);
+
+
+       return this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/getUser/lookbuddy',body, options);
+    }
+
+    lookAheadInstructor(entry : String): Observable<any>{
+
+      const options = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+          })
+        };
+
+      var  body= {
+          "ItemType" : "I" ,
+          "UserEntry" : entry
+        } ;
 
        return this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/getUser/lookbuddy',body, options);
     }
