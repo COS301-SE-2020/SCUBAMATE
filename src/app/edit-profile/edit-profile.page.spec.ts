@@ -14,7 +14,7 @@ var validData = {
   public: false
 };
 
-describe('EditProfilePage', () => {
+fdescribe('EditProfilePage', () => {
   let component: EditProfilePage;
   let fixture: ComponentFixture<EditProfilePage>;
   let accService: accountService;
@@ -35,17 +35,17 @@ describe('EditProfilePage', () => {
     router = TestBed.get(Router);
   }));
 
-  it('Successfully Created Edit-Profile Page', () => {
+  fit('Successfully Created Edit-Profile Page', () => {
     expect(component).toBeTruthy();
   });
 
-  it('Testing Edit-Page Components', () => {
+  fit('Testing Edit-Page Components', () => {
     expect(component.AD).toBeUndefined();
     expect(component.loginLabel).toBeDefined();
     expect(component.showData).toBeFalse();
   });
 
-  it('Testing ngOnInit()', () => {
+  fit('Testing ngOnInit()', () => {
     component.ngOnInit();
     let accountSpy = spyOn(accService, 'getUser').and.callThrough();
     expect(accountSpy).toBeDefined();
@@ -54,19 +54,19 @@ describe('EditProfilePage', () => {
     expect(component.AD).toBeUndefined();
   });
 
-  it('Testing loginClick()', () => {
+  fit('Testing loginClick()', () => {
     let navigateSpy = spyOn(router, 'navigate');
     component.loginClick();
     expect(navigateSpy).toHaveBeenCalledWith(['login']);
   });
 
-  it('Testing onSubmit()', () => {
+  fit('Testing onSubmit()', () => {
     //component.onSubmit(validData.birthD, validData.firstN, validData.lName, validData.public, event);
     let accountSpy = spyOn(accService, 'editUser').and.callThrough();
     expect(accountSpy).toBeDefined();
   });
 
-  it('Testing Edit-Page Functionality', () => {
+  fit('Testing Edit-Page Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.loginClick).toBeTruthy();
     //expect(component.onSubmit).toBeTruthy();

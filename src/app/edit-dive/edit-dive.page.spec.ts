@@ -7,7 +7,7 @@ import { AppModule } from '../app.module';
 var accessToken = "";
 var diveID = "";
 
-fdescribe('EditDivePage', () => {
+describe('EditDivePage', () => {
   let component: EditDivePage;
   let fixture: ComponentFixture<EditDivePage>;
 
@@ -22,13 +22,13 @@ fdescribe('EditDivePage', () => {
     fixture.detectChanges();
   }));
 
-  fit('should create', () => {
+  it('should create', () => {
     localStorage.setItem("accessToken", accessToken);
     localStorage.setItem("DiveID", diveID);
     expect(component).toBeTruthy();
   });
 
-  fit('Testing Edit-Dive Component', () => {
+  it('Testing Edit-Dive Component', () => {
     expect(component.showLoading).toBeTrue();
     expect(component.showUser).toBeFalse();
     expect(component.DiveTypeLst).toBeUndefined();
@@ -40,7 +40,7 @@ fdescribe('EditDivePage', () => {
     expect(component.diveObj).toBeDefined();
   });
 
-  fit('Testing Edit-Dive Functionality', () => {
+  it('Testing Edit-Dive Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.ionViewWillEnter).toBeTruthy();
     expect(component.loginClick).toBeTruthy();
