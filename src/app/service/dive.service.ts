@@ -83,9 +83,7 @@ export class diveService
             })
           };
         
-          //https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/UpdatedModel/divelog
-          //https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveLogs/
-         return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveLogs/divelog', PostData , options); 
+         return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/divelog', PostData , options); 
 
 
     }

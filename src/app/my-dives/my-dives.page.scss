@@ -97,6 +97,98 @@ ion-button{
   width: 50px;
   height:50px;
   padding:0;
+  margin-top:0px !important;
+}
+
+
+.PopUpMessageDiv{
+  width: 80%;
+  margin: auto;
+  color: white;
+  text-align: center;
+  background-color: $inputBackgroundColor;
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top:7%;
+  min-height: 100px;
+
+  ion-icon{
+    float: right;
+  }
+
+  .PopUpMessageMsg{
+    margin-top:2%;
+    margin-bottom: 2%;
+  }
+
+  .PopUpMessageLink{
+    color: $red;
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+
+  .PopUpMessageLink:hover{
+    color: $orange;
+  }
+  
+
+}
+
+@mixin DivContainers{
+  background-color: rgba(38, 70, 83, 0.6);
+  margin: auto;
+  border-bottom: solid white 0.5px;
+  border-top: solid white 0.5px;
+  width:  70% ;
+  padding: 0;
+  margin-top: 30px;
+  padding: 0px;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.TableContainer{
+  @include DivContainers;
+}
+
+.PrivateDiveLogTable{
+
+
+  .PrivateDiveLogHead{
+    text-align: center;
+    background-color: $inputBackgroundColor ;
+    color: $orange ;
+    padding: 5px;
+    position: sticky;
+    top: 0;
+    font-family: 'Righteous';
+    display: swap ;
+    font-size: larger;
+
+    .TableHeadText{
+      padding-top: 15px;
+      font-size: x-large;
+    }
+    
+  }
+
+  .PrivateDiveLogRow{
+    background-color: $inputBackgroundColor ;
+    color: white;
+    padding: 5px;
+    font-size: large;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    cursor: pointer;
+    text-align: center;
+    
+  }
+
+  .PrivateDiveLogRow:hover{
+    background-color: $darkBlue;
+  }
 
 }
 
