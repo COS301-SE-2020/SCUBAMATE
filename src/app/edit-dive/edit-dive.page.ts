@@ -55,7 +55,7 @@ export class EditDivePage implements OnInit {
   DiveTypeLst: [];
   DiveSiteLst: [];
   BuddyLst:[];
-  loginLabel:string ;
+  loginLabel: String;
   CurrentDive: DiveLog ;
 
   //Form Groups
@@ -101,9 +101,6 @@ export class EditDivePage implements OnInit {
 
 
     this.getDiveInfo();
-
-    
-
   }
 
   ionViewWillEnter(){

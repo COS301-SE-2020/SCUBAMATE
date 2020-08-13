@@ -4,7 +4,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { EditDivePage } from './edit-dive.page';
 import { AppModule } from '../app.module';
 
-describe('EditDivePage', () => {
+var accessToken = "";
+var diveID = "";
+
+fdescribe('EditDivePage', () => {
   let component: EditDivePage;
   let fixture: ComponentFixture<EditDivePage>;
 
@@ -19,21 +22,25 @@ describe('EditDivePage', () => {
     fixture.detectChanges();
   }));
 
-  it('should create', () => {
+  fit('should create', () => {
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("DiveID", diveID);
     expect(component).toBeTruthy();
   });
 
-  it('Testing Edit-Dive Component', () => {
-    expect(component.showLoading).toBeFalsy();
+  fit('Testing Edit-Dive Component', () => {
+    expect(component.showLoading).toBeTrue();
     expect(component.showUser).toBeFalse();
-    expect(component.DiveTypeLst).toBeDefined();
-    expect(component.DiveSiteLst).toBeDefined();
-    expect(component.BuddyLst).toBeDefined();
+    expect(component.DiveTypeLst).toBeUndefined();
+    expect(component.DiveSiteLst).toBeUndefined();
+    expect(component.BuddyLst).toBeUndefined();
     expect(component.loginLabel).toBeDefined();
-    expect(component.CurrentDive).toBeDefined();
+    expect(component.CurrentDive).toBeUndefined();
+    expect(component.diveForm).toBeDefined();
+    expect(component.diveObj).toBeDefined();
   });
 
-  it('Testing Edit-Dive Functionality', () => {
+  fit('Testing Edit-Dive Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.ionViewWillEnter).toBeTruthy();
     expect(component.loginClick).toBeTruthy();
