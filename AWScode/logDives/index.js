@@ -9,7 +9,6 @@ exports.handler = async (event, context) => {
     const DiveID = body.DiveID;
     const AccessToken = body.AccessToken;
     const AirTemp = body.AirTemp;
-    const Approved = body.Approved;
     const BottomTemp = body.BottomTemp;
     const Buddy = body.Buddy;
     const DiveDate = body.DiveDate;
@@ -137,7 +136,7 @@ exports.handler = async (event, context) => {
                 DiveID : DiveID,
                 AccountGuid : guid,
                 AirTemp : AirTemp,
-                Approved: Approved, 
+                Approved: false, 
                 BottomTemp: BottomTemp,
                 Buddy: Buddy, 
                 DiveDate: DiveDate, 
@@ -152,7 +151,8 @@ exports.handler = async (event, context) => {
                 TimeStamp : now,
                 Visibility: Visibility,
                 Weather: Weather,
-                DivePublicStatus: DivePublicStatus
+                DivePublicStatus: DivePublicStatus,
+                DiveVerified: false
             }
         };
         try{
