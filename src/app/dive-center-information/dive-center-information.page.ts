@@ -8,6 +8,7 @@ export interface DC {
   Coords: string ;
   Courses: string[];
   LogoPhoto: string ;
+  Name: string ;
 }
 
 @Component({
@@ -24,10 +25,13 @@ export class DiveCenterInformationPage implements OnInit {
     latitude: number,
     longitude: number
   };
+
   loginLabel:string ;
+  currentDiveCenter: DC ;
 
   //Viewable Variables
   showLoading: Boolean;
+  showDiveCenter : Boolean ;
 
   /********************************************/
 
@@ -35,7 +39,10 @@ export class DiveCenterInformationPage implements OnInit {
 
   ngOnInit() {
     this.findCenterLocation();
+
+    this.showDiveCenter = false; 
     this.showLoading = true;
+
     this.loginLabel ="Login";
       if(!localStorage.getItem("accessToken"))
       {
@@ -44,7 +51,12 @@ export class DiveCenterInformationPage implements OnInit {
         this.loginLabel = "Log Out";
       }
 
-    
+    this._diveService.getSingleDiveCenter(localStorage.getItem("ViewDiveCenter")).subscribe( data=>{
+      this.currentDiveCenter = data;
+
+      this.showLoading = false;
+      this.showDiveCenter = true ;
+    });
 
   }
 
