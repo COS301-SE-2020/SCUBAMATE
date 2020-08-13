@@ -15,7 +15,6 @@ exports.handler = async (event, context, callback) => {
     const Instructors = body.Instructors;
     const DiveSites = body.DiveSites;
 
-    
     const GuidSize = 36;
     const guid = AccessToken.substring(0,GuidSize);
     
@@ -128,38 +127,45 @@ exports.handler = async (event, context, callback) => {
             /*Add new dive centre*/
             if(statusCode == undef)
             {
-                /* data:image/png;base64, is send at the front of ProfilePhoto thus find the first , */
-                const startContentType = LogoPhoto.indexOf(":")+1;
-                const endContentType = LogoPhoto.indexOf(";");
-                const contentType = LogoPhoto.substring(startContentType, endContentType);
-            
-                const startExt = contentType.indexOf("/")+1;
-                const extension = contentType.substring(startExt, contentType.length);
-            
-                const startIndex = LogoPhoto.indexOf(",")+1;
+                let logoLink;
+                if(typeof LogoPhoto == "undefined"){
+                    /* Default image if none given */
+                    logoLink ="https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/defaultlogo.png";
+                }
+                else{
+                     /* data:image/png;base64, is send at the front of ProfilePhoto thus find the first , */
+                    const startContentType = LogoPhoto.indexOf(":")+1;
+                    const endContentType = LogoPhoto.indexOf(";");
+                    const contentType = LogoPhoto.substring(startContentType, endContentType);
+                    
+                    const startExt = contentType.indexOf("/")+1;
+                    const extension = contentType.substring(startExt, contentType.length);
+                    
+                    const startIndex = LogoPhoto.indexOf(",")+1;
+                    
+                    const encodedImage = LogoPhoto.substring(startIndex, LogoPhoto.length);
+                    const decodedImage = Buffer.from(encodedImage.replace(/^data:image\/\w+;base64,/, ""),'base64');
+                  
+                    const filePath = "logophoto" + Name.toLowerCase().trim() + "."+extension;
+                    
+                    logoLink = "https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/"+filePath;
                 
-                const encodedImage = LogoPhoto.substring(startIndex, LogoPhoto.length);
-                const decodedImage = Buffer.from(encodedImage.replace(/^data:image\/\w+;base64,/, ""),'base64');
-          
-                const filePath = "logophoto" + Name + "."+extension;
-            
-                let logoLink ="https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/"+filePath;
-        
-                const paramsImage = {
-                  "Body": decodedImage,
-                  "Bucket": "imagedatabase-scubamate",
-                  "Key": filePath,
-                  "ContentEncoding": 'base64',
-                  "ContentType" : contentType
-                };
-            
-                const s3 = new AWS.S3({apiVersion: '2006-03-01'});
-                s3.putObject(paramsImage, function(err, data){
-                    if(err) {
-                        /* Default image if image upload fails */
-                        logoLink ="https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/defaultlogo.png";
-                    }
-               });
+                    const paramsImage = {
+                      "Body": decodedImage,
+                      "Bucket": "imagedatabase-scubamate",
+                      "Key": filePath,
+                      "ContentEncoding": 'base64',
+                      "ContentType" : contentType
+                    };
+                    
+                    const s3 = new AWS.S3({apiVersion: '2006-03-01'});
+                    s3.putObject(paramsImage, function(err, data){
+                        if(err) {
+                            /* Default image if image upload fails */
+                            logoLink ="https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/defaultlogo.png";
+                        }
+                    });
+                }
             
                 const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
                 const ItemType = "DC-"+Name.toLowerCase();
