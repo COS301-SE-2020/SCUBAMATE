@@ -41,7 +41,7 @@ exports.handler = async (event, context) => {
         
         const params = {
             TableName: 'DiveInfo',
-            ProjectionExpression: "#name, Description, Coords, LogoPhoto, Courses, Instructors, DiveSites", 
+            ProjectionExpression: "#name, Description, LogoPhoto", 
             FilterExpression: filter,
             ExpressionAttributeNames: {
                 '#itemT': 'ItemType',
@@ -55,8 +55,8 @@ exports.handler = async (event, context) => {
             const data = await documentClient.scan(params).promise();
             let tmp = [];
             
-            const numOfItems = 10;
-            /*Show next ten items for current page */
+            const numOfItems = 9;
+            /*Show next n items for current page */
             for(let i=(PageNum-1);i<numOfItems;i++){
                 if(data.Items[i]!=null){
                     if(typeof data.Items[i].LogoPhoto == "undefined"){
