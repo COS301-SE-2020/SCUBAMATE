@@ -59,6 +59,28 @@ exports.handler = async (event, context) => {
             /*Show next ten items for current page */
             for(let i=(PageNum-1);i<numOfItems;i++){
                 if(data.Items[i]!=null){
+                    if(typeof data.Items[i].LogoPhoto == "undefined"){
+                        data.Items[i].LogoPhoto = "https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/defaultlogo.png";
+                    }
+                    
+                    const startIndex = (data.Items[i].LogoPhoto).lastIndexOf("/")+1;
+                    let filePath = (data.Items[i].LogoPhoto).substring(startIndex, (data.Items[i].LogoPhoto).length);
+                    
+                    let paramsImg = {"Bucket": "imagedatabase-scubamate", "Key": filePath };
+                    
+                    const s3 = new AWS.S3({httpOptions: { timeout: 2000 }});
+                    try{
+                        const binaryFile = await s3.getObject(paramsImg).promise();
+                        const startIndexContentType = (data.Items[i].LogoPhoto).lastIndexOf(".")+1;
+                        const contentType = data.Items[i].LogoPhoto.substring(startIndexContentType, data.Items[i].LogoPhoto.length);
+                        let base64Image = "data:image/"+contentType+";base64," +binaryFile.Body.toString('base64'); 
+                        
+                        data.Items[i].LogoPhoto = base64Image
+                    }
+                    catch(err){
+                        data.Items[i].LogoPhoto = "N/A";
+                    }
+                    
                     tmp.push(data.Items[i]);
                 }
             }
