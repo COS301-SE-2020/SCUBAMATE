@@ -83,7 +83,7 @@ exports.handler = async (event, context, callback) => {
             const encodedImage = LogoPhoto.substring(startIndex, LogoPhoto.length);
             const decodedImage = Buffer.from(encodedImage.replace(/^data:image\/\w+;base64,/, ""),'base64');
           
-            const filePath = "logophoto" + Name + "."+extension;
+            const filePath = "logophoto" + Name.toLowerCase().trim() + "."+extension;
             
             let logoLink ="https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/"+filePath;
         
