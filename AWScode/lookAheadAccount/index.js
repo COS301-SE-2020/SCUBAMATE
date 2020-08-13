@@ -20,9 +20,6 @@ exports.handler = async (event, context) => {
         });
         return returnBool;
     }
-    
- 
-    
     let statusCode;
     let responseBody;
     if(contains(validItemTypes, ItemType)){
@@ -47,7 +44,7 @@ exports.handler = async (event, context) => {
             ':ln': UserEntry,
             ':public': true,
         };
-        if(ItemType.trim() ==="I"){
+        if(ItemType.trim() ==="I-"){
             const Instructor = "Instructor";
             filter = '#accT = :accT AND #public = :public AND (contains(#em , :em) OR contains(#fn , :fn) OR contains(#ln , :ln))';
             exp = {
@@ -80,8 +77,8 @@ exports.handler = async (event, context) => {
             
             for(let i=0;i<numOfItems;i++){
                 if(data.Items[i]!=null){
-                    if(ItemType.trim() ==="I"){
-                        tmp.push(data.Items[i].FirstName+ " "+ data.Items[i].LastName+" ("+data.Items[i].Email+") -"+data.Items[i].DiveCentre);
+                    if(ItemType.trim() ==="I-"){
+                        tmp.push(data.Items[i].FirstName+ " "+ data.Items[i].LastName+" ("+data.Items[i].Email+") - "+data.Items[i].DiveCentre);
                     }
                     else{
                         tmp.push(data.Items[i].FirstName+ " "+ data.Items[i].LastName+" ("+data.Items[i].Email+")");
