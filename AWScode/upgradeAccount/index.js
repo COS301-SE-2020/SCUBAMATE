@@ -11,7 +11,6 @@ exports.handler = async (event, context, callback) => {
     const AccessToken = body.AccessToken;
     const GuidSize = 36;
     const AccountGuid = AccessToken.substring(0,GuidSize);
-    
     function compareDates(t,e){
         let returnBool;
         if(t.getFullYear()!=e.getFullYear()){
@@ -77,11 +76,10 @@ exports.handler = async (event, context, callback) => {
         }
         else if(data.Item.CompletedCourses.length==0){
             statusCode = 403;
-            responseBody = "Account Email Not Verified - Can't Upgrade Until Email Is Verified";
+            responseBody = "Account Doesn't Have Courses - Cannot Upgrade";
         }
         else{
             /* Check Qualification */
-            
             const paramsCourse = {
                 TableName: "DiveInfo",
                 FilterExpression: 'begins_with(#itemT , :itemT) AND  #qualT = :qualT',
@@ -95,7 +93,7 @@ exports.handler = async (event, context, callback) => {
                 }
             };
             try{
-                const dataQ = await documentClient.get(paramsCourse).promise();
+                const dataQ = await documentClient.scan(paramsCourse).promise();
                 let qualified = false;
                 data.Item.CompletedCourses.forEach(function(item) {
                     /*For each completed course
@@ -136,7 +134,7 @@ exports.handler = async (event, context, callback) => {
                 }
     
             }catch(err){
-                responseBody = "Unable to check qualification verified "+err;
+                responseBody = "Unable to check qualification verified : "+err;
                 statusCode = 403;
             } 
             
