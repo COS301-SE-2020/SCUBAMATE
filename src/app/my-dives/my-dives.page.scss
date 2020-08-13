@@ -179,8 +179,15 @@ ion-button{
     background-color: $inputBackgroundColor ;
     color: white;
     padding: 5px;
+    font-size: large;
     font-family: 'Barlow Semi Condensed', sans-serif;
     cursor: pointer;
+    text-align: center;
+    
+  }
+
+  .PrivateDiveLogRow:hover{
+    background-color: $darkBlue;
   }
 
 }

@@ -24,26 +24,6 @@
 
 <ion-content fullscreen class="background" no-scroll padding >
   
-  <table style="margin:auto;"  >
-    <tr>
-      <th> Dive Date </th>
-      <th> Dive Site </th>
-      <th> TimeIn </th>
-      <th> Buddy </th>
-      <th>
-        <ion-button id="addBtn" routerLink="/log-dive" style="margin-right:15px;  margin-top: 10px;" >
-          <ion-icon name="add"></ion-icon>
-        </ion-button>
-      </th>
-    </tr>
-    <tr *ngFor='let d of diveLst' > 
-      <td> {{d.DiveDate}}  </td>
-      <td> {{d.DiveSite}} </td>
-      <td> {{d.TimeIn}}  </td>
-      <td> {{d.Buddy}} </td>
-      <td> <ion-button color="dark" id="editBtn" (click)="goToEdit(d.DiveID)" ><ion-icon name="pencil-outline"></ion-icon></ion-button></td>
-    </tr>
-</table>
 
 <div class="TableContainer">
   <ion-grid class="PrivateDiveLogTable">
@@ -63,17 +43,17 @@
         </ion-button>
       </ion-col>
     </ion-row>
-    <ion-row class="PrivateDiveLogRows" *ngFor='let d of diveLst'>
-      <ion-col size="4" size-md="3" size-lg="3">
+    <ion-row class="PrivateDiveLogRow" *ngFor='let d of diveLst'>
+      <ion-col size="3" size-md="3" size-lg="3">
         {{d.DiveDate}}
       </ion-col>
-      <ion-col size="4" size-md="3" size-lg="3">
+      <ion-col size="3" size-md="3" size-lg="3">
         {{d.DiveSite}}
       </ion-col>
-      <ion-col size="4" size-md="3" size-lg="3">
+      <ion-col size="3" size-md="3" size-lg="3">
         {{d.TimeIn}}
       </ion-col>
-      <ion-col size="4" size-md="3" size-lg="3">
+      <ion-col size="3" size-md="3" size-lg="3">
         <ion-button color="dark" id="editBtn" (click)="goToEdit(d.DiveID)" >
           <ion-icon name="pencil-outline"></ion-icon>
         </ion-button>
