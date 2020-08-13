@@ -73,7 +73,24 @@ export class diveService
           "UserEntry" : entry
         } ;
         return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveTypesAndSitesAdded/divelist',body, options);
-      }
+    }
+
+    getExtendedDiveCenters(entry : String, pageNumber: number): Observable<any>{
+
+          const options = {
+              headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+              })
+            };
+
+          var  body= {
+              "ItemType" : "DC"  ,
+              "UserEntry" : entry ,
+              "PageNum" : pageNumber
+            } ;
+
+        return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/getdivecentres',body, options);
+    }
 
     logDive(PostData): Observable<any>{
       	console.log("in req");
