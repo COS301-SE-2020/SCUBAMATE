@@ -20,7 +20,10 @@ export interface DiveSite{
 }
 
 export interface DiveCenter{
-  diveCenter : string ;
+  Name : string ;
+  Description: string ;
+  Coords: string;
+  LogoPhoto: string ;
 }
 
 @Component({
@@ -30,7 +33,9 @@ export interface DiveCenter{
 })
 export class ExplorePage implements OnInit {
 
-  //variables
+  /*********************************************
+                Global Variables
+  *********************************************/
   siteLst: DiveSite[] ;
   centerLst: DiveCenter[] ;
   showSites : boolean ;
@@ -39,6 +44,14 @@ export class ExplorePage implements OnInit {
   showLoading : boolean;
   pubLst: Dive[] ; 
   loginLabel:string ;
+
+  //Page Indicators
+  CentersPage : number = 1;
+  SitesPage: number = 1 ;
+  FeedPage : number = 1; 
+
+
+  /*********************************************/
 
   
   constructor(private router: Router, private _diveService: diveService) { }
@@ -121,14 +134,24 @@ export class ExplorePage implements OnInit {
 
   displayDiveCenters(){
     this.showLoading = true;
+
     this.showFeed =  false;
     this.showSites = false;
     this.showCenters= true;
 
-    this._diveService.getDiveCenters("*").subscribe(
+    this._diveService.getExtendedDiveCenters("*", 1).subscribe(
       data => {
           console.log(data);
           this.centerLst = data.ReturnedList ; 
+          //this.CentersPage++ ;
+
+
+          for(var y=0; y < this.centerLst.length ; y++ ){
+            if( this.centerLst[y].Description.length > 300  ){
+              this.centerLst[y].Description = this.centerLst[y].Description.substr(0, 300) + " ...";
+            }
+          }
+
           this.showLoading = false;
       }
     ); //end DiveType req

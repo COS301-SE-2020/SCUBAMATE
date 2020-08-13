@@ -107,26 +107,61 @@
 </ion-grid>
 
 
-
 <!--
-<div id="classContainer" style="margin-right:5%;margin-left:30%;margin-top:20px;" *ngIf='showFeed'>
-  <ion-item *ngFor="let d of pubLst" style="width:45%; margin: auto;margin-left:1%;display: inline-block;" >
-    <ion-card  >
-      <img src="../../assets/images/jellyfish.jpg" />
-        <ion-card-content>
-        <ion-card-title>
-            {{d.FirstName}} {{d.LastName}}
-          </ion-card-title>
-        <p>
-          {{d.DiveSite}} <br>
-          {{d.DiveType}} <br>
-          {{d.DiveDate}}
-        </p>
-      </ion-card-content>
-    </ion-card>
-  </ion-item>
+
+<div class="tableContainer"  *ngIf='showCenters'>
+  <table id="feed"  >
+    <tr>
+      <th> Dive Centers </th>
+    </tr>
+    <tr *ngFor='let d of centerLst'> 
+      <td> {{d}} </td>
+    </tr>
+</table>
 </div>
+
 -->
+
+<ion-grid class="contentContainer" *ngIf='showCenters'>
+  <ion-row>
+    <ion-col *ngFor="let dc of centerLst" style="margin:0;" >
+      <div class="thecard" >
+        <div class="thefront">
+          <ion-card  >
+            <img class="cardFeedIMG" src={{dc.LogoPhoto}} />
+              <ion-card-content>
+              <ion-card-title>
+                 <label class="DiveCenterName"> {{dc.Name}} </label> 
+              </ion-card-title>
+
+            </ion-card-content>
+          </ion-card>
+        </div>
+        <div class="theback">
+          <ion-card >
+              <ion-card-content >
+              
+               
+                <ion-item-divider style="--background:rgba(38, 70, 83, 0.5);" >
+                  <ion-card-title >
+                    {{dc.Name}}
+                  </ion-card-title>
+                </ion-item-divider>
+                <ion-item-divider >
+                   <b class="WeatherDescriptionCard">{{dc.Coords}} </b> 
+                </ion-item-divider>
+                <div style="padding-left: 20px;" class="DiveCenterDescription">
+                  {{dc.Description}} 
+                </div>
+              
+            </ion-card-content>
+          </ion-card>
+        </div>
+      </div>
+    </ion-col>
+</ion-row>
+</ion-grid>
+
 
 
 
@@ -141,15 +176,6 @@
 </table>
 </div>
 
-<div class="tableContainer"  *ngIf='showCenters'>
-  <table id="feed"  >
-    <tr>
-      <th> Dive Centers </th>
-    </tr>
-    <tr *ngFor='let d of centerLst'> 
-      <td> {{d}} </td>
-    </tr>
-</table>
-</div>
+
 
 </ion-content>
