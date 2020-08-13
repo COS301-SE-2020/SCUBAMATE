@@ -1,9 +1,27 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>diveCenterInformation</ion-title>
-  </ion-toolbar>
-</ion-header>
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@100&family=Righteous&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
 
-<ion-content>
+</head>
+
+<ion-header no-border slot="fixed">
+ 
+</ion-header>
+<ion-toolbar class="productHeader" transparent slot="fixed">
+  <ul>
+    <li style="float:right;"><a routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >{{loginLabel}}</a></li>
+    <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo">  
+    <li style="float:left;margin-left:20px;"><a routerLink="/home" >Home</a></li>  
+      <li style="float:left;"><a routerLink="/explore">Explore</a></li>  
+      <li style="float:left;"><a routerLink="/weather">Weather</a></li> 
+      <li style="float:left;"><a routerLink="/my-dives">My Dives</a></li>
+      <li style="float:left;"><a routerLink="/profile">My Account</a></li> 
+      <ion-progress-bar type="indeterminate" *ngIf="showLoading"></ion-progress-bar>   
+  </ul>
+</ion-toolbar>
+
+<ion-content fullscreen class="background" no-scroll padding >
+ 
 
 </ion-content>

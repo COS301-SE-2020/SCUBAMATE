@@ -91,6 +91,23 @@ export class diveService
 
         return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/getdivecentres',body, options);
     }
+    
+    getSingleDiveCenter(name : String): Observable<any>{
+
+      const options = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+          })
+        };
+
+      var  body= {
+          "ItemType" : "DC"  ,
+          "Name" : name ,
+        } ;
+
+    return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/getsingledivecentreorsite',body, options);
+}
+
 
     logDive(PostData): Observable<any>{
       	console.log("in req");
