@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ExplorePage } from './explore.page';
 import { AppModule } from '../app.module';
 
-xdescribe('ExplorePage', () => {
+describe('ExplorePage', () => {
   let component: ExplorePage;
   let fixture: ComponentFixture<ExplorePage>;
   let responseCode = 200;
@@ -20,11 +20,11 @@ xdescribe('ExplorePage', () => {
     fixture.detectChanges();
   }));
 
-  xit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  xit('Testing Explore Components', () => {
+  it('Testing Explore Components', () => {
     //expect(component.siteLst).toBeDefined();
     //expect(component.centerLst).toBeDefined();
     expect(component.showSites).toBeFalse();
@@ -35,7 +35,7 @@ xdescribe('ExplorePage', () => {
     expect(component.loginLabel).toBeDefined();
   });
 
-  xit('Testing Explore Functionlity', () => {
+  it('Testing Explore Functionlity', () => {
     //expect(component.ngOnInit).toBeDefined();
     //expect(component.ionViewWillEnter).toBeDefined();
     expect(component.loginClick).toBeDefined();

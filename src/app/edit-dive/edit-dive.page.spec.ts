@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { EditDivePage } from './edit-dive.page';
 import { AppModule } from '../app.module';
 
-xdescribe('EditDivePage', () => {
+describe('EditDivePage', () => {
   let component: EditDivePage;
   let fixture: ComponentFixture<EditDivePage>;
 
@@ -19,11 +19,11 @@ xdescribe('EditDivePage', () => {
     fixture.detectChanges();
   }));
 
-  xit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  xit('Testing Edit-Dive Component', () => {
+  it('Testing Edit-Dive Component', () => {
     expect(component.showLoading).toBeFalsy();
     expect(component.showUser).toBeFalse();
     expect(component.DiveTypeLst).toBeDefined();
@@ -33,7 +33,7 @@ xdescribe('EditDivePage', () => {
     expect(component.CurrentDive).toBeDefined();
   });
 
-  xit('Testing Edit-Dive Functionality', () => {
+  it('Testing Edit-Dive Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.ionViewWillEnter).toBeTruthy();
     expect(component.loginClick).toBeTruthy();
