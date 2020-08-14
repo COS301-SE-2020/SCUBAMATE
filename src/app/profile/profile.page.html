@@ -124,16 +124,35 @@
 
         <ion-grid id="UnverifiedListsInfo">
           <ion-row class="UnverifiedListHead">
-            <ion-col size="12">Diver</ion-col>
-          </ion-row>
-          <ion-row *ngFor='let u of UnverifiedLst' class="UnverifiedListTableRow"> 
-            <ion-col size="8" ></ion-col>
+            <ion-col size="8">Dive Log Details</ion-col>
             <ion-col size="4">
-              <ion-button>
-                <ion-icon name="checkmark-outline"></ion-icon>
+              <ion-button (click)="toggleUnverified()">
+                <ion-icon name="caret-down" *ngIf='!viewUnverified' color="dark"></ion-icon>
+                <ion-icon name="caret-up" *ngIf='viewUnverified' color="dark"></ion-icon>
               </ion-button>
             </ion-col>
           </ion-row>
+          <div *ngIf="viewUnverified">
+            <div *ngIf="UnverifiedLst == undefined ">
+              <ion-row class="UnverifiedListTableRow">
+                <ion-col size="12">
+                  No Courses to Verify
+                </ion-col>
+              </ion-row>
+            </div>
+            <div *ngIf="UnverifiedLst.length != undefined">
+              <ion-row *ngFor='let u of UnverifiedLst' class="UnverifiedListTableRow"> 
+                <ion-col size="3" >{{u.DiveDate}}</ion-col>
+                <ion-col size="3" >{{u.TimeIn}} - {{u.TimeOut}}</ion-col>
+                <ion-col size="3" >{{u.DiveSite}}</ion-col>
+                <ion-col size="3">
+                  <ion-button (click)="confirmUnverifiedCourse(u.DiveID , u.AccountGuid)">
+                    <ion-icon name="checkmark-outline"></ion-icon>
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
         </ion-grid>
     </div>
   </div>

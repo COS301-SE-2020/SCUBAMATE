@@ -28,9 +28,12 @@ export interface DiveType{
 }
 
 export interface UnverifiedCourse{
-  DiveID : string ;
   AccountGuid: string ;
-  Approved: boolean ;
+  TimeIn : string;
+  TimeOut: string ;
+  DiveSite : string ;
+  DiveDate : string ;
+  DiveID : string ;
 }
 
 @Component({
@@ -56,6 +59,7 @@ export class ProfilePage implements OnInit {
   showLoading: Boolean;
   showAD : Boolean = false  ;
   accountType : string;
+  viewUnverified : Boolean = false; 
 
   showAccountVerifiedMessage : Boolean ; 
 
@@ -108,6 +112,11 @@ export class ProfilePage implements OnInit {
             this.accountType = "SuperAdmin"
           }else{
             this.accountType = "*Diver"
+          }
+
+
+          if( this.accountType == "Instructor"){
+            this.loadUnverifiedCourses();
           }
           
         });
@@ -312,20 +321,50 @@ export class ProfilePage implements OnInit {
 
     this._diveService.getUnverifiedCourses().subscribe( res =>{
 
-      this.UnverifiedLst = res;
+      this.UnverifiedLst = res.UnverifiedCourses;
+      this.viewUnverified = true ; 
       this.showLoading = false ;
 
     }, err=>{
-
+      this.viewUnverified = false ; 
       this.showLoading = false ;
 
     });
 
   }
 
-  confirmUnverifiedCourse( diveID : string){
-    
+  confirmUnverifiedCourse( diveID : string, accGUID : string ){
+
+    var confirm ={
+      "AccessToken" : localStorage.getItem("accessToken") ,
+      "DiveID" : diveID,
+      "AccountGuid" : accGUID,
+      "Approved" : true 
+    };
+
+    this.showLoading = true;
+    this._diveService.VerifyCourse(confirm).subscribe(res =>{
+      this.showLoading = false ;
+
+     for(var x = 0; x < this.UnverifiedLst.length ; x++){
+       if(this.UnverifiedLst[x].DiveID == diveID){
+          this.UnverifiedLst.splice(x, 1);
+          break;
+       }
+     }
+
+
+    }, err=>{
+
+      this.showLoading = false ;
+      alert("Unable to verify dive");
+
+    });
+
   }
 
+  toggleUnverified(){
+    this.viewUnverified = !this.viewUnverified ;
+  }
 
 }

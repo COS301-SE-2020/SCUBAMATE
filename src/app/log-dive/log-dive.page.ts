@@ -393,6 +393,7 @@ export class LogDivePage implements OnInit {
 
     //link Instructor Array
     this.diveObj.InstructorLink = this.instructorUserInput ; 
+    this.diveObj.isCourse = this.showCourseInput ;
 
     console.log(this.diveObj);
 
