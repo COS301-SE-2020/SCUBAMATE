@@ -95,74 +95,76 @@ exports.handler = async (event, context, callback) => {
                 else
                 {
                     AccountGuid = accdata.Items[0].AccountGuid;
+                    
+                    /*Now check to see if centre exists */  
+                    const ItemType = "DC-"+Name.toLowerCase();         
+                    const cparams = {
+                        TableName: "DiveInfo",
+                        Key: {
+                            "ItemType": ItemType                    
+                            
+                        }
+                    };
+                    const cendata = await documentClient.get(cparams).promise();
+                    if(typeof cendata.Item === 'undefined'){
+                        statusCode = 403;
+                        responseBody = "Dive Centre doesn't exist ";
+                    }
+                    else{
+                        /*Upgrade dive centre account to admin*/
+                        
+                        /*Update AccessToken Here */
+                        const typeParams = {
+                            TableName: "Scubamate",
+                            Key:{
+                                "AccountGuid": AccountGuid
+                            },
+                            UpdateExpression: "set AccountType = :type, DiveCentre = :dc AND AccountVerified = :av",
+                            // ConditionExpression: "AccountType != 'SuperAdmin' ",
+                            ExpressionAttributeValues:{
+                                ":type": "Admin",
+                                ":dc" : Name,
+                                ":av" : true
+                            },
+                            ReturnValues:"UPDATED_NEW"
+                        };
+                        
+                        try{
+                            const d = await documentClient.update(typeParams).promise();
+                            /*Update the dive centre*/
+                            const centreParams = {
+                                TableName: "DiveInfo",
+                                Key:{
+                                    "ItemType": ItemType
+                                },
+                                UpdateExpression: "set AccountGuid = :guid ",
+                                // ConditionExpression: "AccountType != 'SuperAdmin' ",
+                                ExpressionAttributeValues:{
+                                    ":guid": AccountGuid
+                                },
+                                ReturnValues:"UPDATED_NEW"
+                            };
+                        
+                            try{
+                                const data = await documentClient.update(centreParams).promise();
+                                responseBody = "Dive Centre successfully updated!";
+                                statusCode = 200;
+                            }catch(err){
+                                responseBody = "Dive Centre doesn't exist " + err;
+                                statusCode = 403;
+                            }
+                            
+                            
+                        }catch(err){
+                            responseBody =  "Account doesn't exist " + err ;
+                            statusCode = 403;
+                        }
+                    }
                 }
             }catch(err){ 
                 statusCode = 403;
                 responseBody = "Account doesn't exist. " + err;
-            }       
-
-            /*Now check to see if centre exists */  
-            const ItemType = "DC-"+Name.toLowerCase();         
-            const cparams = {
-                TableName: "DiveInfo",
-                Key: {
-                    "ItemType": ItemType                    }
-                };
-            const cendata = await documentClient.get(cparams).promise();
-            if(typeof cendata.Item === 'undefined'){
-                statusCode = 403;
-                responseBody = "Dive Centre doesn't exist ";
-            }
-            
-            /*Upgrade dive centre account to admin*/
-            if(statusCode === undef){
-                const typeParams = {
-                    TableName: "Scubamate",
-                    Key:{
-                        "AccountGuid": AccountGuid
-                    },
-                    UpdateExpression: "set AccountType = :type ",
-                    // ConditionExpression: "AccountType != 'SuperAdmin' ",
-                    ExpressionAttributeValues:{
-                        ":type": "Admin"
-                    },
-                    ReturnValues:"UPDATED_NEW"
-                };
-                
-                try{
-                    const d = await documentClient.update(typeParams).promise();
-                }catch(err){
-                    responseBody =  "Account doesn't exist " + err ;
-                    statusCode = 403;
-                }
-            }
-
-            /*Update the dive centre*/
-            if(statusCode === undef)
-            {
-                const centreParams = {
-                    TableName: "DiveInfo",
-                    Key:{
-                        "ItemType": ItemType
-                    },
-                    UpdateExpression: "set AccountGuid = :guid ",
-                    // ConditionExpression: "AccountType != 'SuperAdmin' ",
-                    ExpressionAttributeValues:{
-                        ":guid": AccountGuid
-                    },
-                    ReturnValues:"UPDATED_NEW"
-                };
-            
-                try{
-                    const data = await documentClient.update(centreParams).promise();
-                    responseBody = "Dive Centre successfully updated!";
-                    statusCode = 200;
-                }catch(err){
-                    responseBody = "Dive Centre doesn't exist " + err;
-                    statusCode = 403;
-                }
-            }
-            
+            }  
         }           
     } catch (err) {
         statusCode = 403;
