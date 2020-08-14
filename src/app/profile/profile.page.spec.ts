@@ -12,6 +12,8 @@ var validData = {
   diveT: "Reef Dive"
 };
 
+var validEmail = "u17201627@tuks.co.za";
+
 describe('ProfilePage', () => {
   let component: ProfilePage;
   let fixture: ComponentFixture<ProfilePage>;
@@ -50,13 +52,15 @@ describe('ProfilePage', () => {
     expect(component.editProfile).toBeDefined();
     expect(component.showLoading).toBeDefined();
     expect(component.showAD).toBeFalse();
+    expect(component.accountType).toBeUndefined();
+    expect(component.showAccountVerifiedMessage).toBeUndefined();
   });
 
   it('Testing ngOnInit()', () => {
     component.ngOnInit();
     expect(component.viewProfile).toBeTrue();
     expect(component.editProfile).toBeFalse();
-    expect(component.loginLabel).toBe("Login");
+    expect(component.loginLabel).toBe("Log Out");
     let accountSpy = spyOn(accService, 'getUser').and.callThrough();
     expect(accountSpy).toBeDefined();
     let diveSpy = spyOn(divService, 'getDiveTypes').and.callThrough();
@@ -65,13 +69,15 @@ describe('ProfilePage', () => {
     expect(component.showAD).toBeFalse();
     expect(component.AD).toBeUndefined();
     expect(component.DiveTypeLst).toBeUndefined();
+    expect(component.accountType).toBeUndefined();
+    expect(component.showAccountVerifiedMessage).toBeUndefined();
   });
   
   it('Testing ionViewWillEnter()', () => {
     component.ionViewWillEnter();
     expect(component.viewProfile).toBeTrue();
     expect(component.editProfile).toBeFalse();
-    expect(component.loginLabel).toBe("Login");
+    expect(component.loginLabel).toBe("Log Out");
     let accountSpy = spyOn(accService, 'getUser').and.callThrough();
     expect(accountSpy).toBeDefined();
     let diveSpy = spyOn(divService, 'getDiveTypes').and.callThrough();
@@ -84,17 +90,7 @@ describe('ProfilePage', () => {
   it('Testing loginClick()', () => {
     let navigateSpy = spyOn(router, 'navigate');
     component.loginClick();
-    expect(navigateSpy).toHaveBeenCalledWith(['login']);
-  });
-
-  it('Testing onChooseDive()', () => {
-    //component.onChooseDive(validData.diveT, event);
-    let diveSpy = spyOn(divService, 'getCheckList').and.callThrough();
-    expect(diveSpy).toBeDefined();
-    expect(component.showLoading).toBeTrue();
-    expect(component.viewChecklist).toBeFalse();
-    expect(component.OptionalList).toBeUndefined();
-    expect(component.EquipmentList).toBeUndefined();
+    expect(navigateSpy).toHaveBeenCalledWith(['home']);
   });
 
   it('Testing goToEdit()', () => {
@@ -103,11 +99,27 @@ describe('ProfilePage', () => {
     expect(navigateSpy).toHaveBeenCalledWith(['/edit-profile']);
   });
 
+  it('Testing sendEmail()', () => {
+    component.setEmail(validEmail);
+    component.sendEmail();
+    expect(component.showLoading).toBeTrue();
+    let accountSpy = spyOn(accService, 'sendValidationEmail').and.callThrough();
+    expect(accountSpy).toBeDefined();
+    expect(component.presentOTPPrompt).toHaveBeenCalled();
+  });
+
+  it('Testing sendVerifiedEmail()', () => {
+    component.setEmail(validEmail);
+    component.sendVerifiedEmail();
+    expect(component.showLoading).toBeTrue();
+    let accountSpy = spyOn(accService, 'confirmEmailValidation').and.callThrough();
+    expect(accountSpy).toBeDefined();
+  });
+
   it('Testing Profile Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.ionViewWillEnter).toBeTruthy();
     expect(component.loginClick).toBeTruthy();
-    //expect(component.onChooseDive).toBeTruthy();
     expect(component.goToEdit).toBeTruthy();
   });
 });
