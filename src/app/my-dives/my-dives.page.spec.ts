@@ -37,37 +37,41 @@ describe('MyDivesPage', () => {
   });
 
   it('Testing My-Dives Components', () => {
-    expect(component.diveLst).toBeDefined();
-    expect(component.loginLabel).toBeInstanceOf(String);
-    expect(component.showLoading).toBeInstanceOf(Boolean);
+    expect(component.diveLst).toBeUndefined();
+    expect(component.loginLabel).toBeDefined();
+    expect(component.showLoading).toBeTrue();
   });
 
   it('Testing ngOnInit()', () => {
     component.ngOnInit();
-    expect(component.loginLabel).toBe("Login");
+    expect(component.showLoading).toBeTrue();
+    expect(component.loginLabel).toBe("Log Out");
     let diveSpy = spyOn(divService, 'getPrivateDive').and.callThrough();
     expect(diveSpy).toBeDefined();
-    expect(component.diveLst).toBeDefined();
-    expect(component.showLoading).toBeFalse();
+    expect(component.diveLst).toBeUndefined();
+    expect(component.showLoading).toBeTrue();
   });
 
   it('Testing ionViewWillEnter()', () => {
     component.ionViewWillEnter();
-    expect(component.loginLabel).toBe("Login");
+    expect(component.showLoading).toBeTrue();
+    expect(component.loginLabel).toBe("Log Out");
     let diveSpy = spyOn(divService, 'getPrivateDive').and.callThrough();
     expect(diveSpy).toBeDefined();
-    expect(component.diveLst).toBeDefined();
-    expect(component.showLoading).toBeFalse();
+    expect(component.diveLst).toBeUndefined();
+    expect(component.showLoading).toBeTrue();
   });
 
   it('Testing loginClick()', () => {
     let navigateSpy = spyOn(router, 'navigate');
     component.loginClick();
-    expect(navigateSpy).toHaveBeenCalledWith(['login']);
+    expect(navigateSpy).toHaveBeenCalledWith(['home']);
   });
 
   it('Testing goToEdit()', () => {
+    let navigateSpy = spyOn(router, 'navigate');
     component.goToEdit(validData.diveID);
+    expect(navigateSpy).toHaveBeenCalledWith(['/edit-dive']);
   });
 
   it('Testing My-Dives Functionality', () => {
