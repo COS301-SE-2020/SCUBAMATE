@@ -250,6 +250,22 @@ export class PlanningPage implements OnInit {
       var l1 = this.generateRandom(this.suggestedCourseFullList.length);
       var l2 = this.generateRandom(this.suggestedCourseFullList.length);
       var l3 = this.generateRandom(this.suggestedCourseFullList.length);
+
+      if((l3 == l1) || (l3 == l2) || (l1 == l2))
+      {
+        while((l3 == l1) || (l3 == l2) || (l1 == l2) ){
+          if(l3 == l1){
+            l3 = this.generateRandom(this.suggestedCourseFullList.length);
+          }else if( l3 == l2 ){
+            l2 = this.generateRandom(this.suggestedCourseFullList.length);
+          }else{
+            l1 = this.generateRandom(this.suggestedCourseFullList.length);
+          }
+        }
+      }
+
+
+
      
       this.suggestedCourseThreeList[0] = this.suggestedCourseFullList[l1];
       this.suggestedCourseThreeList[1] = this.suggestedCourseFullList[l2];
