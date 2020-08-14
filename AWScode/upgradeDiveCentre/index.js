@@ -99,21 +99,23 @@ exports.handler = async (event, context, callback) => {
                 }
                 else
                 {
+                    /*Upgrade dive centre account to admin*/
                     AccountGuid = accdata.Items[0].AccountGuid;
                     const oldToken = accdata.Items[0].AccessToken;
                     let newToken = oldToken.substring(0,GuidSize) + "10" + oldToken.substring(GuidSize+2,oldToken.length());
 
-                    /*Upgrade dive centre account to admin*/
                     const typeParams = {
                         TableName: "Scubamate",
                         Key:{
                             "AccountGuid": AccountGuid
                         },
-                        UpdateExpression: "set AccountType = :type, AccessToken = :ac",
+                        UpdateExpression: "set AccountType = :type, DiveCentre = :dc, AccountVerified = :av, AccessToken = :ac",
                         // ConditionExpression: "AccountType != 'SuperAdmin' ",
                         ExpressionAttributeValues:{
                             ":type": "Admin",
-                            ":ac":newToken
+                            ":dc" : Name,
+                            ":av" : true,
+                            ":ac" : newToken
                         },
                         ReturnValues:"UPDATED_NEW"
                     };
@@ -138,15 +140,11 @@ exports.handler = async (event, context, callback) => {
                 const startContentType = LogoPhoto.indexOf(":")+1;
                 const endContentType = LogoPhoto.indexOf(";");
                 const contentType = LogoPhoto.substring(startContentType, endContentType);
-            
                 const startExt = contentType.indexOf("/")+1;
                 const extension = contentType.substring(startExt, contentType.length);
-            
                 const startIndex = LogoPhoto.indexOf(",")+1;
-                
                 const encodedImage = LogoPhoto.substring(startIndex, LogoPhoto.length);
                 const decodedImage = Buffer.from(encodedImage.replace(/^data:image\/\w+;base64,/, ""),'base64');
-          
                 const filePath = "logophoto" + Name + "."+extension;
             
                 let logoLink ="https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/"+filePath;
