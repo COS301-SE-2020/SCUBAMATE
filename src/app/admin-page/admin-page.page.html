@@ -1,0 +1,106 @@
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@100&family=Righteous&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+
+</head>
+<ion-header no-border slot="fixed" style="margin-bottom: 20px;">
+  <ion-toolbar color="dark" class="productHeader" >
+    <ion-buttons slot="primary">
+      <ion-button routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >
+        {{loginLabel}}
+      </ion-button>
+      <ion-button color="secondary">
+        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title > 
+     <ion-buttons >
+      <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo" style="height:80%;width:12%;padding-bottom:3px;padding-top:3px;margin-right:10px;"/>
+      
+        <ion-button routerLink="/home">
+          <ion-icon name="home" ></ion-icon><label style="padding-top:7px;">&nbsp; Home</label> 
+        </ion-button>
+        <ion-button routerLink="/explore">
+          <ion-icon name="color-wand-outline"></ion-icon>&nbsp; Explore
+        </ion-button>
+        <ion-button routerLink="/planning">
+          <ion-icon name="newspaper"></ion-icon>&nbsp; Plan
+        </ion-button>
+        <ion-button routerLink="/my-dives">
+          <ion-icon name="water"></ion-icon>&nbsp; My Dives
+        </ion-button>
+        <ion-button routerLink="/profile">
+          <ion-icon name="person" ></ion-icon>&nbsp; Profile
+        </ion-button>
+        <ion-button *ngIf="accountType=='Admin' || accountType=='SuperAdmin'" routerLink="/admin-page" >
+          <ion-icon name="podium"></ion-icon>&nbsp; Admin
+        </ion-button>
+      </ion-buttons>
+      
+    </ion-title>
+    <ion-progress-bar type="indeterminate" *ngIf="showLoading"></ion-progress-bar> 
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="background" no-scroll padding >
+
+  <ion-grid id="DiveCenterDiv">
+      <ion-row class="innerDivNav">
+        <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
+          <ion-button (click)="viewRegisterNewCenter()">
+            <ion-icon name="cube-outline"></ion-icon> &nbsp; Register new Center
+          </ion-button>
+        </ion-col>
+        <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
+          <ion-button (click)="viewRegisterUserToCenter()">
+            <ion-icon name="people"></ion-icon> &nbsp; Register User At Center
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="showRegisterNewCenter">
+        <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
+          <label class="subLabel">Register A New Dive Center</label>
+        </ion-col>
+        <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane">
+        <!-- Register Center Form Start -->
+        <!-- Register Center Form End -->
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="showRegisterUserToCenter">
+        <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
+          <label class="subLabel"> Register A User <br> At A <br> Dive Center</label>
+      </ion-col>
+      <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane">
+        <!-- Register User Form Start -->
+        <ion-row>
+          <ion-col size="12">
+            <div class="searchableSelect" style="width:90%;margin:auto;">
+              <ion-label class="searchableSelectLabel">Email of user</ion-label>
+              <input list="buddylst" class="searchableSelectInput" [(ngModel)]="UserToCenterObj.Email" placeholder="Insert User Email" (keypress)="buddyListFinder($event.target.value)" #bud>
+              <datalist id="buddylst" >
+                  <option *ngFor='let b of BuddyLst' value={{b}}></option>
+              </datalist>
+            </div>
+          </ion-col>
+          <ion-col size="12">
+            <div class="searchableSelect" style="width:90%;margin:auto;">
+              <ion-label class="searchableSelectLabel">Dive Center</ion-label><br>
+                <input list="diveC"  placeholder="Insert Dive Center Name" [(ngModel)]="UserToCenterObj.Name"  #Cent (keypress)="CenterListFinder($event.target.value)" class="searchableSelectInput">
+                <datalist id="diveC" >
+                    <option *ngFor='let c of CenterLst' value={{c}}></option>
+                </datalist>
+            </div>
+          </ion-col>
+          <ion-col size="12">
+            <button id="subBtn"  (click)="UserToCenterSubmit()">Submit</button>
+          </ion-col>
+        </ion-row>
+        <!-- Register User Form End -->
+      </ion-col>
+      </ion-row>
+  </ion-grid>
+
+
+
+</ion-content>

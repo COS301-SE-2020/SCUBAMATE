@@ -243,5 +243,29 @@ export class accountService
  
     }
 
+    addDiveCenter(PostData): Observable<any>{
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }) 
+      };
+
+      
+      return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/DiveCentre/upgradedivecentre', PostData, options );
+ 
+    }
+
+    addUsertoDiveCenter(PostData): Observable<any>{
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }) 
+      };
+
+      
+      return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/DiveCentre/updatedivecentre', PostData, options );
+ 
+    }
+
 
 }

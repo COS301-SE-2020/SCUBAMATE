@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { accountService } from '../service/account.service';
 import * as CryptoJS from 'crypto-js';  
-
+import { AlertController } from '@ionic/angular';
 
 export interface LoginClass {
   Email: string;
@@ -17,7 +17,7 @@ export interface LoginClass {
 
 export class LoginPage implements OnInit {
 
-  constructor(private _accountService : accountService, private router: Router) { }
+  constructor(public alertController : AlertController , private _accountService : accountService, private router: Router) { }
 
 
  // session : any;
@@ -74,9 +74,23 @@ export class LoginPage implements OnInit {
      // localStorage.setItem("accountType", res.Data[1].AccountType)  ;
       this.router.navigate(['home']);
       //console.log(res.body.AccessToken); 
+    }, err=>{
+      this.presentLoginFailAlert();
     });
 
 
+  }
+
+
+
+  async presentLoginFailAlert() {
+    const alert = await this.alertController.create({
+      header: 'Could not log in',
+      message: 'Please enter a valid password and email.',
+      buttons: ['OK']
+    });
+  
+    await alert.present();
   }
 
 }

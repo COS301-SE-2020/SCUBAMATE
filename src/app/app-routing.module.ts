@@ -71,7 +71,11 @@ const routes: Routes = [
   {
     path: 'dive-site-information',
     loadChildren: () => import('./dive-site-information/dive-site-information.module').then( m => m.DiveSiteInformationPageModule)
+  },  {
+    path: 'admin-page',
+    loadChildren: () => import('./admin-page/admin-page.module').then( m => m.AdminPagePageModule)
   }
+
 
 
 ];
