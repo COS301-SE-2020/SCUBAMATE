@@ -1,0 +1,101 @@
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@100&family=Righteous&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+
+</head>
+
+<ion-header no-border slot="fixed">
+ 
+</ion-header>
+<ion-toolbar class="productHeader" transparent slot="fixed">
+  <ul>
+    <li style="float:right;"><a routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >{{loginLabel}}</a></li>
+    <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo">  
+    <li style="float:left;margin-left:20px;"><a routerLink="/home" >Home</a></li>  
+      <li style="float:left;"><a routerLink="/explore">Explore</a></li>  
+      <li style="float:left;"><a routerLink="/weather">Weather</a></li> 
+      <li style="float:left;"><a routerLink="/my-dives">My Dives</a></li>
+      <li style="float:left;"><a routerLink="/profile">My Account</a></li> 
+      <ion-progress-bar type="indeterminate" *ngIf="showLoading"></ion-progress-bar>   
+  </ul>
+</ion-toolbar>
+
+<ion-content fullscreen class="background" no-scroll padding >
+
+  <div class="containerDiv" *ngIf="showDiveSite">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" class="divHeadSection">
+         <label class="divHead"> {{currentDiveSite.Name}} </label> 
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
+          <div id="ProfileSurroundDiv">
+            <img id="Profile" src={{currentDiveSite.LogoPhoto}} >
+         </div>
+        </ion-col>
+        <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane">
+            {{currentDiveSite.Description}}
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+
+  <div class="containerDiv" *ngIf="showDiveSite">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" class="divHeadSection">
+         <label class="divSubHead"> Current Weather </label> 
+        </ion-col>
+      </ion-row>
+      <ion-row >
+        <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
+          <div id="ProfileSurroundDiv">
+            <img id="Profile" src="../../assets/images/Weather/{{Weather.Day}}.png">
+         </div>
+        </ion-col>
+        <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane" style="padding-top: 20px;">
+          <ion-row>
+            <ion-col size="12" size-sm="12" size-md="12" size-lg="12" >
+              <label class="subLabel"> {{Weather.Desc}} </label>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12" size-sm="12" size-md="12" size-lg="12" >
+              <ion-icon name="location-outline"></ion-icon>
+              <label class="infoLabel"> City: &nbsp;&nbsp; </label>
+              <label class="infoLabel">{{Key.city}} </label>
+            </ion-col>
+          </ion-row>
+            <ion-row>
+              <ion-col size="12" size-sm="12" size-md="12" size-lg="12" >
+                <ion-icon name="thermometer-outline"></ion-icon>
+                <label class="infoLabel"> Temperature: &nbsp;&nbsp; </label>
+                <label class="infoLabel">{{Weather.Min}}  /  {{Weather.Max}} </label>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="12" size-sm="12" size-md="12" size-lg="12" >
+                <ion-icon name="moon-outline"></ion-icon>
+                <label class="infoLabel"> Night: &nbsp;&nbsp; </label>
+                <label class="infoLabel">{{Weather.Night}}  </label>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="12" size-sm="12" size-md="12" size-lg="12" >
+                <ion-icon name="sunny-outline"></ion-icon>
+                <label class="infoLabel"> Wind: &nbsp;&nbsp; </label>
+                <label class="infoLabel">{{ Weather.Wind }}  </label>
+              </ion-col>
+            </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+
+
+</ion-content>

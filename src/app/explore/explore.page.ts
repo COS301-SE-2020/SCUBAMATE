@@ -16,7 +16,9 @@ export interface Dive{
 }
 
 export interface DiveSite{
-  diveSite: string;
+  Name : string ;
+  Description: string ;
+  Coords: string;
 }
 
 export interface DiveCenter{
@@ -36,13 +38,14 @@ export class ExplorePage implements OnInit {
   /*********************************************
                 Global Variables
   *********************************************/
-  siteLst: DiveSite[] ;
+  siteLst: DiveSite[] = new Array() ;
   centerLst: DiveCenter[] = new Array() ;
   showSites : boolean ;
   showCenters : boolean ;
   showFeed  : boolean = true;
   showLoading : boolean;
   showMoreCenters : boolean = true ;
+  showMoreSites: boolean = true ;
   pubLst: Dive[] ; 
   loginLabel:string ;
 
@@ -65,6 +68,7 @@ export class ExplorePage implements OnInit {
     this.showSites = false;
     this.showCenters = false;
     this.centerLst = [];
+    this.siteLst = [] ;
 
     this.loginLabel ="Login";
     if(!localStorage.getItem("accessToken"))
@@ -84,9 +88,9 @@ export class ExplorePage implements OnInit {
 
   ionViewWillEnter(){
     //setup what gets displayed
-    this.showFeed = true;
+   /**  this.showFeed = true;
     this.showSites = false;
-    this.showCenters = false;
+    this.showCenters = false; */
 
     if(!localStorage.getItem("accessToken"))
     {
@@ -124,13 +128,7 @@ export class ExplorePage implements OnInit {
     this.showSites = true;
     this.showCenters = false;
 
-    this._diveService.getDiveSites("*").subscribe(
-      data => {
-          console.log(data);
-          this.siteLst = data.ReturnedList ; 
-          this.showLoading = false;
-      }
-    ); //end DiveSite req
+    this.loadSites();
     
   }
 
@@ -191,6 +189,52 @@ export class ExplorePage implements OnInit {
   ViewMoreDiveCenter( DC : string){
     localStorage.setItem("ViewDiveCenter", DC) ;
     this.router.navigate(['dive-center-information']);
+  }
+
+  loadSites(){
+    this.showLoading = true;
+
+
+
+    this._diveService.getExtendedDiveSites("*", this.SitesPage).subscribe(
+      data => {
+
+            this.siteLst.push(...data.ReturnedList);
+          
+            console.log("Loading for Page " + this.SitesPage );
+            console.log("Current List");
+            console.log( this.siteLst);
+
+          this.SitesPage++ ;
+
+
+          for(var y=0; y < this.siteLst.length ; y++ ){
+            if( this.siteLst[y].Description.length > 300  ){
+              this.siteLst[y].Description = this.siteLst[y].Description.substr(0, 300) + " ...";
+            }
+          }
+
+          this.showLoading = false;
+      }, err =>{
+        if(err.error){
+          this.showLoading = false;
+
+          if(err.error == "No Results Found For: *")
+          {
+            this.showMoreSites = false;
+          }
+        }
+      }
+    ); //end ExtendedDiveCenters req
+
+
+
+  }
+
+
+  ViewMoreDiveSite( DS : string){
+    localStorage.setItem("ViewDiveSite", DS) ;
+    this.router.navigate(['dive-site-information']);
   }
 
 

@@ -66,6 +66,10 @@ const routes: Routes = [
   {
     path: 'dive-center-information',
     loadChildren: () => import('./dive-center-information/dive-center-information.module').then( m => m.DiveCenterInformationPageModule)
+  },
+  {
+    path: 'dive-site-information',
+    loadChildren: () => import('./dive-site-information/dive-site-information.module').then( m => m.DiveSiteInformationPageModule)
   }
 
 

@@ -172,7 +172,7 @@
 
 
 
-<div class="tableContainer"  *ngIf='showSites'>
+<!-- <div class="tableContainer"  *ngIf='showSites'>
   <table id="feed"  >
     <tr>
       <th> Dive Sites </th>
@@ -181,7 +181,50 @@
       <td> {{d}} </td>
     </tr>
 </table>
-</div>
+</div>  -->
+
+
+<ion-grid class="contentContainer" *ngIf='showSites'>
+  <ion-row>
+    <ion-col *ngFor='let ds of siteLst' style="margin:0;" >
+      <div class="thecard" >
+        <div class="thefront">
+          <ion-card  >
+            <img class="cardFeedIMG" src="../../assets/images/DiveSites/{{ds.Name}}.jpg" />
+              <ion-card-content>
+              <ion-card-title>
+                 <label class="DiveCenterName"> {{ds.Name}} </label> 
+                 <label class="ViewDiveCenterLink"><a (click)="ViewMoreDiveSite(ds.Name)">View More</a> </label>
+              </ion-card-title>
+                 </ion-card-content>
+          </ion-card>
+        </div>
+        <div class="theback">
+          <ion-card >
+              <ion-card-content >
+              
+               
+                <ion-item-divider style="--background:rgba(38, 70, 83, 0.5);" >
+                  <ion-card-title >
+                    {{ds.Name}}
+                  </ion-card-title>
+                </ion-item-divider>
+                <div style="padding-left: 20px;text-align: left;" class="DiveCenterDescription">
+                  {{ds.Description}} 
+                </div>
+              
+            </ion-card-content>
+          </ion-card>
+        </div>
+      </div>
+    </ion-col>
+</ion-row>
+<ion-row style="margin-top:30px;margin-bottom: 40px;" *ngIf="showMoreSites">
+  <ion-button id="loadMoreBtn" (click)="loadSites()">
+    <ion-icon name="code-download-outline"></ion-icon>
+  </ion-button>
+</ion-row>
+</ion-grid>
 
 
 
