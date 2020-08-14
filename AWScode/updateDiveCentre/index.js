@@ -113,18 +113,23 @@ exports.handler = async (event, context, callback) => {
                     else{
                         /*Upgrade dive centre account to admin*/
                         
-                        /*Update AccessToken Here */
+                        AccountGuid = accdata.Items[0].AccountGuid;
+                        const oldToken = accdata.Items[0].AccessToken;
+                        let newToken = oldToken.substring(0,GuidSize) + "10" + oldToken.substring(GuidSize+2,oldToken.length());
+
+                    /*Upgrade dive centre account to admin*/
                         const typeParams = {
                             TableName: "Scubamate",
                             Key:{
                                 "AccountGuid": AccountGuid
                             },
-                            UpdateExpression: "set AccountType = :type, DiveCentre = :dc AND AccountVerified = :av",
+                            UpdateExpression: "set AccountType = :type, DiveCentre = :dc AND AccountVerified = :av, AccessToken = :ac",
                             // ConditionExpression: "AccountType != 'SuperAdmin' ",
                             ExpressionAttributeValues:{
                                 ":type": "Admin",
                                 ":dc" : Name,
-                                ":av" : true
+                                ":av" : true,
+                                ":ac" : newToken
                             },
                             ReturnValues:"UPDATED_NEW"
                         };
