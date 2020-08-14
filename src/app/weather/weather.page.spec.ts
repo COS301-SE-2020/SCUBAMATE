@@ -33,7 +33,6 @@ describe('WeatherPage', () => {
   });
 
   it('Testing Weather Components', () => {
-    expect(component.ngOnInit).toBeTruthy();
     expect(component.Coordinates).toBeDefined();
     expect(component.Key).toBeDefined();
     expect(component.Weather).toBeDefined();
@@ -45,7 +44,7 @@ describe('WeatherPage', () => {
 
   it('Testing ngOnInit()', () => {
     component.ngOnInit();
-    expect(component.loginLabel).toBe("Login");
+    expect(component.loginLabel).toBe("Log Out");
     let weatherSpy = spyOn(weatService, 'getLocationKey').and.callThrough();
     expect(weatherSpy).toBeDefined();
     weatherSpy = spyOn(weatService, 'getLogWeather').and.callThrough();
@@ -59,13 +58,13 @@ describe('WeatherPage', () => {
 
   it('Testing ionViewWillEnter()', () => {
     component.ionViewWillEnter();
-    expect(component.loginLabel).toBe("Login");
+    expect(component.loginLabel).toBe("Log Out");
   });
 
   it('Testing loginClick()', () => {
     let navigateSpy = spyOn(router, 'navigate');
     component.loginClick();
-    expect(navigateSpy).toHaveBeenCalledWith(['login']);
+    expect(navigateSpy).toHaveBeenCalledWith(['']);
   });
 
   it('Testing Weather Functionality', () => {
