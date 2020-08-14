@@ -27,14 +27,7 @@ $inputBackgroundColor: #181e21;
   margin-bottom: 20px;
 }
 
-ion-button{
-  float:right;
-  margin-right: 7%;
-  width: 50px;
-  height:50px;
-  padding:0;
-  --border-radius: 100%;
-}
+
 
 .searchableSelect{
   background-color: white;
@@ -148,7 +141,14 @@ ion-grid {
   }
 
 
-  
+  ion-button{
+    float:right;
+    margin-right: 7%;
+    width: 50px;
+    height:50px;
+    padding:0;
+    --border-radius: 100%;
+  }
 
 
 
@@ -230,6 +230,15 @@ ion-grid {
   padding-left: 25px;
   padding-top: 5px;
   padding-bottom: 5px;
+
+  ion-button{
+    float:right;
+    margin-right: 7%;
+    width: 50px;
+    height:50px;
+    padding:0;
+    --border-radius: 100%;
+  }
 }
 
 .divBodySection{
@@ -237,6 +246,8 @@ ion-grid {
   padding-right: 25px;
   padding-top: 10px;
   padding-bottom: 10px;
+
+
 }
 
 table{
@@ -309,6 +320,15 @@ table{
 
 
 #UnverifiedListsInfo{
+
+  ion-button{
+    float:right;
+    margin-right: 7%;
+    width: 50px;
+    height:50px;
+    padding:0;
+    --border-radius: 100%;
+  }
     
 
   .UnverifiedListHead{

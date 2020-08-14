@@ -34,6 +34,8 @@ export interface UnverifiedCourse{
   DiveSite : string ;
   DiveDate : string ;
   DiveID : string ;
+  FirstName : string ;
+  LastName: string ;
 }
 
 @Component({

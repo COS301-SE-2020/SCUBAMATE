@@ -3,21 +3,42 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
 </head>
-<ion-header no-border slot="fixed"></ion-header>
-<ion-toolbar class="productHeader" transparent slot="fixed">
-  
-  <ul>
-    <li style="float:right;"><a routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >{{loginLabel}}</a></li>
-    <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo">  
-    <li style="float:left;margin-left:20px;"><a routerLink="/home" >Home</a></li>  
-      <li style="float:left;"><a routerLink="/explore">Explore</a></li>  
-      <li style="float:left;"><a routerLink="/weather">Weather</a></li> 
-      <li style="float:left;"><a routerLink="/my-dives">My Dives</a></li>
-      <li style="float:left;"><a routerLink="/profile">My Account</a></li>  
-      <ion-progress-bar type="indeterminate" *ngIf="showLoading"></ion-progress-bar>   
-    </ul>
-  
-</ion-toolbar>
+<ion-header no-border slot="fixed" style="margin-bottom: 20px;">
+  <ion-toolbar color="dark" class="productHeader" >
+    
+    <ion-buttons slot="primary">
+      <ion-button routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >
+        {{loginLabel}}
+      </ion-button>
+      <ion-button color="secondary">
+        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title > 
+     <ion-buttons >
+      <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo" style="height:80%;width:12%;padding-bottom:3px;padding-top:3px;margin-right:10px;"/>
+      
+        <ion-button routerLink="/home">
+          <ion-icon name="home" ></ion-icon><label style="padding-top:7px;">&nbsp; Home</label> 
+        </ion-button>
+        <ion-button routerLink="/explore">
+          <ion-icon name="color-wand-outline"></ion-icon>&nbsp; Explore
+        </ion-button>
+        <ion-button routerLink="/planning">
+          <ion-icon name="newspaper"></ion-icon>&nbsp; Plan
+        </ion-button>
+        <ion-button routerLink="/my-dives">
+          <ion-icon name="water"></ion-icon>&nbsp; My Dives
+        </ion-button>
+        <ion-button routerLink="/profile">
+          <ion-icon name="person" ></ion-icon>&nbsp; Profile
+        </ion-button>
+      </ion-buttons>
+      
+    </ion-title>
+     <ion-progress-bar type="indeterminate" *ngIf="showLoading"></ion-progress-bar> 
+  </ion-toolbar>
+</ion-header>
 
 
 <ion-content fullscreen class="background" no-scroll padding >
@@ -142,10 +163,13 @@
             </div>
             <div *ngIf="UnverifiedLst.length != undefined">
               <ion-row *ngFor='let u of UnverifiedLst' class="UnverifiedListTableRow"> 
-                <ion-col size="3" >{{u.DiveDate}}</ion-col>
-                <ion-col size="3" >{{u.TimeIn}} - {{u.TimeOut}}</ion-col>
-                <ion-col size="3" >{{u.DiveSite}}</ion-col>
-                <ion-col size="3">
+                <ion-col size="6" size-sm="6" size-md="2" size-lg="2">{{u.DiveDate}}</ion-col>
+                <ion-col size="6" size-sm="6" size-md="2" size-lg="2" >{{u.TimeIn}} - {{u.TimeOut}}</ion-col>
+                <ion-col size="12" size-sm="12" size-md="3" size-lg="3">
+                  {{u.FirstName}} &nbsp; {{u.LastName}}
+                </ion-col>
+                <ion-col size="6" size-sm="6" size-md="2" size-lg="3">{{u.DiveSite}}</ion-col>
+                <ion-col size="6" size-sm="6" size-md="2" size-lg="2">
                   <ion-button (click)="confirmUnverifiedCourse(u.DiveID , u.AccountGuid)">
                     <ion-icon name="checkmark-outline"></ion-icon>
                   </ion-button>
