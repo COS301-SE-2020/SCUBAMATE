@@ -66,9 +66,46 @@
          <label class="divSubHead"> Current Weather </label> 
         </ion-col>
       </ion-row>
-      <ion-row style="padding-left:7%;">
-        <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
-          {{currentDiveCenter.Coords}}
+      <ion-row >
+        <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
+          <div id="ProfileSurroundDiv">
+            <img id="Profile" src="../../assets/images/Weather/{{Weather.Day}}.png">
+         </div>
+        </ion-col>
+        <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane" style="padding-top: 20px;">
+          <ion-row>
+            <ion-col size="12" size-sm="12" size-md="12" size-lg="12" >
+              <label class="subLabel"> {{Weather.Desc}} </label>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12" size-sm="12" size-md="12" size-lg="12" >
+              <ion-icon name="location-outline"></ion-icon>
+              <label class="infoLabel"> City: &nbsp;&nbsp; </label>
+              <label class="infoLabel">{{Key.city}} </label>
+            </ion-col>
+          </ion-row>
+            <ion-row>
+              <ion-col size="12" size-sm="12" size-md="12" size-lg="12" >
+                <ion-icon name="thermometer-outline"></ion-icon>
+                <label class="infoLabel"> Temperature: &nbsp;&nbsp; </label>
+                <label class="infoLabel">{{Weather.Min}}  /  {{Weather.Max}} </label>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="12" size-sm="12" size-md="12" size-lg="12" >
+                <ion-icon name="moon-outline"></ion-icon>
+                <label class="infoLabel"> Night: &nbsp;&nbsp; </label>
+                <label class="infoLabel">{{Weather.Night}}  </label>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="12" size-sm="12" size-md="12" size-lg="12" >
+                <ion-icon name="sunny-outline"></ion-icon>
+                <label class="infoLabel"> Wind: &nbsp;&nbsp; </label>
+                <label class="infoLabel">{{ Weather.Wind }}  </label>
+              </ion-col>
+            </ion-row>
         </ion-col>
       </ion-row>
     </ion-grid>

@@ -44,7 +44,7 @@
         </ion-col>
      <ion-col style="padding-right:0;" size="12" size-sm="8" size-md="8" size-lg="8" >
           <div id="acountInfo1">
-            <ion-label class="divHead"> User Information </ion-label> <br>
+            <ion-label class="divHead"> Personal Information </ion-label> <br>
             <div class="divBodySection">
               <ion-label class="infoLabel" id="email" >Email: {{AD.Email}} </ion-label> <br>
               <ion-label class="infoLabel" id="instructorNum" *ngIf='AD.InstructorNumber' >Instructor Number: {{AD.InstructorNumber}} </ion-label> <br>
@@ -79,7 +79,7 @@
             <ion-label class="divHead" > {{accountType}} Credentials </ion-label>
           </ion-col>
           <ion-col size="12" size-sm="6" size-md="6" size-lg="6" *ngIf="accountType=='Diver'">
-            <ion-button color="dark" style="width:fit-content;" routerLink="/upgrade-instructor">
+            <ion-button color="dark" style="width:fit-content;--border-radius:0;" routerLink="/upgrade-instructor">
               <ion-icon name="arrow-up-outline"></ion-icon>
               Upgrade
             </ion-button>
