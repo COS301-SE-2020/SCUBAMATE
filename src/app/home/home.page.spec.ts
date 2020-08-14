@@ -42,7 +42,7 @@ describe('HomePage', () => {
     expect(component.loginLabel).toBe("Login");
   });
 
-  fit('Testing ionViewWillEnter()', () => {
+  it('Testing ionViewWillEnter()', () => {
     component.ionViewWillEnter();
     expect(component.loginLabel).toBe("Login");
   });
