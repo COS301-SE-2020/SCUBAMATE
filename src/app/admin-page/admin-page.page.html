@@ -225,5 +225,21 @@
   </ion-grid>
 
 
+  <ion-grid id="VerifyInstructorsDiv" *ngIf='accountType=="Admin"'>
+    <ion-row class="innerDivNav">
+      <ion-col size="12" size-sm="12" size-md="6" size-lg="6"  >
+        <ion-button (click)="viewRegisterNewCenter()">
+          <ion-icon name="shield-checkmark"></ion-icon> &nbsp; Verify Instructors
+        </ion-button>
+      </ion-col>
+      <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
+        <ion-button (click)="viewRegisterUserToCenter()">
+          <ion-icon name="trash-bin"></ion-icon> &nbsp; Remove Instructors
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+
 
 </ion-content>

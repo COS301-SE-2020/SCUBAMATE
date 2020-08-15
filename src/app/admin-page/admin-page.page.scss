@@ -97,6 +97,11 @@ ion-content.background{
     @include divContainer;
 }
 
+#VerifyInstructorsDiv{
+  @include divContainer;
+}
+
+
 .searchableSelect{
     background-color: #222428 ;
   

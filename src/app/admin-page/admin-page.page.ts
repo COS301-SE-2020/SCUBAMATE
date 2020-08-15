@@ -137,7 +137,7 @@ export class AdminPagePage implements OnInit {
     if(localStorage.getItem("accessToken"))
     {
       localStorage.removeItem("accessToken");
-      location.reload();
+      this.router.navigate(['home']);
     }else{
       this.router.navigate(['login']);
     }
