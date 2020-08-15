@@ -24,6 +24,7 @@ export class NoInternetPage implements OnInit {
         
       }  
     });
+    
    }
 
   ngOnInit() {

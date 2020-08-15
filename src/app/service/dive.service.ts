@@ -42,6 +42,22 @@ export class diveService
        return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/divelist',body, options);
     }
 
+    getDiveCourses(entry : String): Observable<any>{
+
+      const options = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+          })
+        };
+
+      var  body= {
+          "ItemType" : "C" ,
+          "UserEntry" : entry
+        } ;
+
+       return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/divelist',body, options);
+    }
+
 
 
     getDiveCenters(entry : String): Observable<any>{
@@ -67,9 +83,7 @@ export class diveService
             })
           };
         
-          //https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/UpdatedModel/divelog
-          //https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveLogs/
-         return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveLogs/divelog', PostData , options); 
+         return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/divelog', PostData , options); 
 
 
     }
@@ -140,6 +154,21 @@ export class diveService
       }
 
       return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/getpublicdives', PostData , options); 
+
+    }
+
+    getSuggestedCourses(): Observable<any>{
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+    
+      var PostData = {
+        "AccessToken" : localStorage.getItem("accessToken")
+      }
+
+      return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/gettodocourselist', PostData , options); 
 
     }
 
