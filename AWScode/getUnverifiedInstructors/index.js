@@ -69,7 +69,7 @@ exports.handler = async (event, context) => {
             const paramsI = {
                 TableName: "Scubamate",
                 ProjectionExpression: "AccountVerified, AccountGuid, FirstName, LastName, InstructorNumber, Email, CompletedCourses",
-                FilterExpression: '#at = :at AND #dc = :dc AND #av = :av',
+                FilterExpression: '#at = :at AND #dc = :dc',
                 ExpressionAttributeNames: {
                     '#at': 'AccountType',
                     '#dc': 'DiveCentre',
