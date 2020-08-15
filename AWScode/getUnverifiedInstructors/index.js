@@ -68,17 +68,15 @@ exports.handler = async (event, context) => {
             /* Is correct Dive Centre now to find it's Unverified Instructors */
             const paramsI = {
                 TableName: "Scubamate",
-                ProjectionExpression: "AccountGuid, FirstName, LastName, InstructorNumber, Email, CompletedCourses",
+                ProjectionExpression: "AccountVerified, AccountGuid, FirstName, LastName, InstructorNumber, Email, CompletedCourses",
                 FilterExpression: '#at = :at AND #dc = :dc AND #av = :av',
                 ExpressionAttributeNames: {
                     '#at': 'AccountType',
                     '#dc': 'DiveCentre',
-                    '#av': 'AccountVerified',
                 },
                 ExpressionAttributeValues: {
                     ':at': "Instructor",
                     ':dc': data.Item.DiveCentre,
-                    ':av': false,
                 },
             };
             try{
