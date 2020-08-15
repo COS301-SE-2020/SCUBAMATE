@@ -51,15 +51,26 @@ ion-content.background{
   width:  80% ;
   text-align: center;
   padding:0;
+  margin-bottom: 30px;
 
   ion-button{
       margin: auto;
-      width: 80%;
+      width: 100%;
   }
 
   .innerDivNav{
     background-color: rgba(24, 30, 33, 0.8);
     padding: 7px;
+    padding-bottom: 10px;
+
+    ion-button{
+      margin: auto;
+      width: 100%;
+    }
+
+    ion-row{
+      width:100%;
+    }
   }
 
     .rightPane{

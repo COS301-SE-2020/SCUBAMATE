@@ -22,6 +22,14 @@ export interface NDC{
   DiveSites: string[];
 }
 
+export interface instructor{
+  AccountGuid : string ;
+  AccountVerified: boolean ;
+  FirstName : string ;
+  LastName : string ;
+  Email : string ;
+  InstructorNumber : string ;
+}
 
 @Component({
   selector: 'app-admin-page',
@@ -55,8 +63,15 @@ export class AdminPagePage implements OnInit {
 
   //Viewable Content
   showRegisterUserToCenter: boolean ;
-  showRegisterNewCenter : boolean ; 
+  showRegisterNewCenter : boolean ;
+  showUnverifiedInstructors : boolean ; 
+  showVerifiedInstructors: boolean ;  
   showLoading: boolean ; 
+
+  //Verified | Unverified Instructors List
+  verifiedInstructors: instructor[]; 
+  unverifiedInstructors: instructor[];
+  allInstructors: instructor[];
 
   //Page Views
   firstPageNewCentre : boolean ;
@@ -92,6 +107,23 @@ export class AdminPagePage implements OnInit {
       Courses :[] ,  
       DiveSites: [] , 
     }
+
+    if(localStorage.getItem("accessToken")){
+         //Setup User Role
+         if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+          this.accountType = "Instructor";
+        }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+          this.accountType = "Diver";
+        }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+          this.accountType = "Admin";
+          this.getUnverifiedInstructors();
+        }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+          this.accountType = "SuperAdmin";
+        }else{
+          this.accountType = "*Diver";
+        }
+    }
+
   }
 
   ngOnInit() {
@@ -110,6 +142,10 @@ export class AdminPagePage implements OnInit {
 
     this.siteUserInput = new Array();
 
+    this.allInstructors = new Array();
+    this.verifiedInstructors = new Array();
+    this.unverifiedInstructors = new Array();
+
     //Setup Login Label
     this.loginLabel ="Login";
     if(!localStorage.getItem("accessToken"))
@@ -117,20 +153,11 @@ export class AdminPagePage implements OnInit {
       this.loginLabel = "Login";
     }else{
       this.loginLabel = "Log Out";
+
+       
     }
 
-    //Setup User Role
-    if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-      this.accountType = "Instructor"
-    }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-      this.accountType = "Diver"
-    }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-      this.accountType = "Admin"
-    }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-      this.accountType = "SuperAdmin"
-    }else{
-      this.accountType = "*Diver"
-    }
+    
   }
 
   loginClick(){
@@ -168,7 +195,8 @@ export class AdminPagePage implements OnInit {
   viewRegisterUserToCenter(){
     this.showRegisterUserToCenter = true; 
     this.showRegisterNewCenter = false ;
-
+    this.showUnverifiedInstructors = false ;
+    this.showVerifiedInstructors = false; 
 
   }
 
@@ -176,6 +204,19 @@ export class AdminPagePage implements OnInit {
     this.showRegisterUserToCenter = false; 
     this.showRegisterNewCenter = true ;
     this.firstPageNewCentre = true ; 
+    
+  }
+
+  viewUnverifiedInstructors(){
+    this.showUnverifiedInstructors = true ;
+    this.showVerifiedInstructors = false;
+    this.showRegisterUserToCenter = false;  
+  }
+
+  viewVerifiedInstructors(){
+    this.showUnverifiedInstructors = false ;
+    this.showVerifiedInstructors = true;
+    this.showRegisterUserToCenter = false;  
   }
 
   //Page Navigation Fuctions
@@ -332,6 +373,32 @@ addSite(){
   this.DiveSiteLst = [] ;
 }
 
+getUnverifiedInstructors(){
+
+  this.showLoading = true ;
+  this._accountService.getUnverifiedInstructors().subscribe(res=>{
+
+    this.allInstructors = res.UnverifiedInstructors ; 
+
+
+    for(var x = 0 ; x < this.allInstructors.length ; x++){
+
+      if(this.allInstructors[x].AccountVerified == false){
+        this.unverifiedInstructors.push(this.allInstructors[x]);
+      }else{
+        this.verifiedInstructors.push(this.allInstructors[x]);
+      }
+
+    }
+
+    this.showLoading = false ;
+  }, err =>{
+    this.showLoading = false ;
+  });
+
+
+}
+
  //Submit functions
  UserToCenterSubmit(){
 
@@ -407,6 +474,53 @@ addSite(){
     });
 
     
+
+ }
+
+ verifyInstructor(iGUID : string){
+
+  var body={
+    "AccountVerified" : true ,
+    "AccessToken": localStorage.getItem("accessToken"),
+    "AccountGuid": iGUID
+  }
+
+  this.showLoading = true ;
+  this._accountService.verifyInstructor(body).subscribe(res=>{
+
+    this.showLoading = false ;
+    this.getUnverifiedInstructors();
+
+  }, err=>{
+
+    this.showLoading = false ;
+    this.generalAlert("Unable to Verify", "Could not verify Instructor. Try Again");
+
+  });
+
+
+ }
+
+ removeInstructor(iGUID : string){
+
+  var body={
+    "AccountVerified" : false ,
+    "AccessToken": localStorage.getItem("accessToken"),
+    "AccountGuid": iGUID
+  }
+
+  this.showLoading = true ;
+  this._accountService.verifyInstructor(body).subscribe(res=>{
+
+    this.showLoading = false ;
+    this.getUnverifiedInstructors();
+
+  }, err=>{
+
+    this.showLoading = false ;
+    this.generalAlert("Unable to Remove", "Could not remove Instructor. Try Again");
+
+  });
 
  }
 

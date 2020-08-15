@@ -38,8 +38,6 @@ export class HomePage implements OnInit {
       }else{
         this.accountType = "*Diver"
       }
-  
-      console.log(this.accountType);
     }
     
   }
