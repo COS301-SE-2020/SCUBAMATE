@@ -4,24 +4,13 @@ AWS.config.update({region: "af-south-1"});
 const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
 
 exports.handler = async (event) => {
-    //const body = JSON.parse(event.body);
-    //const AccessToken = body.AccessToken;
+    const body = JSON.parse(event.body);
+    const AccessToken = body.AccessToken;
     
-    const AccessToken = event.AccessToken;
+    //const AccessToken = event.AccessToken;
     
     let responseBody = "";
     let statusCode = 0;
-    
-    //s3 Testing
-    
-    var s3 = new AWS.S3({apiVersion: '2006-03-01'});
-    s3.deleteObject({
-        Bucket : "profilephoto-imagedatabase-scubamate",
-        Key: 'James.jpg'
-    },function(err,data){console.log(err)});
-    
-    //end of s3 testing
-    
     
     const scanParams = {
         TableName: "Scubamate",
@@ -44,6 +33,17 @@ exports.handler = async (event) => {
     {
         console.log("AccessToken does indeed exist");
         const AccountGuid = data.Items[0].AccountGuid;
+        const ProfilePhoto = data.Items[0].ProfilePhoto;
+        
+          //s3 Testing
+        var s3 = new AWS.S3({apiVersion: '2006-03-01'});
+        s3.deleteObject({
+            Bucket : "profilephoto-imagedatabase-scubamate",
+            Key: ProfilePhoto
+        },function(err,data){console.log(err)});
+    
+    //end of s3 testing
+        
         
         const diveScanParams = {
             TableName : "Dives",
