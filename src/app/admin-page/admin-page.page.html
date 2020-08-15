@@ -47,29 +47,152 @@
 
   <ion-grid id="DiveCenterDiv">
       <ion-row class="innerDivNav">
-        <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
+        <ion-col size="12" size-sm="12" size-md="6" size-lg="6" *ngIf="accountType=='SuperAdmin'" >
           <ion-button (click)="viewRegisterNewCenter()">
-            <ion-icon name="cube-outline"></ion-icon> &nbsp; Register new Center
+            <ion-icon name="cube-outline"></ion-icon> &nbsp; Register new Centre
           </ion-button>
         </ion-col>
         <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
           <ion-button (click)="viewRegisterUserToCenter()">
-            <ion-icon name="people"></ion-icon> &nbsp; Register User At Center
+            <ion-icon name="people"></ion-icon> &nbsp; Register User At Centre
           </ion-button>
         </ion-col>
       </ion-row>
       <ion-row *ngIf="showRegisterNewCenter">
         <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
-          <label class="subLabel">Register A New Dive Center</label>
+          <label class="subLabel">Register A New Dive Centre</label>
+
+          <div id="profileSurroundDiv">
+            <ion-img src={{NewCenterObj.LogoPhoto}} id="userProfile" ></ion-img>
+           </div>
+              <ion-item color="transparent" lines="none">
+                <ion-button expand="full" (click)="f.click()" style="margin:auto;">
+                  <ion-icon lazy="true" name="image"></ion-icon>
+                  <ion-label slot="end">Change Logo of Centre</ion-label>
+                </ion-button>
+                  <input class="ion-hide" #f type="file" (change)="onFileSelected($event)" id="file-input"
+                    accept="image/png, image/jpeg">
+
+               </ion-item>
+
+
         </ion-col>
         <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane">
         <!-- Register Center Form Start -->
+          <div id="firstPageNewCentre" *ngIf="firstPageNewCentre">
+             <ion-row>
+              <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
+                <ion-item color="dark">
+                  <ion-label  position="floating">Name Of Dive Centre</ion-label>
+                  <ion-input  type="text"   placeholder="Insert New Centre Name" [(ngModel)]="NewCenterObj.Name"  ></ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
+                <ion-item color="dark">
+                  <ion-label  position="floating">Coordinates Of Dive Centre</ion-label>
+                  <ion-input  type="text"   placeholder="Insert New Centre Coordinates" [(ngModel)]="NewCenterObj.Coords"  ></ion-input>
+                </ion-item>
+              </ion-col>
+             </ion-row>
+             <ion-row>
+              <ion-col size="12">
+                <div class="searchableSelect" style="width:100%;margin:auto;">
+                  <ion-label class="searchableSelectLabel">Email of Centre Admin</ion-label>
+                  <input list="buddylst" class="searchableSelectInput" [(ngModel)]="NewCenterObj.Email" placeholder="Insert User Email" (keypress)="buddyListFinder($event.target.value)" #bud>
+                  <datalist id="buddylst" >
+                      <option *ngFor='let b of BuddyLst' value={{b}}></option>
+                  </datalist>
+                </div>
+              </ion-col>
+             </ion-row>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-item color="dark">
+                    <ion-label  position="floating">Centre Description</ion-label>
+                    <ion-input  type="text"   placeholder="Short description of Centre" [(ngModel)]="NewCenterObj.Description"  ></ion-input>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+          </div>
+          <div id="secondPageNewCentre" *ngIf="secondPageNewCentre">
+            <ion-row >
+              <div class="searchableSelect" >
+                <ion-row>
+                  <ion-col size="8">
+                    <ion-label class="searchableSelectLabel" >Add Course Presented</ion-label>
+                    <input list="diveC"  placeholder="Add Course"  [(ngModel)]="courseInputField" #Spec (input)="CourseListFinder()" class="searchableSelectInput" >
+                      <datalist id="diveC">
+                          <option *ngFor='let c of CourseLst' value={{c}}></option>
+                      </datalist>
+                  </ion-col>
+                  <ion-col size="4">
+                    <ion-button id="addBtn" #addBtn (click)="addCourse()"   >
+                      <ion-icon name="add"></ion-icon>
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
+                </div>
+            </ion-row>
+            <ion-row *ngIf="showCourses">
+                  <ion-grid id="CoursesTable">
+                    <ion-row class="CourseListHead"> Courses </ion-row>
+                    <ion-row  *ngFor='let uc of userCourses' class="CourseListTableRow">
+                        <ion-col size="12">
+                          <label>{{ uc }} </label>
+                          <ion-button (click)="removeCourse(uc)" color="dark" id='removeBtn'>
+                            <ion-icon name="trash-bin"></ion-icon>
+                          </ion-button>
+                        </ion-col>
+                    </ion-row>
+                  </ion-grid>
+            </ion-row>
+
+          </div>
+          <div id="thirdPageNewCentre" *ngIf="thirdPageNewCentre">
+            <ion-row >
+              <div class="searchableSelect" >
+                <ion-row>
+                  <ion-col>
+                    <ion-label class="searchableSelectLabel" >Add Dive Site to Center</ion-label>
+                    <input list="diveI"  placeholder="Add Dive Site"  [(ngModel)]="siteInput"  #Spec (input)="DiveSiteListFinder()" class="searchableSelectInput" >
+                      <datalist id="diveI">
+                          <option *ngFor='let i of DiveSiteLst' value={{i}}></option>
+                      </datalist>
+                  </ion-col>
+                  <ion-col>
+                    <ion-button id="addBtn" #addBtn (click)="addSite()"   >
+                      <ion-icon name="add"></ion-icon>
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
+                </div>
+            </ion-row>
+            <ion-row *ngIf="showSites">
+                  <ion-grid id="CoursesTable">
+                    <ion-row class="CourseListHead"> Dive Sites </ion-row>
+                    <ion-row  *ngFor='let ui of siteUserInput' class="CourseListTableRow">
+                        <ion-col size="12">
+                          <label>{{ ui }} </label>
+                          <ion-button (click)="removeSite(ui)" color="dark" id='removeBtn'>
+                            <ion-icon name="trash-bin"></ion-icon>
+                          </ion-button>
+                        </ion-col>
+                    </ion-row>
+                  </ion-grid>
+            </ion-row>
+          </div>
+          <div id="pageNav">
+            <button id="prev" *ngIf="!firstPageNewCentre" (click)="previous()">Previous</button>
+            <button id="next" *ngIf="!thirdPageNewCentre" (click)="next()">Next</button>
+            <button id="subBtn"  *ngIf="thirdPageNewCentre" (click)="newDiveCenterSubmit()">Submit</button>
+          </div>
+
         <!-- Register Center Form End -->
         </ion-col>
       </ion-row>
       <ion-row *ngIf="showRegisterUserToCenter">
         <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
-          <label class="subLabel"> Register A User <br> At A <br> Dive Center</label>
+          <label class="subLabel"> Register User <br> At A <br> Dive Center</label>
       </ion-col>
       <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane">
         <!-- Register User Form Start -->
