@@ -12,6 +12,17 @@ exports.handler = async (event) => {
     let responseBody = "";
     let statusCode = 0;
     
+    //s3 Testing
+    
+    var s3 = new AWS.S3({apiVersion: '2006-03-01'});
+    s3.deleteObject({
+        Bucket : "profilephoto-imagedatabase-scubamate",
+        Key: 'James.jpg'
+    },function(err,data){console.log(err)});
+    
+    //end of s3 testing
+    
+    
     const scanParams = {
         TableName: "Scubamate",
         FilterExpression : "#ac = :ac",
