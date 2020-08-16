@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { accountService } from '../service/account.service';
 import { diveService } from '../service/dive.service';
 import { AlertController } from '@ionic/angular';
-
+import {ConnectionService} from 'ng-connection-service';
+import { Location } from '@angular/common';
 
 export interface AccountDetails{
   ItemType: string ;
@@ -63,11 +64,26 @@ export class ProfilePage implements OnInit {
   accountType : string;
   viewUnverified : Boolean = false; 
 
-  showAccountVerifiedMessage : Boolean ; 
+  showAccountVerifiedMessage : Boolean ;
+
+  //Internet Connectivity check
+  isConnected = true;  
+  noInternetConnection: boolean;
 
   /********************************************/
+  constructor( public alertController : AlertController , private router: Router, private _accountService: accountService,  private _diveService: diveService, private connectionService: ConnectionService, private location: Location) {
+    this.connectionService.monitor().subscribe(isConnected => {  
+      this.isConnected = isConnected;  
+      if (this.isConnected) {  
+        this.noInternetConnection=false;
+      }  
+      else {  
+        this.noInternetConnection=true;
+        this.router.navigate(['no-internet']);
+      }  
+    });
+  }
 
-  constructor( public alertController : AlertController , private router: Router, private _accountService: accountService,  private _diveService: diveService) {}
   
   ngOnInit() {
     this.viewProfile = true;
@@ -122,11 +138,6 @@ export class ProfilePage implements OnInit {
           }
           
         });
-
-
-
-
-
 
       }
     

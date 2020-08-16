@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { accountService } from '../service/account.service';
-
-
+import {ConnectionService} from 'ng-connection-service';
+import { Location } from '@angular/common';
 
 //forms
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -64,7 +64,11 @@ export class EditProfilePage implements OnInit {
     }
   }
 
-  constructor(private _accountService : accountService, private router: Router, public formBuilder: FormBuilder, public alertController : AlertController) {
+   //Internet Connectivity check
+  isConnected = true;  
+  noInternetConnection: boolean;
+
+  constructor(private _accountService : accountService, private router: Router, public formBuilder: FormBuilder, public alertController : AlertController, private connectionService: ConnectionService, private location: Location) {
 
     this.showLoading = true;
     this._accountService.getUser().subscribe(res => {
@@ -101,15 +105,22 @@ export class EditProfilePage implements OnInit {
           this.showLoading = false;
     
     });
-    
 
-    
+    this.connectionService.monitor().subscribe(isConnected => {  
+      this.isConnected = isConnected;  
+      if (this.isConnected) {  
+        this.noInternetConnection=false;
+      }  
+      else {  
+        this.noInternetConnection=true;
+        this.router.navigate(['no-internet']);
+      }  
+    });
 
     this.passForm = formBuilder.group({
       password: ['', Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(12), Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,12}$')])],
       confirmPassword: ['', Validators.required],
     }, {validator: this.matchingPasswords('password', 'confirmPassword')}); 
-
 
 
   }

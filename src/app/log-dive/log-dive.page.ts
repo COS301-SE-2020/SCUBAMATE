@@ -1,16 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd} from '@angular/router';
 import { diveService } from '../service/dive.service';
 import { accountService } from '../service/account.service';
 import { weatherService } from '../service/weather.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import * as CryptoJS from 'crypto-js';  
 import { UUID } from 'angular2-uuid';
+import {ConnectionService} from 'ng-connection-service';
+import { filter } from 'rxjs/operators';
 
 //forms
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
+import { JsonPipe } from '@angular/common';
 
 
 export interface DiveLog{
@@ -85,11 +88,11 @@ export class LogDivePage implements OnInit {
     allLoaded: boolean ;
     
 
-    
-   
-
   /********************************************/
-  
+  isConnected = true;  
+  noInternetConnection: boolean;
+  previousUrl: string;
+
    Key = {
     "key": null
   };
@@ -99,9 +102,18 @@ export class LogDivePage implements OnInit {
   };
   loginLabel:string ;
 
+  constructor(private _accountService : accountService, private router: Router, private _diveService: diveService, private _weatherService: weatherService,private geolocation: Geolocation, public formBuilder: FormBuilder, public alertController : AlertController, private connectionService: ConnectionService) {
+    this.connectionService.monitor().subscribe(isConnected => {  
+      this.isConnected = isConnected;  
+      if (this.isConnected) {  
+        this.noInternetConnection=false;  
+      }  
+      else {  
+        this.noInternetConnection=true;
+        this.router.navigate(['no-internet']);
+      }  
+    });
 
-  constructor(private _accountService : accountService, private router: Router, private _diveService: diveService, private _weatherService: weatherService,private geolocation: Geolocation, public formBuilder: FormBuilder, public alertController : AlertController ) {
-    
       //Get Current Date default input
       this.cDate = new Date();
       var dd = String(this.cDate.getDate()).padStart(2, '0');
@@ -174,12 +186,7 @@ export class LogDivePage implements OnInit {
      }).catch((error) => {
        console.log('Error getting location', error);
      });
-
-  
-
     
-
-
     this.diveForm = formBuilder.group({
       DiveID: ['', Validators.required],
       AccessToken: ['', Validators.required],
@@ -198,16 +205,32 @@ export class LogDivePage implements OnInit {
       InstructorLink: [] ,
       Weather: [] ,
       DivePublicStatus: []
-    }); 
+    });
 
-
+    router.events.pipe(
+      filter(event => event instanceof NavigationEnd)  
+    ).subscribe((event: NavigationEnd) => {
+      console.log(event.url);
+      if(event.url == '/no-internet'){
+        console.log("Calling saveTempLog");
+        this.saveTempLog();
+      }
+      else if(event.url == '/log-dive'){
+        console.log("Calling checkComplete");
+        if(this.checkCompleteLog() == false){
+          console.log("Not complete form");
+          //this.restoreDive();
+        }
+        else{
+          console.log("Form complete, can automatically submit");
+          this.presentConfirm();
+        }
+      }
+    });
 
   }
   
   ngOnInit() {
-
-
-
     //setup page navigation view
     this.firstPageVisible = true;
     this.secondPageVisible = false;
@@ -233,12 +256,12 @@ export class LogDivePage implements OnInit {
   
     //removed weather here
 
- 
+
 
   } //end ngOnInit
 
   ionViewWillEnter(){
-
+    
     //setup page navigation view
     this.firstPageVisible = true;
     this.secondPageVisible = false;
@@ -262,7 +285,6 @@ export class LogDivePage implements OnInit {
         this.secondPageVisible = false;
         this.thirdPageVisible = false;
         this.fourthPageVisible = false;
-    
   }
 
   loginClick(){
@@ -342,7 +364,6 @@ export class LogDivePage implements OnInit {
 
 
   buddyListFinder(){
-
      if(this.diveObj.Buddy.length >= 2)
     {
       console.log(this.diveObj.Buddy);
@@ -357,7 +378,6 @@ export class LogDivePage implements OnInit {
           }
         ); //end Buddy req
     }
-
   }
 
   async presentAlert() {
@@ -382,6 +402,30 @@ export class LogDivePage implements OnInit {
     await alert.present();
   }
 
+  async presentConfirm() {
+    const alert = this.alertController.create({
+      header: 'Log Complete',
+      message: 'Your last saved dive log was complete. Do you wish to submit?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log("Continuing to complete form.")
+          }
+        },
+        {
+          text: 'Submit',
+          handler: () => {
+            this.automaticallySendLog();
+          }
+        }
+      ]
+    });
+
+    (await alert).present();
+  }
+
   DiveLogSubmit(){
 
     //setup weather final 
@@ -395,17 +439,15 @@ export class LogDivePage implements OnInit {
     this.diveObj.InstructorLink = this.instructorUserInput ; 
     this.diveObj.isCourse = this.showCourseInput ;
 
+
     console.log(this.diveObj);
 
   /*  if( !this.diveForm.valid ){
       this.presentAlert();
     }else{
  
-
       console.log(this.diveObj);
      
-
-
     } */
 
    this.showLoading = true;
@@ -423,11 +465,72 @@ export class LogDivePage implements OnInit {
         alert("Something went wrong..");
       }
     });
-
-
-
-
   }
+
+  saveTempLog(){
+    //setup weather final 
+    this.diveObj.AirTemp = Number(this.diveObj.AirTemp );
+    this.diveObj.SurfaceTemp = Number(this.diveObj.SurfaceTemp );
+    this.diveObj.BottomTemp = Number(this.diveObj.BottomTemp );
+    this.diveObj.Visibility = this.diveObj.Visibility + "m";
+    this.diveObj.Depth = this.diveObj.Depth + "m";
+
+    //link Instructor Array
+    this.diveObj.InstructorLink = this.instructorUserInput ; 
+
+    console.log(this.diveObj);
+    if(localStorage.getItem("Backup")){
+      localStorage.removeItem("Backup");
+    }
+    localStorage.setItem("Backup", JSON.stringify(this.diveObj));
+    console.log("Saving the temp log to localstorage: " + localStorage.getItem("Backup"));
+  }
+
+  checkCompleteLog(){
+    var log;
+    if(localStorage.getItem("Backup")){
+      log = JSON.parse(localStorage.getItem("Backup"));
+      if(log.DiveSite == "" || log.DiveType == "" || log.DiveDate == "" || log.TimeIn == "" || log.TimeOut == "" || log.Buddy == "" || log.Visibility == "" || log.Depth == "" || log.Description == ""){
+        return false;
+      }
+      else return true;
+    }
+  }
+
+  restoreDive(){
+    var log = JSON.parse(localStorage.getItem("Backup"));
+    this.diveObj.Weather =  [this.WindSpeed, this.MoonPhase, this.WeatherDescription]; 
+    this.diveObj.AirTemp = Number(log.AirTemp);
+    this.diveObj.SurfaceTemp = Number(log.SurfaceTemp);
+    this.diveObj.BottomTemp = Number(log.BottomTemp);
+    //this.diveObj.InstructorLink = "-";
+    this.diveObj.Visibility = log.Visibility;
+    this.diveObj.Depth = log.Depth;
+  }
+
+  automaticallySendLog(){
+    console.log("Will automatically send log and then route as per norm.");
+    var log = JSON.stringify(localStorage.getItem("Backup"));
+    console.log("Automatically sending log " + JSON.parse(log));
+    this.showLoading = true;
+    this._diveService.logDive(JSON.parse(log)).subscribe( res =>{
+
+                
+      console.log(res);
+      this.showLoading = false;
+      this.presentSuccessAlert();
+      this.router.navigate(['my-dives']);
+    }, err =>{
+      if(err.error)
+      {
+        alert( err.error);
+      }else{
+        alert("Something went wrong..");
+      }
+    });
+  }
+
+
 
   //Navigation of Pages
   nextPage(){
@@ -450,9 +553,6 @@ export class LogDivePage implements OnInit {
         this.thirdPageVisible = false;
         this.fourthPageVisible = true;
       }
-      
-
-      
   }
 
   previousPage(){
@@ -577,6 +677,5 @@ export class LogDivePage implements OnInit {
          }
        ); 
 }
-
 
 }

@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { diveService } from '../service/dive.service';
 import { accountService } from '../service/account.service';
-
+import {ConnectionService} from 'ng-connection-service';
+import { Location } from '@angular/common';
 
 export interface DiveSite{
   diveSite: string;
@@ -20,30 +21,44 @@ export class HomePage implements OnInit {
   *********************************************/
   siteLst: DiveSite[] ;
   loginLabel:string ;
+
+  //Internet Connectivity check
+  isConnected = true;  
+  noInternetConnection: boolean;
+
   accountType : string;
 
-  /********************************************/
-
-  constructor(private router: Router,private _accountService: accountService) {
-
-    if(localStorage.getItem("accessToken")){
-      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-        this.accountType = "Instructor"
-      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-        this.accountType = "Diver"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-        this.accountType = "Admin"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-        this.accountType = "SuperAdmin"
-      }else{
-        this.accountType = "*Diver"
-      }
-
-      console.log(this.accountType);
-    }
+  constructor(private router: Router,private _accountService: accountService, private connectionService: ConnectionService, private location: Location) {
+    this.connectionService.monitor().subscribe(isConnected => {  
+      this.isConnected = isConnected;  
+      if (this.isConnected) {  
+        this.noInternetConnection=false;
+      }  
+      else {  
+        this.noInternetConnection=true;
+        this.router.navigate(['no-internet']);
+      }  
+      
+    });
     
+
+  if(localStorage.getItem("accessToken")){
+        if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+          this.accountType = "Instructor"
+        }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+          this.accountType = "Diver"
+        }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+          this.accountType = "Admin"
+        }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+          this.accountType = "SuperAdmin"
+        }else{
+          this.accountType = "*Diver"
+        }
+
+        console.log(this.accountType);
+   }
   }
-  
+  /********************************************/
   ngOnInit() {
     this.loginLabel ="Login";
     if(!localStorage.getItem("accessToken"))
