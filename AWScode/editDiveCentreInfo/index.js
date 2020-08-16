@@ -111,11 +111,12 @@ exports.handler = async (event, context, callback) => {
                     logoLink ="https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/defaultlogo.png";
                 }
             });
-                     
+              
+            const ItemType = "DC-"+Name.toLowerCase();
             const dParams = {
                 TableName: "DiveInfo",
                 Key: {
-                    'AccountGuid' : AccountGuid,
+                    'ItemType' : ItemType,
                 },
                 UpdateExpression: 'set LogoPhoto = :l, Coords = :c, Description = :d',
                 ExpressionAttributeValues: {
