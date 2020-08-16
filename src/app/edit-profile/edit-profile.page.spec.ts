@@ -16,7 +16,7 @@ var validData = {
 
 var accessToken = "d1d7391d-c035-28ab-0193-68a7d263d4be11bf1decf78d036abdad2f76f0e68ffeb1651b146d3eb2314ef2401a989bd190ce";
 
-describe('EditProfilePage', () => {
+fdescribe('EditProfilePage', () => {
   let component: EditProfilePage;
   let fixture: ComponentFixture<EditProfilePage>;
   let accService: accountService;
@@ -38,18 +38,18 @@ describe('EditProfilePage', () => {
     router = TestBed.get(Router);
   }));
 
-  it('Successfully Created Edit-Profile Page', () => {
+  fit('Successfully Created Edit-Profile Page', () => {
     localStorage.setItem("accessToken", accessToken);
     expect(component).toBeTruthy();
   });
 
-  it('Testing Edit-Page Components', () => {
+  fit('Testing Edit-Page Components', () => {
     expect(component.AD).toBeUndefined();
     expect(component.loginLabel).toBeDefined();
     expect(component.showData).toBeFalse();
   });
 
-  it('Testing ngOnInit()', () => {
+  fit('Testing ngOnInit()', () => {
     component.ngOnInit();
     expect(component.loginLabel).toBe("Log Out");
     expect(component.showData).toBeFalse();
@@ -61,15 +61,16 @@ describe('EditProfilePage', () => {
     expect(navigateSpy).toHaveBeenCalledWith(['home']);
   });
 
-  it('Testing onSubmit()', () => {
+  fit('Testing updateSubmit()', () => {
     let navigateSpy = spyOn(router, 'navigate');
     component.UpdateSubmit();
     let accountSpy = spyOn(accService, 'editUser').and.callThrough();
     expect(accountSpy).toBeDefined();
+    expect(component.showLoading).toBeFalse();
     expect(navigateSpy).toHaveBeenCalledWith(['profile']);
   });
 
-  it('Testing Edit-Page Functionality', () => {
+  fit('Testing Edit-Page Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.loginClick).toBeTruthy();
     expect(component.UpdateSubmit).toBeTruthy();
