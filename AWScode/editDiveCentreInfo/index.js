@@ -72,10 +72,10 @@ exports.handler = async (event, context, callback) => {
             responseBody = "Account doesn't have correct privileges.";
         }
         /* Check that Account is linked to Dive Centre */
-        else if(!data.Item.DiveCentre.localeCompare(Name))
+        else if(Name.localeCompare(data.Item.DiveCentre) != 0)
         {
             statusCode = 403;
-            responseBody = "Account cannot modify this Dive Centre."
+            responseBody = "Account cannot modify this Dive Centre. ";
         }
         else{
             /* Edit dive centre basic info*/
@@ -155,4 +155,14 @@ exports.handler = async (event, context, callback) => {
     
 };
 
+
+/*
+{
+    "AccessToken" : "506b939b-6591-e60c-b340-948f1a0513191096d933219462874820d2720bf7d5f6851e6aedfaed1e73678c90d702345524da",
+    "Name" : "Reefteach",
+    "Coords": "-27.506939,32.654464",
+    "Description": "Reefteach has knowledge of the reefs at Sodwana Bay and are the operator of choice for divers wishing to know more about the underwater environment. Reefteach staff have completed thousands of dives at Sodwana Bay and because they personally dive daily, they are in a position to show you the best Sodwana has to offer. All their dives are led by divemasters who have an extensive knowledge of the reefs, marine life and the ecology. Dive briefings are done using books in our marine reference library on the beach. In this way the divers know what marine life they can expect to see and to look out for. After the dive the reference books are used again to facilitate identification. Reefteach has a number of special routes that are not well known by other operators. In this way they dive pristine areas that are away from the crowds. Furthermore even on the well known dive sites the Reefteach staff knows where the rare fish and critters can be found. :)",
+    "LogoPhoto" : "data:image/png;...."
+}
+ */
 
