@@ -13,6 +13,7 @@ import { filter } from 'rxjs/operators';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
+import { JsonPipe } from '@angular/common';
 
 
 export interface DiveLog{
@@ -220,7 +221,7 @@ export class LogDivePage implements OnInit {
         }
         else{
           console.log("Form complete, can automatically submit");
-          this.automaticallySendLog();
+          this.presentConfirm();
         }
       }
     });
@@ -397,6 +398,30 @@ export class LogDivePage implements OnInit {
     await alert.present();
   }
 
+  async presentConfirm() {
+    const alert = this.alertController.create({
+      header: 'Log Complete',
+      message: 'Your last saved dive log was complete. Do you wish to submit?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log("Continuing to complete form.")
+          }
+        },
+        {
+          text: 'Submit',
+          handler: () => {
+            this.automaticallySendLog();
+          }
+        }
+      ]
+    });
+
+    (await alert).present();
+  }
+
   DiveLogSubmit(){
     //setup weather final 
     this.diveObj.AirTemp = Number(this.diveObj.AirTemp );
@@ -478,14 +503,11 @@ export class LogDivePage implements OnInit {
 
   automaticallySendLog(){
     console.log("Will automatically send log and then route as per norm.");
-    var log = JSON.parse(localStorage.getItem("Backup"));
-    console.log("LocalStorage Log in autoSend" + JSON.parse(localStorage.getItem("Backup")));
-    log.Visibility += "m";
-    log.Depth += "m";
-    console.log("Automatically sending log " + log);
-    /*
+    var log = JSON.stringify(localStorage.getItem("Backup"));
+    console.log("Automatically sending log " + JSON.parse(log));
+
     this.showLoading = true;
-    this._diveService.logDive(this.diveObj).subscribe( res =>{
+    this._diveService.logDive(JSON.parse(log)).subscribe( res =>{
                 
       console.log(res);
       this.showLoading = false;
@@ -499,7 +521,6 @@ export class LogDivePage implements OnInit {
         alert("Something went wrong..");
       }
     });
-    */
   }
 
   //Navigation of Pages
