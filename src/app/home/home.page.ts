@@ -26,6 +26,8 @@ export class HomePage implements OnInit {
   isConnected = true;  
   noInternetConnection: boolean;
 
+  accountType : string;
+
   constructor(private router: Router,private _accountService: accountService, private connectionService: ConnectionService, private location: Location) {
     this.connectionService.monitor().subscribe(isConnected => {  
       this.isConnected = isConnected;  
@@ -39,7 +41,7 @@ export class HomePage implements OnInit {
       
     });
     
-  accountType : string;
+
   if(localStorage.getItem("accessToken")){
         if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
           this.accountType = "Instructor"
