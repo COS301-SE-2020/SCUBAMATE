@@ -9,15 +9,14 @@ exports.handler = async (event,context) => {
     let statusCode = 0;
     let responseBody = "";
     
+    /*
     const Name = event.Name;
     const CourseType = event.CourseType;
     const MinAgeRequired = event.MinAgeRequired;
     const QualificationType = event.QualificationType;
     const RequiredCourses = event.RequiredCourses;
     const SurveyAnswer = event.SurveyAnswer;
-    
-    
-    /*
+    */
     const body = JSON.parse(event.body);
     const Name = body.Name;
     const CourseType = body.CourseType;
@@ -25,7 +24,7 @@ exports.handler = async (event,context) => {
     const QualificationType = body.QualificationType;
     const RequiredCourses = body.RequiredCourses;
     const SurveyAnswer = body.SurveyAnswer;
-    */
+    
     
     const ItemType = "C-"+Name.toLowerCase();
     
