@@ -48,17 +48,25 @@
     <ion-grid>
       <ion-row>
         <ion-col size="12" class="divHeadSection">
-         <label class="divHead"> {{currentDiveCenter.Name}} </label> 
-        </ion-col>
+          <label class="divHead"> {{currentDiveCenter.Name}} </label>
+        </ion-col>  
       </ion-row>
       <ion-row>
         <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
+          <ion-icon name="location-outline"></ion-icon>
+            <label class="infoLabel"> City: &nbsp;&nbsp; </label>
+            <label class="infoLabel">{{Key.city}} </label>
           <div id="ProfileSurroundDiv">
-            <img id="Profile" src={{currentDiveCenter.LogoPhoto}} alt="../../assets/images/waves.jpg">
+            <img id="Profile" src={{currentDiveCenter.LogoPhoto}}>
          </div>
         </ion-col>
         <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane">
-            {{currentDiveCenter.Description}}
+            
+            <ion-row>
+              <ion-col>
+                {{currentDiveCenter.Description}}
+              </ion-col>
+            </ion-row>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -141,7 +149,7 @@
       </ion-row>
       <ion-row style="padding-left:7%;">
         <ion-col size="12" size-sm="12" size-md="6" size-lg="6" *ngFor="let i of currentDiveCenter.Instructors">
-          <ion-icon name="play-outline"></ion-icon> {{i}}
+          <ion-icon name="person"></ion-icon> {{i}}
         </ion-col>
       </ion-row>
     </ion-grid>

@@ -376,6 +376,10 @@ addSite(){
 getUnverifiedInstructors(){
 
   this.showLoading = true ;
+  this.allInstructors = [] ;
+  this.unverifiedInstructors = [];
+  this.verifiedInstructors = [];
+
   this._accountService.getUnverifiedInstructors().subscribe(res=>{
 
     this.allInstructors = res.UnverifiedInstructors ; 
@@ -508,6 +512,8 @@ getUnverifiedInstructors(){
     "AccessToken": localStorage.getItem("accessToken"),
     "AccountGuid": iGUID
   }
+
+  console.log(body);
 
   this.showLoading = true ;
   this._accountService.verifyInstructor(body).subscribe(res=>{
