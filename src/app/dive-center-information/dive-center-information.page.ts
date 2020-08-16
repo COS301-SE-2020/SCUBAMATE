@@ -10,6 +10,7 @@ export interface DC {
   Courses: string[];
   LogoPhoto: string ;
   Name: string ;
+  Instructors: string[] ;
 }
 
 @Component({
@@ -49,6 +50,7 @@ export class DiveCenterInformationPage implements OnInit {
   //Viewable Variables
   showLoading: Boolean;
   showDiveCenter : Boolean ;
+  showWeather : Boolean = false; 
 
   /********************************************/
 
@@ -71,7 +73,10 @@ export class DiveCenterInformationPage implements OnInit {
     this._diveService.getSingleDiveCenter(localStorage.getItem("ViewDiveCenter")).subscribe( data=>{
       this.currentDiveCenter = data;
 
-      this.showLoading = false;
+
+
+
+      
       this.showDiveCenter = true ;
 
       //GET Weather at Dive Center
@@ -95,24 +100,10 @@ export class DiveCenterInformationPage implements OnInit {
               this.Weather.Desc = res.Headline.Text;
               this.Weather.Wind = res.DailyForecasts[0].Day.Wind.Speed.Value + " " + res.DailyForecasts[0].Day.Wind.Speed.Unit ;
 
-              this.tempDate = new Date();
-              var dd = String(this.tempDate.getDate()).padStart(2, '0');
-              var mm = String(this.tempDate.getMonth() + 1).padStart(2, '0'); 
-              var yyyy = this.tempDate.getFullYear();
-              var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thurday", "Friday", "Saturday"];
-              var day = days[this.tempDate.getDay()];
+             this.showWeather = true ; 
 
-              this.weatherDate =   day + ", " + dd + "/" + mm + "/" + yyyy;
-             /* document.getElementById("Date").innerText = this.weatherDate;
-              document.getElementById("WeatherDesc").innerText = this.Weather.Desc;
-              document.getElementById("City").innerText = this.Key.city;
-              document.getElementById("Coordinates").innerText = this.Coordinates.Latitude + ", " + this.Coordinates.Longitude;
-              document.getElementById("MinTemp").innerText += " " + this.Weather.Min;
-              document.getElementById("MaxTemp").innerText += " " + this.Weather.Max;
-              document.getElementById("Day").innerText += " " + this.Weather.Day;
-              document.getElementById("Night").innerText += " " + this.Weather.Night;*/
-              console.log(this.Weather);
 
+             this.showLoading = false;
           });
       });
 

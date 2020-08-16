@@ -341,14 +341,14 @@ export class PlanningPage implements OnInit {
         {
           name: 'Q1A',
           type: 'radio',
-          label: 'A: Breathing underwater',
+          label: 'A: Underwater breathing',
           value: 'a' ,
           checked: true
         },
         {
           name: 'Q1B',
           type: 'radio',
-          label: 'B: Meeting new friends ',
+          label: 'B: Making new friends ',
           value: 'b'
         },
         {
@@ -409,19 +409,19 @@ export class PlanningPage implements OnInit {
         {
           name: 'Q1B',
           type: 'radio',
-          label: 'B: I want to clean up',
+          label: 'B: I can’t stand the pollution down here',
           value: 'b'
         },
         {
           name: 'Q1C',
           type: 'radio',
-          label: 'C: I wonder what this looked like before sinking?',
+          label: 'C: I wonder what this looked like before it sank?',
           value: 'c'
         },
         {
           name: 'Q1D',
           type: 'radio',
-          label: 'D: This is awesome!',
+          label: 'D: This tech is awesome!',
           value: 'd'
         },
         {
@@ -470,7 +470,7 @@ export class PlanningPage implements OnInit {
         {
           name: 'Q1B',
           type: 'radio',
-          label: 'B: Some underwater creature encounters',
+          label: 'B: Somewhere with underwater creatures',
           value: 'b'
         },
         {
@@ -519,7 +519,7 @@ export class PlanningPage implements OnInit {
       cssClass: 'my-custom-class',
       header: 'Survey.',
       subHeader: 'Question 4 of 5',
-      message: 'What’s your favourite après-dive activity?',
+      message: 'What’s your favourite dive activity?',
       inputs: [
         {
           name: 'Q1A',
@@ -537,7 +537,7 @@ export class PlanningPage implements OnInit {
         {
           name: 'Q1C',
           type: 'radio',
-          label: 'C: Exploring the sea and land',
+          label: 'C: The thrill of exploration',
           value: 'c'
         },
         {
