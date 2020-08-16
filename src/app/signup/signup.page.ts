@@ -323,8 +323,8 @@ async presentAlert() {
 async presentAlertEmail() {
   const alert = await this.alertController.create({
     cssClass: 'errorAlert',
-    header: 'Invalid Signup',
-    message: 'Email is already in use. <br> Please provide a different Email',
+    header: 'Signup Failed',
+    message: 'Something went wrong. Please try again..',
     buttons: ['OK']
   });
 
@@ -636,6 +636,7 @@ async presentOTPPrompt(e : string) {
         cssClass: 'secondary',
         handler: () => {
           console.log('Confirm Cancel');
+          this.router.navigate(['home']);
         }
       }, {
         text: 'Confirm',

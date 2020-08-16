@@ -15,9 +15,34 @@ export interface DiveSite{
 })
 export class HomePage implements OnInit {
 
+   /*********************************************
+                Global Variables
+  *********************************************/
   siteLst: DiveSite[] ;
   loginLabel:string ;
-  constructor(private router: Router,private _accountService: accountService) {}
+  accountType : string;
+
+  /********************************************/
+
+  constructor(private router: Router,private _accountService: accountService) {
+
+    if(localStorage.getItem("accessToken")){
+      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+        this.accountType = "Instructor"
+      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+        this.accountType = "Diver"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+        this.accountType = "Admin"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+        this.accountType = "SuperAdmin"
+      }else{
+        this.accountType = "*Diver"
+      }
+
+      console.log(this.accountType);
+    }
+    
+  }
   
   ngOnInit() {
     this.loginLabel ="Login";
@@ -26,7 +51,23 @@ export class HomePage implements OnInit {
       this.loginLabel = "Login";
     }else{
       this.loginLabel = "Log Out";
+
+      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+        this.accountType = "Instructor"
+      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+        this.accountType = "Diver"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+        this.accountType = "Admin"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+        this.accountType = "SuperAdmin"
+      }else{
+        this.accountType = "*Diver"
+      }
+
+     
     }
+
+   
 
   }
 
@@ -36,6 +77,18 @@ export class HomePage implements OnInit {
       this.loginLabel = "Login";
     }else{
       this.loginLabel = "Log Out";
+
+      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+        this.accountType = "Instructor"
+      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+        this.accountType = "Diver"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+        this.accountType = "Admin"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+        this.accountType = "SuperAdmin"
+      }else{
+        this.accountType = "*Diver"
+      }
     }
   }
 
@@ -49,12 +102,6 @@ export class HomePage implements OnInit {
     }
   }
 
-  sendEmail(){
-    this._accountService.sendValidationEmail("").subscribe( res =>{
-      console.log("In res");
-      console.log(res);
-    }) 
-  }
 
 
 

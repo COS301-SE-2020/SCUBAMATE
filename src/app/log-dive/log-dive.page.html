@@ -5,22 +5,42 @@
 
 </head>
 
-<ion-header no-border slot="fixed">
- 
+<ion-header no-border slot="fixed" style="margin-bottom: 20px;">
+  <ion-toolbar color="dark" class="productHeader" >
+    
+    <ion-buttons slot="primary">
+      <ion-button routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >
+        {{loginLabel}}
+      </ion-button>
+      <ion-button color="secondary">
+        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title > 
+     <ion-buttons >
+      <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo" style="height:80%;width:12%;padding-bottom:3px;padding-top:3px;margin-right:10px;"/>
+      
+        <ion-button routerLink="/home">
+          <ion-icon name="home" ></ion-icon><label style="padding-top:7px;">&nbsp; Home</label> 
+        </ion-button>
+        <ion-button routerLink="/explore">
+          <ion-icon name="color-wand-outline"></ion-icon>&nbsp; Explore
+        </ion-button>
+        <ion-button routerLink="/planning">
+          <ion-icon name="newspaper"></ion-icon>&nbsp; Plan
+        </ion-button>
+        <ion-button routerLink="/my-dives">
+          <ion-icon name="water"></ion-icon>&nbsp; My Dives
+        </ion-button>
+        <ion-button routerLink="/profile">
+          <ion-icon name="person" ></ion-icon>&nbsp; Profile
+        </ion-button>
+      </ion-buttons>
+      
+    </ion-title>
+     <ion-progress-bar type="indeterminate" *ngIf="showLoading"></ion-progress-bar> 
+  </ion-toolbar>
 </ion-header>
-<ion-toolbar class="productHeader" transparent slot="fixed">
-  <ul>
-    <li style="float:right;"><a routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >{{loginLabel}}</a></li>
-   <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo">
-    <li style="float:left;margin-left:20px;"><a routerLink="/home" >Home</a></li>  
-      <li style="float:left;"><a routerLink="/explore">Explore</a></li>  
-      <li style="float:left;"><a routerLink="/weather">Weather</a></li> 
-      <li style="float:left;"><a routerLink="/my-dives">My Dives</a></li>
-      <li style="float:left;"><a routerLink="/profile">My Account</a></li>
-      <ion-progress-bar type="indeterminate" *ngIf="showLoading" ></ion-progress-bar>   
-  </ul>
-  
-</ion-toolbar>
 
 <ion-content fullscreen class="background" no-scroll padding >
   

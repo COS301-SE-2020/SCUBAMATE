@@ -18,13 +18,6 @@ export interface Dive{
 })
 export class WeatherPage implements OnInit {
 
-  tempList : Dive[] = [ {"FirstName" : " Meep", "LastName" : "Meep", "DiveSite": "Meep", "DiveType": "Meep" , "DiveDate": "Meep" },
-                        {"FirstName" : " Meep", "LastName" : "Meep", "DiveSite": "Meep", "DiveType": "Meep" , "DiveDate": "Meep" },
-                        {"FirstName" : " Meep", "LastName" : "Meep", "DiveSite": "Meep", "DiveType": "Meep" , "DiveDate": "Meep" },
-                        {"FirstName" : " Meep", "LastName" : "Meep", "DiveSite": "Meep", "DiveType": "Meep" , "DiveDate": "Meep" },
-                        {"FirstName" : " Meep", "LastName" : "Meep", "DiveSite": "Meep", "DiveType": "Meep" , "DiveDate": "Meep" },
-                        {"FirstName" : " Meep", "LastName" : "Meep", "DiveSite": "Meep", "DiveType": "Meep" , "DiveDate": "Meep" } ];
-
   Key = {
     key: null,
     city: null,
