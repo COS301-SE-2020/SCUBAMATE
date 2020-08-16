@@ -131,7 +131,7 @@ exports.handler = async (event, context, callback) => {
                 responseBody =  "Successfully updated Dive Centre!";
                 statusCode = 200;
             }catch(err){
-                responseBody =  "Account doesn't exist (update)" + err;
+                responseBody = "Update failed. " + err;
                 statusCode = 403;
             }
         }
