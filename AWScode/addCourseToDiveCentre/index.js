@@ -75,29 +75,6 @@ exports.handler = async (event, context, callback) => {
             responseBody = "Account cannot modify this Dive Centre."
         }
         else{
-            /*Retrieve list of existing courses*/  
-            const ItemType = "DC-"+Name.toLowerCase();        
-            const dParams = {
-                TableName: "DiveInfo",
-                Key: {
-                    'ItemType' : ItemType
-                }
-            };  
-            let existingCourses;
-            try{    
-                const centre = await documentClient.get(dParams).promise();
-                existingCourses = centre.Item.Courses;
-
-                /*Add new courses*/ 
-                for(var i=0; i<Courses.size(); i++)
-                {
-                    existingCourses.push(Courses[i]);
-                }
-            }catch(err){
-                responseBody =  "Centre doesn't exist. " + err;
-                statusCode = 403;
-            }
-            
             /*Update courses in the database*/ 
             if(statusCode == undef)
             {
@@ -109,7 +86,7 @@ exports.handler = async (event, context, callback) => {
                     },
                     UpdateExpression: 'set Courses = :c',
                     ExpressionAttributeValues: {
-                        ':c' : existingCourses
+                        ':c' : Courses
                     }
                 };
                 
@@ -143,4 +120,10 @@ exports.handler = async (event, context, callback) => {
     
 };
 
-
+/*
+{
+    "AccessToken":"506b939b-6591-e60c-b340-948f1a0513191037d5f257a176d4b3ebefa3b2ff1e00e7caca8b739c736158caf3a4745d5c1148",
+    "Name":"Reefteach",
+    "Courses" : [""]
+}
+*/
