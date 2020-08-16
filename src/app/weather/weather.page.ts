@@ -20,13 +20,6 @@ export interface Dive{
 })
 export class WeatherPage implements OnInit {
 
-  tempList : Dive[] = [ {"FirstName" : " Meep", "LastName" : "Meep", "DiveSite": "Meep", "DiveType": "Meep" , "DiveDate": "Meep" },
-                        {"FirstName" : " Meep", "LastName" : "Meep", "DiveSite": "Meep", "DiveType": "Meep" , "DiveDate": "Meep" },
-                        {"FirstName" : " Meep", "LastName" : "Meep", "DiveSite": "Meep", "DiveType": "Meep" , "DiveDate": "Meep" },
-                        {"FirstName" : " Meep", "LastName" : "Meep", "DiveSite": "Meep", "DiveType": "Meep" , "DiveDate": "Meep" },
-                        {"FirstName" : " Meep", "LastName" : "Meep", "DiveSite": "Meep", "DiveType": "Meep" , "DiveDate": "Meep" },
-                        {"FirstName" : " Meep", "LastName" : "Meep", "DiveSite": "Meep", "DiveType": "Meep" , "DiveDate": "Meep" } ];
-
   Key = {
     key: null,
     city: null,
@@ -71,7 +64,7 @@ export class WeatherPage implements OnInit {
     {
       this.loginLabel = "Login";
     }else{
-      this.loginLabel = "Sign Out";
+      this.loginLabel = "Log Out";
     }
 
     this.geolocation.getCurrentPosition().then((resp) => {
@@ -121,7 +114,7 @@ export class WeatherPage implements OnInit {
     {
       this.loginLabel = "Login";
     }else{
-      this.loginLabel = "Sign Out";
+      this.loginLabel = "Log Out";
     }
   }
 

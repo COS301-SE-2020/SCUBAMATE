@@ -26,7 +26,8 @@ import { weatherService } from './service/weather.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 //validators
-import { AgeValidator } from './validators/age' ;
+import { AgeValidator } from './validators/age';
+
 
 
 @NgModule({

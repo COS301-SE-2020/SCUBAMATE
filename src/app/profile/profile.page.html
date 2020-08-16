@@ -3,21 +3,42 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
 </head>
-<ion-header no-border slot="fixed"></ion-header>
-<ion-toolbar class="productHeader" transparent slot="fixed">
-  
-  <ul>
-    <li style="float:right;"><a routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >{{loginLabel}}</a></li>
-    <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo">  
-    <li style="float:left;margin-left:20px;"><a routerLink="/home" >Home</a></li>  
-      <li style="float:left;"><a routerLink="/explore">Explore</a></li>  
-      <li style="float:left;"><a routerLink="/weather">Weather</a></li> 
-      <li style="float:left;"><a routerLink="/my-dives">My Dives</a></li>
-      <li style="float:left;"><a routerLink="/profile">My Account</a></li>  
-      <ion-progress-bar type="indeterminate" *ngIf="showLoading"></ion-progress-bar>   
-    </ul>
-  
-</ion-toolbar>
+<ion-header no-border slot="fixed" style="margin-bottom: 20px;">
+  <ion-toolbar color="dark" class="productHeader" >
+    
+    <ion-buttons slot="primary">
+      <ion-button routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >
+        {{loginLabel}}
+      </ion-button>
+      <ion-button color="secondary">
+        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title > 
+     <ion-buttons >
+      <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo" style="height:80%;width:12%;padding-bottom:3px;padding-top:3px;margin-right:10px;"/>
+      
+        <ion-button routerLink="/home">
+          <ion-icon name="home" ></ion-icon><label style="padding-top:7px;">&nbsp; Home</label> 
+        </ion-button>
+        <ion-button routerLink="/explore">
+          <ion-icon name="color-wand-outline"></ion-icon>&nbsp; Explore
+        </ion-button>
+        <ion-button routerLink="/planning">
+          <ion-icon name="newspaper"></ion-icon>&nbsp; Plan
+        </ion-button>
+        <ion-button routerLink="/my-dives">
+          <ion-icon name="water"></ion-icon>&nbsp; My Dives
+        </ion-button>
+        <ion-button routerLink="/profile">
+          <ion-icon name="person" ></ion-icon>&nbsp; Profile
+        </ion-button>
+      </ion-buttons>
+      
+    </ion-title>
+     <ion-progress-bar type="indeterminate" *ngIf="showLoading"></ion-progress-bar> 
+  </ion-toolbar>
+</ion-header>
 
 
 <ion-content fullscreen class="background" no-scroll padding >
@@ -32,7 +53,7 @@
 
     <ion-grid id="ProfileInfo" *ngIf='showAD'>
       <ion-row>
-        <ion-col id="leftPane" style="padding-top:2%;">
+        <ion-col size="12" size-sm="4" size-md="4" size-lg="4" class="leftPane" style="padding-top:2%;">
           <div>
             <div id="profileSurroundDiv">
               <ion-img src={{AD.ProfilePhoto}} id="userProfile" ></ion-img>
@@ -42,9 +63,9 @@
               
           </div>
         </ion-col>
-     <ion-col style="padding-right:0;" >
+     <ion-col style="padding-right:0;" size="12" size-sm="8" size-md="8" size-lg="8" >
           <div id="acountInfo1">
-            <ion-label class="divHead"> User Information </ion-label> <br>
+            <ion-label class="divHead"> Personal Information </ion-label> <br>
             <div class="divBodySection">
               <ion-label class="infoLabel" id="email" >Email: {{AD.Email}} </ion-label> <br>
               <ion-label class="infoLabel" id="instructorNum" *ngIf='AD.InstructorNumber' >Instructor Number: {{AD.InstructorNumber}} </ion-label> <br>
@@ -71,77 +92,110 @@
     </ion-grid> <!-- View Profile -->
   </div>
 
+  <div *ngIf="accountType!='SuperAdmin'  ">
   <div id="Credentials" *ngIf='showAD'>
     <div class="divHeadSection">
-      <ion-label class="divHead"> Diver Credentials </ion-label>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12" size-sm="12" size-md="8" size-lg="8">
+            <ion-label class="divHead" > {{accountType}} Credentials </ion-label>
+          </ion-col>
+          <ion-col size="12" size-sm="6" size-md="2" size-lg="2" *ngIf="accountType=='Diver'">
+            <ion-button color="dark" style="width:100%;--border-radius:0;" (click)="presentAlertRemoveAccount()">
+              <ion-icon name="trash-bin"></ion-icon>
+              &nbsp; Delete <br>&nbsp; Account
+            </ion-button>
+          </ion-col>
+          <ion-col size="12" size-sm="6" size-md="4" size-lg="4" *ngIf="accountType!='Diver'">
+            <ion-button color="dark" style="width:fit-content;--border-radius:0;" (click)="presentAlertRemoveAccount()">
+              <ion-icon name="trash-bin"></ion-icon>
+              &nbsp; Delete <br>&nbsp; Account
+            </ion-button>
+          </ion-col>
+          <ion-col size="12" size-sm="6" size-md="2" size-lg="2" *ngIf="accountType=='Diver'">
+            <ion-button color="dark" style="width:100%;--border-radius:0;" routerLink="/upgrade-instructor">
+              <ion-icon name="arrow-up-outline"></ion-icon>
+              &nbsp; Upgrade
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </div>
       <div class="divBodySection">
-        <ion-label class="divSubHead"> {{AD.AccountType}} </ion-label>
         <ion-grid>
           <ion-row>
-            <ion-col>
-              <ion-label class="infoLabel" id="spes" *ngIf='AD.Specialisation'>Specialisation: <br> <ion-label class="infoLabel" *ngFor="let s of AD.Specialisation"><ion-icon name="play-outline"></ion-icon> {{s}}<br></ion-label></ion-label>
+            <ion-col class="leftPane" *ngIf='AD.DiveCentre != undefined'>
+              <ion-label class="infoLabel" id="qual" >Center: <br><ion-icon name="play-outline"></ion-icon>{{AD.DiveCentre}} </ion-label> 
             </ion-col>
-            <ion-col>
-              <ion-label class="infoLabel" id="qual" *ngIf='AD.Qualification'>Qualificaton: <br><ion-icon name="play-outline"></ion-icon>{{AD.Qualification}} </ion-label> <br><br>
-              <ion-label class="infoLabel" id="qual" *ngIf='AD.DiveCentre'>Center: <br><ion-icon name="play-outline"></ion-icon>{{AD.DiveCentre}} </ion-label> <br><br>
-            </ion-col>
+          </ion-row>
+          <ion-row>
+              <ion-col size="12" size-sm="12" size-md="12" size-lg="12">
+                <ion-label class="infoLabel" id="qual" >Completed Courses:</ion-label> 
+              </ion-col>
+
+              <ion-col size="12" size-sm="12" size-md="12" size-lg="6" *ngFor="let cc of AD.CompletedCourses">
+                <ion-label class="infoLabel" >
+                  <ion-icon name="play-outline"></ion-icon> {{cc}}
+                </ion-label><br>
+              </ion-col>
             
           </ion-row>
         </ion-grid>
     </div>
   </div>
+</div>
 
-  <div id="checkListDiv">
+  <div id="Credentials" *ngIf='accountType=="Instructor"' >
     <div class="divHeadSection">
-      <ion-label class="divHead"> Checklist </ion-label>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12">
+            <ion-label class="divHead" >Dives Pending Approval </ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </div>
     <div class="divBodySection">
-     
-    <ion-button (click)="onChooseDive( diveType.value, $event)">
-      <ion-icon name="search"></ion-icon>
-    </ion-button><br>
 
-   
-      <div class="searchableSelect">
-        <ion-label class="searchableSelectLabel">Dive Type</ion-label>
-        <input list="diveTypes" class="searchableSelectInput" placeholder="Search by a Dive Type" #diveType>
-        <datalist id="diveTypes" >
-            <option *ngFor='let t of DiveTypeLst' value={{t}}></option>
-        </datalist>
-      </div>
- 
-
-    <ion-grid id="CheckListsInfo">
-      <ion-row>
-        <ion-col>
-          <table *ngIf='viewChecklist'>
-            <tr>
-              <th>Equipment</th>
-            </tr>
-            <tr *ngFor='let e of EquipmentList'>
-              <td>{{ e }}</td>
-              <td><ion-checkbox color="dark"></ion-checkbox></td>
-            </tr>
-            <tr></tr>
-          </table>
-        </ion-col>
-        <ion-col>
-          <table *ngIf='viewChecklist'>
-            <tr>
-              <th>Optional</th>
-            </tr>
-            <tr *ngFor='let o of OptionalList' > 
-              <td>{{ o }}</td>
-              <td><ion-checkbox color="dark"></ion-checkbox></td>
-            </tr>
-          </table>
-        </ion-col>
-      </ion-row>
-    
-    </ion-grid>
-  </div>
+        <ion-grid id="UnverifiedListsInfo">
+          <ion-row class="UnverifiedListHead">
+            <ion-col size="8">Dive Log Details</ion-col>
+            <ion-col size="4">
+              <ion-button (click)="toggleUnverified()">
+                <ion-icon name="caret-down" *ngIf='!viewUnverified' color="dark"></ion-icon>
+                <ion-icon name="caret-up" *ngIf='viewUnverified' color="dark"></ion-icon>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+          <div *ngIf="viewUnverified">
+            <div *ngIf="UnverifiedLst == undefined ">
+              <ion-row class="UnverifiedListTableRow">
+                <ion-col size="12">
+                  No Courses to Verify
+                </ion-col>
+              </ion-row>
+            </div>
+            <div *ngIf="UnverifiedLst.length != undefined">
+              <ion-row *ngFor='let u of UnverifiedLst' class="UnverifiedListTableRow"> 
+                <ion-col size="6" size-sm="6" size-md="2" size-lg="2">{{u.DiveDate}}</ion-col>
+                <ion-col size="6" size-sm="6" size-md="2" size-lg="2" >{{u.TimeIn}} - {{u.TimeOut}}</ion-col>
+                <ion-col size="12" size-sm="12" size-md="3" size-lg="3">
+                  {{u.FirstName}} &nbsp; {{u.LastName}}
+                </ion-col>
+                <ion-col size="6" size-sm="6" size-md="2" size-lg="3">{{u.DiveSite}}</ion-col>
+                <ion-col size="6" size-sm="6" size-md="2" size-lg="2">
+                  <ion-button (click)="confirmUnverifiedCourse(u.DiveID , u.AccountGuid)">
+                    <ion-icon name="checkmark-outline"></ion-icon>
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-grid>
+    </div>
   </div>
 
+  
+  
 
 </ion-content>

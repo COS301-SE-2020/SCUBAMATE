@@ -18,6 +18,12 @@ export interface EditAccountClass {
   PublicStatus: boolean;
 }
 
+export interface EditPasswordClass{
+  AccessToken: string;
+  Password : string ;
+  Email : string ; 
+}
+
 
 @Component({
   selector: 'app-edit-profile',
@@ -31,14 +37,32 @@ export class EditProfilePage implements OnInit {
   *********************************************/
   AD ;
   loginLabel:string ; 
-  showData : Boolean = false;
-  showLoading: Boolean = false;
   base64textString : string;
 
+  //Forms
   userForm;
   userObj: EditAccountClass;
+
+  passForm;
+  passObj: EditPasswordClass ;
+
+  //Viewable Content
+  showData : Boolean = false;
+  showLoading: Boolean = false;
+
+  showUserAccount : Boolean = true ;
+  showChangePassWord: Boolean = false ; 
  
    /********************************************/
+   matchingPasswords(passwordKey: string, passwordConfirmationKey: string ) {
+    return (group: FormGroup) => {
+      let passwordInput = group.controls[passwordKey];
+      let passwordConfirmationInput = group.controls[passwordConfirmationKey];
+      if (passwordInput.value !== passwordConfirmationInput.value) {
+        return passwordConfirmationInput.setErrors({notEquivalent: true})
+      }
+    }
+  }
 
    //Internet Connectivity check
   isConnected = true;  
@@ -48,31 +72,37 @@ export class EditProfilePage implements OnInit {
 
     this.showLoading = true;
     this._accountService.getUser().subscribe(res => {
+
+
+      this.passObj ={
+        Password : "",
+        AccessToken: localStorage.getItem("accessToken"),
+        Email : res.Email 
+      }
+
       this.AD = res;
-     
+      
+          //User Form
+          this.userObj ={
+            AccessToken: localStorage.getItem("accessToken"),
+            DateOfBirth : this.AD.DateOfBirth ,
+            ProfilePhoto: this.AD.ProfilePhoto ,
+            FirstName: this.AD.FirstName ,
+            LastName: this.AD.LastName ,
+            PublicStatus: this.AD.PublicStatus 
+          }
 
+          this.userForm = formBuilder.group({
+            firstName: ['', Validators.compose([Validators.minLength(2), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
+            lastName: ['', Validators.compose([Validators.minLength(2), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
+            birthday: ['', Validators.required],
+            profile: [],
+            publicStatus: [] ,
+          }); 
 
-    //User Form
-    this.userObj ={
-      AccessToken: localStorage.getItem("accessToken"),
-      DateOfBirth : this.AD.DateOfBirth ,
-      ProfilePhoto: this.AD.ProfilePhoto ,
-      FirstName: this.AD.FirstName ,
-      LastName: this.AD.LastName ,
-      PublicStatus: this.AD.PublicStatus 
-    }
-
-    this.userForm = formBuilder.group({
-      firstName: ['', Validators.compose([Validators.minLength(2), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
-      lastName: ['', Validators.compose([Validators.minLength(2), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
-      birthday: ['', Validators.required],
-      profile: [],
-      publicStatus: [] ,
-    }); 
-
-    
-    this.showData = true;
-    this.showLoading = false;
+          
+          this.showData = true;
+          this.showLoading = false;
     
     });
 
@@ -86,9 +116,20 @@ export class EditProfilePage implements OnInit {
         this.router.navigate(['no-internet']);
       }  
     });
+
+    this.passForm = formBuilder.group({
+      password: ['', Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(12), Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,12}$')])],
+      confirmPassword: ['', Validators.required],
+    }, {validator: this.matchingPasswords('password', 'confirmPassword')}); 
+
+
   }
 
   ngOnInit() {
+    this.showUserAccount = true ;
+    this.showChangePassWord = false;
+
+
     this.loginLabel ="Login";
     this.showData = false;
     if(!localStorage.getItem("accessToken"))
@@ -97,7 +138,7 @@ export class EditProfilePage implements OnInit {
       this.loginLabel = "Login";
     }else{
       
-      this.loginLabel = "Sign Out";
+      this.loginLabel = "Log Out";
       
     }
   }
@@ -173,6 +214,42 @@ export class EditProfilePage implements OnInit {
   
   
     }
+  }
+
+  PasswordSubmit(){
+
+    console.log(this.passObj);
+
+    this._accountService.updateNewPassword(this.passObj).subscribe(res=>{
+      this.presentPasswordSuccessAlert();
+      this.router.navigate(['profile']);
+    },err=>{
+      this.presentPasswordFailAlert();
+    });
+
+
+
+  }
+
+
+  async presentPasswordSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Password Changed',
+      message: 'Successfully changed Password',
+      buttons: ['OK']
+    });
+  
+    await alert.present();
+  }
+
+  async presentPasswordFailAlert() {
+    const alert = await this.alertController.create({
+      header: 'Password Not Changed',
+      message: 'Failed to update password. Please try again.',
+      buttons: ['OK']
+    });
+  
+    await alert.present();
   }
 
 }

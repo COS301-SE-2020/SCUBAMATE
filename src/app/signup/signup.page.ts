@@ -24,8 +24,7 @@ export interface SignUpDiver {
   Password: string;
   ProfilePhoto: string;
   PublicStatus: boolean;
-  Specialisation: string[];
-  Qualification: string;
+  CompletedCourses: string[];
 }
 
 export interface SignInstructor {
@@ -39,8 +38,7 @@ export interface SignInstructor {
   PublicStatus: boolean;
   InstructorNumber: string;
   DiveCentre: string;
-  Specialisation: string[];
-  Qualification: string;
+  CompletedCourses: string[];
 }
 
 
@@ -78,7 +76,25 @@ export class SignupPage implements OnInit {
 
   //Signup Objects 
   diverObj: SignUpDiver;
-  instructorObj  : SignInstructor; 
+  instructorObj  : SignInstructor;
+  
+    //Page navigation
+    DiverFirstPageVisible : boolean ;
+    DiverSecondPageVisible: boolean;
+    DiverThirdPageVisible: boolean;
+    DiverFourthPageVisible: boolean;
+  
+    InstructorFirstPageVisible : boolean ;
+    InstructorSecondPageVisible: boolean;
+    InstructorThirdPageVisible: boolean;
+    InstructorFourthPageVisible: boolean;
+  
+    //course 
+    CourseLst : string[];
+    showCourses: Boolean = false;
+    userCourses : string[];
+    courseInputField: string = "";
+    courseValid: Boolean;
 
   //Internet Connectivity check
   isConnected = true;  
@@ -111,10 +127,9 @@ export class SignupPage implements OnInit {
       FirstName: "",
       LastName: "",
       Password: "",
-      ProfilePhoto: "",
+      ProfilePhoto: "../assets/images/STDuser.jpg",
       PublicStatus: false ,
-      Specialisation: [],
-      Qualification: "" 
+      CompletedCourses: []
     }
 
     this.diverForm = formBuilder.group({
@@ -126,8 +141,7 @@ export class SignupPage implements OnInit {
       birthday: ['', Validators.required],
       profile: [],
       publicStatus: [] ,
-      qualification: ['', Validators.required],
-      specialisation: []
+      courses: []
     }, {validator: this.matchingPasswords('password', 'confirmPassword')}); 
 
 
@@ -139,12 +153,11 @@ export class SignupPage implements OnInit {
       FirstName: "",
       LastName: "",
       Password: "",
-      ProfilePhoto: "",
+      ProfilePhoto: "../assets/images/STDuser.jpg",
       PublicStatus: false ,
       InstructorNumber: "",
       DiveCentre: "",
-      Specialisation: [],
-      Qualification: "" 
+      CompletedCourses: [] 
     }
 
     this.instructorForm = formBuilder.group({
@@ -156,8 +169,7 @@ export class SignupPage implements OnInit {
       birthday: ['', Validators.required],
       profile: [],
       publicStatus: [] ,
-      qualification: ['', Validators.required],
-      specialisation: [],
+      courses: [],
       instructorNumber: ['', Validators.compose([Validators.minLength(3), Validators.required])],
       diveCenter: ['', Validators.required]
     }, {validator: this.matchingPasswords('password', 'confirmPassword')}); 
@@ -181,6 +193,20 @@ export class SignupPage implements OnInit {
     this.signUpDiver = false;
     this.signUpInstructor = false;
     this.ShowAccountChoice = true;
+
+    this.DiverFirstPageVisible = true;
+    this.DiverSecondPageVisible = false;
+    this.DiverThirdPageVisible = false;
+    this.DiverFourthPageVisible = false;
+
+    this.InstructorFirstPageVisible = true;
+    this.InstructorSecondPageVisible = false;
+    this.InstructorThirdPageVisible = false;
+    this.InstructorFourthPageVisible = false;
+
+    this.showCourses = false;
+    this.userCourses = new Array();
+    this.courseValid = false;
   }
 
   onFileSelected(event) {
@@ -192,19 +218,22 @@ export class SignupPage implements OnInit {
       //console.log(reader.result);
       let s = reader.result ; 
       me.base64textString = reader.result.toString() ;
-
-      if(me.signUpDiver)
-      {
+  
+      console.log(me.diverObj.ProfilePhoto);
+      if(me.signUpDiver){
         me.diverObj.ProfilePhoto = me.base64textString;
       }else{
         me.instructorObj.ProfilePhoto = me.base64textString;
       }
       
+      console.log(me.diverObj.ProfilePhoto);
+     
+      
     };
     reader.onerror = function (error) {
       console.log('Error: ', error);
     };
- }
+  }
 
   ShowRelatedForm(targetValue : string){
   console.log(targetValue);
@@ -308,8 +337,8 @@ async presentAlert() {
 async presentAlertEmail() {
   const alert = await this.alertController.create({
     cssClass: 'errorAlert',
-    header: 'Invalid Signup',
-    message: 'Email is already in use. <br> Please provide a different Email',
+    header: 'Signup Failed',
+    message: 'Something went wrong. Please try again..',
     buttons: ['OK']
   });
 
@@ -332,21 +361,29 @@ async presentAlertEmailSent( userEmail ) {
 DiverSubmit(){
   console.log(this.diverObj);
 
-  if(!this.diverForm.valid || this.userSpecialisation.length == 0 ){
+  if(!this.diverForm.valid  ){
     this.presentAlert();
   }else{
-    this.diverObj.Specialisation = this.userSpecialisation ;
+    this.showLoading = true;
+    this.diverObj.CompletedCourses = this.userCourses ;
     
     this._accountService.insertUserDiver( this.diverObj ).subscribe( res =>{
-      console.log("Sending Diver Info");
-      
-      this.showLoading = true;
-      this._accountService.sendValidationEmail(this.diverObj.Email).subscribe( res => {
-        this.showLoading = false;
-        this.presentAlertEmailSent(this.diverObj.Email);
+      console.log(res);
+      localStorage.setItem("accessToken", res.AccessToken) ; 
 
-        this.router.navigate(['login']);
-      });
+      console.log("Sending Diver Email");
+      
+      
+    /**   this._accountService.sendValidationEmail(this.diverObj.Email).subscribe( res => {
+
+        localStorage.setItem("otp", res.OTP) ; 
+        console.log("Sending Diver Email");
+       this.presentAlertEmailSent(this.diverObj.Email);
+        this.showLoading = false;
+        this.router.navigate(['home']);
+
+      }); */
+      this.sendEmail(this.diverObj.Email);
     },  err => this.presentAlertEmail()); 
 
 
@@ -358,29 +395,282 @@ DiverSubmit(){
 
 InstructorSubmit(){
 
-  if(!this.instructorForm.valid || this.userSpecialisation.length == 0 ){
+  if(!this.instructorForm.valid  ){
     this.presentAlert();
   }else{
-    this.instructorObj.Specialisation = this.userSpecialisation ;
+    this.instructorObj.CompletedCourses = this.userCourses ;
     console.log(this.instructorObj);
     
     this._accountService.insertUserInstructor( this.instructorObj ).subscribe( res =>{
+      console.log(res);
+      localStorage.setItem("accessToken", res.AccessToken) ; 
+
       console.log("Sending Instructor Info");
       
       this.showLoading = true;
-      this._accountService.sendValidationEmail(this.instructorObj.Email).subscribe( res => {
+     /* this._accountService.sendValidationEmail(this.instructorObj.Email).subscribe( res => {
+
+        localStorage.setItem("otp", res.OTP) ; 
         this.showLoading = false;
         this.presentAlertEmailSent(this.instructorObj.Email);
+        this.router.navigate(['home']);
 
-        this.router.navigate(['login']);
-      });
+      });*/
+      this.sendEmail(this.instructorObj.Email);
     },  err => this.presentAlertEmail()); 
 
 
   }
 }
 
+//Navigation of Pages
+nextPage(){
   
+  if(this.signUpDiver)
+  {
+    if(this.DiverFirstPageVisible){
+     
+      this.DiverFirstPageVisible = false;
+      this.DiverSecondPageVisible = true;
+      this.DiverThirdPageVisible = false;
+    }else if(this.DiverSecondPageVisible){
+      this.DiverFirstPageVisible = false;
+      this.DiverSecondPageVisible = false;
+      this.DiverThirdPageVisible = true;
+    }else if (this.DiverThirdPageVisible){
+      this.DiverFirstPageVisible = false;
+      this.DiverSecondPageVisible = false;
+      this.DiverThirdPageVisible = true;
+    }
+
+
+  }else{  //Instructor Pages
+
+    if(this.InstructorFirstPageVisible){
+     
+      this.InstructorFirstPageVisible = false;
+      this.InstructorSecondPageVisible = true;
+      this.InstructorThirdPageVisible = false;
+      this.InstructorFourthPageVisible = false;
+    }else if(this.InstructorSecondPageVisible){
+      this.InstructorFirstPageVisible = false;
+      this.InstructorSecondPageVisible = false;
+      this.InstructorThirdPageVisible = true;
+      this.InstructorFourthPageVisible = false;
+    }else if (this.InstructorThirdPageVisible){
+      this.InstructorFirstPageVisible = false;
+      this.InstructorSecondPageVisible = false;
+      this.InstructorThirdPageVisible = false;
+      this.InstructorFourthPageVisible = true;
+    }
+    
+
+
+
+  }
+    
+}
+
+previousPage(){
+  
+
+  if(this.signUpDiver)
+  {
+      if(this.DiverFirstPageVisible){
+        this.DiverFirstPageVisible = true;
+        this.DiverSecondPageVisible = false;
+        this.DiverThirdPageVisible = false;
+      }else if(this.DiverSecondPageVisible){
+        this.DiverFirstPageVisible = true;
+        this.DiverSecondPageVisible = false;
+        this.DiverThirdPageVisible = false;
+      }else if (this.DiverThirdPageVisible){
+        this.DiverFirstPageVisible = false;
+        this.DiverSecondPageVisible = true;
+        this.DiverThirdPageVisible = false;
+      }
+   }else{ //instructor pages
+    if(this.InstructorFirstPageVisible){
+      this.InstructorFirstPageVisible = true;
+      this.InstructorSecondPageVisible = false;
+      this.InstructorThirdPageVisible = false;
+      this.InstructorFourthPageVisible = false;
+    }else if(this.InstructorSecondPageVisible){
+      this.InstructorFirstPageVisible = true;
+      this.InstructorSecondPageVisible = false;
+      this.InstructorThirdPageVisible = false;
+      this.InstructorFourthPageVisible = false;
+    }else if (this.InstructorThirdPageVisible){
+      this.InstructorFirstPageVisible = false;
+      this.InstructorSecondPageVisible = true;
+      this.InstructorThirdPageVisible = false;
+      this.InstructorFourthPageVisible = false;
+    }else if (this.InstructorFourthPageVisible){
+      this.InstructorFirstPageVisible = false;
+      this.InstructorSecondPageVisible = false;
+      this.InstructorThirdPageVisible = true;
+      this.InstructorFourthPageVisible = false;
+    }
+   }
+}
+
+//Course List Operations
+CourseListFinder(){
+
+  if(this.courseInputField.length >= 2)
+ {
+     this.showLoading = true;
+     this._diveService.getDiveCourses(this.courseInputField).subscribe(
+       data => {
+         console.log("Course search for: " + this.courseInputField);
+           console.log(data);
+           this.CourseLst = data.ReturnedList ; 
+           this.showLoading = false;
+       }
+     ); //end Buddy req
+ }
+ 
+ }
+
+ addCourse(){
+  if(this.courseInputField.length >= 2)
+  {
+   const index: number = this.userCourses.indexOf(this.courseInputField);
+   if (index == -1) {
+     this.userCourses.push(this.courseInputField);
+     this.showCourses = true;
+   }
+    this.courseInputField = "";
+    this.courseValid = true;
+  }
+ 
+  console.log("Course Added: ");
+  console.log(this.userCourses);
+  
+ }
+
+ removeCourse(s : string){
+  const index: number = this.userCourses.indexOf(s);
+  if (index !== -1) {
+    this.userCourses.splice(index, 1);
+
+    if (this.userCourses.length == 0){
+      this.courseValid = false;
+    }
+  }  
+
+  this.CourseLst = [] ;
+}
+
+
+sendEmail( e : string){
+     
+  this.showLoading = true;
+  this._accountService.sendValidationEmail(e).subscribe( res=>
+    {
+      console.log("Email Sent");
+      localStorage.setItem("otp", res.OTP);
+      this.showLoading = false;
+      this.presentOTPPrompt(e);
+    });
+}
+
+sendVerifiedEmail(e : string ){
+     
+  this.showLoading = true;
+  this._accountService.confirmEmailValidation(e).subscribe( res=>
+    {
+      console.log("Validated Email Sent");
+      this.showLoading = false;
+      this.router.navigate(['home']);
+    });
+}
+
+async presentAlertOtpOk( e : string ) {
+  const alert = await this.alertController.create({
+    cssClass: 'errorAlert',
+    header: 'Validation Complete',
+    subHeader: 'Account Email Verified: ',
+    message:  e,
+    buttons: ['Done']
+  });
+
+  await alert.present();
+  this.sendVerifiedEmail(e);
+}
+
+async presentAlertOtpWrong( e : string) {
+  const alert = await this.alertController.create({
+    cssClass: 'errorAlert',
+    header: 'Validation Failed',
+    subHeader: 'Account Email Not Validated',
+    message: 'Invalid OTP provided' ,
+    buttons: [
+      {
+        text: 'Cancel',
+        role: 'cancel',
+        cssClass: 'secondary',
+        handler: () => {
+          console.log('Confirm Cancel');
+        }
+      }, {
+        text: 'Retry',
+        handler: () => {
+          console.log("Retry OTP" );
+          this.sendEmail(e);
+          
+
+        }
+      }
+    ]
+  });
+
+  await alert.present();
+}
+
+
+
+async presentOTPPrompt(e : string) {
+  const alert = await this.alertController.create({
+    cssClass: 'my-custom-class',
+    header: 'Email Verification',
+    subHeader: 'A new OTP has been sent to: ',
+    message:  e,
+    inputs: [
+      {
+        name: 'otpEntered',
+        type: 'text',
+        placeholder: 'OTP Here'
+      }
+    ],
+    buttons: [
+      {
+        text: 'Cancel',
+        role: 'cancel',
+        cssClass: 'secondary',
+        handler: () => {
+          console.log('Confirm Cancel');
+          this.router.navigate(['home']);
+        }
+      }, {
+        text: 'Confirm',
+        handler: data => {
+          console.log(data);
+          console.log("OTP Entered:" + data['otpEntered']);
+
+          if(localStorage.getItem("otp")!= data['otpEntered']){
+            this.presentAlertOtpWrong(e);
+          }else{
+            this.presentAlertOtpOk(e);
+          }
+
+        }
+      }
+    ]
+  });
+
+  await alert.present();
+}
 
 
 }

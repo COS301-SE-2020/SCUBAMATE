@@ -16,15 +16,27 @@ export interface AccountDetails{
   Password: string ;
   DateOfBirth: string ;
   FirstName: string ;
-  AccountType: string ;
+  CompletedCourses: string[] ;
   LastName: string ;
   Email: string ;
   Specialisation: string[];
   Qualification: string;
+  DiveCentre: string;
 }
 
 export interface DiveType{
   diveType : string ;
+}
+
+export interface UnverifiedCourse{
+  AccountGuid: string ;
+  TimeIn : string;
+  TimeOut: string ;
+  DiveSite : string ;
+  DiveDate : string ;
+  DiveID : string ;
+  FirstName : string ;
+  LastName: string ;
 }
 
 @Component({
@@ -34,17 +46,23 @@ export interface DiveType{
 })
 export class ProfilePage implements OnInit {
 
+  /*********************************************
+                Global Variables
+  *********************************************/
   loginLabel:string ;
   AD ;//: AccountDetails ; 
   DiveTypeLst: []; 
   OptionalList : String[];
   EquipmentList : String[];
+  UnverifiedLst: UnverifiedCourse[] ;
  
   viewChecklist : Boolean = false ; 
   viewProfile : Boolean;
   editProfile : Boolean; 
   showLoading: Boolean;
   showAD : Boolean = false  ;
+  accountType : string;
+  viewUnverified : Boolean = false; 
 
   showAccountVerifiedMessage : Boolean ;
 
@@ -52,6 +70,7 @@ export class ProfilePage implements OnInit {
   isConnected = true;  
   noInternetConnection: boolean;
 
+  /********************************************/
   constructor( public alertController : AlertController , private router: Router, private _accountService: accountService,  private _diveService: diveService, private connectionService: ConnectionService, private location: Location) {
     this.connectionService.monitor().subscribe(isConnected => {  
       this.isConnected = isConnected;  
@@ -64,6 +83,7 @@ export class ProfilePage implements OnInit {
       }  
     });
   }
+
   
   ngOnInit() {
     this.viewProfile = true;
@@ -77,7 +97,7 @@ export class ProfilePage implements OnInit {
       this.router.navigate(['login']);
       this.loginLabel = "Login";
     }else{
-      this.loginLabel = "Sign Out";
+      this.loginLabel = "Log Out";
     
 
         this._accountService.getUser().subscribe(res => {
@@ -90,27 +110,34 @@ export class ProfilePage implements OnInit {
             this.AD.PublicStatus = "Private";
           }
 
-          if(res.VerifiedEmail){
+          if(res.EmailVerified){
             this.showAccountVerifiedMessage = false ;
           }else{
             this.showAccountVerifiedMessage = true ;
           }
 
           this.showLoading = false;
-          this.showAD = true; 
+          this.showAD = true;
           
-        }) 
-
-        this._diveService.getDiveTypes("*").subscribe(
-          data => {
-              console.log(data);
-              this.DiveTypeLst = data.ReturnedList ; 
-              console.log("In type");
-              this.showLoading = false;
-
+          
+          if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+            this.accountType = "Instructor"
+          }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+            this.accountType = "Diver"
+          }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+            this.accountType = "Admin"
+          }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+            this.accountType = "SuperAdmin"
+          }else{
+            this.accountType = "*Diver"
           }
-        ); //end DiveType req
 
+
+          if( this.accountType == "Instructor"){
+            this.loadUnverifiedCourses();
+          }
+          
+        });
 
       }
     
@@ -120,39 +147,60 @@ export class ProfilePage implements OnInit {
   ionViewWillEnter(){
     this.viewProfile = true;
     this.editProfile = false;
+    this.loginLabel ="Login";
+    this.showLoading = true;
+    this.showAD = false; 
+
     if(!localStorage.getItem("accessToken"))
     {
       this.router.navigate(['login']);
       this.loginLabel = "Login";
     }else{
-      this.loginLabel = "Sign Out";
-    }
-
+      this.loginLabel = "Log Out";
     
 
-    this._accountService.getUser().subscribe(res => {
-      console.log(res);
-      this.AD = res;
-      if (res.PublicStatus == true){
-        this.AD.PublicStatus = "Public";
-      }else{
-        this.AD.PublicStatus = "Private";
-      }
-      
-      if(res.VerifiedEmail){
-        this.showAccountVerifiedMessage = false ;
-      }else{
-        this.showAccountVerifiedMessage = true ;
-      }
-    })
-    this._diveService.getDiveTypes("*").subscribe(
-      data => {
-          console.log(data);
-          this.DiveTypeLst = data.ReturnedList ; 
-          console.log("In type");
+        this._accountService.getUser().subscribe(res => {
+          console.log("res");
+          console.log(res);
+          this.AD = res;
+          if (res.PublicStatus == true){
+            this.AD.PublicStatus = "Public";
+          }else{
+            this.AD.PublicStatus = "Private";
+          }
+
+          if(res.EmailVerified){
+            this.showAccountVerifiedMessage = false ;
+          }else{
+            this.showAccountVerifiedMessage = true ;
+          }
+
           this.showLoading = false;
+          this.showAD = true;
+          
+          
+          if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+            this.accountType = "Instructor"
+          }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+            this.accountType = "Diver"
+          }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+            this.accountType = "Admin"
+          }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+            this.accountType = "SuperAdmin"
+          }else{
+            this.accountType = "*Diver"
+          }
+          
+        
+
+          this.showLoading = false;
+          this.showAD = true; 
+          
+        }) ;
+
+
+
       }
-    ); //end DiveType req
   }
 
   loginClick(){
@@ -165,53 +213,242 @@ export class ProfilePage implements OnInit {
     }
   }
 
-  onChooseDive( DT: string , event: Event  )
-  {
-    this.showLoading= true;
-    var RequestData = {
-      "DiveType" : DT
-    }
-
-    console.log(RequestData);
-
-    this.showLoading= true;
-    this._diveService.getCheckList(RequestData).subscribe( res =>{
-      this.viewChecklist = false ; 
-      this.OptionalList = res.Optional;
-      this.EquipmentList = res.Equipment;
-      this.viewChecklist = true ; 
-      this.showLoading= false;
-    });
-
-
-  }
 
   goToEdit(){
     console.log("in edit func");
     this.router.navigate(["/edit-profile"]);
   }
 
-  async presentAlertEmailSent( userEmail ) {
+  
+
+  sendEmail(){
+     
+    this.showLoading = true;
+    this._accountService.sendValidationEmail(this.AD.Email).subscribe( res=>
+      {
+        console.log("Email Sent");
+        localStorage.setItem("otp", res.OTP);
+        this.showLoading = false;
+        this.presentOTPPrompt();
+      });
+  }
+
+  sendVerifiedEmail(){
+     
+    this.showLoading = true;
+    this._accountService.confirmEmailValidation(this.AD.Email).subscribe( res=>
+      {
+        console.log("Validated Email Sent");
+        this.showLoading = false;
+        location.reload();
+      });
+  }
+
+  async presentAlertOtpOk( ) {
     const alert = await this.alertController.create({
       cssClass: 'errorAlert',
-      header: 'Validation Email Sent',
-      subHeader: 'Please validate your Email',
-      message: 'An OTP has been sent to: <br>' + userEmail ,
-      buttons: ['OK']
+      header: 'Validation Complete',
+      subHeader: 'Account Email Verified: ',
+      message:  this.AD.Email,
+      buttons: ['Done']
+    });
+  
+    await alert.present();
+    this.sendVerifiedEmail();
+  }
+
+  async presentAlertOtpWrong( ) {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: 'Validation Failed',
+      subHeader: 'Account Email Not Validated',
+      message: 'Invalid OTP provided' ,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Retry',
+          handler: () => {
+            console.log("Retry OTP" );
+            this.sendEmail();
+            
+
+          }
+        }
+      ]
     });
   
     await alert.present();
   }
-  
 
-  sendEmail(){
+
+
+  async presentOTPPrompt() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Email Verification',
+      subHeader: 'A new OTP has been sent to: ',
+      message:  this.AD.Email,
+      inputs: [
+        {
+          name: 'otpEntered',
+          type: 'text',
+          placeholder: 'OTP Here'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Confirm',
+          handler: data => {
+            console.log(data);
+            console.log("OTP Entered:" + data['otpEntered']);
+
+            if(localStorage.getItem("otp")!= data['otpEntered']){
+              this.presentAlertOtpWrong();
+            }else{
+              this.presentAlertOtpOk();
+            }
+
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  loadUnverifiedCourses(){
+    this.showLoading = true ;
+
+    this._diveService.getUnverifiedCourses().subscribe( res =>{
+
+      this.UnverifiedLst = res.UnverifiedCourses;
+      this.viewUnverified = true ; 
+      this.showLoading = false ;
+
+    }, err=>{
+      this.viewUnverified = false ; 
+      this.showLoading = false ;
+
+    });
+
+  }
+
+  confirmUnverifiedCourse( diveID : string, accGUID : string ){
+
+    var confirm ={
+      "AccessToken" : localStorage.getItem("accessToken") ,
+      "DiveID" : diveID,
+      "AccountGuid" : accGUID,
+      "Approved" : true 
+    };
+
     this.showLoading = true;
-    this._accountService.sendValidationEmail(this.AD.Email).subscribe( res=>
-      {
-        this.showLoading = false;
-        this.presentAlertEmailSent(this.AD.Email);
-      });
+    this._diveService.VerifyCourse(confirm).subscribe(res =>{
+      this.showLoading = false ;
+
+     for(var x = 0; x < this.UnverifiedLst.length ; x++){
+       if(this.UnverifiedLst[x].DiveID == diveID){
+          this.UnverifiedLst.splice(x, 1);
+          break;
+       }
+     }
+
+
+    }, err=>{
+
+      this.showLoading = false ;
+      alert("Unable to verify dive");
+
+    });
+
+  }
+
+  toggleUnverified(){
+    this.viewUnverified = !this.viewUnverified ;
   }
 
 
+  async presentAlertRemoveAccount( ) {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: 'Delete Account',
+      subHeader: 'Account Removal',
+      message: 'Confirm deleting of account' ,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Confirm',
+          handler: () => {
+            this.deleteAccount();
+            
+
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
+  }
+
+  deleteAccount(){
+
+    var usr ={
+      "AccessToken" : localStorage.getItem("accessToken")
+    };
+
+    this.showLoading = true; 
+    this._accountService.deleteAccount(usr).subscribe( res => {
+        this.presentAlertGeneral("Success", "Account Deleted");
+        this.showLoading = false; 
+        localStorage.removeItem("accessToken");
+        this.router.navigate(['login']);
+    },err=> {
+      this.presentAlertGeneral("Failed", "Could not delete account");
+      this.showLoading = false; 
+    });
+
+
+  }
+
+  async presentAlertGeneral( head : string , msg : string) {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: head,
+      message: msg ,
+      buttons: [
+        {
+          text: 'Ok',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
+  }
+
 }
+
+

@@ -22,13 +22,28 @@ export class TempPage implements OnInit {
   //Global Variables
   //myInput: string ;
   myForm; 
+  firstPageVisible : boolean ;
+  secondPageVisible: boolean;
+  thirdPageVisible: boolean;
 
   //Internet Connectivity check
   isConnected = true;  
   noInternetConnection: boolean;
+  ProgressColor : string; 
+
 
   inputValues: UserValues  ; 
 
+  loginLabel:string ;
+  loginClick(){
+    if(localStorage.getItem("accessToken"))
+    {
+      localStorage.removeItem("accessToken");
+      this.router.navigate(['home']);
+    }else{
+      this.router.navigate(['login']);
+    }
+  }
 
 
   matchingPasswords(passwordKey: string, passwordConfirmationKey: string ) {
@@ -41,7 +56,8 @@ export class TempPage implements OnInit {
     }
   }
 
-  constructor(public formBuilder: FormBuilder, public alertController : AlertController, private connectionService: ConnectionService, private location: Location, private router: Router) { 
+  constructor(private router: Router , public formBuilder: FormBuilder, public alertController : AlertController, private connectionService: ConnectionService, private location: Location) { 
+
 
     this.inputValues = {
       firstName : ""
@@ -73,6 +89,21 @@ export class TempPage implements OnInit {
   
 
   ngOnInit() {
+    this.loginLabel ="Login";
+    this.ProgressColor = "success"; 
+    this.firstPageVisible = true;
+    this.secondPageVisible = false;
+    this.thirdPageVisible = false;
+
+    
+    if(!localStorage.getItem("accessToken"))
+    {
+      this.router.navigate(['login']);
+      this.loginLabel = "Login";
+    }else{
+      this.loginLabel = "Log Out";
+    }
+
   }
 
   async presentAlert() {
@@ -86,15 +117,55 @@ export class TempPage implements OnInit {
     await alert.present();
   }
 
+ 
+
   onSubmit(){
 
     if(!this.myForm.valid){
+      this.ProgressColor = "danger";
         this.presentAlert();
+        
     }
 
   }
 
- 
+  nextPage(){
+    console.log("Next");
+
+      if(this.firstPageVisible){
+       
+          this.firstPageVisible = false;
+          this.secondPageVisible = true;
+          this.thirdPageVisible = false;
+        
+        
+      }else if(this.secondPageVisible){
+        this.firstPageVisible = false;
+        this.secondPageVisible = false;
+        this.thirdPageVisible = true;
+      }else if (this.thirdPageVisible){
+        this.firstPageVisible = false;
+        this.secondPageVisible = false;
+        this.thirdPageVisible = true;
+      }
+  }
+
+  previousPage(){
+    console.log("Prev");
+    if(this.firstPageVisible){
+      this.firstPageVisible = true;
+      this.secondPageVisible = false;
+      this.thirdPageVisible = false;
+    }else if(this.secondPageVisible){
+      this.firstPageVisible = true;
+      this.secondPageVisible = false;
+      this.thirdPageVisible = false;
+    }else if (this.thirdPageVisible){
+      this.firstPageVisible = false;
+      this.secondPageVisible = true;
+      this.thirdPageVisible = false;
+    }
+  }
 
  
 

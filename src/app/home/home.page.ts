@@ -16,6 +16,9 @@ export interface DiveSite{
 })
 export class HomePage implements OnInit {
 
+   /*********************************************
+                Global Variables
+  *********************************************/
   siteLst: DiveSite[] ;
   loginLabel:string ;
 
@@ -33,17 +36,51 @@ export class HomePage implements OnInit {
         this.noInternetConnection=true;
         this.router.navigate(['no-internet']);
       }  
+      
     });
+    
+  accountType : string;
+  if(localStorage.getItem("accessToken")){
+        if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+          this.accountType = "Instructor"
+        }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+          this.accountType = "Diver"
+        }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+          this.accountType = "Admin"
+        }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+          this.accountType = "SuperAdmin"
+        }else{
+          this.accountType = "*Diver"
+        }
+
+        console.log(this.accountType);
+   }
   }
-  
+  /********************************************/
   ngOnInit() {
     this.loginLabel ="Login";
     if(!localStorage.getItem("accessToken"))
     {
       this.loginLabel = "Login";
     }else{
-      this.loginLabel = "Sign Out";
+      this.loginLabel = "Log Out";
+
+      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+        this.accountType = "Instructor"
+      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+        this.accountType = "Diver"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+        this.accountType = "Admin"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+        this.accountType = "SuperAdmin"
+      }else{
+        this.accountType = "*Diver"
+      }
+
+     
     }
+
+   
 
   }
 
@@ -52,7 +89,19 @@ export class HomePage implements OnInit {
     {
       this.loginLabel = "Login";
     }else{
-      this.loginLabel = "Sign Out";
+      this.loginLabel = "Log Out";
+
+      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+        this.accountType = "Instructor"
+      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+        this.accountType = "Diver"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+        this.accountType = "Admin"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+        this.accountType = "SuperAdmin"
+      }else{
+        this.accountType = "*Diver"
+      }
     }
   }
 
@@ -66,12 +115,6 @@ export class HomePage implements OnInit {
     }
   }
 
-  sendEmail(){
-    this._accountService.sendValidationEmail("").subscribe( res =>{
-      console.log("In res");
-      console.log(res);
-    }) 
-  }
 
 
 

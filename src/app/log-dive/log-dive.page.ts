@@ -48,44 +48,45 @@ export class LogDivePage implements OnInit {
   /*********************************************
                 Global Variables
   *********************************************/
- uuidValue:string;
- showLoading: Boolean;
+    uuidValue:string;
+    showLoading: Boolean;
 
- //Lookahead Lists
- DiveTypeLst: [];
- DiveSiteLst: [];
- BuddyLst:[];
- CourseLst: [];
- InstructorLst:[];
+    //Lookahead Lists
+    DiveTypeLst: [];
+    DiveSiteLst: [];
+    BuddyLst:[];
+    CourseLst: [];
+    InstructorLst:[];
 
- //Instructor Array 
- instructorInput: string ;
- instructorUserInput : string[];
- showInstructors : boolean = false;
+    //Instructor Array 
+    instructorInput: string ;
+    instructorUserInput : string[];
+    showInstructors : boolean = false;
 
- //Dive Specific Details
- cDate : Date; 
- currentDate : string ;
- MaxTempAPI : number ;
- MinTempAPI : number ;
- MoonPhase : string ;
- WeatherDescription: string ; 
- WindSpeed : string;
+    //Dive Specific Details
+    cDate : Date; 
+    currentDate : string ;
+    MaxTempAPI : number ;
+    MinTempAPI : number ;
+    MoonPhase : string ;
+    WeatherDescription: string ; 
+    WindSpeed : string;
 
- //Form Groups
- diveForm;
- diveObj: DiveLog;
+    //Form Groups
+    diveForm;
+    diveObj: DiveLog;
 
- //Page Navigation
- firstPageVisible : boolean ;
- secondPageVisible: boolean;
- thirdPageVisible: boolean;
- fourthPageVisible: boolean; 
+    //Page Navigation
+    firstPageVisible : boolean ;
+    secondPageVisible: boolean;
+    thirdPageVisible: boolean;
+    fourthPageVisible: boolean; 
 
- //Viewable Inputs
- showCourseInput : boolean = false;
- showDiveTypeInput : boolean = true; 
- allLoaded: boolean ;
+    //Viewable Inputs
+    showCourseInput : boolean = false;
+    showDiveTypeInput : boolean = true; 
+    allLoaded: boolean ;
+    
 
   /********************************************/
   isConnected = true;  
@@ -113,7 +114,8 @@ export class LogDivePage implements OnInit {
       }  
     });
 
-    this.cDate = new Date();
+      //Get Current Date default input
+      this.cDate = new Date();
       var dd = String(this.cDate.getDate()).padStart(2, '0');
       var mm = String(this.cDate.getMonth() + 1).padStart(2, '0'); 
       var yyyy = this.cDate.getFullYear();
@@ -184,7 +186,7 @@ export class LogDivePage implements OnInit {
      }).catch((error) => {
        console.log('Error getting location', error);
      });
-
+    
     this.diveForm = formBuilder.group({
       DiveID: ['', Validators.required],
       AccessToken: ['', Validators.required],
@@ -229,7 +231,7 @@ export class LogDivePage implements OnInit {
   }
   
   ngOnInit() {
-     //setup page navigation view
+    //setup page navigation view
     this.firstPageVisible = true;
     this.secondPageVisible = false;
     this.thirdPageVisible = false;
@@ -254,9 +256,12 @@ export class LogDivePage implements OnInit {
   
     //removed weather here
 
+
+
   } //end ngOnInit
 
   ionViewWillEnter(){
+    
     //setup page navigation view
     this.firstPageVisible = true;
     this.secondPageVisible = false;
@@ -317,27 +322,27 @@ export class LogDivePage implements OnInit {
                 //var tempWeather: [] = [res.wind, res.moon, res.sunny, res.swell]
               });
               //logging the dive
-              var log = {
-                DiveID: "D"+ this.uuidValue,
-                AccessToken : localStorage.getItem('accessToken'),
-                Approved: false,
-                DiveDate: dateOf ,
-                TimeIn: timeI ,
-                TimeOut: timeO ,
-                Visibility: vis + "m",
-                Depth: dep + "m",
-                Buddy: bud ,
-                DiveTypeLink: diveT   ,
-                AirTemp: Number(aTemp) ,
-                SurfaceTemp: Number(sTemp) ,
-                BottomTemp: Number(bTemp) ,
-                DiveSite: siteOf,
-                Description: desc ,
-                InstructorLink: [] ,
-                Weather: [this.WindSpeed, this.MoonPhase, this.WeatherDescription],
-                DivePublicStatus: pub,
-                isCourse: this.showCourseInput 
-              } as DiveLog;
+                  var log = {
+                    DiveID: "D"+ this.uuidValue,
+                    AccessToken : localStorage.getItem('accessToken'),
+                    Approved: false,
+                    DiveDate: dateOf ,
+                    TimeIn: timeI ,
+                    TimeOut: timeO ,
+                    Visibility: vis + "m",
+                    Depth: dep + "m",
+                    Buddy: bud ,
+                    DiveTypeLink: diveT   ,
+                    AirTemp: Number(aTemp) ,
+                    SurfaceTemp: Number(sTemp) ,
+                    BottomTemp: Number(bTemp) ,
+                    DiveSite: siteOf,
+                    Description: desc ,
+                    InstructorLink: [] ,
+                    Weather: [this.WindSpeed, this.MoonPhase, this.WeatherDescription],
+                    DivePublicStatus: pub,
+                    isCourse: this.showCourseInput 
+                  } as DiveLog;
           
               console.log(log);
               this.showLoading = true;
@@ -359,8 +364,7 @@ export class LogDivePage implements OnInit {
 
 
   buddyListFinder(){
-
-    if(this.diveObj.Buddy.length >= 2)
+     if(this.diveObj.Buddy.length >= 2)
     {
       console.log(this.diveObj.Buddy);
         this.showLoading = true;
@@ -423,6 +427,7 @@ export class LogDivePage implements OnInit {
   }
 
   DiveLogSubmit(){
+
     //setup weather final 
     this.diveObj.AirTemp = Number(this.diveObj.AirTemp );
     this.diveObj.SurfaceTemp = Number(this.diveObj.SurfaceTemp );
@@ -432,6 +437,8 @@ export class LogDivePage implements OnInit {
 
     //link Instructor Array
     this.diveObj.InstructorLink = this.instructorUserInput ; 
+    this.diveObj.isCourse = this.showCourseInput ;
+
 
     console.log(this.diveObj);
 
@@ -505,9 +512,9 @@ export class LogDivePage implements OnInit {
     console.log("Will automatically send log and then route as per norm.");
     var log = JSON.stringify(localStorage.getItem("Backup"));
     console.log("Automatically sending log " + JSON.parse(log));
-
     this.showLoading = true;
     this._diveService.logDive(JSON.parse(log)).subscribe( res =>{
+
                 
       console.log(res);
       this.showLoading = false;
@@ -523,153 +530,152 @@ export class LogDivePage implements OnInit {
     });
   }
 
+
+
   //Navigation of Pages
   nextPage(){
     
 
-    if(this.firstPageVisible){
-    
-      this.firstPageVisible = false;
-      this.secondPageVisible = true;
-      this.thirdPageVisible = false;
-      this.fourthPageVisible = false;
-    }else if(this.secondPageVisible){
-      this.firstPageVisible = false;
-      this.secondPageVisible = false;
-      this.thirdPageVisible = true;
-      this.fourthPageVisible = false;
-    }else if (this.thirdPageVisible){
-      this.firstPageVisible = false;
-      this.secondPageVisible = false;
-      this.thirdPageVisible = false;
-      this.fourthPageVisible = true;
-    }
-    
-
-    
-}
-
-previousPage(){
-
-    if(this.firstPageVisible){
-      this.firstPageVisible = true;
-      this.secondPageVisible = false;
-      this.thirdPageVisible = false;
-      this.fourthPageVisible = false;
-    }else if(this.secondPageVisible){
-      this.firstPageVisible = true;
-      this.secondPageVisible = false;
-      this.thirdPageVisible = false;
-      this.fourthPageVisible = false;
-    }else if (this.thirdPageVisible){
-      this.firstPageVisible = false;
-      this.secondPageVisible = true;
-      this.thirdPageVisible = false;
-      this.fourthPageVisible = false;
-    }else if (this.fourthPageVisible){
-      this.firstPageVisible = false;
-      this.secondPageVisible = false;
-      this.thirdPageVisible = true;
-      this.fourthPageVisible = false;
-    }
-
-}
-
-viewCourse(){
-  this.showCourseInput = !this.showCourseInput ;
-  this.showDiveTypeInput = !this.showDiveTypeInput; 
-}
-
-
-DiveTypeListFinder(){
-
-  this.showLoading = true; 
-
-  this._diveService.getDiveTypes(this.diveObj.DiveTypeLink).subscribe(res =>{
-    this.DiveTypeLst = res.ReturnedList ;
-    this.showLoading = false;  
-
-  }, err =>{
-    this.showLoading = false; 
-  });
-
-
-}
-
-DiveSiteListFinder(){
-
-  this.showLoading = true; 
-
-  this._diveService.getDiveSites(this.diveObj.DiveSite).subscribe(res =>{
-    this.DiveSiteLst = res.ReturnedList ;
-    this.showLoading = false;  
-
-  }, err =>{
-    this.showLoading = false; 
-  });
-
-
-}
-
-InstructorListFinder(){
-
-  this.showLoading = true;
-  this._accountService.lookAheadInstructor(this.instructorInput).subscribe(data => {
-        console.log(data);
-        this.InstructorLst = data.ReturnedList ; 
-        this.showLoading = false;
-    
-      }, err=>{
-
-        this.showLoading = false;
-
-    }
-  ); 
-
-}
-
-addInstructor(){
-  if(this.instructorInput.length >= 2)
-  {
-   const index: number = this.instructorUserInput.indexOf(this.instructorInput);
-   if (index == -1) {
-     this.instructorUserInput.push(this.instructorInput);
-   }
-    this.instructorInput = "";
-    this.showInstructors = true ; 
+      if(this.firstPageVisible){
+      
+        this.firstPageVisible = false;
+        this.secondPageVisible = true;
+        this.thirdPageVisible = false;
+        this.fourthPageVisible = false;
+      }else if(this.secondPageVisible){
+        this.firstPageVisible = false;
+        this.secondPageVisible = false;
+        this.thirdPageVisible = true;
+        this.fourthPageVisible = false;
+      }else if (this.thirdPageVisible){
+        this.firstPageVisible = false;
+        this.secondPageVisible = false;
+        this.thirdPageVisible = false;
+        this.fourthPageVisible = true;
+      }
   }
-  this.InstructorLst = [] ;
-  console.log("Course Added: ");
-  console.log(this.instructorUserInput);
-  
- }
 
- removeInstructor(s : string){
-  const index: number = this.instructorUserInput.indexOf(s);
-  if (index !== -1) {
-    this.instructorUserInput.splice(index, 1);
-    
-    if(this.instructorUserInput.length == 0){
-      this.showInstructors = false;
+  previousPage(){
+
+      if(this.firstPageVisible){
+        this.firstPageVisible = true;
+        this.secondPageVisible = false;
+        this.thirdPageVisible = false;
+        this.fourthPageVisible = false;
+      }else if(this.secondPageVisible){
+        this.firstPageVisible = true;
+        this.secondPageVisible = false;
+        this.thirdPageVisible = false;
+        this.fourthPageVisible = false;
+      }else if (this.thirdPageVisible){
+        this.firstPageVisible = false;
+        this.secondPageVisible = true;
+        this.thirdPageVisible = false;
+        this.fourthPageVisible = false;
+      }else if (this.fourthPageVisible){
+        this.firstPageVisible = false;
+        this.secondPageVisible = false;
+        this.thirdPageVisible = true;
+        this.fourthPageVisible = false;
+      }
+
+  }
+
+  viewCourse(){
+    this.showCourseInput = !this.showCourseInput ;
+    this.showDiveTypeInput = !this.showDiveTypeInput; 
+  }
+
+
+  DiveTypeListFinder(){
+
+    this.showLoading = true; 
+
+    this._diveService.getDiveTypes(this.diveObj.DiveTypeLink).subscribe(res =>{
+      this.DiveTypeLst = res.ReturnedList ;
+      this.showLoading = false;  
+
+    }, err =>{
+      this.showLoading = false; 
+    });
+
+
+  }
+
+  DiveSiteListFinder(){
+
+    this.showLoading = true; 
+
+    this._diveService.getDiveSites(this.diveObj.DiveSite).subscribe(res =>{
+      this.DiveSiteLst = res.ReturnedList ;
+      this.showLoading = false;  
+
+    }, err =>{
+      this.showLoading = false; 
+    });
+
+
+  }
+
+  InstructorListFinder(){
+
+    this.showLoading = true;
+    this._accountService.lookAheadInstructor(this.instructorInput).subscribe(data => {
+          console.log(data);
+          this.InstructorLst = data.ReturnedList ; 
+          this.showLoading = false;
+      
+        }, err=>{
+
+          this.showLoading = false;
+
+      }
+    ); 
+
+  }
+
+  addInstructor(){
+    if(this.instructorInput.length >= 2)
+    {
+     const index: number = this.instructorUserInput.indexOf(this.instructorInput);
+     if (index == -1) {
+       this.instructorUserInput.push(this.instructorInput);
+     }
+      this.instructorInput = "";
+      this.showInstructors = true ; 
     }
+    this.InstructorLst = [] ;
+    console.log("Course Added: ");
+    console.log(this.instructorUserInput);
+    
+   }
+  
+   removeInstructor(s : string){
+    const index: number = this.instructorUserInput.indexOf(s);
+    if (index !== -1) {
+      this.instructorUserInput.splice(index, 1);
+      
+      if(this.instructorUserInput.length == 0){
+        this.showInstructors = false;
+      }
 
-  }  
+    }  
+  
+    this.InstructorLst = [] ;
+  }
 
-  this.InstructorLst = [] ;
-}
+  CourseListFinder(){
 
-CourseListFinder(){
-
-     this.showLoading = true;
-     this._diveService.getDiveCourses(this.diveObj.DiveTypeLink).subscribe(
-       data => {
-           console.log(data);
-           this.CourseLst = data.ReturnedList ; 
-           this.showLoading = false;
-       }, err=>{
-        this.showLoading = false;
-       }
-     ); 
+       this.showLoading = true;
+       this._diveService.getDiveCourses(this.diveObj.DiveTypeLink).subscribe(
+         data => {
+             console.log(data);
+             this.CourseLst = data.ReturnedList ; 
+             this.showLoading = false;
+         }, err=>{
+          this.showLoading = false;
+         }
+       ); 
 }
 
 }
