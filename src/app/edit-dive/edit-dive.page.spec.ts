@@ -16,7 +16,7 @@ var reqBody = {
 localStorage.setItem("accessToken", reqBody.AccessToken);
 localStorage.setItem("DiveID", reqBody.DiveID);
 
-fdescribe('EditDivePage', () => {
+describe('EditDivePage', () => {
   let component: EditDivePage;
   let fixture: ComponentFixture<EditDivePage>;
   let divService: diveService;
@@ -39,13 +39,13 @@ fdescribe('EditDivePage', () => {
     router = TestBed.get(Router);
   }));
 
-  fit('should create', () => {
+  it('should create', () => {
     localStorage.setItem("accessToken", reqBody.AccessToken);
     localStorage.setItem("DiveID", reqBody.DiveID);
     expect(component).toBeTruthy();
   });
 
-  fit('Testing Edit-Dive Component', () => {
+  it('Testing Edit-Dive Component', () => {
     localStorage.setItem("accessToken", reqBody.AccessToken);
     localStorage.setItem("DiveID", reqBody.DiveID);
     expect(component.showLoading).toBeTrue();
@@ -59,7 +59,7 @@ fdescribe('EditDivePage', () => {
     expect(component.diveObj).toBeDefined();
   });
 
-  fit('Testing ngOnInit()', () => {
+  it('Testing ngOnInit()', () => {
     localStorage.setItem("accessToken", reqBody.AccessToken);
     localStorage.setItem("DiveID", reqBody.DiveID);
     component.ngOnInit();
@@ -67,7 +67,7 @@ fdescribe('EditDivePage', () => {
     expect(component.loginLabel).toBe("Log Out");
   });
 
-  fit('Testing ionViewWillEnter()', () => {
+  it('Testing ionViewWillEnter()', () => {
     localStorage.setItem("accessToken", reqBody.AccessToken);
     localStorage.setItem("DiveID", reqBody.DiveID);
     component.ionViewWillEnter();
