@@ -369,4 +369,75 @@ export class ProfilePage implements OnInit {
     this.viewUnverified = !this.viewUnverified ;
   }
 
+
+  async presentAlertRemoveAccount( ) {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: 'Delete Account',
+      subHeader: 'Account Removal',
+      message: 'Confirm deleting of account' ,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Confirm',
+          handler: () => {
+            this.deleteAccount();
+            
+
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
+  }
+
+  deleteAccount(){
+
+    var usr ={
+      "AccessToken" : localStorage.getItem("accessToken")
+    };
+
+    this.showLoading = true; 
+    this._accountService.deleteAccount(usr).subscribe( res => {
+        this.presentAlertGeneral("Success", "Account Deleted");
+        this.showLoading = false; 
+        localStorage.removeItem("accessToken");
+        this.router.navigate(['login']);
+    },err=> {
+      this.presentAlertGeneral("Failed", "Could not delete account");
+      this.showLoading = false; 
+    });
+
+
+  }
+
+  async presentAlertGeneral( head : string , msg : string) {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: head,
+      message: msg ,
+      buttons: [
+        {
+          text: 'Ok',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
+  }
+
 }
+
+
