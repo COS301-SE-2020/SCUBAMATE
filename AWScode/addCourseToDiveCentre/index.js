@@ -69,7 +69,7 @@ exports.handler = async (event, context, callback) => {
             responseBody = "Account doesn't have correct privileges.";
         }
         /* Check that Account is linked to Dive Centre */
-        else if(!data.Item.DiveCentre.localCompare(Name))
+        else if(Name.localeCompare(data.Item.DiveCentre) != 0)
         {
             statusCode = 403;
             responseBody = "Account cannot modify this Dive Centre."
@@ -102,7 +102,7 @@ exports.handler = async (event, context, callback) => {
         }
     } catch (err) {
         statusCode = 403;
-        responseBody = "Invalid Access Token";
+        responseBody = "Invalid Access Token. " + err ;
     }
     
     const response = {
