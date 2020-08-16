@@ -143,7 +143,7 @@ describe('PlanningPage', () => {
     expect(accountSpy).toBeDefined();
   });
 
-  fit('Testing Planning Functionality', () => {
+  it('Testing Planning Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.ionViewWillEnter).toBeTruthy();
     expect(component.loginClick).toBeTruthy();

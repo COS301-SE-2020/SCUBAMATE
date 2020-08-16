@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { diveService } from '../service/dive.service';
 import { Router } from '@angular/router';
 import { accountService } from '../service/account.service';
-
+//import { REACTIVE_FORM_DIRECTIVES } from '@angular/forms'
 
 //forms
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -43,7 +43,7 @@ export interface EditDiveLog{
 @Component({
   selector: 'app-edit-dive',
   templateUrl: './edit-dive.page.html',
-  styleUrls: ['./edit-dive.page.scss'],
+  styleUrls: ['./edit-dive.page.scss']
 })
 export class EditDivePage implements OnInit {
 

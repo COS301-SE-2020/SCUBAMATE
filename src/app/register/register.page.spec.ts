@@ -24,7 +24,7 @@ var validData = {
   iNum: "9989889"
 };
 
-fdescribe('RegisterPage', () => {
+describe('RegisterPage', () => {
   let component: RegisterPage;
   let fixture: ComponentFixture<RegisterPage>;
   let accService: accountService;
@@ -49,15 +49,15 @@ fdescribe('RegisterPage', () => {
     router = TestBed.get(Router);
   }));
 
-  fit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  fit('Testing Register components', () => {
+  it('Testing Register components', () => {
     expect(component.uuidValue).toBeDefined();
   });
 
-  fit('Testing ngOnInit()', () => {
+  it('Testing ngOnInit()', () => {
     component.ngOnInit();
     expect(component.showSpecialization).toBeFalse();
     expect(component.userSpecialisation).toBeDefined();
@@ -77,11 +77,11 @@ fdescribe('RegisterPage', () => {
     expect(component.courseValid).toBeFalse();
   });
 
-  fit('Testing ShowRelatedForm()', () => {
+  it('Testing ShowRelatedForm()', () => {
 
   });
 
-  fit('Testing SpecializationListFinder()', () => {
+  it('Testing SpecializationListFinder()', () => {
     component.SpecializationListFinder();
     let accountSpy = spyOn(accService, 'getSpecializations').and.callThrough();
     expect(accountSpy).toBeDefined();
@@ -89,7 +89,7 @@ fdescribe('RegisterPage', () => {
     expect(component.SpecializationLst).toBeUndefined();
   });
 
-  fit('Testing QualificationListFinder()', () => {
+  it('Testing QualificationListFinder()', () => {
     component.QualificationListFinder("Advanced Open Water Diver");
     let accountSpy = spyOn(accService, 'getQualifications').and.callThrough();
     expect(accountSpy).toBeDefined();
@@ -97,7 +97,7 @@ fdescribe('RegisterPage', () => {
     expect(component.QualificationLst).toBeUndefined();
   });
 
-  fit('Testing CenterListFinder()', () => {
+  it('Testing CenterListFinder()', () => {
     component.CenterListFinder("Reefteach");
     let diveSpy = spyOn(divService, 'getDiveCenters').and.callThrough();
     expect(diveSpy).toBeDefined();
@@ -105,7 +105,7 @@ fdescribe('RegisterPage', () => {
     expect(component.CenterLst).toBeUndefined();
   });
 
-  fit('Testing addSpecialization()', () => {
+  it('Testing addSpecialization()', () => {
     component.addSpecialisation("Ice Master");
     expect(component.showSpecialization).toBeTrue();
     expect(component.userSpecialisation).toBeDefined();
@@ -116,7 +116,7 @@ fdescribe('RegisterPage', () => {
     expect(component.SpecializationLst).toBeDefined();
   });
 
-  fit('Testing DiverSubmit()', () => {
+  it('Testing DiverSubmit()', () => {
     component.DiverSubmit();
     expect(component.showLoading).toBeFalse();
     expect(component.diverObj.Courses).toBeDefined();
@@ -128,7 +128,7 @@ fdescribe('RegisterPage', () => {
     expect(navigateSpy).toHaveBeenCalledWith(['login']);
   });
 
-  fit('Testing InstructorSubmit()', () => {
+  it('Testing InstructorSubmit()', () => {
     component.InstructorSubmit();
     expect(component.showLoading).toBeFalse();
     expect(component.instructorObj.Courses).toBeDefined();
@@ -140,7 +140,7 @@ fdescribe('RegisterPage', () => {
     expect(navigateSpy).toHaveBeenCalledWith(['login']);
   });
 
-  fit('Testing nextPage()', () => {
+  it('Testing nextPage()', () => {
     component.nextPage();
     if(component.signUpDiver){
       if(component.DiverFirstPageVisible){
@@ -158,7 +158,7 @@ fdescribe('RegisterPage', () => {
     }
   });
 
-  fit('Testing previousPage()', () => {
+  it('Testing previousPage()', () => {
     component.previousPage();
     if(component.signUpDiver){
       if(component.DiverFirstPageVisible){
@@ -176,7 +176,7 @@ fdescribe('RegisterPage', () => {
     }
   });
 
-  fit('Testing CourseListFinder()', () => {
+  it('Testing CourseListFinder()', () => {
     component.CourseListFinder();
     let diveSpy = spyOn(divService, 'getDiveCourses').and.callThrough();
     expect(diveSpy).toBeDefined();
@@ -184,7 +184,7 @@ fdescribe('RegisterPage', () => {
     expect(component.CourseLst).toBeUndefined();
   });
 
-  fit('Testing addCourse()', () => {
+  it('Testing addCourse()', () => {
     component.addCourse();
     expect(component.userCourses).toBeDefined();
     expect(component.showCourses).toBeFalse();
@@ -192,12 +192,12 @@ fdescribe('RegisterPage', () => {
     expect(component.courseValid).toBeFalse();
   });
 
-  fit('Testing removeCourse()', () => {
+  it('Testing removeCourse()', () => {
     component.removeCourse("");
     expect(component.CourseLst).toBeDefined();
   });
 
-  fit('Testing Register Functionality', () => {
+  it('Testing Register Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.ShowRelatedForm).toBeTruthy();
     expect(component.SpecializationListFinder).toBeTruthy();
