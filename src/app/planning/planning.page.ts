@@ -49,6 +49,9 @@ export class PlanningPage implements OnInit {
 
   showCourses : boolean ;
 
+  //SurveyAnswers
+  surveyAnswers : string[] = new Array();
+
   ////
 
   loginLabel:string ;
@@ -325,6 +328,352 @@ export class PlanningPage implements OnInit {
     });
 
 
+
+  }
+
+  async presentSurveyQ1() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Survey.',
+      subHeader: 'Question 1 of 5',
+      message: ' What do you love most about diving?',
+      inputs: [
+        {
+          name: 'Q1A',
+          type: 'radio',
+          label: 'A: Breathing underwater',
+          value: 'a' ,
+          checked: true
+        },
+        {
+          name: 'Q1B',
+          type: 'radio',
+          label: 'B: Meeting new friends ',
+          value: 'b'
+        },
+        {
+          name: 'Q1C',
+          type: 'radio',
+          label: 'C: Seeing a new world ',
+          value: 'c'
+        },
+        {
+          name: 'Q1D',
+          type: 'radio',
+          label: 'D: The cool scuba gear',
+          value: 'd'
+        },
+        {
+          name: 'Q1E',
+          type: 'radio',
+          label: 'E: Neutral buoyancy  ',
+          value: 'e'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel Survey');
+          }
+        }, {
+          text: 'Next',
+          handler: data => {
+            console.log(data);
+            this.surveyAnswers.push(data); 
+            this.presentSurveyQ2();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  async presentSurveyQ2() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Survey.',
+      subHeader: 'Question 2 of 5',
+      message: 'What are you thinking while diving a Shipwreck?',
+      inputs: [
+        {
+          name: 'Q1A',
+          type: 'radio',
+          label: 'A: Let’s explore below deck!',
+          value: 'a' ,
+          checked: true
+        },
+        {
+          name: 'Q1B',
+          type: 'radio',
+          label: 'B: I want to clean up',
+          value: 'b'
+        },
+        {
+          name: 'Q1C',
+          type: 'radio',
+          label: 'C: I wonder what this looked like before sinking?',
+          value: 'c'
+        },
+        {
+          name: 'Q1D',
+          type: 'radio',
+          label: 'D: This is awesome!',
+          value: 'd'
+        },
+        {
+          name: 'Q1E',
+          type: 'radio',
+          label: 'E: Time to practice my wreck diving skills',
+          value: 'e'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel Survey');
+          }
+        }, {
+          text: 'Next',
+          handler: data => {
+            console.log(data);
+            this.surveyAnswers.push(data); 
+            this.presentSurveyQ3();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  async presentSurveyQ3() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Survey.',
+      subHeader: 'Question 3 of 5',
+      message: 'What’s your preference for your next trip?',
+      inputs: [
+        {
+          name: 'Q1A',
+          type: 'radio',
+          label: 'A: I want excitement',
+          value: 'a' ,
+          checked: true
+        },
+        {
+          name: 'Q1B',
+          type: 'radio',
+          label: 'B: Some underwater creature encounters',
+          value: 'b'
+        },
+        {
+          name: 'Q1C',
+          type: 'radio',
+          label: 'C: The scenery is most important',
+          value: 'c'
+        },
+        {
+          name: 'Q1D',
+          type: 'radio',
+          label: 'D: All I need is Wifi',
+          value: 'd'
+        },
+        {
+          name: 'Q1E',
+          type: 'radio',
+          label: 'E: I want to learn something new',
+          value: 'e'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel Survey');
+          }
+        }, {
+          text: 'Next',
+          handler: data => {
+            console.log(data);
+            this.surveyAnswers.push(data); 
+            this.presentSurveyQ4();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  async presentSurveyQ4() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Survey.',
+      subHeader: 'Question 4 of 5',
+      message: 'What’s your favourite après-dive activity?',
+      inputs: [
+        {
+          name: 'Q1A',
+          type: 'radio',
+          label: 'A: Planning the next trip',
+          value: 'a' ,
+          checked: true
+        },
+        {
+          name: 'Q1B',
+          type: 'radio',
+          label: 'B: Sharing my experiences',
+          value: 'b'
+        },
+        {
+          name: 'Q1C',
+          type: 'radio',
+          label: 'C: Exploring the sea and land',
+          value: 'c'
+        },
+        {
+          name: 'Q1D',
+          type: 'radio',
+          label: 'D: Uploading my dive profile',
+          value: 'd'
+        },
+        {
+          name: 'Q1E',
+          type: 'radio',
+          label: 'E: Reminiscing about past experiences',
+          value: 'e'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel Survey');
+          }
+        }, {
+          text: 'Next',
+          handler: data => {
+            console.log(data);
+            this.surveyAnswers.push(data); 
+            this.presentSurveyQ5();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+
+  async presentSurveyQ5() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Survey.',
+      subHeader: 'Question 5 of 5',
+      message: 'Which scuba career appeals most?',
+      inputs: [
+        {
+          name: 'Q1A',
+          type: 'radio',
+          label: 'A: Stunt diver',
+          value: 'a' ,
+          checked: true
+        },
+        {
+          name: 'Q1B',
+          type: 'radio',
+          label: 'B: Underwater conservationist',
+          value: 'b'
+        },
+        {
+          name: 'Q1C',
+          type: 'radio',
+          label: 'C: Expedition diver',
+          value: 'c'
+        },
+        {
+          name: 'Q1D',
+          type: 'radio',
+          label: 'D: Gear testing',
+          value: 'd'
+        },
+        {
+          name: 'Q1E',
+          type: 'radio',
+          label: 'E: PADI Instructor',
+          value: 'e'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel Survey');
+          }
+        }, {
+          text: 'Done',
+          handler: data => {
+            console.log(data);
+            this.surveyAnswers.push(data); 
+            this.completeSurvey();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  completeSurvey(){
+
+      var answers ={
+        "AccessToken": localStorage.getItem("accessToken"),
+        "Q1" : this.surveyAnswers[0],
+        "Q2" : this.surveyAnswers[1],
+        "Q3" : this.surveyAnswers[2],
+        "Q4" : this.surveyAnswers[3],
+        "Q5" : this.surveyAnswers[4]
+      }
+
+      console.log(answers);
+
+
+      this.showLoading = true;
+
+      this._diveService.sendCourseSurveyAnswers(answers).subscribe(res=> {
+        console.log(res);
+        this.showLoading= false;
+
+        this.presentAlertSuggestedCourse(res.Items[0].CourseType, res.Items[0].Name ,res.Items[0].QualificationType );
+
+      }, err =>{
+        this.showLoading= false;
+      });
+
+  }
+
+  async presentAlertSuggestedCourse( CT : string, CN: string, QT: string ) {
+    const alert = await this.alertController.create({
+      header: CT,
+      subHeader: 'Qualification Needed: ' + QT  ,
+      message: CN ,
+      buttons: ['Done']
+    });
+  
+    await alert.present();
 
   }
 

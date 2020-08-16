@@ -33,6 +33,12 @@ $red: #E76F51 ;
 $yellow : #E9C46A ;
 $aquaBlue: #00A896 ;
 
+
+.my-custom-class .alert-wrapper{
+  --min-width: 450px !important;
+}
+
+
 ul {
     list-style-type: none;
     margin: 0;

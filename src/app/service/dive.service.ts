@@ -275,5 +275,16 @@ export class diveService
 
     }
 
+    sendCourseSurveyAnswers(PostData):Observable<any>{
+
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+      return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/coursesurvey', PostData , options); 
+
+    }
+
 
 }
