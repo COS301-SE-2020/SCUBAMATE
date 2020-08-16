@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { AgeValidator } from '../validators/age';
 import { AlertController } from '@ionic/angular';
 import { PRIMARY_OUTLET } from '@angular/router';
-
+import { Router } from '@angular/router';
 
 export interface UserValues{
   firstName: string
@@ -29,6 +29,16 @@ export class TempPage implements OnInit {
 
   inputValues: UserValues  ; 
 
+  loginLabel:string ;
+  loginClick(){
+    if(localStorage.getItem("accessToken"))
+    {
+      localStorage.removeItem("accessToken");
+      this.router.navigate(['home']);
+    }else{
+      this.router.navigate(['login']);
+    }
+  }
 
 
   matchingPasswords(passwordKey: string, passwordConfirmationKey: string ) {
@@ -41,7 +51,7 @@ export class TempPage implements OnInit {
     }
   }
 
-  constructor(public formBuilder: FormBuilder, public alertController : AlertController) { 
+  constructor(private router: Router , public formBuilder: FormBuilder, public alertController : AlertController) { 
 
     this.inputValues = {
       firstName : ""
@@ -63,10 +73,20 @@ export class TempPage implements OnInit {
   
 
   ngOnInit() {
+    this.loginLabel ="Login";
     this.ProgressColor = "success"; 
     this.firstPageVisible = true;
     this.secondPageVisible = false;
     this.thirdPageVisible = false;
+
+    
+    if(!localStorage.getItem("accessToken"))
+    {
+      this.router.navigate(['login']);
+      this.loginLabel = "Login";
+    }else{
+      this.loginLabel = "Log Out";
+    }
 
   }
 

@@ -42,6 +42,41 @@ export class diveService
        return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/divelist',body, options);
     }
 
+    getExtendedDiveSites(entry : String, pageNumber: number): Observable<any>{
+
+      const options = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+          })
+        };
+
+      var  body= {
+          "ItemType" : "DS"  ,
+          "UserEntry" : entry ,
+          "PageNum" : pageNumber
+        } ;
+
+    return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/getdivecentres',body, options);
+    }
+
+    getSingleDiveSite(name : String): Observable<any>{
+
+      const options = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+          })
+        };
+
+      var  body= {
+          "ItemType" : "DS"  ,
+          "Name" : name ,
+        } ;
+
+        console.log(body);
+
+        return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/getsingledivecentreorsite',body, options);
+    }
+
     getDiveCourses(entry : String): Observable<any>{
 
       const options = {
@@ -73,7 +108,41 @@ export class diveService
           "UserEntry" : entry
         } ;
         return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveTypesAndSitesAdded/divelist',body, options);
-      }
+    }
+
+    getExtendedDiveCenters(entry : String, pageNumber: number): Observable<any>{
+
+          const options = {
+              headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+              })
+            };
+
+          var  body= {
+              "ItemType" : "DC"  ,
+              "UserEntry" : entry ,
+              "PageNum" : pageNumber
+            } ;
+
+        return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/getdivecentres',body, options);
+    }
+    
+    getSingleDiveCenter(name : String): Observable<any>{
+
+      const options = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+          })
+        };
+
+      var  body= {
+          "ItemType" : "DC"  ,
+          "Name" : name ,
+        } ;
+
+    return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/getsingledivecentreorsite',body, options);
+}
+
 
     logDive(PostData): Observable<any>{
       	console.log("in req");
@@ -171,5 +240,51 @@ export class diveService
       return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/gettodocourselist', PostData , options); 
 
     }
+
+    getUnverifiedCourses(): Observable<any>{
+
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+    
+      var PostData = {
+        "AccessToken" : localStorage.getItem("accessToken")
+      }
+
+      return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/getunverifiedcourses', PostData , options); 
+
+
+
+    }
+
+    VerifyCourse(PostData): Observable<any>{
+
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+    
+     
+
+      return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/confirmcourse', PostData , options); 
+
+
+
+    }
+
+    sendCourseSurveyAnswers(PostData):Observable<any>{
+
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+      return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/coursesurvey', PostData , options); 
+
+    }
+
 
 }

@@ -2,8 +2,8 @@
   <ion-toolbar color="dark">
     
     <ion-buttons slot="primary">
-      <ion-button>
-          Login
+      <ion-button routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >
+        {{loginLabel}}
       </ion-button>
       <ion-button color="secondary">
         <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
@@ -13,21 +13,25 @@
      <ion-buttons >
       <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo" style="height:80%;width:12%;padding-bottom:3px;padding-top:3px;margin-right:10px;"/>
       
-        <ion-button>
-          <ion-icon name="home"></ion-icon><label class="navBtn">&nbsp; Home</label> 
+        <ion-button routerLink="/home">
+          <ion-icon name="home" ></ion-icon><label class="navBtn">&nbsp; Home</label> 
+        </ion-button>
+        <ion-button routerLink="/explore">
+          <ion-icon name="color-wand-outline"></ion-icon>&nbsp; Explore
         </ion-button>
         <ion-button>
           <ion-icon name="newspaper"></ion-icon>&nbsp; Plan
         </ion-button>
-        <ion-button>
+        <ion-button routerLink="/my-dives">
           <ion-icon name="water"></ion-icon>&nbsp; My Dives
         </ion-button>
         <ion-button>
-          <ion-icon name="person"></ion-icon>&nbsp; Profile
+          <ion-icon name="person" routerLink="/profile"></ion-icon>&nbsp; Profile
         </ion-button>
       </ion-buttons>
-    
+      
     </ion-title>
+    <ion-progress-bar type="indeterminate" ></ion-progress-bar> 
   </ion-toolbar>
 </ion-header>
 

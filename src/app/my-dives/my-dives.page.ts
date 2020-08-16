@@ -99,6 +99,7 @@ export class MyDivesPage implements OnInit {
             }
 
             this.showDiveList = true;
+            console.log(res);
             this.showLoading= false;
 
         }, err =>{

@@ -231,5 +231,80 @@ export class accountService
  
     }
 
+    updateNewPassword(PostData): Observable<any>{
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }) 
+      };
+
+      
+      return this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/UserAccountFull/changepassword', PostData, options );
+ 
+    }
+
+    addDiveCenter(PostData): Observable<any>{
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }) 
+      };
+
+      
+      return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/DiveCentre/upgradedivecentre', PostData, options );
+ 
+    }
+
+    addUsertoDiveCenter(PostData): Observable<any>{
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }) 
+      };
+
+      
+      return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/DiveCentre/updatedivecentre', PostData, options );
+ 
+    }
+
+    getUnverifiedInstructors(): Observable<any>{
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }) 
+      };
+
+      var PostData = {
+        "AccessToken" : localStorage.getItem("accessToken")
+      }
+      
+      return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/getunverifiedinstructors', PostData, options );
+ 
+    }
+
+    verifyInstructor(PostData): Observable<any>{
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }) 
+      };
+
+      
+      return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/verifyinstructor', PostData, options );
+ 
+    }
+
+
+    deleteAccount(PostData): Observable<any>{
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }) 
+      };
+
+      
+      return this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/UserAccountFull/deleteaccount', PostData, options );
+ 
+    }
 
 }

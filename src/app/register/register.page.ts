@@ -334,7 +334,15 @@ DiverSubmit(){
 
         this.router.navigate(['login']);
       });
-    },  err => this.presentAlertEmail()); 
+    },  err => {
+      this.showLoading = false;
+        if(err.error){
+          this.presentAlertGeneral("Failed to Register", err.error);
+        }else{
+          this.presentAlertGeneral("Failed to Register", "Email already in use");
+        }
+
+    }); 
 
 
   }
@@ -362,7 +370,15 @@ console.log(this.instructorObj);
 
         this.router.navigate(['login']);
       });
-    },  err => this.presentAlertEmail()); 
+    },  err => {
+      this.showLoading = false;
+      if(err.error){
+        this.presentAlertGeneral("Failed to Register", err.error);
+      }else{
+        this.presentAlertGeneral("Failed to Register", "Email already in use");
+      }
+
+  }); 
 
 
   }
@@ -534,6 +550,26 @@ CourseListFinder(){
   this.CourseLst = [] ;
 }
 
+
+async presentAlertGeneral( head : string , msg : string) {
+  const alert = await this.alertController.create({
+    cssClass: 'errorAlert',
+    header: head,
+    message: msg ,
+    buttons: [
+      {
+        text: 'Ok',
+        role: 'cancel',
+        cssClass: 'secondary',
+        handler: () => {
+          console.log('Confirm Cancel');
+        }
+      }
+    ]
+  });
+
+  await alert.present();
+}
 
   
 
