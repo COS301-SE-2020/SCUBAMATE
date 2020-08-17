@@ -47,7 +47,7 @@ describe('PlanningPage', () => {
     expect(component.OptionalList).toBeDefined();
     expect(component.viewChecklist).toBeFalse();
     expect(component.showLoading).toBeFalse();
-    expect(component.SearchDiveCheckList).toBeUndefined();
+    expect(component.SearchDiveCheckList).toBe('');
     expect(component.viewAddInput).toBeFalse();
     expect(component.viewPersonalAdded).toBeFalse();
     expect(component.PersonalList).toBeDefined();
@@ -59,6 +59,7 @@ describe('PlanningPage', () => {
   });
 
   it('Testing ngOnInit()', () => {
+    localStorage.setItem("accessToken", accessToken);
     component.ngOnInit();
     expect(component.showCourses).toBeFalse();
     expect(component.showLoading).toBeFalse();
@@ -66,18 +67,18 @@ describe('PlanningPage', () => {
     let divSpy = spyOn(divService, 'getSuggestedCourses').and.callThrough();
     expect(divSpy).toBeDefined();
     expect(component.suggestedCourseFullList).toBeDefined();
-    expect(component.getRandomThreeCourses).toHaveBeenCalled();
     let accountSpy = spyOn(accService, 'getCustomChecklist').and.callThrough();
     expect(accountSpy).toBeDefined();
     expect(component.EquipmentList).toBeDefined();
     expect(component.OptionalList).toBeDefined();
-    expect(component.viewPersonalAdded).toBeTrue();
-    expect(component.viewChecklist).toBeTrue();
+    expect(component.viewPersonalAdded).toBeFalse();
+    expect(component.viewChecklist).toBeFalse();
     let navigateSpy = spyOn(router, 'navigate');
     expect(navigateSpy).toBeDefined();
   });
 
   it('Testing ionViewWillEnter()', () => {
+    localStorage.setItem("accessToken", accessToken);
     component.ionViewWillEnter();
     expect(component.itemToAdd).toBeDefined();
     expect(component.SearchDiveCheckList).toBeDefined();
@@ -89,16 +90,18 @@ describe('PlanningPage', () => {
   });
 
   it('Testing loginClick()', () => {
+    localStorage.setItem("accessToken", accessToken);
+    component.loginClick();
     expect(localStorage.getItem("accessToken")).toBeDefined();
   });
 
   it('Testing onChooseDive()', () => {
     event: Event;
-    component.onChooseDive("", event);
-    expect(component.showLoading).toBeTrue();
+    component.onChooseDive("Ice Dive", event);
+    expect(component.showLoading).toBeFalse();
     let divSpy = spyOn(divService, 'getCheckList').and.callThrough();
     expect(divSpy).toBeDefined();
-    expect(component.viewChecklist).toBeFalse();
+    expect(component.viewChecklist).toBeTrue();
     expect(component.OptionalReceived).toBeUndefined();
     expect(component.EquipmentReceived).toBeUndefined();
   });
