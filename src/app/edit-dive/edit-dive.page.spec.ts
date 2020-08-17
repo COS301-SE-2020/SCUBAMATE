@@ -83,7 +83,7 @@ describe('EditDivePage', () => {
   it('Testing UpdateDiveSubmit()', () => {
     let navigateSpy = spyOn(router, 'navigate');
     component.UpdateDiveSubmit();
-    expect(component.showLoading).toBeFalse();
+    expect(component.showLoading).toBeTrue();
     let editDiveSpy = spyOn(divService, 'updateDive').and.callThrough();
     expect(editDiveSpy).toBeDefined();
     expect(navigateSpy).toHaveBeenCalledWith(['/my-dives']);
@@ -91,7 +91,7 @@ describe('EditDivePage', () => {
 
   it('Testing buddyListFinder()', () => {
     component.buddyListFinder("John");
-    expect(component.showLoading).toBeFalse();
+    expect(component.showLoading).toBeTrue();
     let editDiveSpy = spyOn(accService, 'lookAheadBuddy').and.callThrough();
     expect(editDiveSpy).toBeDefined();
   });
