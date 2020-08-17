@@ -8,15 +8,16 @@ import { Router } from '@angular/router';
 import { diveService } from '../service/dive.service';
 
 var validData = {
-  diveID: "D0e0bc54b-bc03-68ad-1835-8357a51ac815"
+  diveID: "D0e0bc54b-bc03-68ad-1835-8357a51ac815",
+  accessToken : "d1d7391d-c035-28ab-0193-68a7d263d4be11ac76afb3c161…0702085a1c423b0ed53f38b9a0e6e0ad8bfe8cd3712f14be7"
 };
-let divService: diveService;
-let http: HttpClient;
-let router; Router;
 
 describe('MyDivesPage', () => {
   let component: MyDivesPage;
   let fixture: ComponentFixture<MyDivesPage>;
+  let divService: diveService;
+  let http: HttpClient;
+  let router; Router;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -43,26 +44,27 @@ describe('MyDivesPage', () => {
   });
 
   it('Testing ngOnInit()', () => {
+    localStorage.setItem("accessToken", validData.accessToken);
     component.ngOnInit();
     expect(component.showLoading).toBeTrue();
     expect(component.loginLabel).toBe("Log Out");
     let diveSpy = spyOn(divService, 'getPrivateDive').and.callThrough();
     expect(diveSpy).toBeDefined();
     expect(component.diveLst).toBeUndefined();
-    expect(component.showLoading).toBeTrue();
   });
 
   it('Testing ionViewWillEnter()', () => {
-    component.ionViewWillEnter();
+    localStorage.setItem("accessToken", validData.accessToken);
+    component.ngOnInit();
     expect(component.showLoading).toBeTrue();
     expect(component.loginLabel).toBe("Log Out");
     let diveSpy = spyOn(divService, 'getPrivateDive').and.callThrough();
     expect(diveSpy).toBeDefined();
     expect(component.diveLst).toBeUndefined();
-    expect(component.showLoading).toBeTrue();
   });
 
   it('Testing loginClick()', () => {
+    localStorage.setItem("accessToken", validData.accessToken);
     let navigateSpy = spyOn(router, 'navigate');
     component.loginClick();
     expect(navigateSpy).toHaveBeenCalledWith(['home']);
