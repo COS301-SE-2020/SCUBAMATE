@@ -11,10 +11,9 @@ var validData = {
   birthD: "1990-05-06",
   firstN: "Harry",
   lName: "Potter",
-  public: false
+  public: false,
+  accessToken : "d1d7391d-c035-28ab-0193-68a7d263d4be11bf1decf78d036abdad2f76f0e68ffeb1651b146d3eb2314ef2401a989bd190ce"
 };
-
-var accessToken = "d1d7391d-c035-28ab-0193-68a7d263d4be11bf1decf78d036abdad2f76f0e68ffeb1651b146d3eb2314ef2401a989bd190ce";
 
 describe('EditProfilePage', () => {
   let component: EditProfilePage;
@@ -22,7 +21,7 @@ describe('EditProfilePage', () => {
   let accService: accountService;
   let http: HttpClient;
   let router; Router;
-  localStorage.setItem("accessToken", accessToken);
+  localStorage.setItem("accessToken", validData.accessToken);
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -39,7 +38,7 @@ describe('EditProfilePage', () => {
   }));
 
   it('Successfully Created Edit-Profile Page', () => {
-    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("accessToken", validData.accessToken);
     expect(component).toBeTruthy();
   });
 
