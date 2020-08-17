@@ -4,7 +4,9 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { AgeValidator } from '../validators/age';
 import { AlertController } from '@ionic/angular';
 import { PRIMARY_OUTLET } from '@angular/router';
-
+import {ConnectionService} from 'ng-connection-service';
+import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 export interface UserValues{
   firstName: string
@@ -24,11 +26,24 @@ export class TempPage implements OnInit {
   secondPageVisible: boolean;
   thirdPageVisible: boolean;
 
+  //Internet Connectivity check
+  isConnected = true;  
+  noInternetConnection: boolean;
   ProgressColor : string; 
 
 
   inputValues: UserValues  ; 
 
+  loginLabel:string ;
+  loginClick(){
+    if(localStorage.getItem("accessToken"))
+    {
+      localStorage.removeItem("accessToken");
+      this.router.navigate(['home']);
+    }else{
+      this.router.navigate(['login']);
+    }
+  }
 
 
   matchingPasswords(passwordKey: string, passwordConfirmationKey: string ) {
@@ -41,7 +56,8 @@ export class TempPage implements OnInit {
     }
   }
 
-  constructor(public formBuilder: FormBuilder, public alertController : AlertController) { 
+  constructor(private router: Router , public formBuilder: FormBuilder, public alertController : AlertController, private connectionService: ConnectionService, private location: Location) { 
+
 
     this.inputValues = {
       firstName : ""
@@ -56,6 +72,16 @@ export class TempPage implements OnInit {
       confirmPassword: ['', Validators.required]},
       {validator: this.matchingPasswords('password', 'confirmPassword')}); 
     
+      this.connectionService.monitor().subscribe(isConnected => {  
+        this.isConnected = isConnected;  
+        if (this.isConnected) {  
+          this.noInternetConnection=false;
+        }  
+        else {  
+          this.noInternetConnection=true;
+          this.router.navigate(['no-internet']);
+        }  
+      });
     
     }/** End of Constructor */
 
@@ -63,10 +89,20 @@ export class TempPage implements OnInit {
   
 
   ngOnInit() {
+    this.loginLabel ="Login";
     this.ProgressColor = "success"; 
     this.firstPageVisible = true;
     this.secondPageVisible = false;
     this.thirdPageVisible = false;
+
+    
+    if(!localStorage.getItem("accessToken"))
+    {
+      this.router.navigate(['login']);
+      this.loginLabel = "Login";
+    }else{
+      this.loginLabel = "Log Out";
+    }
 
   }
 

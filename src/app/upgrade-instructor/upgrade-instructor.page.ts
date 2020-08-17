@@ -59,7 +59,7 @@ export class UpgradeInstructorPage implements OnInit {
     if(localStorage.getItem("accessToken"))
     {
       localStorage.removeItem("accessToken");
-      this.router.navigate(['home']);
+      this.router.navigate(['login']);
     }else{
       this.router.navigate(['login']);
     }
@@ -118,13 +118,44 @@ export class UpgradeInstructorPage implements OnInit {
 
         console.log(res);
         this.showLoading = false;
-        this.presentSuccessAlert();
+        //this.presentSuccessAlert();
+        this.presentAlertGeneral("Upgrade Successful", "Pending Dive Centre Validation");
         this.router.navigate(['profile']);
-      })
+      }, err =>{
+        this.showLoading = false;
+
+            if(err.error){
+              this.presentAlertGeneral("Failed to Upgrade", err.error);
+            }else{
+              this.presentAlertGeneral("Failed to Upgrade", "Something went wrong");
+            }
+        }
+      );
 
 
     }
 
   }
+
+  async presentAlertGeneral( head : string , msg : string) {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: head,
+      message: msg ,
+      buttons: [
+        {
+          text: 'Ok',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
+  }
+
 
 }

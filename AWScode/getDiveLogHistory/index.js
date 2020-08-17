@@ -75,7 +75,7 @@ exports.handler = async (event, context) => {
     if(statusCode==0){
         var diveParams = {
             TableName: "Dives",
-            ProjectionExpression: "DiveID, AccountGuid, DiveTypeLink, DiveSite, DiveDate, Weather, TimeIn , TimeOut, Buddy",
+            ProjectionExpression: "DiveID, AccountGuid, DiveTypeLink, DiveSite, DiveDate, Weather, TimeIn , TimeOut",
             FilterExpression: "#acc = :acc",
             ExpressionAttributeNames:{
                 "#acc" : "AccountGuid"
@@ -119,3 +119,4 @@ exports.handler = async (event, context) => {
     return response;
 
 };
+

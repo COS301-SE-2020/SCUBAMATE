@@ -122,6 +122,44 @@ exports.handler = async (event, context) => {
                 const contentType = data.Item.ProfilePhoto.substring(startIndexContentType, data.Item.ProfilePhoto.length);
                 let base64Image = "data:image/"+contentType+";base64," +binaryFile.Body.toString('base64'); 
                 if(AccountType.trim() === "Instructor"){
+                    /*Now get the Dive Centre's image to display */
+                    let imageToGet = "https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/defaultlogo.png";
+                    if(data.Item.AccountVerified){
+                        const paramsDC = {
+                            TableName: "DiveInfo",
+                            ProjectionExpression: "LogoPhoto",
+                            Key: {
+                            "ItemType": "DC-"+data.Item.DiveCentre
+                            }
+                        };
+                        try{
+                            const dataDC = await documentClient.get(paramsDC).promise();
+                            imageToGet = dataDC.Item.LogoPhoto;
+                        }
+                        catch(err){
+                            /*Couldn't get image - use default image */
+                            imageToGet = "https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/defaultlogo.png";
+                        }
+                    }
+                    const startIndex = (imageToGet).lastIndexOf("/")+1;
+                    let filePath = (imageToGet).substring(startIndex, (imageToGet).length);
+                    
+                    let paramsImg = {"Bucket": "imagedatabase-scubamate", "Key": filePath };
+                    let returnImg;
+                    
+                    const s3 = new AWS.S3({httpOptions: { timeout: 2000 }});
+                    try{
+                        const binaryFile = await s3.getObject(paramsImg).promise();
+                        const startIndexContentType = (imageToGet).lastIndexOf(".")+1;
+                        const contentType = imageToGet.substring(startIndexContentType, imageToGet.length);
+                        let base64Image = "data:image/"+contentType+";base64," +binaryFile.Body.toString('base64'); 
+                        
+                        returnImg = base64Image;
+                    }
+                    catch(err){
+                        returnImg = "N/A";
+                    }
+                    
                     let completeResponse ={
                         "AccountVerified": data.Item.AccountVerified,
                         "DateOfBirth": data.Item.DateOfBirth,
@@ -133,7 +171,8 @@ exports.handler = async (event, context) => {
                         "DiveCentre": data.Item.DiveCentre,
                         "InstructorNumber": data.Item.InstructorNumber,
                         "CompletedCourses": data.Item.CompletedCourses,
-                        "ProfilePhoto": base64Image
+                        "ProfilePhoto": base64Image,
+                        "LogoPhoto":returnImg
                     };
                     responseBody = completeResponse;
                 }

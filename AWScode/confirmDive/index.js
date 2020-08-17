@@ -9,7 +9,7 @@ exports.handler = async (event, context) => {
     const DiveID = body.DiveID;
     const Approved = body.Approved;
     const AccessToken = body.AccessToken;
-    
+    const AccountGuidGiven =  body.AccountGuid ;
     const AccountGuid = AccessToken.substring(0,36);
 
    function compareDates(t,e){
@@ -71,17 +71,60 @@ exports.handler = async (event, context) => {
                 TableName: "Dives",
                 Key: {
                     'DiveID' : DiveID,
+                    'AccountGuid' : AccountGuidGiven
                 },
                 UpdateExpression: 'set Approved = :a, DiveVerified = :dv',
                 ExpressionAttributeValues: {
                     ':a' : Approved,
                     ':dv' :true
-                }
+                },
+                ReturnValues: 'ALL_NEW'
             };
             try{
                 const dataD = await documentClient.update(paramsDive).promise();
-                responseBody = "Successfully verified dive!";
-                statusCode = 200;
+                const endIndex = (dataD.Attributes.DiveTypeLink).length - ("Courses").length ;
+                const newCourse = (dataD.Attributes.DiveTypeLink).substring(0, endIndex);
+                const paramsCC = {
+                    TableName: "Scubamate",
+                    Key: {
+                        'AccountGuid' : AccountGuidGiven
+                    },
+                    ProjectionExpression: 'CompletedCourses',
+                };
+                try{
+                    const dataCC = await documentClient.get(paramsCC).promise();
+                    let tmp = [];
+                    if(typeof dataCC.Item.CompletedCourses != "undefined"){
+                        tmp = dataCC.Item.CompletedCourses;
+                    }
+                    tmp.push(newCourse);
+                    
+                    const paramsUpdateCC = {
+                        TableName: "Scubamate",
+                        Key: {
+                            'AccountGuid' : AccountGuidGiven
+                        },
+                        UpdateExpression: 'set CompletedCourses = :c',
+                        ExpressionAttributeValues: {
+                            ':c' : tmp,
+                        },
+                    };
+                    try{
+                        const dataUpdateCC = await documentClient.update(paramsUpdateCC).promise();
+                        responseBody = "Successfully verified dive!";
+                        statusCode = 200;
+                    }
+                    catch(err){
+                        responseBody = "Unable to verify dive."+ err +" ";
+                        statusCode = 403;
+                    }
+                }
+                catch(err){
+                    responseBody = "Unable to verify dive."+ err +" ";
+                    statusCode = 403;
+                }
+                
+                
             }catch(err){
                 responseBody = "Unable to verify dive."+ err +" ";
                 statusCode = 403;

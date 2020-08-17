@@ -41,7 +41,7 @@ exports.handler = async (event, context) => {
         
         const params = {
             TableName: 'DiveInfo',
-            ProjectionExpression: "#name, Description, Coords, LogoPhoto, Courses, Instructors, DiveSites", 
+            ProjectionExpression: "#name, Description, LogoPhoto", 
             FilterExpression: filter,
             ExpressionAttributeNames: {
                 '#itemT': 'ItemType',
@@ -55,9 +55,11 @@ exports.handler = async (event, context) => {
             const data = await documentClient.scan(params).promise();
             let tmp = [];
             
-            const numOfItems = 10;
-            /*Show next ten items for current page */
-            for(let i=(PageNum-1);i<numOfItems;i++){
+            const numOfItems = 9;
+            const start = (PageNum-1)*numOfItems ;
+            
+            /*Show next n items for current page */
+            for(let i=start;i<numOfItems+start;i++){
                 if(data.Items[i]!=null){
                     if(typeof data.Items[i].LogoPhoto == "undefined"){
                         data.Items[i].LogoPhoto = "https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/defaultlogo.png";
@@ -75,7 +77,7 @@ exports.handler = async (event, context) => {
                         const contentType = data.Items[i].LogoPhoto.substring(startIndexContentType, data.Items[i].LogoPhoto.length);
                         let base64Image = "data:image/"+contentType+";base64," +binaryFile.Body.toString('base64'); 
                         
-                        data.Items[i].LogoPhoto = base64Image
+                        data.Items[i].LogoPhoto = base64Image;
                     }
                     catch(err){
                         data.Items[i].LogoPhoto = "N/A";
@@ -93,8 +95,8 @@ exports.handler = async (event, context) => {
                 let returnList = [];
                 returnList.push({ReturnedList: tmp});
                 responseBody = returnList[0];
-                statusCode = 200;
-            }
+                 statusCode = 200;
+             }
             
         }catch(err){
             responseBody = "Unable to get data: "+err;

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { diveService } from '../service/dive.service';
-
+import {ConnectionService} from 'ng-connection-service';
+import { Location } from '@angular/common';
 
 export interface Dive{
   Buddy : string;
@@ -20,13 +21,34 @@ export interface Dive{
 })
 export class MyDivesPage implements OnInit {
 //{Location: "Here" , DateOf: "07/03/2019", Weather: "Sunny 70% Visibility", TimeIn: "10:00", TimeOut:"10:45", Buddy: "Gerorge Flint"} 
-   diveLst:[]; //Dive[] ;
+  
+  diveLst:[]; //Dive[] ;
   loginLabel:string ;
   showLoading: Boolean ;
+  showDiveList : Boolean ;
 
-  constructor(private router: Router, private _diveService: diveService) {}
+
+
+
+  //Internet Connectivity check
+  isConnected = true;  
+  noInternetConnection: boolean;
+
+  constructor(private router: Router, private _diveService: diveService, private connectionService: ConnectionService, private location: Location) {
+    this.connectionService.monitor().subscribe(isConnected => {  
+      this.isConnected = isConnected;  
+      if (this.isConnected) {  
+        this.noInternetConnection=false;
+      }  
+      else {  
+        this.noInternetConnection=true;
+        this.router.navigate(['no-internet']);
+      }  
+    });
+  }
   
   ngOnInit() {
+    this.showDiveList = false;
     this.loginLabel ="Login";
     this.showLoading= true;
     if(!localStorage.getItem("accessToken"))
@@ -42,17 +64,21 @@ export class MyDivesPage implements OnInit {
       if(localStorage.getItem("accessToken") != null)//check logged in
       {
         this._diveService.getPrivateDive().subscribe( res =>{
-          console.log(res);
-          console.log(res.Items);
-
+            
             if( res.Items){
               this.diveLst = res.Items;
             }else{
               this.diveLst = [];
             }
+
+            this.showDiveList = true;
             this.showLoading= false;
 
-        })
+        }, err =>{
+          this.showLoading= false;
+          this.showDiveList = false;
+          console.log(err.error)
+        });
          
       }else{
         this.router.navigate(['login']);
@@ -65,6 +91,8 @@ export class MyDivesPage implements OnInit {
   }
 
   ionViewWillEnter(){
+    this.showDiveList = false;
+    this.loginLabel ="Login";
     this.showLoading= true;
     if(!localStorage.getItem("accessToken"))
     {
@@ -74,22 +102,33 @@ export class MyDivesPage implements OnInit {
     }
 
     console.log("Do a Private search:");
-    //get private dives
-    if(localStorage.getItem("accessToken") != null)
-    {
-      this._diveService.getPrivateDive().subscribe( res =>{
-        console.log(res);
-        console.log(res.Items);
+    
+      //get private dives
+      if(localStorage.getItem("accessToken") != null)//check logged in
+      {
+        this._diveService.getPrivateDive().subscribe( res =>{
+            
+            if( res.Items){
+              this.diveLst = res.Items;
+            }else{
+              this.diveLst = [];
+            }
 
-          this.diveLst = res.Items;
+            this.showDiveList = true;
+            console.log(res);
+            this.showLoading= false;
+
+        }, err =>{
           this.showLoading= false;
-      })
-       
-    }else{
-      this.router.navigate(['login']);
-      this.diveLst = [];
-      this.showLoading= false;
-    }
+          this.showDiveList = false;
+          console.log(err.error)
+        });
+         
+      }else{
+        this.router.navigate(['login']);
+        this.showLoading= false;
+        this.diveLst = [];
+      }
     
   }
 

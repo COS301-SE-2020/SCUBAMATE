@@ -5,18 +5,15 @@ const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
 
 
 exports.handler = async (event,context) => {
-    // TODO implement
+    
     let statusCode = 0;
     let responseBody = "";
       
-    //const body = JSON.parse(event.body);
-    //const AccessToken = body.AccessToken;
-    //const Email = body.Email;
-    //const Password = body.Password;
+    const body = JSON.parse(event.body);
+    const AccessToken = body.AccessToken;
+    const Email = body.Email;
+    const Password = body.Password;
     
-    let AccessToken = event.AccessToken;
-    let Email = event.Email;
-    let Password = event.Password;
     console.log("Password: " + Password);
     var AccountGuid;
     
@@ -32,7 +29,7 @@ exports.handler = async (event,context) => {
     };
     
     const data = await documentClient.scan(scanParams).promise();
-    if (data.length==0)
+    if (data.Items.length==0)
     {
         responseBody = "Access Token not found ";
         statusCode = 404;
@@ -75,9 +72,6 @@ exports.handler = async (event,context) => {
             statusCode = 200;
             responseBody = "Password change success!";
         }
-        
-        
-        
         
         
     }

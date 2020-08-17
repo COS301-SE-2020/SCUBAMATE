@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { accountService } from '../service/account.service';
 import * as CryptoJS from 'crypto-js';  
-
+import {ConnectionService} from 'ng-connection-service';
+import { Location } from '@angular/common';
+import { AlertController } from '@ionic/angular';
 
 export interface LoginClass {
   Email: string;
@@ -17,7 +19,23 @@ export interface LoginClass {
 
 export class LoginPage implements OnInit {
 
-  constructor(private _accountService : accountService, private router: Router) { }
+  //Internet Connectivity check
+  isConnected = true;  
+  noInternetConnection: boolean;
+
+  constructor(public alertController : AlertController, private _accountService : accountService, private router: Router, private connectionService: ConnectionService, private location: Location) {
+    this.connectionService.monitor().subscribe(isConnected => {  
+      this.isConnected = isConnected;  
+      if (this.isConnected) {  
+        this.noInternetConnection=false;
+      }  
+      else {  
+        this.noInternetConnection=true;
+        this.router.navigate(['no-internet']);
+      }  
+    });
+   }
+
 
 
  // session : any;
@@ -74,9 +92,23 @@ export class LoginPage implements OnInit {
      // localStorage.setItem("accountType", res.Data[1].AccountType)  ;
       this.router.navigate(['home']);
       //console.log(res.body.AccessToken); 
+    }, err=>{
+      this.presentLoginFailAlert();
     });
 
 
+  }
+
+
+
+  async presentLoginFailAlert() {
+    const alert = await this.alertController.create({
+      header: 'Could not log in',
+      message: 'Please enter a valid password and email.',
+      buttons: ['OK']
+    });
+  
+    await alert.present();
   }
 
 }

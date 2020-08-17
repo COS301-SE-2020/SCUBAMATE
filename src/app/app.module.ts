@@ -16,6 +16,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms' ;
 //api
 import { HttpClientModule } from '@angular/common/http';
 
+//Connection check
+import {ConnectionServiceModule} from 'ng-connection-service';
 
 //services 
 import { accountService } from './service/account.service';
@@ -24,7 +26,8 @@ import { weatherService } from './service/weather.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 //validators
-import { AgeValidator } from './validators/age' ;
+import { AgeValidator } from './validators/age';
+
 
 
 @NgModule({
@@ -36,6 +39,7 @@ import { AgeValidator } from './validators/age' ;
             IonicModule.forRoot(), 
             AppRoutingModule,
             HttpClientModule,
+            ConnectionServiceModule,
             FormsModule,
             ReactiveFormsModule],
   providers: [

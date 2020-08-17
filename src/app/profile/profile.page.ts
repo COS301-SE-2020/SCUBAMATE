@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { accountService } from '../service/account.service';
 import { diveService } from '../service/dive.service';
 import { AlertController } from '@ionic/angular';
-
+import {ConnectionService} from 'ng-connection-service';
+import { Location } from '@angular/common';
 
 export interface AccountDetails{
   ItemType: string ;
@@ -27,6 +28,17 @@ export interface DiveType{
   diveType : string ;
 }
 
+export interface UnverifiedCourse{
+  AccountGuid: string ;
+  TimeIn : string;
+  TimeOut: string ;
+  DiveSite : string ;
+  DiveDate : string ;
+  DiveID : string ;
+  FirstName : string ;
+  LastName: string ;
+}
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
@@ -34,11 +46,15 @@ export interface DiveType{
 })
 export class ProfilePage implements OnInit {
 
+  /*********************************************
+                Global Variables
+  *********************************************/
   loginLabel:string ;
   AD ;//: AccountDetails ; 
   DiveTypeLst: []; 
   OptionalList : String[];
   EquipmentList : String[];
+  UnverifiedLst: UnverifiedCourse[] ;
  
   viewChecklist : Boolean = false ; 
   viewProfile : Boolean;
@@ -46,10 +62,28 @@ export class ProfilePage implements OnInit {
   showLoading: Boolean;
   showAD : Boolean = false  ;
   accountType : string;
+  viewUnverified : Boolean = false; 
 
-  showAccountVerifiedMessage : Boolean ; 
+  showAccountVerifiedMessage : Boolean ;
 
-  constructor( public alertController : AlertController , private router: Router, private _accountService: accountService,  private _diveService: diveService) {}
+  //Internet Connectivity check
+  isConnected = true;  
+  noInternetConnection: boolean;
+
+  /********************************************/
+  constructor( public alertController : AlertController , private router: Router, private _accountService: accountService,  private _diveService: diveService, private connectionService: ConnectionService, private location: Location) {
+    this.connectionService.monitor().subscribe(isConnected => {  
+      this.isConnected = isConnected;  
+      if (this.isConnected) {  
+        this.noInternetConnection=false;
+      }  
+      else {  
+        this.noInternetConnection=true;
+        this.router.navigate(['no-internet']);
+      }  
+    });
+  }
+
   
   ngOnInit() {
     this.viewProfile = true;
@@ -97,13 +131,13 @@ export class ProfilePage implements OnInit {
           }else{
             this.accountType = "*Diver"
           }
+
+
+          if( this.accountType == "Instructor"){
+            this.loadUnverifiedCourses();
+          }
           
         });
-
-
-
-
-
 
       }
     
@@ -297,6 +331,126 @@ export class ProfilePage implements OnInit {
 
   setEmail(){
     this.AD.Email = "teamav301@gmail.com";
+  loadUnverifiedCourses(){
+    this.showLoading = true ;
+
+    this._diveService.getUnverifiedCourses().subscribe( res =>{
+
+      this.UnverifiedLst = res.UnverifiedCourses;
+      this.viewUnverified = true ; 
+      this.showLoading = false ;
+
+    }, err=>{
+      this.viewUnverified = false ; 
+      this.showLoading = false ;
+
+    });
+
+  }
+
+  confirmUnverifiedCourse( diveID : string, accGUID : string ){
+
+    var confirm ={
+      "AccessToken" : localStorage.getItem("accessToken") ,
+      "DiveID" : diveID,
+      "AccountGuid" : accGUID,
+      "Approved" : true 
+    };
+
+    this.showLoading = true;
+    this._diveService.VerifyCourse(confirm).subscribe(res =>{
+      this.showLoading = false ;
+
+     for(var x = 0; x < this.UnverifiedLst.length ; x++){
+       if(this.UnverifiedLst[x].DiveID == diveID){
+          this.UnverifiedLst.splice(x, 1);
+          break;
+       }
+     }
+
+
+    }, err=>{
+
+      this.showLoading = false ;
+      alert("Unable to verify dive");
+
+    });
+
+  }
+
+  toggleUnverified(){
+    this.viewUnverified = !this.viewUnverified ;
+  }
+
+
+  async presentAlertRemoveAccount( ) {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: 'Delete Account',
+      subHeader: 'Account Removal',
+      message: 'Confirm deleting of account' ,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Confirm',
+          handler: () => {
+            this.deleteAccount();
+            
+
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
+  }
+
+  deleteAccount(){
+
+    var usr ={
+      "AccessToken" : localStorage.getItem("accessToken")
+    };
+
+    this.showLoading = true; 
+    this._accountService.deleteAccount(usr).subscribe( res => {
+        this.presentAlertGeneral("Success", "Account Deleted");
+        this.showLoading = false; 
+        localStorage.removeItem("accessToken");
+        this.router.navigate(['login']);
+    },err=> {
+      this.presentAlertGeneral("Failed", "Could not delete account");
+      this.showLoading = false; 
+    });
+
+
+  }
+
+  async presentAlertGeneral( head : string , msg : string) {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: head,
+      message: msg ,
+      buttons: [
+        {
+          text: 'Ok',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
   }
 
 }
+
+

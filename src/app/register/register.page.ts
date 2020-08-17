@@ -5,7 +5,8 @@ import * as CryptoJS from 'crypto-js';
 import { UUID } from 'angular2-uuid';
 import { Binary } from '@angular/compiler';
 import { Router } from '@angular/router';
-
+import {ConnectionService} from 'ng-connection-service';
+import { Location } from '@angular/common';
 
 //forms
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -90,6 +91,10 @@ export class RegisterPage implements OnInit {
   courseInputField: string = "";
   courseValid: Boolean;
 
+  //Internet Connectivity check
+  isConnected = true;  
+  noInternetConnection: boolean;
+
   /********************************************/
 
   matchingPasswords(passwordKey: string, passwordConfirmationKey: string ) {
@@ -102,7 +107,7 @@ export class RegisterPage implements OnInit {
     }
   }
 
-  constructor(private _diveService: diveService,  private _accountService : accountService,  private router: Router, public formBuilder: FormBuilder, public alertController : AlertController) {
+  constructor(private _diveService: diveService,  private _accountService : accountService,  private router: Router, public formBuilder: FormBuilder, public alertController : AlertController, private connectionService: ConnectionService, private location: Location) {
 
     
     //generate GUID
@@ -163,6 +168,17 @@ export class RegisterPage implements OnInit {
       instructorNumber: ['', Validators.compose([Validators.minLength(3), Validators.required])],
       diveCenter: ['', Validators.required]
     }, {validator: this.matchingPasswords('password', 'confirmPassword')}); 
+
+    this.connectionService.monitor().subscribe(isConnected => {  
+      this.isConnected = isConnected;  
+      if (this.isConnected) {  
+        this.noInternetConnection=false;
+      }  
+      else {  
+        this.noInternetConnection=true;
+        this.router.navigate(['no-internet']);
+      }  
+    });
 
 
   } //End of Constructor
@@ -334,7 +350,15 @@ DiverSubmit(){
 
         this.router.navigate(['login']);
       });
-    },  err => this.presentAlertEmail()); 
+    },  err => {
+      this.showLoading = false;
+        if(err.error){
+          this.presentAlertGeneral("Failed to Register", err.error);
+        }else{
+          this.presentAlertGeneral("Failed to Register", "Email already in use");
+        }
+
+    }); 
 
 
   }
@@ -362,7 +386,15 @@ console.log(this.instructorObj);
 
         this.router.navigate(['login']);
       });
-    },  err => this.presentAlertEmail()); 
+    },  err => {
+      this.showLoading = false;
+      if(err.error){
+        this.presentAlertGeneral("Failed to Register", err.error);
+      }else{
+        this.presentAlertGeneral("Failed to Register", "Email already in use");
+      }
+
+  }); 
 
 
   }
@@ -534,6 +566,26 @@ CourseListFinder(){
   this.CourseLst = [] ;
 }
 
+
+async presentAlertGeneral( head : string , msg : string) {
+  const alert = await this.alertController.create({
+    cssClass: 'errorAlert',
+    header: head,
+    message: msg ,
+    buttons: [
+      {
+        text: 'Ok',
+        role: 'cancel',
+        cssClass: 'secondary',
+        handler: () => {
+          console.log('Confirm Cancel');
+        }
+      }
+    ]
+  });
+
+  await alert.present();
+}
 
   
 
