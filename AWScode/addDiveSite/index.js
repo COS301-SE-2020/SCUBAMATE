@@ -64,72 +64,97 @@ exports.handler = async (event, context, callback) => {
             responseBody = "Access Token Expired!";
             statusCode = 403;
         }
-        else if(data.Item.AccountType != "Admin" || data.Item.AccountType != "SuperAdmin"){
+        else if(data.Item.AccountType != "Admin" && data.Item.AccountType != "SuperAdmin"){
             statusCode = 403;
-            responseBody = "Account doesn't have correct privileges";
+            responseBody = data.Item.AccountType + " Account doesn't have correct privileges";
         }
         else{
-            /* Add dive site */
-            let logoLink;
-            if(typeof LogoPhoto == "undefined"){
-                /* Default image if none given */
-                logoLink ="https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/defaultlogo.png";
-            }
-            else{
-                 /* data:image/png;base64, is send at the front of ProfilePhoto thus find the first , */
-                const startContentType = LogoPhoto.indexOf(":")+1;
-                const endContentType = LogoPhoto.indexOf(";");
-                const contentType = LogoPhoto.substring(startContentType, endContentType);
-                
-                const startExt = contentType.indexOf("/")+1;
-                const extension = contentType.substring(startExt, contentType.length);
-                
-                const startIndex = LogoPhoto.indexOf(",")+1;
-                
-                const encodedImage = LogoPhoto.substring(startIndex, LogoPhoto.length);
-                const decodedImage = Buffer.from(encodedImage.replace(/^data:image\/\w+;base64,/, ""),'base64');
-              
-                const filePath = "logophoto" + Name.toLowerCase().trim() + "."+extension;
-                
-                logoLink = "https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/"+filePath;
+            const paramsDive = {
+                TableName: 'DiveInfo',
+                Key: {
+                    'ItemType' : "DS-" + Name.toLowerCase()
+                }     
+            };
+            const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
             
-                const paramsImage = {
-                  "Body": decodedImage,
-                  "Bucket": "imagedatabase-scubamate",
-                  "Key": filePath,
-                  "ContentEncoding": 'base64',
-                  "ContentType" : contentType
-                };
-                
-                const s3 = new AWS.S3({apiVersion: '2006-03-01'});
-                s3.putObject(paramsImage, function(err, data){
-                    if(err) {
-                        /* Default image if image upload fails */
+            try{
+                const dataD = await documentClient.get(paramsDive).promise();
+                if(typeof dataD.Item == "undefined"){
+                    /*New Dive Site */
+                    /* Add dive site */
+                    let logoLink;
+                    if(typeof LogoPhoto == "undefined"){
+                        /* Default image if none given */
                         logoLink ="https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/defaultlogo.png";
                     }
-                });
-            }
-            const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
-            const ItemType = "DS-"+Name.toLowerCase();
-            const params = {
-                TableName: "DiveInfo",
-                Item: {
-                    ItemType : ItemType,
-                    Coords : Coords,
-                    Description : Description,
-                    LogoPhoto : logoLink,
-                    Name : Name
+                    else{
+                         /* data:image/png;base64, is send at the front of ProfilePhoto thus find the first , */
+                        const startContentType = LogoPhoto.indexOf(":")+1;
+                        const endContentType = LogoPhoto.indexOf(";");
+                        const contentType = LogoPhoto.substring(startContentType, endContentType);
+                        
+                        const startExt = contentType.indexOf("/")+1;
+                        const extension = contentType.substring(startExt, contentType.length);
+                        
+                        const startIndex = LogoPhoto.indexOf(",")+1;
+                        
+                        const encodedImage = LogoPhoto.substring(startIndex, LogoPhoto.length);
+                        const decodedImage = Buffer.from(encodedImage.replace(/^data:image\/\w+;base64,/, ""),'base64');
+                      
+                        const filePath = "logophoto" + Name.toLowerCase().trim() + "."+extension;
+                        
+                        logoLink = "https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/"+filePath;
+                    
+                        const paramsImage = {
+                          "Body": decodedImage,
+                          "Bucket": "imagedatabase-scubamate",
+                          "Key": filePath,
+                          "ContentEncoding": 'base64',
+                          "ContentType" : contentType
+                        };
+                        
+                        const s3 = new AWS.S3({apiVersion: '2006-03-01'});
+                        s3.putObject(paramsImage, function(err, data){
+                            if(err) {
+                                /* Default image if image upload fails */
+                                logoLink ="https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/defaultlogo.png";
+                            }
+                        });
+                    }
+                    const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
+                    const ItemType = "DS-"+Name.toLowerCase();
+                    const params = {
+                        TableName: "DiveInfo",
+                        Item: {
+                            ItemType : ItemType,
+                            Coords : Coords,
+                            Description : Description,
+                            LogoPhoto : logoLink,
+                            Name : Name
+                        }
+                    };
+                
+                    try{
+                        const data = await documentClient.put(params).promise();
+                        responseBody = "Successfully added dive site!";
+                        statusCode = 201;
+                    }catch(err){
+                        responseBody = "Unable to create dive site";
+                        statusCode = 403;
+                    }
                 }
-            };
-        
-            try{
-                const data = await documentClient.put(params).promise();
-                responseBody = "Successfully added account!";
-                statusCode = 201;
-            }catch(err){
-                responseBody = "Unable to create account";
+                else{
+                    responseBody = "This Dive Site already exists";
+                    statusCode = 403;
+                }
+                
+            }catch (err) {
                 statusCode = 403;
+                responseBody = "Invalid Access Token";
             }
+            
+            
+            
         }
 
     } catch (err) {
