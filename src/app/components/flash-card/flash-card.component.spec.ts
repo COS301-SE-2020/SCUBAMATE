@@ -18,7 +18,7 @@ describe('FlashCardComponent', () => {
     fixture.detectChanges();
   }));
 
-  it('Successfully Created Flas-Card Page', () => {
+  it('Successfully Created Flash-Card Page', () => {
     expect(component).toBeTruthy();
   });
 
