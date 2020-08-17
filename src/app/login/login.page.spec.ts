@@ -42,7 +42,7 @@ describe('LoginPage', () => {
     expect(component.loginLabel).toBeDefined();
   });
 
-  fit('Testing ngOnInit()', () => {
+  it('Testing ngOnInit()', () => {
     localStorage.setItem("accessToken", validData.accessToken);
     component.ngOnInit();
     expect(component.loginLabel).toBe("Sign Out");

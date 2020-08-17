@@ -295,8 +295,8 @@ export class ProfilePage implements OnInit {
     await alert.present();
   }
 
-  setEmail(tempMail){
-    this.AD.Email = tempMail;
+  setEmail(){
+    this.AD.Email = "teamav301@gmail.com";
   }
 
 }

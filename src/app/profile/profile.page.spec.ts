@@ -9,10 +9,11 @@ import { HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
 
 var validData = {
-  diveT: "Reef Dive"
+  diveT: "Reef Dive",
+  accessToken : "d1d7391d-c035-28ab-0193-68a7d263d4be11ac76afb3c161…0702085a1c423b0ed53f38b9a0e6e0ad8bfe8cd3712f14be7",
+  validEmail : "teamav301@gmail.com"
 };
 
-var validEmail = "u17201627@tuks.co.za";
 
 describe('ProfilePage', () => {
   let component: ProfilePage;
@@ -57,6 +58,7 @@ describe('ProfilePage', () => {
   });
 
   it('Testing ngOnInit()', () => {
+    localStorage.setItem("accessToken", validData.accessToken);
     component.ngOnInit();
     expect(component.viewProfile).toBeTrue();
     expect(component.editProfile).toBeFalse();
@@ -74,6 +76,7 @@ describe('ProfilePage', () => {
   });
   
   it('Testing ionViewWillEnter()', () => {
+    localStorage.setItem("accessToken", validData.accessToken);
     component.ionViewWillEnter();
     expect(component.viewProfile).toBeTrue();
     expect(component.editProfile).toBeFalse();
@@ -82,9 +85,12 @@ describe('ProfilePage', () => {
     expect(accountSpy).toBeDefined();
     let diveSpy = spyOn(divService, 'getDiveTypes').and.callThrough();
     expect(diveSpy).toBeDefined();
+    expect(component.showLoading).toBeTrue();
+    expect(component.showAD).toBeFalse();
     expect(component.AD).toBeUndefined();
     expect(component.DiveTypeLst).toBeUndefined();
-    expect(component.showLoading).toBeTrue();
+    expect(component.accountType).toBeUndefined();
+    expect(component.showAccountVerifiedMessage).toBeUndefined();
   });
 
   it('Testing loginClick()', () => {
@@ -100,18 +106,17 @@ describe('ProfilePage', () => {
   });
 
   it('Testing sendEmail()', () => {
-    component.setEmail(validEmail);
+    component.setEmail();
     component.sendEmail();
-    expect(component.showLoading).toBeTrue();
+    expect(component.showLoading).toBeFalse();
     let accountSpy = spyOn(accService, 'sendValidationEmail').and.callThrough();
     expect(accountSpy).toBeDefined();
-    expect(component.presentOTPPrompt).toHaveBeenCalled();
   });
 
   it('Testing sendVerifiedEmail()', () => {
-    component.setEmail(validEmail);
+    component.setEmail();
     component.sendVerifiedEmail();
-    expect(component.showLoading).toBeTrue();
+    expect(component.showLoading).toBeFalse();
     let accountSpy = spyOn(accService, 'confirmEmailValidation').and.callThrough();
     expect(accountSpy).toBeDefined();
   });
