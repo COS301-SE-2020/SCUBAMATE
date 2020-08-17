@@ -608,7 +608,7 @@
           <label class="subLabel">Register A New Dive Site</label>
 
           <div id="profileSurroundDiv">
-            <ion-img src={{NewCenterObj.LogoPhoto}} id="userProfile" ></ion-img>
+            <ion-img src={{NewSiteObj.LogoPhoto}} id="userProfile" ></ion-img>
            </div>
               <ion-item color="transparent" lines="none">
                 <ion-button expand="full" (click)="f.click()" style="margin:auto;">
@@ -619,10 +619,35 @@
                     accept="image/png, image/jpeg">
 
                </ion-item>
-
-
         </ion-col>
         <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane">
+          <ion-row>
+            <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
+              <ion-item color="dark">
+                <ion-label  position="floating">Name Of Dive Site</ion-label>
+                <ion-input  type="text"   placeholder="Insert New Site Name" [(ngModel)]="NewSiteObj.Name"  ></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
+              <ion-item color="dark">
+                <ion-label  position="floating">Coordinates Of Dive Site</ion-label>
+                <ion-input  type="text"   placeholder="Insert New Site Coordinates" [(ngModel)]="NewSiteObj.Coords"  ></ion-input>
+              </ion-item>
+            </ion-col>
+           </ion-row>
+           <ion-row>
+            <ion-col>
+              <ion-item color="dark" >
+                <ion-label  position="floating">Description</ion-label>
+                <ion-textarea auto-grow  [(ngModel)]="NewSiteObj.Description"  ></ion-textarea>
+              </ion-item>
+          </ion-col>
+           </ion-row>
+           <ion-row>
+            <ion-col size="12">
+              <button id="subBtn"  (click)="createNewSiteSubmit()">Submit</button>
+            </ion-col>
+          </ion-row>
         </ion-col>
       </ion-row>
   </ion-grid>

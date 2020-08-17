@@ -50,6 +50,13 @@ export interface newCourse{
   QualificationType: string ; 
 }
 
+export interface newSite{
+  Name: string ;
+  Coords: string ;
+  Description: string ;
+  LogoPhoto: string ; 
+}
+
 @Component({
   selector: 'app-admin-page',
   templateUrl: './admin-page.page.html',
@@ -107,6 +114,7 @@ export class AdminPagePage implements OnInit {
   UserToCenterObj : UC ;
   NewCenterObj: NDC ;
   NewCourseObj: newCourse; 
+  NewSiteObj: newSite ; 
 
   currentDiveCenter: DC ;
 
@@ -142,6 +150,13 @@ export class AdminPagePage implements OnInit {
       SurveyAnswer: "", 
       RequiredCourses: [],
       QualificationType: ""
+    }
+
+    this.NewSiteObj ={
+      Name: "",
+      Coords: "",
+      LogoPhoto: "",
+      Description: "" 
     }
 
     if(localStorage.getItem("accessToken")){
@@ -310,6 +325,8 @@ export class AdminPagePage implements OnInit {
         me.NewCenterObj.LogoPhoto = me.base64textString;
       }else if(me.showEditBasicDiveCentre){
         me.currentDiveCenter.LogoPhoto = me.base64textString;
+      }else if(me.showAddSite){
+        me.NewSiteObj.LogoPhoto = me.base64textString ;
       }
       
      
@@ -1096,12 +1113,45 @@ getDiveCentreInformation(){
 
     this.showLoading = false ;
     if(err.error){
-      this.generalAlert("Failed to update", err.error);
+      this.generalAlert("Failed to create", err.error);
     }else{
-      this.generalAlert("Failed", "Dive Centre Sites Not Updated");
+      this.generalAlert("Failed", "Course not created");
     }
 
   });
+
+
+
+ }
+
+ createNewSiteSubmit(){
+   
+    var body = {
+      "AccessToken" : localStorage.getItem("accessToken") ,
+      "Name" : this.NewSiteObj.Name ,
+      "Coords" : this.NewSiteObj.Coords,
+      "Description" : this.NewSiteObj.Description
+    }
+
+    console.log(body); 
+
+    this.showLoading = true ;
+    this._diveService.createNewSite(body).subscribe(res=>{
+      this.showLoading = false ;
+      this.generalAlert("Success", "Dive Site Created");
+  
+      this.hideAllViews();
+  
+    }, err=>{
+  
+      this.showLoading = false ;
+      if(err.error){
+        this.generalAlert("Failed to Create", err.error);
+      }else{
+        this.generalAlert("Failed", "Dive Sites Not Created");
+      }
+  
+    });
 
 
 
