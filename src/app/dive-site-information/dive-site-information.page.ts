@@ -107,7 +107,7 @@ showDiveSite : Boolean ;
     if(localStorage.getItem("accessToken"))
     {
       localStorage.removeItem("accessToken");
-      this.router.navigate(['home']);
+      this.router.navigate(['login']);
     }else{
       this.router.navigate(['login']);
     }

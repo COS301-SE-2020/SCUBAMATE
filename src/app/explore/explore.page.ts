@@ -127,7 +127,7 @@ export class ExplorePage implements OnInit {
     if(localStorage.getItem("accessToken"))
     {
       localStorage.removeItem("accessToken");
-      location.reload();
+      this.router.navigate(['login']);
     }else{
       this.router.navigate(['login']);
     }

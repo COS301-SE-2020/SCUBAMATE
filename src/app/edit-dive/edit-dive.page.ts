@@ -35,7 +35,7 @@ export interface EditDiveLog{
   DiveID: string;
   AccessToken: string;
   Buddy: string;
-  InstructorLink: string;
+  InstructorLink: [];
   Description: string;
   DivePublicStatus: boolean;
 }
@@ -77,7 +77,7 @@ export class EditDivePage implements OnInit {
         DiveID: localStorage.getItem("DiveID"),
         AccessToken: localStorage.getItem("accessToken"),
         Buddy: "",
-        InstructorLink: "-",
+        InstructorLink: [],
         Description: "",
         DivePublicStatus: false
     }

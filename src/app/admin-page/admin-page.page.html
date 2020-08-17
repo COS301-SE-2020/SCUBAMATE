@@ -320,7 +320,7 @@
       </ion-row>
       <ion-row *ngIf="showEditBasicDiveCentre"> 
         <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
-          <label class="subLabel"> Edit <br> Dive Centre</label>
+          <label class="subLabel"> Edit <br> {{currentDiveCenter.Name}} </label>
           <div id="profileSurroundDiv">
             <ion-img src={{currentDiveCenter.LogoPhoto}} id="userProfile" ></ion-img>
            </div>
@@ -335,14 +335,6 @@
                </ion-item>
         </ion-col>
         <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane">
-                <ion-row>
-                    <ion-col>
-                      <ion-item color="dark">
-                        <ion-label  position="floating">Name Of Dive Centre</ion-label>
-                        <ion-input  type="text"   placeholder={{currentDiveCenter.Name}} [(ngModel)]="currentDiveCenter.Name"  ></ion-input>
-                      </ion-item>
-                  </ion-col>
-                </ion-row>
                 <ion-row>
                   <ion-col>
                     <ion-item color="dark">
