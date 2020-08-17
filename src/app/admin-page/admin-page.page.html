@@ -50,19 +50,24 @@
 
 
         <ion-row *ngIf="accountType=='SuperAdmin'"> <!--Super Admin Nav Div-->
-          <ion-col size="12" size-sm="12" size-md="4" size-lg="4">
+          <ion-col size="12" size-sm="12" size-md="3" size-lg="3">
             <ion-button (click)="viewRegisterNewCenter()">
               <ion-icon name="cube-outline"></ion-icon> &nbsp; Register new Centre
             </ion-button>
           </ion-col>
-          <ion-col size="12" size-sm="12" size-md="4" size-lg="4">
+          <ion-col size="12" size-sm="12" size-md="3" size-lg="3">
             <ion-button (click)="viewRegisterUserToCenter()">
-              <ion-icon name="people"></ion-icon> &nbsp; Register User At Centre
+              <ion-icon name="people"></ion-icon> &nbsp; Register User <br> At Centre
             </ion-button>
           </ion-col>
-          <ion-col size="12" size-sm="12" size-md="4" size-lg="4">
+          <ion-col size="12" size-sm="12" size-md="3" size-lg="3">
             <ion-button (click)="viewAddCourse()">
               <ion-icon name="add-circle"></ion-icon> &nbsp; Create Course
+            </ion-button>
+          </ion-col>
+          <ion-col size="12" size-sm="12" size-md="3" size-lg="3">
+            <ion-button (click)="viewAddSite()">
+              <ion-icon name="add-circle"></ion-icon> &nbsp; Create Site
             </ion-button>
           </ion-col>
         </ion-row>
@@ -362,10 +367,10 @@
         </ion-col>
       </ion-row>
       <ion-row *ngIf="showAddCourseToCentre">
-        <ion-col size="12" size-sm="12" size-md="2" size-lg="2" class="leftPane">
-          <label class="subLabel"> Update Courses <br> At Dive Centre</label>
+        <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
+          <label class="subLabel"> Update Courses <br> At {{currentDiveCenter.Name}}</label>
         </ion-col>
-        <ion-col size="12" size-sm="12" size-md="10" size-lg="10" class="rightPane">
+        <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane">
           <ion-row >
             <div class="searchableSelect" >
               <ion-row>
@@ -373,7 +378,7 @@
                   <ion-label class="searchableSelectLabel" >Add Course Presented</ion-label>
                   <input list="diveC"  placeholder="Add Course"  [(ngModel)]="courseInputField" #Spec (input)="CourseListFinder()" class="searchableSelectInput" >
                     <datalist id="diveC">
-                        <option *ngFor='let c of currentDiveCenter.Courses' value={{c}}></option>
+                        <option *ngFor='let c of CourseLst' value={{c}}></option>
                     </datalist>
                 </ion-col>
                 <ion-col size="4">
@@ -397,8 +402,56 @@
                   </ion-row>
                 </ion-grid>
           </ion-row>
+          <ion-row>
+            <ion-col size="12">
+              <button id="subBtn"  (click)="updateCoursesOfDiveCentreSubmit()">Submit</button>
+            </ion-col>
+          </ion-row>
         </ion-col>
 
+      </ion-row>
+      <ion-row *ngIf="showAddSiteToCentre">
+        <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
+          <label class="subLabel"> Update Sites <br> At {{currentDiveCenter.Name}}</label>
+        </ion-col>
+        <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane">
+              <ion-row >
+                <div class="searchableSelect" >
+                  <ion-row>
+                    <ion-col>
+                      <ion-label class="searchableSelectLabel" >Add Dive Site to Center</ion-label>
+                      <input list="diveI"  placeholder="Add Dive Site"  [(ngModel)]="siteInput"  #Spec (input)="DiveSiteListFinder()" class="searchableSelectInput" >
+                        <datalist id="diveI">
+                            <option *ngFor='let i of DiveSiteLst' value={{i}}></option>
+                        </datalist>
+                    </ion-col>
+                    <ion-col>
+                      <ion-button id="addBtn" #addBtn (click)="addSiteToDiveCentre()"   >
+                        <ion-icon name="add"></ion-icon>
+                      </ion-button>
+                    </ion-col>
+                  </ion-row>
+                  </div>
+              </ion-row>
+              <ion-row *ngIf="showSites">
+                    <ion-grid id="CoursesTable">
+                      <ion-row class="CourseListHead"> Dive Sites </ion-row>
+                      <ion-row  *ngFor='let ui of currentDiveCenter.DiveSites' class="CourseListTableRow">
+                          <ion-col size="12">
+                            <label>{{ ui }} </label>
+                            <ion-button (click)="removeSiteFromDiveCentre(ui)" color="dark" id='removeBtn'>
+                              <ion-icon name="trash-bin"></ion-icon>
+                            </ion-button>
+                          </ion-col>
+                      </ion-row>
+                    </ion-grid>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">
+                  <button id="subBtn"  (click)="updateSitesOfDiveCentreSubmit()">Submit</button>
+                </ion-col>
+              </ion-row>
+      </ion-col>
       </ion-row>
   </ion-grid>
 

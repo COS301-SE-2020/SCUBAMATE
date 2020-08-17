@@ -78,6 +78,7 @@ export class AdminPagePage implements OnInit {
   showVerifiedInstructors: boolean ;  
   showEditBasicDiveCentre : boolean;
   showAddCourse: boolean;
+  showAddSite: boolean ; 
   showAddCourseToCentre : boolean ;
   showAddSiteToCentre : boolean ; 
   showLoading: boolean ; 
@@ -150,7 +151,8 @@ export class AdminPagePage implements OnInit {
     this.showAddCourse = false;
     this.showAddCourseToCentre = false;
     this.showAddSiteToCentre = false;
-    this.showEditBasicDiveCentre = false; 
+    this.showEditBasicDiveCentre = false;
+    this.showAddSite = false; 
 
     this.firstPageNewCentre = false ; 
     this.secondPageNewCentre = false ; 
@@ -165,6 +167,18 @@ export class AdminPagePage implements OnInit {
     this.allInstructors = new Array();
     this.verifiedInstructors = new Array();
     this.unverifiedInstructors = new Array();
+    
+
+    //Setup Dive Centre Object
+    this.currentDiveCenter ={
+      Description: "",
+      Coords: "",
+      Courses: [],
+      DiveSites: [],
+      LogoPhoto: "",
+      Name: "",
+      Instructors: [],
+    }
 
     //Setup Login Label
     this.loginLabel ="Login";
@@ -217,6 +231,17 @@ export class AdminPagePage implements OnInit {
      this.verifiedInstructors = new Array();
      this.unverifiedInstructors = new Array();
  
+     //Setup Dive Centre Object
+     this.currentDiveCenter ={
+      Description: "",
+      Coords: "",
+      Courses: [],
+      DiveSites: [],
+      LogoPhoto: "",
+      Name: "",
+      Instructors: [],
+    }
+
      //Setup Login Label
      this.loginLabel ="Login";
      if(!localStorage.getItem("accessToken"))
@@ -278,23 +303,39 @@ export class AdminPagePage implements OnInit {
 
   //Toggle Viewable Content Functions
   viewRegisterUserToCenter(){
-    this.showRegisterUserToCenter = true; 
     this.showRegisterNewCenter = false ;
     this.showUnverifiedInstructors = false ;
-    this.showVerifiedInstructors = false; 
-
+    this.showVerifiedInstructors = false;
+    this.showRegisterUserToCenter = true;
+    this.showAddCourse = false;
+    this.showAddCourseToCentre = false;
+    this.showAddSiteToCentre = false;
+    this.showEditBasicDiveCentre = false;
+    this.showAddSite = false;
 
     this.showCourses = false;
     this.showSites = false;
     this.courseInputField = "";
-    this.siteInput = "" ; 
+    this.siteInput = "" ;
+
   }
 
   viewRegisterNewCenter(){
-    this.showRegisterUserToCenter = false; 
     this.showRegisterNewCenter = true ;
-    this.firstPageNewCentre = true ; 
-    
+    this.showUnverifiedInstructors = false ;
+    this.showVerifiedInstructors = false;
+    this.showRegisterUserToCenter = false;
+    this.showAddCourse = false;
+    this.showAddCourseToCentre = false;
+    this.showAddSiteToCentre = false;
+    this.showEditBasicDiveCentre = false;
+    this.showAddSite = false;
+
+    this.firstPageNewCentre = true ;
+    this.secondPageNewCentre = false;
+    this.thirdPageNewCentre = false;
+
+
     this.showCourses = false;
     this.showSites = false;
     this.courseInputField = "";
@@ -302,9 +343,15 @@ export class AdminPagePage implements OnInit {
   }
 
   viewUnverifiedInstructors(){
+    this.showRegisterNewCenter = false ;
     this.showUnverifiedInstructors = true ;
     this.showVerifiedInstructors = false;
-    this.showRegisterUserToCenter = false;  
+    this.showRegisterUserToCenter = false;
+    this.showAddCourse = false;
+    this.showAddCourseToCentre = false;
+    this.showAddSiteToCentre = false;
+    this.showEditBasicDiveCentre = false;
+    this.showAddSite = false;
 
     this.showCourses = false;
     this.showSites = false;
@@ -313,9 +360,15 @@ export class AdminPagePage implements OnInit {
   }
 
   viewVerifiedInstructors(){
+    this.showRegisterNewCenter = false ;
     this.showUnverifiedInstructors = false ;
     this.showVerifiedInstructors = true;
-    this.showRegisterUserToCenter = false;  
+    this.showRegisterUserToCenter = false;
+    this.showAddCourse = false;
+    this.showAddCourseToCentre = false;
+    this.showAddSiteToCentre = false;
+    this.showEditBasicDiveCentre = false;
+    this.showAddSite = false;
 
     this.showCourses = false;
     this.showSites = false;
@@ -324,6 +377,7 @@ export class AdminPagePage implements OnInit {
   }
 
   viewAddBasicCentre(){
+    this.showRegisterNewCenter = false ;
     this.showUnverifiedInstructors = false ;
     this.showVerifiedInstructors = false;
     this.showRegisterUserToCenter = false;
@@ -331,6 +385,7 @@ export class AdminPagePage implements OnInit {
     this.showAddCourseToCentre = false;
     this.showAddSiteToCentre = false;
     this.showEditBasicDiveCentre = true; 
+    this.showAddSite = false;
 
     this.showCourses = false;
     this.showSites = false;
@@ -339,6 +394,7 @@ export class AdminPagePage implements OnInit {
   }
 
   viewAddCourseToCentre(){
+    this.showRegisterNewCenter = false ;
     this.showUnverifiedInstructors = false ;
     this.showVerifiedInstructors = false;
     this.showRegisterUserToCenter = false;
@@ -346,6 +402,7 @@ export class AdminPagePage implements OnInit {
     this.showAddCourseToCentre = true;
     this.showAddSiteToCentre = false;
     this.showEditBasicDiveCentre = false; 
+    this.showAddSite = false;
 
     this.showCourses = true;
     this.showSites = false;
@@ -354,6 +411,7 @@ export class AdminPagePage implements OnInit {
   }
 
   viewAddCourse(){
+    this.showRegisterNewCenter = false ;
     this.showUnverifiedInstructors = false ;
     this.showVerifiedInstructors = false;
     this.showRegisterUserToCenter = false;
@@ -361,6 +419,7 @@ export class AdminPagePage implements OnInit {
     this.showAddCourseToCentre = false;
     this.showAddSiteToCentre = false;
     this.showEditBasicDiveCentre = false;
+    this.showAddSite = false;
 
     this.showCourses = false;
     this.showSites = false;
@@ -369,6 +428,7 @@ export class AdminPagePage implements OnInit {
   }
 
   viewAddSiteToCentre(){
+    this.showRegisterNewCenter = false ;
     this.showUnverifiedInstructors = false ;
     this.showVerifiedInstructors = false;
     this.showRegisterUserToCenter = false;
@@ -376,6 +436,24 @@ export class AdminPagePage implements OnInit {
     this.showAddCourseToCentre = false;
     this.showAddSiteToCentre = true;
     this.showEditBasicDiveCentre = false;
+    this.showAddSite = false;
+
+    this.showCourses = false;
+    this.showSites = true;
+    this.courseInputField = "";
+    this.siteInput = "" ;
+  }
+
+  viewAddSite(){
+    this.showRegisterNewCenter = false ;
+    this.showUnverifiedInstructors = false ;
+    this.showVerifiedInstructors = false;
+    this.showRegisterUserToCenter = false;
+    this.showAddCourse = false;
+    this.showAddCourseToCentre = false;
+    this.showAddSiteToCentre = false;
+    this.showEditBasicDiveCentre = false;
+    this.showAddSite = true;
 
     this.showCourses = false;
     this.showSites = true;
@@ -384,6 +462,7 @@ export class AdminPagePage implements OnInit {
   }
 
   hideAllViews(){
+    this.showRegisterNewCenter = false ;
     this.showUnverifiedInstructors = false ;
     this.showVerifiedInstructors = false;
     this.showRegisterUserToCenter = false;
@@ -391,6 +470,7 @@ export class AdminPagePage implements OnInit {
     this.showAddCourseToCentre = false;
     this.showAddSiteToCentre = false;
     this.showEditBasicDiveCentre = false;
+    this.showAddSite = false;
 
     this.showCourses = false;
     this.showSites = false;
@@ -530,10 +610,36 @@ addCourseToDiveCentre(){
 removeCourseFromDiveCentre(s : string){
   const index: number =this.currentDiveCenter.Courses.indexOf(s);
   if (index !== -1) {
-    this.userCourses.splice(index, 1);
+    this.currentDiveCenter.Courses.splice(index, 1);
   }  
 
   this.CourseLst = [] ;
+}
+
+addSiteToDiveCentre(){
+  if(this.siteInput.length >= 2)
+  {
+   const index: number = this.currentDiveCenter.DiveSites.indexOf(this.siteInput);
+   if (index == -1) {
+    this.currentDiveCenter.DiveSites.push(this.siteInput);
+     this.showSites = true;
+   }
+    this.siteInput = "";
+    this.DiveSiteLst = [];
+  }
+ 
+  console.log("Course Added: ");
+  console.log( this.currentDiveCenter.DiveSites);
+
+}
+
+removeSiteFromDiveCentre(s : string){
+  const index: number =this.currentDiveCenter.DiveSites.indexOf(s);
+  if (index !== -1) {
+    this.currentDiveCenter.DiveSites.splice(index, 1);
+  }  
+
+  this.DiveSiteLst = [] ;
 }
 
 DiveSiteListFinder(){
@@ -618,7 +724,7 @@ getDiveCentreInformation(){
 
   this._diveService.getAdminDiveCenter(bod).subscribe( data=>{
     
-    this.currentDiveCenter = data;
+    this.currentDiveCenter = data.Item;
     this.showLoading = false ;
     console.log(this.currentDiveCenter);
 
@@ -779,7 +885,7 @@ getDiveCentreInformation(){
   this.showLoading = true ;
   this._diveService.editBasicDiveCentre(body).subscribe(res => {
     this.showLoading = false ;
-    this.generalAlert("Success", "Dive Centre Updated");
+    this.generalAlert("Success", "Dive Centre Updated. Updates may take a moment to appear.");
 
     this.hideAllViews();
 
@@ -791,7 +897,73 @@ getDiveCentreInformation(){
       this.generalAlert("Failed", "Dive Centre Not Updated");
     }
     
-  })
+  });
+
+ }
+
+ updateCoursesOfDiveCentreSubmit(){
+
+  var body ={
+    "AccessToken" : localStorage.getItem("accessToken") ,
+    "Name" : this.currentDiveCenter.Name ,
+    "Courses": this.currentDiveCenter.Courses 
+  }
+
+
+  console.log("Send Update Course \n ===============");
+  console.log(body);
+
+  this.showLoading = true ;
+  this._diveService.addCoursesToDiveCentre(body).subscribe(res => {
+    this.showLoading = false ;
+    this.generalAlert("Success", "Dive Centre Courses Updated");
+
+    this.hideAllViews();
+
+  }, err=>{
+    this.showLoading = false ;
+    if(err.error){
+      this.generalAlert("Failed to update", err.error);
+    }else{
+      this.generalAlert("Failed", "Dive Centre Courses Not Updated");
+    }
+    
+  });
+
+  
+
+ }
+
+ updateSitesOfDiveCentreSubmit(){
+
+  var body ={
+    "AccessToken" : localStorage.getItem("accessToken") ,
+    "Name" : this.currentDiveCenter.Name ,
+    "DiveSites": this.currentDiveCenter.DiveSites 
+  }
+
+
+  console.log("Send Update Sites \n ===============");
+  console.log(body);
+
+  this.showLoading = true ;
+  this._diveService.addDiveSitesToCentre(body).subscribe(res => {
+    this.showLoading = false ;
+    this.generalAlert("Success", "Dive Centre Sites Updated");
+
+    this.hideAllViews();
+
+  }, err=>{
+    this.showLoading = false ;
+    if(err.error){
+      this.generalAlert("Failed to update", err.error);
+    }else{
+      this.generalAlert("Failed", "Dive Centre Sites Not Updated");
+    }
+    
+  });
+
+  
 
  }
 
