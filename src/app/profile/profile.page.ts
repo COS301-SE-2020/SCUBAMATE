@@ -331,6 +331,8 @@ export class ProfilePage implements OnInit {
 
   setEmail(){
     this.AD.Email = "teamav301@gmail.com";
+  }
+  
   loadUnverifiedCourses(){
     this.showLoading = true ;
 
@@ -452,5 +454,3 @@ export class ProfilePage implements OnInit {
   }
 
 }
-
-
