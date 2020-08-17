@@ -286,4 +286,37 @@ export class diveService
 
     }
 
+    editBasicDiveCentre(PostData):Observable<any>{
+
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+      return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/DiveCentre/editdivecentreinfo', PostData , options); 
+
+    }
+
+    addCoursesToDiveCentre(PostData):Observable<any>{
+
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+      return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/DiveCentre/addcoursetodivecentre', PostData , options); 
+
+    }
+
+    addDiveSitesToCentre(PostData):Observable<any>{
+
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+      return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/DiveCentre/adddivesitetodivecentre', PostData , options); 
+
+    }
+
 }

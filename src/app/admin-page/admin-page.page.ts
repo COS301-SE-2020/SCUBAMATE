@@ -66,6 +66,10 @@ export class AdminPagePage implements OnInit {
   showRegisterNewCenter : boolean ;
   showUnverifiedInstructors : boolean ; 
   showVerifiedInstructors: boolean ;  
+  showEditBasicDiveCentre : boolean;
+  showAddCourse: boolean;
+  showAddCourseToCentre : boolean ;
+  showAddSiteToCentre : boolean ; 
   showLoading: boolean ; 
 
   //Verified | Unverified Instructors List
@@ -131,6 +135,10 @@ export class AdminPagePage implements OnInit {
     this.showRegisterUserToCenter = false; 
     this.showRegisterNewCenter = false ;
     this.showLoading = false;
+    this.showAddCourse = false;
+    this.showAddCourseToCentre = false;
+    this.showAddSiteToCentre = false;
+    this.showEditBasicDiveCentre = false; 
 
     this.firstPageNewCentre = false ; 
     this.secondPageNewCentre = false ; 
@@ -217,6 +225,46 @@ export class AdminPagePage implements OnInit {
     this.showUnverifiedInstructors = false ;
     this.showVerifiedInstructors = true;
     this.showRegisterUserToCenter = false;  
+  }
+
+  viewAddBasicCentre(){
+    this.showUnverifiedInstructors = false ;
+    this.showVerifiedInstructors = false;
+    this.showRegisterUserToCenter = false;
+    this.showAddCourse = false;
+    this.showAddCourseToCentre = false;
+    this.showAddSiteToCentre = false;
+    this.showEditBasicDiveCentre = true; 
+  }
+
+  viewAddCourseToCentre(){
+    this.showUnverifiedInstructors = false ;
+    this.showVerifiedInstructors = false;
+    this.showRegisterUserToCenter = false;
+    this.showAddCourse = false;
+    this.showAddCourseToCentre = true;
+    this.showAddSiteToCentre = false;
+    this.showEditBasicDiveCentre = false; 
+  }
+
+  viewAddCourse(){
+    this.showUnverifiedInstructors = false ;
+    this.showVerifiedInstructors = false;
+    this.showRegisterUserToCenter = false;
+    this.showAddCourse = true;
+    this.showAddCourseToCentre = false;
+    this.showAddSiteToCentre = false;
+    this.showEditBasicDiveCentre = false;
+  }
+
+  viewAddSite(){
+    this.showUnverifiedInstructors = false ;
+    this.showVerifiedInstructors = false;
+    this.showRegisterUserToCenter = false;
+    this.showAddCourse = false;
+    this.showAddCourseToCentre = false;
+    this.showAddSiteToCentre = true;
+    this.showEditBasicDiveCentre = false;
   }
 
   //Page Navigation Fuctions
