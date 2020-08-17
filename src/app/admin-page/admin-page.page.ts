@@ -41,6 +41,15 @@ export interface DC {
   Instructors: string[] ;
 }
 
+export interface newCourse{
+  Name: string ;
+  CourseType: string;
+  MinAgeRequired: number;
+  SurveyAnswer: string ; 
+  RequiredCourses: string[];
+  QualificationType: string ; 
+}
+
 @Component({
   selector: 'app-admin-page',
   templateUrl: './admin-page.page.html',
@@ -97,6 +106,7 @@ export class AdminPagePage implements OnInit {
   //Form Objects
   UserToCenterObj : UC ;
   NewCenterObj: NDC ;
+  NewCourseObj: newCourse; 
 
   currentDiveCenter: DC ;
 
@@ -123,6 +133,15 @@ export class AdminPagePage implements OnInit {
       Name : "" , 
       Courses :[] ,  
       DiveSites: [] , 
+    }
+
+    this.NewCourseObj={
+      Name: "",
+      CourseType: "",
+      MinAgeRequired: 10,
+      SurveyAnswer: "", 
+      RequiredCourses: [],
+      QualificationType: ""
     }
 
     if(localStorage.getItem("accessToken")){
@@ -318,6 +337,10 @@ export class AdminPagePage implements OnInit {
     this.courseInputField = "";
     this.siteInput = "" ;
 
+    this.firstPageNewCentre = false ;
+    this.secondPageNewCentre = false;
+    this.thirdPageNewCentre = false;
+
   }
 
   viewRegisterNewCenter(){
@@ -357,6 +380,10 @@ export class AdminPagePage implements OnInit {
     this.showSites = false;
     this.courseInputField = "";
     this.siteInput = "" ;
+
+    this.firstPageNewCentre = false ;
+    this.secondPageNewCentre = false;
+    this.thirdPageNewCentre = false;
   }
 
   viewVerifiedInstructors(){
@@ -374,6 +401,10 @@ export class AdminPagePage implements OnInit {
     this.showSites = false;
     this.courseInputField = "";
     this.siteInput = "" ;
+
+    this.firstPageNewCentre = false ;
+    this.secondPageNewCentre = false;
+    this.thirdPageNewCentre = false;
   }
 
   viewAddBasicCentre(){
@@ -391,6 +422,10 @@ export class AdminPagePage implements OnInit {
     this.showSites = false;
     this.courseInputField = "";
     this.siteInput = "" ;
+
+    this.firstPageNewCentre = false ;
+    this.secondPageNewCentre = false;
+    this.thirdPageNewCentre = false;
   }
 
   viewAddCourseToCentre(){
@@ -408,6 +443,10 @@ export class AdminPagePage implements OnInit {
     this.showSites = false;
     this.courseInputField = "";
     this.siteInput = "" ;
+
+    this.firstPageNewCentre = false ;
+    this.secondPageNewCentre = false;
+    this.thirdPageNewCentre = false;
   }
 
   viewAddCourse(){
@@ -425,6 +464,10 @@ export class AdminPagePage implements OnInit {
     this.showSites = false;
     this.courseInputField = "";
     this.siteInput = "" ;
+
+    this.firstPageNewCentre = false ;
+    this.secondPageNewCentre = false;
+    this.thirdPageNewCentre = false;
   }
 
   viewAddSiteToCentre(){
@@ -442,6 +485,10 @@ export class AdminPagePage implements OnInit {
     this.showSites = true;
     this.courseInputField = "";
     this.siteInput = "" ;
+
+    this.firstPageNewCentre = false ;
+    this.secondPageNewCentre = false;
+    this.thirdPageNewCentre = false;
   }
 
   viewAddSite(){
@@ -459,6 +506,10 @@ export class AdminPagePage implements OnInit {
     this.showSites = true;
     this.courseInputField = "";
     this.siteInput = "" ;
+
+    this.firstPageNewCentre = false ;
+    this.secondPageNewCentre = false;
+    this.thirdPageNewCentre = false;
   }
 
   hideAllViews(){
@@ -476,6 +527,10 @@ export class AdminPagePage implements OnInit {
     this.showSites = false;
     this.courseInputField = "";
     this.siteInput = "" ;
+
+    this.firstPageNewCentre = false ;
+    this.secondPageNewCentre = false;
+    this.thirdPageNewCentre = false;
   }
 
   //Page Navigation Fuctions
@@ -611,6 +666,33 @@ removeCourseFromDiveCentre(s : string){
   const index: number =this.currentDiveCenter.Courses.indexOf(s);
   if (index !== -1) {
     this.currentDiveCenter.Courses.splice(index, 1);
+  }  
+
+  this.CourseLst = [] ;
+}
+
+addCourseToCourse(){
+  
+  if(this.courseInputField.length >= 2)
+  {
+   const index: number = this.NewCourseObj.RequiredCourses.indexOf(this.courseInputField);
+   if (index == -1) {
+     this.NewCourseObj.RequiredCourses.push(this.courseInputField);
+     this.showCourses = true;
+   }
+    this.courseInputField = "";
+    this.CourseLst = [];
+  }
+ 
+  console.log("Course Added: ");
+  console.log( this.currentDiveCenter.Courses);
+
+}
+
+removeCourseFromCourse(s : string){
+  const index: number = this.NewCourseObj.RequiredCourses.indexOf(s);
+  if (index !== -1) {
+    this.NewCourseObj.RequiredCourses.splice(index, 1);
   }  
 
   this.CourseLst = [] ;
@@ -764,6 +846,7 @@ getDiveCentreInformation(){
           this.showRegisterUserToCenter = false ;
           
           this.presentUserToCenterSuccessAlert();
+          this.hideAllViews();
       }, err=>{
         this.showLoading = false;
         this.presentUserToCenterFailAlert();
@@ -811,6 +894,8 @@ getDiveCentreInformation(){
       this.userCourses=[];
       this.showCourses = false;
       this.showSites=false;
+
+      this.hideAllViews();
     }, err=>{
       this.showLoading = false ;
       this.generalAlert("Unsuccessful Upload" , "New Dive Centre Not Added");
@@ -964,6 +1049,61 @@ getDiveCentreInformation(){
   });
 
   
+
+ }
+
+ createNewCourseSubmit(){
+
+  console.log(this.NewCourseObj);
+
+  if(this.NewCourseObj.Name == ""){
+    this.NewCourseObj.Name = "TBD" ;
+  }
+
+  if(this.NewCourseObj.CourseType == ""){
+    this.NewCourseObj.CourseType = "Specialisation"; 
+  }
+
+  if(this.NewCourseObj.SurveyAnswer == ""){
+    this.NewCourseObj.SurveyAnswer = "F";
+  }
+
+  if(this.NewCourseObj.QualificationType == ""){
+    this.NewCourseObj.QualificationType ="Diver";
+  }
+
+  var body = {
+    "AccessToken" : localStorage.getItem("accessToken") ,
+    "Name": this.NewCourseObj.Name , 
+    "CourseType": this.NewCourseObj.CourseType ,
+    "MinAgeRequired": this.NewCourseObj.MinAgeRequired ,
+    "SurveyAnswer": this.NewCourseObj.SurveyAnswer ,
+    "RequiredCourses": this.NewCourseObj.RequiredCourses ,
+    "QualificationType": this.NewCourseObj.QualificationType
+  }
+
+  console.log(body);
+
+
+ this.showLoading = true ;
+  this._diveService.createNewCourse(body).subscribe(res=>{
+    this.showLoading = false ;
+    this.generalAlert("Success", "Course Created");
+
+    this.hideAllViews();
+
+  }, err=>{
+
+    this.showLoading = false ;
+    if(err.error){
+      this.generalAlert("Failed to update", err.error);
+    }else{
+      this.generalAlert("Failed", "Dive Centre Sites Not Updated");
+    }
+
+  });
+
+
 
  }
 

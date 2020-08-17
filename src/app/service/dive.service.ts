@@ -329,4 +329,15 @@ export class diveService
 
     }
 
+    createNewCourse(PostData):Observable<any>{
+
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+      return this.httpClient.post('https://ek9bag0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/adddivesite', PostData , options); 
+
+    }
+
 }
