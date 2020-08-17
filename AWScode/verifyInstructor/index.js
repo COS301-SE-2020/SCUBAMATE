@@ -9,7 +9,8 @@ exports.handler = async (event, context) => {
     const AccountVerified = body.AccountVerified;
     const AccessToken = body.AccessToken;
     const AccountGuidGiven =  body.AccountGuid ;
-    const AccountGuid = AccessToken.substring(0,36);
+    let GuidSize = 36;
+    const AccountGuid = AccessToken.substring(0,GuidSize);
 
    function compareDates(t,e){
         let returnBool;
@@ -39,6 +40,15 @@ exports.handler = async (event, context) => {
         }
         return returnBool;
     }
+    function contains(arr,search){
+        let returnBool = false;
+        arr.forEach(function(item) {
+            if(item==search){
+                returnBool=true;
+            }
+        });
+        return returnBool;
+    }
 
     //Verify AccessToken 
     const params = {
@@ -65,93 +75,154 @@ exports.handler = async (event, context) => {
             statusCode = 403;
         }
         else{
-            /* Is Admin now to verify/downgrade account*/
-            if(AccountVerified){
-                const paramsIns = {
-                    TableName: "Scubamate",
-                    Key: {
-                        'AccountGuid' : AccountGuidGiven
-                    },
-                    UpdateExpression: 'set AccountVerified = :a',
-                    ExpressionAttributeValues: {
-                        ':a' : AccountVerified
-                    },
-                    ReturnValues: 'ALL_NEW'
-                };
-                try{
-                    const dataI = await documentClient.update(paramsIns).promise();
-                    const instructorToAdd = dataI.Attributes.FirstName+" " +dataI.Attributes.LastName+" ("+dataI.Attributes.Email+") - "+data.Item.DiveCentre;
-                    /* add instructor to admin's dive centre */
-                    const paramsDC = {
-                        TableName: "DiveInfo",
+            /* Is Admin now to get account to either verify/downgrade*/
+            const paramsAcc = {
+                TableName: "Scubamate",
+                Key: {
+                    'AccountGuid' : AccountGuidGiven,
+                },
+
+            };
+            try{
+                const dataAccount = await documentClient.get(paramsAcc).promise();
+                /*Change account's access token, account verified number and maybe downgrade to diver */
+                const oldToken = dataAccount.Item.AccessToken;
+                let newToken = oldToken.substring(0,GuidSize);
+                let updateExp, expVals;
+                if(AccountVerified && !dataAccount.Item.AccountVerified){
+                    /*Account wasn't verified but now it should be */
+                    /*i.e. its being added to the dive centre first time*/
+                    newToken += "01" + oldToken.substring(GuidSize+2,oldToken.length);
+                    updateExp = "set AccountVerified = :a,AccessToken = :at";
+                    expVals = {
+                        ':a' : AccountVerified,
+                        ':at' : newToken
+                    };
+                }
+                else if(!AccountVerified && dataAccount.Item.AccountVerified){
+                    /*Account was verified but now it shouldn't be */
+                    /*i.e. its being removed from the dive centre */
+                    newToken += "00" + oldToken.substring(GuidSize+2,oldToken.length);
+                    updateExp = "set AccountVerified = :a,AccessToken = :at, AccountType = :acct remove InstructorNumber, DiveCentre";
+                    expVals = {
+                        ':a' : AccountVerified,
+                        ':at' : newToken,
+                        ':acct': "Diver"
+                    };
+                }
+                else if(!AccountVerified && !dataAccount.Item.AccountVerified){
+                    /*Account is being rejected first time*/
+                    newToken = oldToken;
+                    updateExp = "set AccountVerified = :a, AccountType = :acct remove InstructorNumber, DiveCentre";
+                    expVals = {
+                        ':a' : AccountVerified,
+                        ':acct': "Diver"
+                    }
+                }
+                else{
+                    /* account used to be verified and still is */
+                    responseBody = "Instructor's details did not change";
+                    statusCode = 200;
+                }
+                if(statusCode == undef){
+                    /*Update instructor account now*/
+                    const paramsUpdateIns = {
+                        TableName: "Scubamate",
                         Key: {
-                            'ItemType' : 'DC-'+data.Item.DiveCentre.toLowerCase(),
+                            'AccountGuid' : AccountGuidGiven
                         },
-                        ProjectionExpression: "Instructors"
+                        UpdateExpression: updateExp,
+                        ExpressionAttributeValues: expVals,
+                        ReturnValues: 'ALL_NEW'
                     };
                     try{
-                        const dataDC = await documentClient.get(paramsDC).promise();
-                        let tmp = [];
-                        if(typeof dataDC.Item.Instructors != "undefined"){
-                            tmp = dataDC.Item.Instructors;
-                        }
-                        tmp.push(instructorToAdd);
-                        const paramsUpdateDC = {
-                            TableName: "DiveInfo",
-                            Key: {
-                                'ItemType' : 'DC-'+data.Item.DiveCentre.toLowerCase(),
-                            },
-                            UpdateExpression: 'set Instructors = :i',
-                            ExpressionAttributeValues: {
-                                ':i' : tmp
-                            }
-                        };
-                        try{
-                            const dataUpdateDC = await documentClient.update(paramsUpdateDC).promise();
-                            responseBody = "Successfully verified instructor!";
+                        const dataI = await documentClient.update(paramsUpdateIns).promise();
+                        if(!AccountVerified && !dataAccount.Item.AccountVerified){
+                            responseBody = "Successfully rejected diver.";
                             statusCode = 200;
                         }
-                        catch(err){
-                            responseBody = "Unable to add account."+ err +" ";
-                            statusCode = 403;
+                        else{
+                            /*Either being added/removed as an instructor */
+                            const paramsDC = {
+                                TableName: "DiveInfo",
+                                Key: {
+                                    'ItemType' : 'DC-'+data.Item.DiveCentre.toLowerCase(),
+                                },
+                                ProjectionExpression: "Instructors"
+                            };
+                            try{
+                                const dataDC = await documentClient.get(paramsDC).promise();
+                                let instructorDetails = dataI.Attributes.FirstName+" " +dataI.Attributes.LastName;
+                                let tmp = [];
+                                //add
+                                if(typeof dataDC.Item.Instructors != "undefined" && AccountVerified && !dataAccount.Item.AccountVerified){
+                                    /* If there are instructors already and you want to add another */
+                                    tmp = dataDC.Item.Instructors;
+                                    tmp.push(instructorDetails);
+                                }
+                                else if (typeof dataDC.Item.Instructors != "undefined" && !AccountVerified && dataAccount.Item.AccountVerified){
+                                    /* If there are instructors already and you want to remove one */
+                                    if( contains(dataDC.Item.Instructors, instructorDetails )){
+                                        dataDC.Item.Instructors.forEach(function (item){
+                                           if(item != instructorDetails){
+                                               tmp.push(item);
+                                           } 
+                                        });
+                                    }
+                                    else{
+                                        /* already doesn't have instructor stored */
+                                        tmp = dataDC.Item.Instructors;
+                                    }
+                                }
+                                else if(AccountVerified && !dataAccount.Item.AccountVerified){
+                                    /* If there are no instructors already and you want to add one */
+                                    tmp.push(instructorDetails);
+                                }
+                                
+                                /*Update Dive Centre's info */
+                                const paramsUpdateDC = {
+                                    TableName: "DiveInfo",
+                                    Key: {
+                                        'ItemType' : 'DC-'+data.Item.DiveCentre.toLowerCase(),
+                                    },
+                                    UpdateExpression: 'set Instructors = :i',
+                                    ExpressionAttributeValues: {
+                                        ':i' : tmp
+                                    }
+                                };
+                                try{
+                                    const dataUpdateDC = await documentClient.update(paramsUpdateDC).promise();
+                                    responseBody = "Successfully updated instructor!";
+                                    statusCode = 200;
+                                }
+                                catch(err){
+                                    responseBody = "Unable to update instructors."+ err +" ";
+                                    statusCode = 403;
+                                }
+                            }
+                            catch(err){
+                                responseBody = "Unable to find dive centre."+ err +" ";
+                                statusCode = 403;
+                            } 
                         }
                     }
                     catch(err){
-                        responseBody = "Unable to add account."+ err +" ";
+                        responseBody = "Unable to update instructor's account."+ err +" ";
                         statusCode = 403;
-                    }
-                }catch(err){
-                    responseBody = "Unable to verify instructor."+ err +" ";
-                    statusCode = 403;
-                } 
-            }
-            else{
-                const paramsDown = {
-                    TableName: "Scubamate",
-                    Key: {
-                        'AccountGuid' : AccountGuidGiven,
-                    },
-                    UpdateExpression: 'set AccountType = :a remove InstructorNumber, DiveCentre',
-                    ExpressionAttributeValues: {
-                        ':a' : "Diver",
-                    }
-  
-                };
-                try{
-                    const dataID = await documentClient.update(paramsDown).promise();
-                    responseBody = "Successfully unverified instructor!";
-                    statusCode = 200;
-                }catch(err){
-                    responseBody = "Unable to verify instructor."+ err +" ";
-                    statusCode = 403;
-                } 
-            }
-           
+                    } 
+                }
+
+            }catch(err){
+                responseBody = "Unable to find instructor's account."+ err +" ";
+                statusCode = 403;
+            } 
         }
     } catch (error) {
         statusCode = 403;
         responseBody = "Invalid Access Token. ";
     }
+    
+    
     const response = {
         statusCode: statusCode,
         headers: {
