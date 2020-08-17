@@ -126,6 +126,16 @@ export class diveService
 
         return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/getdivecentres',body, options);
     }
+
+    getAdminDiveCenter(PostData): Observable<any>{
+      const options = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+          })
+        };
+      
+       return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/getadmindc', PostData , options); 
+  }
     
     getSingleDiveCenter(name : String): Observable<any>{
 
@@ -283,6 +293,61 @@ export class diveService
         })
       };
       return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/coursesurvey', PostData , options); 
+
+    }
+
+    editBasicDiveCentre(PostData):Observable<any>{
+
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+      return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/DiveCentre/editdivecentreinfo', PostData , options); 
+
+    }
+
+    addCoursesToDiveCentre(PostData):Observable<any>{
+
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+      return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/DiveCentre/addcoursetodivecentre', PostData , options); 
+
+    }
+
+    addDiveSitesToCentre(PostData):Observable<any>{
+
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+      return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/DiveCentre/adddivesitetodivecentre', PostData , options); 
+
+    }
+
+    createNewCourse(PostData):Observable<any>{
+
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+      return this.httpClient.post('https://ek9bag0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/addcourse', PostData , options); 
+
+    }
+
+    createNewSite(PostData):Observable<any>{
+
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+      return this.httpClient.post('https://ek9bag0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/adddivesite', PostData , options); 
 
     }
 
