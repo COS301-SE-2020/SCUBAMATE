@@ -68,7 +68,8 @@ export class accountService
         }) 
       };
 
-      let lS =  localStorage.getItem("accessToken") ;
+      let lS =  localStorage.getItem("accessToken");
+      console.log(lS);
       var PostData = {
         "AccessToken" : lS
       }

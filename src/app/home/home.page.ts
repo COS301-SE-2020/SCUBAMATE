@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { diveService } from '../service/dive.service';
 import { accountService } from '../service/account.service';
 import {ConnectionService} from 'ng-connection-service';
 import { Location } from '@angular/common';
@@ -116,8 +115,5 @@ export class HomePage implements OnInit {
       this.router.navigate(['login']);
     }
   }
-
-
-
 
 }

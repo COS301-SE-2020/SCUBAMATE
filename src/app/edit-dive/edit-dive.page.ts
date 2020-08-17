@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { diveService } from '../service/dive.service';
 import { Router } from '@angular/router';
 import { accountService } from '../service/account.service';
+//import { REACTIVE_FORM_DIRECTIVES } from '@angular/forms'
 import {ConnectionService} from 'ng-connection-service';
 import { Location } from '@angular/common';
 
@@ -44,7 +45,7 @@ export interface EditDiveLog{
 @Component({
   selector: 'app-edit-dive',
   templateUrl: './edit-dive.page.html',
-  styleUrls: ['./edit-dive.page.scss'],
+  styleUrls: ['./edit-dive.page.scss']
 })
 export class EditDivePage implements OnInit {
 
@@ -56,7 +57,7 @@ export class EditDivePage implements OnInit {
   DiveTypeLst: [];
   DiveSiteLst: [];
   BuddyLst:[];
-  loginLabel:string ;
+  loginLabel: String;
   CurrentDive: DiveLog ;
 
   //Form Groups
@@ -114,9 +115,6 @@ export class EditDivePage implements OnInit {
 
 
     this.getDiveInfo();
-
-    
-
   }
 
   ionViewWillEnter(){

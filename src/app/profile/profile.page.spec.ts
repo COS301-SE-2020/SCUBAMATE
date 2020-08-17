@@ -9,8 +9,11 @@ import { HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
 
 var validData = {
-  diveT: "Reef Dive"
+  diveT: "Reef Dive",
+  accessToken : "d1d7391d-c035-28ab-0193-68a7d263d4be11ac76afb3c161…0702085a1c423b0ed53f38b9a0e6e0ad8bfe8cd3712f14be7",
+  validEmail : "teamav301@gmail.com"
 };
+
 
 describe('ProfilePage', () => {
   let component: ProfilePage;
@@ -50,13 +53,16 @@ describe('ProfilePage', () => {
     expect(component.editProfile).toBeDefined();
     expect(component.showLoading).toBeDefined();
     expect(component.showAD).toBeFalse();
+    expect(component.accountType).toBeUndefined();
+    expect(component.showAccountVerifiedMessage).toBeUndefined();
   });
 
   it('Testing ngOnInit()', () => {
+    localStorage.setItem("accessToken", validData.accessToken);
     component.ngOnInit();
     expect(component.viewProfile).toBeTrue();
     expect(component.editProfile).toBeFalse();
-    expect(component.loginLabel).toBe("Login");
+    expect(component.loginLabel).toBe("Log Out");
     let accountSpy = spyOn(accService, 'getUser').and.callThrough();
     expect(accountSpy).toBeDefined();
     let diveSpy = spyOn(divService, 'getDiveTypes').and.callThrough();
@@ -65,36 +71,32 @@ describe('ProfilePage', () => {
     expect(component.showAD).toBeFalse();
     expect(component.AD).toBeUndefined();
     expect(component.DiveTypeLst).toBeUndefined();
+    expect(component.accountType).toBeUndefined();
+    expect(component.showAccountVerifiedMessage).toBeUndefined();
   });
   
   it('Testing ionViewWillEnter()', () => {
+    localStorage.setItem("accessToken", validData.accessToken);
     component.ionViewWillEnter();
     expect(component.viewProfile).toBeTrue();
     expect(component.editProfile).toBeFalse();
-    expect(component.loginLabel).toBe("Login");
+    expect(component.loginLabel).toBe("Log Out");
     let accountSpy = spyOn(accService, 'getUser').and.callThrough();
     expect(accountSpy).toBeDefined();
     let diveSpy = spyOn(divService, 'getDiveTypes').and.callThrough();
     expect(diveSpy).toBeDefined();
+    expect(component.showLoading).toBeTrue();
+    expect(component.showAD).toBeFalse();
     expect(component.AD).toBeUndefined();
     expect(component.DiveTypeLst).toBeUndefined();
-    expect(component.showLoading).toBeTrue();
+    expect(component.accountType).toBeUndefined();
+    expect(component.showAccountVerifiedMessage).toBeUndefined();
   });
 
   it('Testing loginClick()', () => {
     let navigateSpy = spyOn(router, 'navigate');
     component.loginClick();
-    expect(navigateSpy).toHaveBeenCalledWith(['login']);
-  });
-
-  it('Testing onChooseDive()', () => {
-    component.onChooseDive(validData.diveT, event);
-    let diveSpy = spyOn(divService, 'getCheckList').and.callThrough();
-    expect(diveSpy).toBeDefined();
-    expect(component.showLoading).toBeTrue();
-    expect(component.viewChecklist).toBeFalse();
-    expect(component.OptionalList).toBeUndefined();
-    expect(component.EquipmentList).toBeUndefined();
+    expect(navigateSpy).toHaveBeenCalledWith(['home']);
   });
 
   it('Testing goToEdit()', () => {
@@ -103,11 +105,26 @@ describe('ProfilePage', () => {
     expect(navigateSpy).toHaveBeenCalledWith(['/edit-profile']);
   });
 
+  it('Testing sendEmail()', () => {
+    component.setEmail();
+    component.sendEmail();
+    expect(component.showLoading).toBeFalse();
+    let accountSpy = spyOn(accService, 'sendValidationEmail').and.callThrough();
+    expect(accountSpy).toBeDefined();
+  });
+
+  it('Testing sendVerifiedEmail()', () => {
+    component.setEmail();
+    component.sendVerifiedEmail();
+    expect(component.showLoading).toBeFalse();
+    let accountSpy = spyOn(accService, 'confirmEmailValidation').and.callThrough();
+    expect(accountSpy).toBeDefined();
+  });
+
   it('Testing Profile Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.ionViewWillEnter).toBeTruthy();
     expect(component.loginClick).toBeTruthy();
-    expect(component.onChooseDive).toBeTruthy();
     expect(component.goToEdit).toBeTruthy();
   });
 });

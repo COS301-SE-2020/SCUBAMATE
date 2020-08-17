@@ -329,6 +329,10 @@ export class ProfilePage implements OnInit {
     await alert.present();
   }
 
+  setEmail(){
+    this.AD.Email = "teamav301@gmail.com";
+  }
+  
   loadUnverifiedCourses(){
     this.showLoading = true ;
 
@@ -450,5 +454,3 @@ export class ProfilePage implements OnInit {
   }
 
 }
-
-
