@@ -455,7 +455,7 @@
       </ion-row>
       <ion-row *ngIf="showAddCourse">
         <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
-          <label class="subLabel"> Create a Course </label>
+          <label class="subLabel"> Register <br> A New Course </label>
         </ion-col>
         <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane">
           <ion-row>
@@ -601,6 +601,28 @@
               <button id="subBtn"  (click)="createNewCourseSubmit()">Submit</button>
             </ion-col>
           </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="showAddSite">
+        <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
+          <label class="subLabel">Register A New Dive Site</label>
+
+          <div id="profileSurroundDiv">
+            <ion-img src={{NewCenterObj.LogoPhoto}} id="userProfile" ></ion-img>
+           </div>
+              <ion-item color="transparent" lines="none">
+                <ion-button expand="full" (click)="f.click()" style="margin:auto;">
+                  <ion-icon lazy="true" name="image"></ion-icon>
+                  <ion-label slot="end">Change Photo</ion-label>
+                </ion-button>
+                  <input class="ion-hide" #f type="file" (change)="onFileSelected($event)" id="file-input"
+                    accept="image/png, image/jpeg">
+
+               </ion-item>
+
+
+        </ion-col>
+        <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane">
         </ion-col>
       </ion-row>
   </ion-grid>
