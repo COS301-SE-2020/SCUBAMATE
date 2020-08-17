@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 
 var accessToken = "d1d7391d-c035-28ab-0193-68a7d263d4be11ac76afb3c161…0702085a1c423b0ed53f38b9a0e6e0ad8bfe8cd3712f14be7";
 
-fdescribe('WeatherPage', () => {
+describe('WeatherPage', () => {
   let component: WeatherPage;
   let fixture: ComponentFixture<WeatherPage>;
   let weatService: weatherService;
@@ -30,11 +30,11 @@ fdescribe('WeatherPage', () => {
     router = TestBed.get(Router);
   }));
 
-  fit('Successfully Created Weather Page', () => {
+  it('Successfully Created Weather Page', () => {
     expect(component).toBeTruthy();
   });
 
-  fit('Testing Weather Components', () => {
+  it('Testing Weather Components', () => {
     expect(component.Coordinates).toBeDefined();
     expect(component.Key).toBeDefined();
     expect(component.Weather).toBeDefined();
@@ -44,7 +44,7 @@ fdescribe('WeatherPage', () => {
     expect(component.loginLabel).toBeDefined();
   });
 
-  fit('Testing ngOnInit()', () => {
+  it('Testing ngOnInit()', () => {
     localStorage.setItem("accessToken", accessToken);
     component.ngOnInit();
     expect(component.loginLabel).toBe("Log Out");
@@ -59,20 +59,20 @@ fdescribe('WeatherPage', () => {
     expect(component.weatherDate).toBeUndefined();
   });
 
-  fit('Testing ionViewWillEnter()', () => {
+  it('Testing ionViewWillEnter()', () => {
     localStorage.setItem("accessToken", accessToken);
     component.ionViewWillEnter();
     expect(component.loginLabel).toBe("Log Out");
   });
 
-  fit('Testing loginClick()', () => {
+  it('Testing loginClick()', () => {
     localStorage.setItem("accessToken", accessToken);
     let navigateSpy = spyOn(router, 'navigate');
     component.loginClick();
     expect(navigateSpy).toHaveBeenCalledWith(['']);
   });
 
-  fit('Testing Weather Functionality', () => {
+  it('Testing Weather Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.ionViewWillEnter).toBeTruthy();
     expect(component.loginClick).toBeTruthy();
