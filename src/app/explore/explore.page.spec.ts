@@ -9,7 +9,7 @@ import { HttpClient} from '@angular/common/http';
 
 var accessToken = "d1d7391d-c035-28ab-0193-68a7d263d4be11ac76afb3c161…0702085a1c423b0ed53f38b9a0e6e0ad8bfe8cd3712f14be7";
 
-fdescribe('ExplorePage', () => {
+describe('ExplorePage', () => {
   let component: ExplorePage;
   let fixture: ComponentFixture<ExplorePage>;
   let responseCode = 200;
@@ -31,11 +31,11 @@ fdescribe('ExplorePage', () => {
     router = TestBed.get(Router);
   }));
 
-  fit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  fit('Testing Explore Components', () => {
+  it('Testing Explore Components', () => {
     expect(component.siteLst).toBeUndefined();
     expect(component.centerLst).toBeUndefined();
     expect(component.showSites).toBeFalse();
@@ -46,7 +46,7 @@ fdescribe('ExplorePage', () => {
     expect(component.loginLabel).toBe("Log Out");
   });
 
-  fit('Testing Explore Functionlity', () => {
+  it('Testing Explore Functionlity', () => {
     expect(component.ngOnInit).toBeDefined();
     expect(component.ionViewWillEnter).toBeDefined();
     expect(component.loginClick).toBeDefined();
@@ -55,7 +55,7 @@ fdescribe('ExplorePage', () => {
     expect(component.displayFeed).toBeDefined();
   });
 
-  fit('Testing ngOnInit()', () => {
+  it('Testing ngOnInit()', () => {
     localStorage.setItem("accessToken", accessToken);
     component.ngOnInit();
     expect(component.showFeed).toBeTrue();
@@ -68,7 +68,7 @@ fdescribe('ExplorePage', () => {
     expect(diveSpy).toBeDefined();
   });
 
-  fit('Testing ionViewWillEnter', () => {
+  it('Testing ionViewWillEnter', () => {
     localStorage.setItem("accessToken", accessToken);
     component.ngOnInit();
     expect(component.showFeed).toBeTrue();
@@ -81,13 +81,13 @@ fdescribe('ExplorePage', () => {
     expect(diveSpy).toBeDefined();
   });
 
-  fit('Testing loginClick()', () => {
+  it('Testing loginClick()', () => {
     localStorage.setItem("accessToken", accessToken);
     component.loginClick();
     expect(localStorage.getItem("accessToken")).toBeDefined();
   });
 
-  fit('Testing displayDiveSites', () => {
+  it('Testing displayDiveSites', () => {
     component.displayDiveSites();
     expect(component.showFeed).toBeFalse();
     expect(component.showSites).toBeTrue();
@@ -97,7 +97,7 @@ fdescribe('ExplorePage', () => {
     expect(component.showLoading).toBeFalse();
   });
 
-  fit('Testing displayDiveCenters', () => {
+  it('Testing displayDiveCenters', () => {
     component.displayDiveSites();
     expect(component.showFeed).toBeFalse();
     expect(component.showSites).toBeTrue();
@@ -107,7 +107,7 @@ fdescribe('ExplorePage', () => {
     expect(component.showLoading).toBeFalse();
   });
 
-  fit('Testing displayFeed', () => {
+  it('Testing displayFeed', () => {
     component.displayFeed();
     expect(component.showFeed).toBeTrue();
     expect(component.showSites).toBeFalse();
