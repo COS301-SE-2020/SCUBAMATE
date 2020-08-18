@@ -63,14 +63,12 @@ exports.handler = async (event, context) => {
         /* check if it's undefined */
         if(typeof data.Item !== 'undefined' && data.Item){ 
             const expiryDate = new Date(data.Item.Expires);
-            const today = new Date();
-            console.log("Compare: " + today + " and " + expiryDate  + " " + compareDates(today,expiryDate));
             if((data.Item.AccessToken).toString().trim() != AccessToken){
                 statusCode = 403;
                 responseBody = "Invalid Access Token" ;
 
             }
-            if(compareDates(today,expiryDate)){
+            if(compareDates(new Date(),expiryDate)){
                 statusCode = 403;
                 responseBody = "Access Token Expired!";
             }
@@ -90,19 +88,19 @@ exports.handler = async (event, context) => {
         responseBody = "Invalid Access Token. " + error;
     }
 
-    /*
-    Only proceed if access token is valid
-    */
+    /*Only proceed if access token is valid*/
     if(statusCode==0){
         var diveParams = {
             TableName: "Dives",
-            ProjectionExpression: "AccountGuid, DiveSite, DiveDate, DivePublicStatus, DiveTypeLink, Weather, TimeIn , TimeOut, Buddy",
-            FilterExpression: "#acc = :acc",
+            ProjectionExpression: "AccountGuid, Approved, DiveSite, DiveDate, DivePublicStatus, DiveTypeLink, Weather, TimeIn , TimeOut, Buddy",
+            FilterExpression: "#acc = :acc AND #app = :app",
             ExpressionAttributeNames:{
-                "#acc" : "DivePublicStatus"
+                "#acc" : "DivePublicStatus",
+                "#app" : "Approved"
             },
             ExpressionAttributeValues:{
                 ":acc" : true,
+                ":app" : true
             }
         };
 
@@ -131,40 +129,41 @@ exports.handler = async (event, context) => {
                             "AccountGuid": account
                         }
                     }
-                    
                     try{
-                        let acc = await documentClient.get(accountParams).promise();
-                        console.log(acc.Item.FirstName + " " + acc.Item.LastName); 
-                        if(i == 0){
-                            responseBody += '{ "PublicDiveLogs" : ['
-                        }
-                        else{
-                            responseBody += ",";
-                        }
-                        responseBody += '{ "FirstName" : "' + acc.Item.FirstName + '",' +
-                                            '"LastName" : "' + acc.Item.LastName + '",' +
-                                            '"DiveSite" : "'  + dives.Items[i].DiveSite + '",' +
-                                            '"DiveDate" : "' + dives.Items[i].DiveDate + '",' +
-                                            '"DiveType" : "' + dives.Items[i].DiveTypeLink + '",' +
-                                            '"TimeIn" : "' + dives.Items[i].TimeIn + '",' +
-                                            '"TimeOut" : "' + dives.Items[i].TimeOut + '",' +
-                                            '"Buddy" : "' + dives.Items[i].Buddy + '",' +
-                                            '"Weather" : [';
-                                            
-                        for(var j=0; j<dives.Items[i].Weather.length; j++){
-                            if(j == 0){
-                                responseBody += '"' + dives.Items[i].Weather[j] + '"';
+                        let acc = await documentClient.get(accountParams).promise(); 
+                        /*If account email isn't verified, don't add it to the public dive */
+                        if(acc.Item.EmailVerified)
+                        {
+                            if(i == 0){
+                                responseBody += '{ "PublicDiveLogs" : ['
                             }
                             else{
-                                responseBody += ',"' + dives.Items[i].Weather[j] + '"';
+                                responseBody += ",";
+                            }
+                            responseBody += '{ "FirstName" : "' + acc.Item.FirstName + '",' +
+                                                '"LastName" : "' + acc.Item.LastName + '",' +
+                                                '"DiveSite" : "'  + dives.Items[i].DiveSite + '",' +
+                                                '"DiveDate" : "' + dives.Items[i].DiveDate + '",' +
+                                                '"DiveType" : "' + dives.Items[i].DiveTypeLink + '",' +
+                                                '"TimeIn" : "' + dives.Items[i].TimeIn + '",' +
+                                                '"TimeOut" : "' + dives.Items[i].TimeOut + '",' +
+                                                '"Buddy" : "' + dives.Items[i].Buddy + '",' +
+                                                '"Weather" : [';
+                                                
+                            for(var j=0; j<dives.Items[i].Weather.length; j++){
+                                if(j == 0){
+                                    responseBody += '"' + dives.Items[i].Weather[j] + '"';
+                                }
+                                else{
+                                    responseBody += ',"' + dives.Items[i].Weather[j] + '"';
+                                }
+                            }
+                            responseBody += ']}';
+    
+                            if(i==accounts.length-1){
+                                responseBody += ']}';
                             }
                         }
-                        responseBody += ']}';
-
-                        if(i==accounts.length-1){
-                            responseBody += ']}';
-                        }
-                
                     }catch(err){
                         var temp = responseBody;
                         responseBody = temp + " Unable to get account." ;
