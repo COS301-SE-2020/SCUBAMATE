@@ -202,6 +202,9 @@ export class AdminPagePage implements OnInit {
     this.verifiedInstructors = new Array();
     this.unverifiedInstructors = new Array();
     
+    this.verifiedInstructors  = [] ;
+    this.unverifiedInstructors = [] ;
+
 
     //Setup Dive Centre Object
     this.currentDiveCenter ={
@@ -213,6 +216,8 @@ export class AdminPagePage implements OnInit {
       Name: "",
       Instructors: [],
     }
+
+    this.hideAllViews();
 
     //Setup Login Label
     this.loginLabel ="Login";
@@ -242,6 +247,7 @@ export class AdminPagePage implements OnInit {
   }
 
   ionViewWillEnter(){
+    this.hideAllViews();
      //Setup page load variables
      this.showRegisterUserToCenter = false; 
      this.showRegisterNewCenter = false ;
@@ -794,7 +800,8 @@ getUnverifiedInstructors(){
   this._accountService.getUnverifiedInstructors().subscribe(res=>{
 
     this.allInstructors = res.UnverifiedInstructors ; 
-
+    console.log("Instructors \n ===============");
+    console.log( res.UnverifiedInstructors );
 
     for(var x = 0 ; x < this.allInstructors.length ; x++){
 
@@ -1055,6 +1062,8 @@ getDiveCentreInformation(){
 
     this.hideAllViews();
 
+
+
   }, err=>{
     this.showLoading = false ;
     if(err.error){
@@ -1109,6 +1118,15 @@ getDiveCentreInformation(){
 
     this.hideAllViews();
 
+    this.NewCourseObj={
+      Name: "",
+      CourseType: "",
+      MinAgeRequired: 10,
+      SurveyAnswer: "", 
+      RequiredCourses: [],
+      QualificationType: ""
+    }
+
   }, err=>{
 
     this.showLoading = false ;
@@ -1141,6 +1159,13 @@ getDiveCentreInformation(){
       this.generalAlert("Success", "Dive Site Created");
   
       this.hideAllViews();
+
+      this.NewSiteObj ={
+        Name: "",
+        Coords: "",
+        LogoPhoto: "",
+        Description: "" 
+      }
   
     }, err=>{
   

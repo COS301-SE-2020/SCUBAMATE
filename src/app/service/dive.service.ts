@@ -336,7 +336,7 @@ export class diveService
           'Content-Type': 'application/json'
         })
       };
-      return this.httpClient.post('https://ek9bag0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/addcourse', PostData , options); 
+      return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/addcourse', PostData , options); 
 
     }
 
@@ -347,7 +347,7 @@ export class diveService
           'Content-Type': 'application/json'
         })
       };
-      return this.httpClient.post('https://ek9bag0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/adddivesite', PostData , options); 
+      return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/adddivesite', PostData , options); 
 
     }
 
