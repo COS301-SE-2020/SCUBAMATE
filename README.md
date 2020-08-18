@@ -67,6 +67,20 @@
         <br>
         - Code Standards Document
         <br>
+        - Lookahead Lambda functions
+        <br>
+        - Adding and Upgrading Instructors Lambda functions
+        <br>
+        - Adding Dive Sites function
+        <br>
+        - Verifying Courses and Instructors Lambda functions
+        <br>
+        - Code Standards Document
+        <br>
+        - Course Suggestion and Survey Lambda functions
+        <br>
+        - Lambda functions for displaying Dive Sites and Dive Centres.
+        <br>
     </details>
 
 
