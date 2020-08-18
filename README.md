@@ -80,7 +80,7 @@
         - Course Suggestion and Survey Lambda functions
         <br>
         - Lambda functions for displaying Dive Sites and Dive Centres.
-        <br>
+  
     </details>
 
 
@@ -118,20 +118,27 @@
  * <details>
      <summary><b>Responsibilities</b></summary>
      <br>
-        - SRS Document: Functional Requirements, Use Cases
+        - SRS Document: Functional Requirements.
         <br>
-        - Architectural Design Document: N-tier Diagram and Object-Persistence Diagram
+        - SRS Document: Use Cases
         <br>
-        - Created the foundation of our very first Lambda functions (in node js) that get account information as well as adding a new account. I also connected these to API Gateway for testing.
+        - Architectural Design Document: Architectural Design Diagram.
+        <br>
+        - Lambda functions for adding and retrieving a new account.
         <br> 
-        - I created the Lambda function that adds a user's dive log to the database. The function receives the user's current access token and verifies it. Only if the token is valid will the dive log data be committed.
+        - Add new dive log lambda function.
         <br>
-        - I connected this diveLog Lambda function to API Gateway and configured the POST request in such a way that all the requests that the API receives are in the correct format.
+        - Lambda function for retrieving a list of a diver's personal dive logs.
         <br>
-        - Another Lambda function that I implemented was the retrieving of dive logs from a specific user. This function only expects an access token that is first verified and returns the user's list of dives.
+        - Retrieving a list of verified public dive logs Lambda function for the explore page
         <br>
-        - I also created the get public dives Lambda function.
+        - Adding and editing a new dive centre Lambda functions.
         <br>
+        - Adding courses and intructors to an existing dive centre Lambda functions.
+        <br>
+        - Functionality for upgrading an account to an Admin role.
+        <br>
+        - Adding an account to an existing dive centre Lambda function. 
     </details>
 
 ## James Darren Jenkins-Ferrett 
