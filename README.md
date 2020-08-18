@@ -105,6 +105,10 @@
         <br>
         - Weather extraction for functionality of application
         <br>
+        - Offline logging of dives
+        <br>
+        - Architectural Design Documment: Technology Requirements
+        <br>
     </details>
 
 ## Isobel Bosman 
@@ -174,6 +178,6 @@
 
 ## Testing Instructions
      Scubamate will make use of automated unit/integration testing software being Jasmine and Karma. By using Jasmine and Karma the unit/integration tests would always be performed to ensured that the system remains on a consistent standard. Jasmine as a frame work provides suites with essential functions such as describe(), taking the test case as a name and a function to be performed as the second parameter. Other functions to be included will be it() which is the more case specific function that handles the individual trial. Finally expect() is the last method used and concatenation with a matcher to test whether the case has succeeded or failed. <br>
-     Run Unit Test: <br>
-     $ng test <br>
+     Run Unit Test: 
+     $ng test 
     The first compilation will take a few seconds and then it will automatically open in your browser on localhost:9876.
