@@ -113,10 +113,8 @@ exports.handler = async (event, context) => {
             }
             else{
                 /*now add the name and surname of the diver*/
-                console.log("Scan succeeded.");
                 var accounts = [];
                 dives.Items.forEach(function(dive) {
-                    console.log( dive.AccountGuid + " hmm");
                     accounts.push(dive.AccountGuid);
                 });
                 console.log("length: " + accounts.length)
@@ -134,7 +132,7 @@ exports.handler = async (event, context) => {
                         /*If account email isn't verified, don't add it to the public dive */
                         if(acc.Item.EmailVerified)
                         {
-                            if(i == 0){
+                            if(responseBody == ""){
                                 responseBody += '{ "PublicDiveLogs" : ['
                             }
                             else{
@@ -160,9 +158,7 @@ exports.handler = async (event, context) => {
                             }
                             responseBody += ']}';
     
-                            if(i==accounts.length-1){
-                                responseBody += ']}';
-                            }
+                            
                         }
                     }catch(err){
                         var temp = responseBody;
@@ -181,7 +177,8 @@ exports.handler = async (event, context) => {
                 //     documentClient.scan(diveParams, onScan);
                 // }
     
-                if(statusCode == 0){    
+                if(statusCode == 0){   
+                    responseBody += ']}'; 
                     responseBody = JSON.parse(responseBody);
                     statusCode = 200;
                 }
