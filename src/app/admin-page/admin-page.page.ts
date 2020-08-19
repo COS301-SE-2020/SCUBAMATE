@@ -167,7 +167,6 @@ export class AdminPagePage implements OnInit {
           this.accountType = "Diver";
         }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
           this.accountType = "Admin";
-          this.getUnverifiedInstructors();
         }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
           this.accountType = "SuperAdmin";
         }else{
@@ -267,9 +266,9 @@ export class AdminPagePage implements OnInit {
  
      this.siteUserInput = new Array();
  
-     this.allInstructors = new Array();
-     this.verifiedInstructors = new Array();
-     this.unverifiedInstructors = new Array();
+     //this.allInstructors = new Array();
+     //this.verifiedInstructors = new Array();
+     //this.unverifiedInstructors = new Array();
  
      //Setup Dive Centre Object
      this.currentDiveCenter ={
@@ -297,7 +296,7 @@ export class AdminPagePage implements OnInit {
            this.accountType = "Diver";
          }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
            this.accountType = "Admin";
-           this.getUnverifiedInstructors();
+           //this.getUnverifiedInstructors();
            this.getDiveCentreInformation();
          }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
            this.accountType = "SuperAdmin";
@@ -806,12 +805,20 @@ getUnverifiedInstructors(){
     for(var x = 0 ; x < this.allInstructors.length ; x++){
 
       if(this.allInstructors[x].AccountVerified == false){
-        this.unverifiedInstructors.push(this.allInstructors[x]);
+        if(this.unverifiedInstructors.indexOf(this.allInstructors[x]) == -1){
+          this.unverifiedInstructors.push(this.allInstructors[x]);
+        }
+        
       }else{
+        if(this.verifiedInstructors.indexOf(this.allInstructors[x]) == -1){
         this.verifiedInstructors.push(this.allInstructors[x]);
+        }
       }
 
     }
+
+    console.log("Unverified");
+    console.log(this.unverifiedInstructors);
 
     this.showLoading = false ;
   }, err =>{

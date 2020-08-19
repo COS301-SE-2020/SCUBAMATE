@@ -102,6 +102,10 @@ export class DiveCenterInformationPage implements OnInit {
 
              this.showWeather = true ; 
 
+             if(this.Weather.Day ==  "Partly sunny w/ showers"){
+              this.Weather.Day = "Partly Sunny w Showers";
+             }
+             console.log("Weather Pic: " +  this.Weather.Day );
 
              this.showLoading = false;
           });
