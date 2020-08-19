@@ -163,8 +163,15 @@
         <br>
         - SRS Document: Client-Server Architecture
         <br>
-        - Lambda Function and API Gateway for Checklist functionality
+        - Lambda Function and API Gateway for default checklist functionality
         <br>
+        - Lambda Function and API Gateway for custom checklist functionality
+        <br>
+        - Deletion of an account
+        <br>
+        - Email verification of an account
+        <br>
+        - Adding of dive courses
     </details>
 
 ## Carmen Janse van Rensburg 
