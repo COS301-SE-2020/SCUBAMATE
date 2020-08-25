@@ -24,6 +24,7 @@ exports.handler = async (event, context) => {
     const Weather = body.Weather;
     const DivePublicStatus = body.DivePublicStatus;
     const isCourse = body.isCourse;
+    const Rating = body.Rating;
     
     const guid = AccessToken.substring(0,36);
 
@@ -94,6 +95,12 @@ exports.handler = async (event, context) => {
             responseBody = "Instructors needed for course";
         }
     }
+    if(Rating <0 || Rating >5){
+        responseBody = "Invalid Rating";
+        statusCode = 403
+    }
+    
+    
     /* Only log the dive if access token is verified */
     if(statusCode==undef){
         var timestamp = new Date();
@@ -130,13 +137,17 @@ exports.handler = async (event, context) => {
         var ms = timestamp.getMilliseconds();
         var now = yy + "/" + mm + "/" + dd + " " + hh + ":" + mins + ":" + ss + ":" + ms;
         
+        let Approved = true;
+        if(isCourse){
+            Approved = false;
+        }
         const params = {
             TableName: "Dives",
             Item: {
                 DiveID : DiveID,
                 AccountGuid : guid,
                 AirTemp : AirTemp,
-                Approved: false, 
+                Approved: Approved, 
                 BottomTemp: BottomTemp,
                 Buddy: Buddy, 
                 DiveDate: DiveDate, 
@@ -152,7 +163,9 @@ exports.handler = async (event, context) => {
                 Visibility: Visibility,
                 Weather: Weather,
                 DivePublicStatus: DivePublicStatus,
-                DiveVerified: false
+                DiveVerified: false,
+                Rating: Rating,
+                AITraining : false
             }
         };
         try{
