@@ -198,7 +198,7 @@
               <div class="searchableSelect" >
                 <ion-row>
                   <ion-col>
-                    <ion-label class="searchableSelectLabel" >Add Dive Site to Center</ion-label>
+                    <ion-label class="searchableSelectLabel" >Add Dive Site to Centre</ion-label>
                     <input list="diveI"  placeholder="Add Dive Site"  [(ngModel)]="siteInput"  #Spec (input)="DiveSiteListFinder()" class="searchableSelectInput" >
                       <datalist id="diveI">
                           <option *ngFor='let i of DiveSiteLst' value={{i}}></option>
@@ -237,7 +237,7 @@
       </ion-row>
       <ion-row *ngIf="showRegisterUserToCenter">
         <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
-          <label class="subLabel"> Register User <br> At A <br> Dive Center</label>
+          <label class="subLabel"> Register User <br> At A <br> Dive Centre</label>
       </ion-col>
       <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane">
         <!-- Register User Form Start -->
@@ -253,7 +253,7 @@
           </ion-col>
           <ion-col size="12">
             <div class="searchableSelect" style="width:90%;margin:auto;">
-              <ion-label class="searchableSelectLabel">Dive Center</ion-label><br>
+              <ion-label class="searchableSelectLabel">Dive Centre</ion-label><br>
                 <input list="diveC"  placeholder="Insert Dive Center Name" [(ngModel)]="UserToCenterObj.Name"  #Cent (keypress)="CenterListFinder($event.target.value)" class="searchableSelectInput">
                 <datalist id="diveC" >
                     <option *ngFor='let c of CenterLst' value={{c}}></option>
@@ -411,7 +411,7 @@
                 <div class="searchableSelect" >
                   <ion-row>
                     <ion-col>
-                      <ion-label class="searchableSelectLabel" >Add Dive Site to Center</ion-label>
+                      <ion-label class="searchableSelectLabel" >Add Dive Site to Centre</ion-label>
                       <input list="diveI"  placeholder="Add Dive Site"  [(ngModel)]="siteInput"  #Spec (input)="DiveSiteListFinder()" class="searchableSelectInput" >
                         <datalist id="diveI">
                             <option *ngFor='let i of DiveSiteLst' value={{i}}></option>
