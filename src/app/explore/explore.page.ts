@@ -134,7 +134,7 @@ export class ExplorePage implements OnInit {
   }
 
 
-  checkURL(url): boolean{ 
+  //checkURL(url): boolean{ 
     //console.log(url);
     // var img = new Image();
     // img.src = url;
@@ -142,12 +142,10 @@ export class ExplorePage implements OnInit {
     //   return false;
     // }
     // else{
-      return true;
+     // return true;
     //}
-  }
-  isUndefined(val): boolean { 
-    return typeof val === 'undefined'; 
-  };
+ // }
+  
   /// code to edit what gets displayed
   displayDiveSites(){
     this.showLoading = true;
