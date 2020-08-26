@@ -117,7 +117,7 @@ export class ExplorePage implements OnInit {
 
     this.showLoading = true ; 
     this._diveService.getPublicDives().subscribe(res =>{
-      console.log(res);
+      //console.log(res);
       this.pubLst = res.PublicDiveLogs;
       this.showLoading = false ;
     });
@@ -134,8 +134,20 @@ export class ExplorePage implements OnInit {
   }
 
 
-
-
+  checkURL(url): boolean{ 
+    //console.log(url);
+    // var img = new Image();
+    // img.src = url;
+    // if(img.width == 0){
+    //   return false;
+    // }
+    // else{
+      return true;
+    //}
+  }
+  isUndefined(val): boolean { 
+    return typeof val === 'undefined'; 
+  };
   /// code to edit what gets displayed
   displayDiveSites(){
     this.showLoading = true;

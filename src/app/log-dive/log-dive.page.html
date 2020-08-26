@@ -90,19 +90,19 @@
           </ion-col>
           <!-- Dive Location Pane -->
           <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane" style="padding-top:7%;">
-                <ion-row *ngIf="showCourseInput">
+                <ion-row ng-cloak *ngIf="showCourseInput">
                   <div class="searchableSelect" color="dark">
                     <ion-label class="searchableSelectLabel">Course</ion-label>
-                    <input list="courses" formControlName="DiveTypeLink" class="searchableSelectInput" [(ngModel)]="diveObj.DiveTypeLink" (input)="CourseListFinder()" placeholder="Insert A Completed Course" #diveCourse>
+                    <input list="courses" formControlName="DiveTypeLink" class="searchableSelectInput" [(ngModel)]="diveObj.DiveTypeLink" (input)="CourseListFinder()" placeholder="Insert The Completed Course" #diveCourse>
                     <datalist id="courses" >
                         <option *ngFor='let c of CourseLst' value={{c}}></option>
                     </datalist>
                   </div>
                 </ion-row>
-                <ion-row *ngIf="showDiveTypeInput">
+                <ion-row ng-cloak *ngIf="!showCourseInput">
                   <div class="searchableSelect" color="dark">
                     <ion-label class="searchableSelectLabel">Dive Type</ion-label>
-                    <input list="diveTypes" formControlName="DiveTypeLink" class="searchableSelectInput" [(ngModel)]="diveObj.DiveTypeLink" (input)="DiveTypeListFinder()" placeholder="Insert A Dive Type" #diveType>
+                    <input list="diveTypes" formControlName="DiveTypeLink" class="searchableSelectInput" [(ngModel)]="diveObj.DiveTypeLink" (input)="DiveTypeListFinder()" placeholder="Insert The Type Of Dive" #diveType>
                     <datalist id="diveTypes" >
                         <option *ngFor='let t of DiveTypeLst' value={{t}}></option>
                     </datalist>
@@ -120,8 +120,8 @@
            </ion-col>
          </ion-row>
       </ion-grid>
-
       </div>
+
       <div id="secondFormPage" *ngIf="secondPageVisible" style="min-height: 400px;">
         <!--Steps & Progress Bar-->
         <div id="DiveProgress">
@@ -364,7 +364,6 @@
                           <ion-textarea #desc formControlName="Description"  [(ngModel)]="diveObj.Description"  [class.invalid]="!diveForm.controls.Description.valid && (diveForm.controls.Description.dirty )"></ion-textarea>
                         </ion-item>
                       </ion-row>
-                      
                   
                  </ion-col>
                </ion-row>
@@ -378,11 +377,6 @@
         <button id="subBtn"  *ngIf="fourthPageVisible" (click)="DiveLogSubmit()">Submit</button>
       </div>
   </div>
-
-  
-
-
-
 
 
 </ion-content>

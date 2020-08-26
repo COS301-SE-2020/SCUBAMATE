@@ -54,7 +54,7 @@ export class HomePage implements OnInit {
           this.accountType = "*Diver"
         }
 
-        console.log(this.accountType);
+        //console.log(this.accountType);
    }
   }
   /********************************************/

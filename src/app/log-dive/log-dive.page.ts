@@ -83,8 +83,8 @@ export class LogDivePage implements OnInit {
     fourthPageVisible: boolean; 
 
     //Viewable Inputs
-    showCourseInput : boolean = false;
-    showDiveTypeInput : boolean = true; 
+    showCourseInput : boolean;
+    //showDiveTypeInput : boolean; 
     allLoaded: boolean ;
     
 
@@ -238,7 +238,7 @@ export class LogDivePage implements OnInit {
     this.fourthPageVisible = false;
 
     this.showCourseInput = false;
-    this.showDiveTypeInput = true;
+   // this.showDiveTypeInput = true;
 
     this.instructorUserInput = new Array();
 
@@ -252,11 +252,7 @@ export class LogDivePage implements OnInit {
       this.loginLabel = "Log Out";
     }
 
-
-  
     //removed weather here
-
-
 
   } //end ngOnInit
 
@@ -268,8 +264,8 @@ export class LogDivePage implements OnInit {
     this.thirdPageVisible = false;
     this.fourthPageVisible = false;
 
-    this.showCourseInput = false;
-    this.showDiveTypeInput = true;
+    //this.showCourseInput = false;
+    //this.showDiveTypeInput = true;
 
     this.instructorUserInput = new Array();
 
@@ -350,7 +346,9 @@ export class LogDivePage implements OnInit {
                 
                 console.log(res);
                 this.showLoading = false;
-               this.router.navigate(['my-dives']);
+                this.showCourseInput = false;
+              //  this.showDiveTypeInput = true;
+                this.router.navigate(['my-dives']);
                 console.log("after nav");
               })
             }
@@ -537,7 +535,6 @@ export class LogDivePage implements OnInit {
     
 
       if(this.firstPageVisible){
-      
         this.firstPageVisible = false;
         this.secondPageVisible = true;
         this.thirdPageVisible = false;
@@ -556,7 +553,6 @@ export class LogDivePage implements OnInit {
   }
 
   previousPage(){
-
       if(this.firstPageVisible){
         this.firstPageVisible = true;
         this.secondPageVisible = false;
@@ -582,8 +578,8 @@ export class LogDivePage implements OnInit {
   }
 
   viewCourse(){
-    this.showCourseInput = !this.showCourseInput ;
-    this.showDiveTypeInput = !this.showDiveTypeInput; 
+    this.showCourseInput = !this.showCourseInput;
+    //this.showDiveTypeInput = !this.showDiveTypeInput; 
   }
 
 
