@@ -579,6 +579,7 @@ export class LogDivePage implements OnInit {
 
   viewCourse(){
     this.showCourseInput = !this.showCourseInput;
+    this.diveObj.DiveTypeLink = "";
     //this.showDiveTypeInput = !this.showDiveTypeInput; 
   }
 
