@@ -90,7 +90,7 @@
           </ion-col>
           <!-- Dive Location Pane -->
           <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane" style="padding-top:7%;">
-                <ion-row ng-cloak *ngIf="showCourseInput">
+                <ion-row *ngIf="showCourseInput">
                   <div class="searchableSelect" color="dark">
                     <ion-label class="searchableSelectLabel">Course</ion-label>
                     <input list="courses" formControlName="DiveTypeLink" class="searchableSelectInput" [(ngModel)]="diveObj.DiveTypeLink" (input)="CourseListFinder()" placeholder="Insert The Completed Course" #diveCourse>
@@ -99,7 +99,7 @@
                     </datalist>
                   </div>
                 </ion-row>
-                <ion-row ng-cloak *ngIf="!showCourseInput">
+                <ion-row *ngIf="!showCourseInput">
                   <div class="searchableSelect" color="dark">
                     <ion-label class="searchableSelectLabel">Dive Type</ion-label>
                     <input list="diveTypes" formControlName="DiveTypeLink" class="searchableSelectInput" [(ngModel)]="diveObj.DiveTypeLink" (input)="DiveTypeListFinder()" placeholder="Insert The Type Of Dive" #diveType>

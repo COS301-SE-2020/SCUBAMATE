@@ -275,12 +275,6 @@ export class LogDivePage implements OnInit {
     }else{
       this.loginLabel = "Log Out";
     }
-
-        //setup page navigation view
-        this.firstPageVisible = true;
-        this.secondPageVisible = false;
-        this.thirdPageVisible = false;
-        this.fourthPageVisible = false;
   }
 
   loginClick(){
@@ -537,16 +531,10 @@ export class LogDivePage implements OnInit {
       if(this.firstPageVisible){
         this.firstPageVisible = false;
         this.secondPageVisible = true;
-        this.thirdPageVisible = false;
-        this.fourthPageVisible = false;
       }else if(this.secondPageVisible){
-        this.firstPageVisible = false;
         this.secondPageVisible = false;
         this.thirdPageVisible = true;
-        this.fourthPageVisible = false;
       }else if (this.thirdPageVisible){
-        this.firstPageVisible = false;
-        this.secondPageVisible = false;
         this.thirdPageVisible = false;
         this.fourthPageVisible = true;
       }
@@ -556,21 +544,13 @@ export class LogDivePage implements OnInit {
       if(this.firstPageVisible){
         this.firstPageVisible = true;
         this.secondPageVisible = false;
-        this.thirdPageVisible = false;
-        this.fourthPageVisible = false;
       }else if(this.secondPageVisible){
         this.firstPageVisible = true;
         this.secondPageVisible = false;
-        this.thirdPageVisible = false;
-        this.fourthPageVisible = false;
       }else if (this.thirdPageVisible){
-        this.firstPageVisible = false;
         this.secondPageVisible = true;
         this.thirdPageVisible = false;
-        this.fourthPageVisible = false;
       }else if (this.fourthPageVisible){
-        this.firstPageVisible = false;
-        this.secondPageVisible = false;
         this.thirdPageVisible = true;
         this.fourthPageVisible = false;
       }

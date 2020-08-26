@@ -61,11 +61,11 @@
 
 <ion-content fullscreen class="background" no-scroll padding >
 
-<ion-radio-group color="dark" slot="fixed" style="width:20%;margin-top:2%;margin-left:2%;" >
+<ion-radio-group color="dark" slot="fixed" style="width:20%;margin-top:2%;margin-left:2%;" value="feed">
   <ion-row>
-    <ion-item color="dark"  (click)="displayFeed()" style="width:100%;--border-radius:27px;" >
+    <ion-item color="dark" (click)="displayFeed()" style="width:100%;--border-radius:27px;" >
       <ion-label>Public Feed</ion-label>
-      <ion-radio checked value="feed" ></ion-radio>
+      <ion-radio  value="feed" ></ion-radio>
     </ion-item>
 
     <ion-item color="dark"  (click)="displayDiveCenters()" style="width:100%;--border-radius:27px;margin-top:8px;">
