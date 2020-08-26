@@ -167,7 +167,6 @@ export class AdminPagePage implements OnInit {
           this.accountType = "Diver";
         }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
           this.accountType = "Admin";
-          this.getUnverifiedInstructors();
         }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
           this.accountType = "SuperAdmin";
         }else{
@@ -202,6 +201,9 @@ export class AdminPagePage implements OnInit {
     this.verifiedInstructors = new Array();
     this.unverifiedInstructors = new Array();
     
+    this.verifiedInstructors  = [] ;
+    this.unverifiedInstructors = [] ;
+
 
     //Setup Dive Centre Object
     this.currentDiveCenter ={
@@ -213,6 +215,8 @@ export class AdminPagePage implements OnInit {
       Name: "",
       Instructors: [],
     }
+
+    this.hideAllViews();
 
     //Setup Login Label
     this.loginLabel ="Login";
@@ -242,6 +246,7 @@ export class AdminPagePage implements OnInit {
   }
 
   ionViewWillEnter(){
+    this.hideAllViews();
      //Setup page load variables
      this.showRegisterUserToCenter = false; 
      this.showRegisterNewCenter = false ;
@@ -261,9 +266,9 @@ export class AdminPagePage implements OnInit {
  
      this.siteUserInput = new Array();
  
-     this.allInstructors = new Array();
-     this.verifiedInstructors = new Array();
-     this.unverifiedInstructors = new Array();
+     //this.allInstructors = new Array();
+     //this.verifiedInstructors = new Array();
+     //this.unverifiedInstructors = new Array();
  
      //Setup Dive Centre Object
      this.currentDiveCenter ={
@@ -291,7 +296,7 @@ export class AdminPagePage implements OnInit {
            this.accountType = "Diver";
          }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
            this.accountType = "Admin";
-           this.getUnverifiedInstructors();
+           //this.getUnverifiedInstructors();
            this.getDiveCentreInformation();
          }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
            this.accountType = "SuperAdmin";
@@ -794,17 +799,26 @@ getUnverifiedInstructors(){
   this._accountService.getUnverifiedInstructors().subscribe(res=>{
 
     this.allInstructors = res.UnverifiedInstructors ; 
-
+    console.log("Instructors \n ===============");
+    console.log( res.UnverifiedInstructors );
 
     for(var x = 0 ; x < this.allInstructors.length ; x++){
 
       if(this.allInstructors[x].AccountVerified == false){
-        this.unverifiedInstructors.push(this.allInstructors[x]);
+        if(this.unverifiedInstructors.indexOf(this.allInstructors[x]) == -1){
+          this.unverifiedInstructors.push(this.allInstructors[x]);
+        }
+        
       }else{
+        if(this.verifiedInstructors.indexOf(this.allInstructors[x]) == -1){
         this.verifiedInstructors.push(this.allInstructors[x]);
+        }
       }
 
     }
+
+    console.log("Unverified");
+    console.log(this.unverifiedInstructors);
 
     this.showLoading = false ;
   }, err =>{
@@ -1055,6 +1069,8 @@ getDiveCentreInformation(){
 
     this.hideAllViews();
 
+
+
   }, err=>{
     this.showLoading = false ;
     if(err.error){
@@ -1109,6 +1125,15 @@ getDiveCentreInformation(){
 
     this.hideAllViews();
 
+    this.NewCourseObj={
+      Name: "",
+      CourseType: "",
+      MinAgeRequired: 10,
+      SurveyAnswer: "", 
+      RequiredCourses: [],
+      QualificationType: ""
+    }
+
   }, err=>{
 
     this.showLoading = false ;
@@ -1141,6 +1166,13 @@ getDiveCentreInformation(){
       this.generalAlert("Success", "Dive Site Created");
   
       this.hideAllViews();
+
+      this.NewSiteObj ={
+        Name: "",
+        Coords: "",
+        LogoPhoto: "",
+        Description: "" 
+      }
   
     }, err=>{
   
