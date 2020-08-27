@@ -114,8 +114,8 @@ export class ProfilePage implements OnInit {
     
 
         this._accountService.getUser().subscribe(res => {
-          console.log("res");
-          console.log(res);
+          //console.log("res");
+          //console.log(res);
           this.AD = res;
           if (res.PublicStatus == true){
             this.AD.PublicStatus = "Public";
@@ -173,8 +173,8 @@ export class ProfilePage implements OnInit {
     
 
         this._accountService.getUser().subscribe(res => {
-          console.log("res");
-          console.log(res);
+          // console.log("res");
+          // console.log(res);
           this.AD = res;
           if (res.PublicStatus == true){
             this.AD.PublicStatus = "Public";
@@ -228,7 +228,7 @@ export class ProfilePage implements OnInit {
 
 
   goToEdit(){
-    console.log("in edit func");
+    //console.log("in edit func");
     this.router.navigate(["/edit-profile"]);
   }
 
@@ -239,7 +239,7 @@ export class ProfilePage implements OnInit {
     this.showLoading = true;
     this._accountService.sendValidationEmail(this.AD.Email).subscribe( res=>
       {
-        console.log("Email Sent");
+        //console.log("Email Sent");
         localStorage.setItem("otp", res.OTP);
         this.showLoading = false;
         this.presentOTPPrompt();
@@ -251,7 +251,7 @@ export class ProfilePage implements OnInit {
     this.showLoading = true;
     this._accountService.confirmEmailValidation(this.AD.Email).subscribe( res=>
       {
-        console.log("Validated Email Sent");
+        //console.log("Validated Email Sent");
         this.showLoading = false;
         location.reload();
       });
@@ -282,12 +282,12 @@ export class ProfilePage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
-            console.log('Confirm Cancel');
+            //console.log('Confirm Cancel');
           }
         }, {
           text: 'Retry',
           handler: () => {
-            console.log("Retry OTP" );
+            //console.log("Retry OTP" );
             this.sendEmail();
             
 
@@ -320,13 +320,13 @@ export class ProfilePage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
-            console.log('Confirm Cancel');
+           // console.log('Confirm Cancel');
           }
         }, {
           text: 'Confirm',
           handler: data => {
-            console.log(data);
-            console.log("OTP Entered:" + data['otpEntered']);
+           // console.log(data);
+           // console.log("OTP Entered:" + data['otpEntered']);
 
             if(localStorage.getItem("otp")!= data['otpEntered']){
               this.presentAlertOtpWrong();
@@ -410,7 +410,7 @@ export class ProfilePage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
-            console.log('Confirm Cancel');
+            //console.log('Confirm Cancel');
           }
         }, {
           text: 'Confirm',
@@ -457,7 +457,7 @@ export class ProfilePage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
-            console.log('Confirm Cancel');
+           // console.log('Confirm Cancel');
           }
         }
       ]

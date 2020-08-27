@@ -69,7 +69,7 @@ export class accountService
       };
 
       let lS =  localStorage.getItem("accessToken");
-      console.log(lS);
+     // console.log(lS);
       var PostData = {
         "AccessToken" : lS
       }
@@ -134,8 +134,8 @@ export class accountService
           "ItemType" : "C" ,
           "UserEntry" : entry
         } ;
-        console.log("Buddy Req");
-        console.log(body);
+       // console.log("Buddy Req");
+       // console.log(body);
 
        return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveTypesAndSitesAdded/divelist',body, options);
     }
@@ -152,8 +152,8 @@ export class accountService
           "ItemType" : "S" ,
           "UserEntry" : entry
         } ;
-        console.log("Buddy Req");
-        console.log(body);
+       // console.log("Buddy Req");
+        //console.log(body);
 
        return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveTypesAndSitesAdded/divelist',body, options);
     }
@@ -169,7 +169,7 @@ export class accountService
         Email : newUserEmail
       }
 
-      console.log(postData);
+    //  console.log(postData);
 
      return  this.httpClient.post('https://10n4obqtkh.execute-api.af-south-1.amazonaws.com/email/emailsender', postData, options );
    
@@ -186,7 +186,7 @@ export class accountService
         Email : newUserEmail
       }
 
-      console.log(postData);
+     // console.log(postData);
 
      return  this.httpClient.post('https://10n4obqtkh.execute-api.af-south-1.amazonaws.com/email/emailresponder', postData, options );
    
@@ -200,7 +200,7 @@ export class accountService
       };
 
   
-      console.log(postData);
+     // console.log(postData);
 
      return  this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/UserAccountFull/upgradeaccount', postData, options );
    
