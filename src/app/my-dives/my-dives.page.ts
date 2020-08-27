@@ -27,9 +27,6 @@ export class MyDivesPage implements OnInit {
   showLoading: Boolean ;
   showDiveList : Boolean ;
 
-
-
-
   //Internet Connectivity check
   isConnected = true;  
   noInternetConnection: boolean;
@@ -57,6 +54,7 @@ export class MyDivesPage implements OnInit {
     }else{
       this.loginLabel = "Log Out";
     }
+    
 
     console.log("Do a Private search:");
     
@@ -100,7 +98,9 @@ export class MyDivesPage implements OnInit {
     }else{
       this.loginLabel = "Log Out";
     }
-
+    if(localStorage.getItem("DiveID") !== undefined){
+      localStorage.removeItem("DiveID");
+    }
     console.log("Do a Private search:");
     
       //get private dives
