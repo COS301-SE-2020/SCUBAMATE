@@ -10,6 +10,7 @@ import { Location } from '@angular/common';
 })
 export class NoInternetPage implements OnInit {
   loginLabel:string ;
+  accountType : string;
   isConnected = true;  
   noInternetConnection: boolean;
   constructor(private connectionService: ConnectionService, private router: Router, private location: Location) {
@@ -35,6 +36,19 @@ export class NoInternetPage implements OnInit {
     }else{
       this.loginLabel = "Sign Out";
     }
+    if(localStorage.getItem("accessToken")){
+      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+        this.accountType = "Instructor"
+      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+        this.accountType = "Diver"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+        this.accountType = "Admin"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+        this.accountType = "SuperAdmin"
+      }else{
+        this.accountType = "*Diver"
+      }
+    }
   }
 
   ionViewWillEnter(){
@@ -44,12 +58,26 @@ export class NoInternetPage implements OnInit {
     }else{
       this.loginLabel = "Sign Out";
     }
+    if(localStorage.getItem("accessToken")){
+      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+        this.accountType = "Instructor"
+      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+        this.accountType = "Diver"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+        this.accountType = "Admin"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+        this.accountType = "SuperAdmin"
+      }else{
+        this.accountType = "*Diver"
+      }
+    }
   }
 
   loginClick(){
     if(localStorage.getItem("accessToken"))
     {
       localStorage.removeItem("accessToken");
+      this.accountType = "*Diver";
       location.reload();
     }else{
       this.router.navigate(['login']);

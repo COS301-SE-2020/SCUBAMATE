@@ -46,6 +46,7 @@ export class DiveCenterInformationPage implements OnInit {
 
   loginLabel:string ;
   currentDiveCenter: DC ;
+  accountType : string;
 
   //Viewable Variables
   showLoading: Boolean;
@@ -54,7 +55,21 @@ export class DiveCenterInformationPage implements OnInit {
 
   /********************************************/
 
-  constructor( private _weatherService: weatherService , private router: Router, private _diveService: diveService, private geolocation: Geolocation) { }
+  constructor( private _weatherService: weatherService , private router: Router, private _diveService: diveService, private geolocation: Geolocation) { 
+    if(localStorage.getItem("accessToken")){
+          if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+            this.accountType = "Instructor"
+          }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+            this.accountType = "Diver"
+          }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+            this.accountType = "Admin"
+          }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+            this.accountType = "SuperAdmin"
+          }else{
+            this.accountType = "*Diver"
+          }
+    }
+  }
 
   ngOnInit() {
 
@@ -69,7 +84,19 @@ export class DiveCenterInformationPage implements OnInit {
       }else{
         this.loginLabel = "Log Out";
       }
-
+      if(localStorage.getItem("accessToken")){
+        if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+          this.accountType = "Instructor"
+        }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+          this.accountType = "Diver"
+        }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+          this.accountType = "Admin"
+        }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+          this.accountType = "SuperAdmin"
+        }else{
+          this.accountType = "*Diver"
+        }
+      }
     this._diveService.getSingleDiveCenter(localStorage.getItem("ViewDiveCenter")).subscribe( data=>{
       this.currentDiveCenter = data;
       
@@ -96,7 +123,7 @@ export class DiveCenterInformationPage implements OnInit {
               this.Weather.Desc = res.Headline.Text;
               this.Weather.Wind = res.DailyForecasts[0].Day.Wind.Speed.Value + " " + res.DailyForecasts[0].Day.Wind.Speed.Unit ;
 
-             this.showWeather = true ; 
+             this.showWeather = true; 
              if(this.Weather.Day ==  "Partly sunny w/ showers"){
               this.Weather.Day = "Partly Sunny w Showers";
              }
@@ -117,28 +144,40 @@ export class DiveCenterInformationPage implements OnInit {
     }else{
       this.loginLabel = "Log Out";
     }
+    if(localStorage.getItem("accessToken")){
+          if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+            this.accountType = "Instructor"
+          }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+            this.accountType = "Diver"
+          }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+            this.accountType = "Admin"
+          }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+            this.accountType = "SuperAdmin"
+          }else{
+            this.accountType = "*Diver"
+          }
+    }
   }
 
   loginClick(){
     if(localStorage.getItem("accessToken"))
     {
       localStorage.removeItem("accessToken");
+      this.accountType = "*Diver";
       this.router.navigate(['login']);
     }else{
       this.router.navigate(['login']);
     }
   }
 
-  checkURL(name): boolean{ 
-    let url = "../../assets/images/Weather/"+name.toLowerCase()+".png";
+  checkURL(name): boolean { 
+    let url = "../assets/images/Weather/"+name.toLowerCase()+".png";
     let img = new Image();
     img.src = url;
     if(img.width == 0){
-      //console.log("not found "+url)
       return false;
     }
     else{
-      //console.log("sfound "+url)
       return true;
     }
  }
