@@ -107,7 +107,7 @@ export class HomePage implements OnInit {
   loginClick(){
     if(localStorage.getItem("accessToken"))
     {
-      localStorage.removeItem("accessToken");
+      localStorage.removeItem("accessToken");  
       this.accountType = "*Diver";
       location.reload();
     }else{

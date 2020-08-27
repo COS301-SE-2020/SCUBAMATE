@@ -150,7 +150,7 @@ export class LogDivePage implements OnInit {
         this.MinTempAPI = res.DailyForecasts[0].Temperature.Minimum.Value;
         this.MaxTempAPI = res.DailyForecasts[0].Temperature.Maximum.Value;
         this.MoonPhase = res.DailyForecasts[0].Moon.Phase ;
-        this.WeatherDescription = res.DailyForecasts[0].Day.IconPhrase ;
+        this.WeatherDescription = res.DailyForecasts[0].Day.IconPhrase;
         this.WindSpeed = res.DailyForecasts[0].Day.Wind.Speed.Value + " " + res.DailyForecasts[0].Day.Wind.Speed.Unit  ; 
 
 
@@ -350,8 +350,6 @@ export class LogDivePage implements OnInit {
   }else{
     alert("To Log dives first sign in to your account");
   }
-
-
   }
 
 
@@ -362,7 +360,7 @@ export class LogDivePage implements OnInit {
         this.showLoading = true;
         this._accountService.lookAheadBuddy(this.diveObj.Buddy).subscribe(
           data => {
-              console.log(data);
+              //console.log(data);
               this.BuddyLst = data.ReturnedList ; 
               this.showLoading = false;
           }, err =>{
@@ -432,7 +430,7 @@ export class LogDivePage implements OnInit {
     this.diveObj.isCourse = this.showCourseInput ;
 
 
-    console.log(this.diveObj);
+    //console.log(this.diveObj);
 
   /*  if( !this.diveForm.valid ){
       this.presentAlert();

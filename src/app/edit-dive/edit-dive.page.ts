@@ -75,7 +75,7 @@ export class EditDivePage implements OnInit {
 
      //Dive Form
      this.diveObj ={
-        DiveID: localStorage.getItem("DiveID"),
+        DiveID: localStorage.getItem("DiveID"), 
         AccessToken: localStorage.getItem("accessToken"),
         Buddy: "",
         InstructorLink: [],
