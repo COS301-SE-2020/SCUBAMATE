@@ -141,4 +141,15 @@ showDiveSite : Boolean ;
     }
   }
 
+  checkURL(name): boolean { 
+    let url = "../assets/images/Weather/"+name.toLowerCase()+".png";
+    let img = new Image();
+    img.src = url;
+    if(img.width == 0){
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
 }

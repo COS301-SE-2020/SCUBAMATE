@@ -180,6 +180,6 @@ export class DiveCenterInformationPage implements OnInit {
     else{
       return true;
     }
- }
+  }
 
 }
