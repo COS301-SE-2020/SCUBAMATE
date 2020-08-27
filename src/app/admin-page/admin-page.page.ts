@@ -55,6 +55,7 @@ export interface newSite{
   Coords: string ;
   Description: string ;
   LogoPhoto: string ; 
+  TypeOfDives: string;
 }
 
 @Component({
@@ -156,7 +157,8 @@ export class AdminPagePage implements OnInit {
       Name: "",
       Coords: "",
       LogoPhoto: "",
-      Description: "" 
+      Description: "" ,
+      TypeOfDives: "" 
     }
 
     if(localStorage.getItem("accessToken")){
@@ -1076,7 +1078,6 @@ getDiveCentreInformation(){
     
   });
 
-  
 
  }
 
@@ -1150,7 +1151,8 @@ getDiveCentreInformation(){
       "AccessToken" : localStorage.getItem("accessToken") ,
       "Name" : this.NewSiteObj.Name ,
       "Coords" : this.NewSiteObj.Coords,
-      "Description" : this.NewSiteObj.Description
+      "Description" : this.NewSiteObj.Description,
+      "TypeOfDives" : this.NewSiteObj.TypeOfDives
     }
 
     console.log(body); 
@@ -1166,7 +1168,8 @@ getDiveCentreInformation(){
         Name: "",
         Coords: "",
         LogoPhoto: "",
-        Description: "" 
+        Description: "",
+        TypeOfDives : "" 
       }
   
     }, err=>{

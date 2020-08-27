@@ -626,6 +626,30 @@
                 <ion-input  type="text"   placeholder="Insert New Site Coordinates" [(ngModel)]="NewSiteObj.Coords"  ></ion-input>
               </ion-item>
             </ion-col>
+            <ion-col size="12">
+              <ion-radio-group [(ngModel)]="NewSiteObj.TypeOfDives"  >
+                <ion-list-header color="dark" style="text-align:left;">
+                  <ion-label>
+                    Types of Dives At Site
+                  </ion-label>
+                </ion-list-header>
+
+                  <ion-item color="dark">
+                    <ion-label>Shore</ion-label>
+                    <ion-radio value="Shore"></ion-radio>
+                  </ion-item>
+              
+                  <ion-item color="dark">
+                    <ion-label>Boat</ion-label>
+                    <ion-radio value="Boat"></ion-radio>
+                  </ion-item>
+  
+                  <ion-item color="dark">
+                    <ion-label>None of the Above</ion-label>
+                    <ion-radio value="Both"></ion-radio>
+                  </ion-item>
+              </ion-radio-group>
+          </ion-col>
            </ion-row>
            <ion-row>
             <ion-col>

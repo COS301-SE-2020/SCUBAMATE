@@ -231,7 +231,7 @@ export class diveService
       var PostData = {
         "AccessToken" : localStorage.getItem("accessToken")
       }
-
+      
       return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/getpublicdives', PostData , options); 
 
     }
