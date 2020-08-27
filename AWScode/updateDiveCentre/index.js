@@ -78,7 +78,7 @@ exports.handler = async (event, context, callback) => {
             const eParams = {
                 TableName: "Scubamate",
                 FilterExpression: "#em = :em",
-                ProjectionExpression: "AccountGuid",
+                ProjectionExpression: "AccountGuid, AccessToken",
                 ExpressionAttributeNames:{
                     '#em' : 'Email'
                 },
@@ -115,7 +115,7 @@ exports.handler = async (event, context, callback) => {
                         
                         AccountGuid = accdata.Items[0].AccountGuid;
                         const oldToken = accdata.Items[0].AccessToken;
-                        let newToken = oldToken.substring(0,GuidSize) + "10" + oldToken.substring(GuidSize+2,oldToken.length());
+                        let newToken = oldToken.substring(0,GuidSize) + "10" + oldToken.substring(GuidSize+2,oldToken.length);
 
                     /*Upgrade dive centre account to admin*/
                         const typeParams = {
@@ -123,7 +123,7 @@ exports.handler = async (event, context, callback) => {
                             Key:{
                                 "AccountGuid": AccountGuid
                             },
-                            UpdateExpression: "set AccountType = :type, DiveCentre = :dc AND AccountVerified = :av, AccessToken = :ac",
+                            UpdateExpression: "set AccountType = :type, DiveCentre = :dc, AccountVerified = :av, AccessToken = :ac",
                             // ConditionExpression: "AccountType != 'SuperAdmin' ",
                             ExpressionAttributeValues:{
                                 ":type": "Admin",
@@ -168,7 +168,7 @@ exports.handler = async (event, context, callback) => {
                 }
             }catch(err){ 
                 statusCode = 403;
-                responseBody = "Account doesn't exist. " + err;
+                responseBody = "Account doesn't exist, err: " + err;
             }  
         }           
     } catch (err) {
@@ -192,11 +192,4 @@ exports.handler = async (event, context, callback) => {
     
 };
 
-/*
-{
-    "AccessToken" : "d1d7391d-c035-28ab-0193-68a7d263d4be112edcec2f52db363e338c1969a2c4dad5f933433c4284638a18e8c1612a4e9b3d",
-    "Email" : "isobel.bosman@gmail.com",
-    "Name" : "test dive centre"
-}
- */
 
