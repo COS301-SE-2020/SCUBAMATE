@@ -183,7 +183,6 @@
                        <label class="ViewDiveCenterLink" fixed><a (click)="ViewMoreDiveCenter(dc.Name)">View More</a> </label>
                     </ion-card-title>
                 </ion-card-content>
-                
                   
               </ion-card>
             </div>
@@ -230,7 +229,7 @@
       <div class="thecard" >
         <div class="thefront">
           <ion-card color="light" >
-            <img class="cardFeedIMG" src="../../assets/images/DiveSites/{{ds.Name}}.jpg" />
+            <img class="cardFeedIMG" src={{ds.LogoPhoto}} />
               <ion-card-content>
               <ion-card-title>
                  <label class="DiveCenterName"> {{ds.Name}} </label> 
