@@ -72,10 +72,6 @@ export class DiveCenterInformationPage implements OnInit {
 
     this._diveService.getSingleDiveCenter(localStorage.getItem("ViewDiveCenter")).subscribe( data=>{
       this.currentDiveCenter = data;
-
-
-
-
       
       this.showDiveCenter = true ;
 
@@ -101,7 +97,6 @@ export class DiveCenterInformationPage implements OnInit {
               this.Weather.Wind = res.DailyForecasts[0].Day.Wind.Speed.Value + " " + res.DailyForecasts[0].Day.Wind.Speed.Unit ;
 
              this.showWeather = true ; 
-
              if(this.Weather.Day ==  "Partly sunny w/ showers"){
               this.Weather.Day = "Partly Sunny w Showers";
              }
@@ -111,15 +106,7 @@ export class DiveCenterInformationPage implements OnInit {
           });
       });
 
-
-
-
-
     });
-
-
-
-   
 
   }
 
@@ -142,6 +129,18 @@ export class DiveCenterInformationPage implements OnInit {
     }
   }
 
-
+  checkURL(name): boolean{ 
+    let url = "../../assets/images/Weather/"+name.toLowerCase()+".png";
+    let img = new Image();
+    img.src = url;
+    if(img.width == 0){
+      //console.log("not found "+url)
+      return false;
+    }
+    else{
+      //console.log("sfound "+url)
+      return true;
+    }
+ }
 
 }
