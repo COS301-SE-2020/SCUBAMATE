@@ -333,9 +333,6 @@ export class AdminPagePage implements OnInit {
       }else if(me.showAddSite){
         me.NewSiteObj.LogoPhoto = me.base64textString ;
       }
-      
-     
-      
     };
     reader.onerror = function (error) {
       console.log('Error: ', error);
@@ -865,10 +862,10 @@ getDiveCentreInformation(){
         var index2 = this.UserToCenterObj.Email.length;
         this.UserToCenterObj.Email = this.UserToCenterObj.Email.substr( index1,index2 ) ;
   
-        var index3 = this.UserToCenterObj.Email.length -1 ; 
+        var index3 = this.UserToCenterObj.Email.length ; 
         this.UserToCenterObj.Email = this.UserToCenterObj.Email.substr( 0,index3 ) ;
       }
-     
+      this.UserToCenterObj.Email.trim();
       this.showLoading = true ;
       this._accountService.addUsertoDiveCenter(this.UserToCenterObj).subscribe(res=>{
           this.showLoading = false;
@@ -882,8 +879,6 @@ getDiveCentreInformation(){
         this.showLoading = false;
         this.presentUserToCenterFailAlert();
       });
-
-      
     }
 
  }
