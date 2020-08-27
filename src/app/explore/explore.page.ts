@@ -48,7 +48,7 @@ export class ExplorePage implements OnInit {
   showLoading : boolean;
   showMoreCenters : boolean = true ;
   showMoreSites: boolean = true ;
-  pubLst: Dive[] ; 
+  pubLst: Dive[] = []; 
   loginLabel:string ;
 
   //Internet Connectivity check
@@ -134,17 +134,21 @@ export class ExplorePage implements OnInit {
   }
 
 
-  //checkURL(url): boolean{ 
-    //console.log(url);
-    // var img = new Image();
-    // img.src = url;
-    // if(img.width == 0){
-    //   return false;
-    // }
-    // else{
-     // return true;
-    //}
- // }
+  checkURL(name): boolean{ 
+      //console.log(num)
+      let url = "../../assets/images/Weather/"+name.toLowerCase()+".png";
+      let img = new Image();
+      img.src = url;
+      if(img.width == 0){
+        //console.log("not found "+url)
+        return false;
+      }
+      else{
+        //console.log(" found "+url)
+        return true;
+      }
+    
+ }
   
   /// code to edit what gets displayed
   displayDiveSites(){
@@ -159,12 +163,9 @@ export class ExplorePage implements OnInit {
   }
 
   displayDiveCenters(){
-    
-
     this.showFeed =  false;
     this.showSites = false;
     this.showCenters= true;
-
     this.loadCenters();
   }
 
@@ -176,17 +177,14 @@ export class ExplorePage implements OnInit {
 
   loadCenters(){
     this.showLoading = true;
-
-
-
     this._diveService.getExtendedDiveCenters("*", this.CentersPage).subscribe(
       data => {
 
             this.centerLst.push(...data.ReturnedList);
           
-            console.log("Loading for Page " + this.CentersPage );
-            console.log("Current List");
-            console.log( this.centerLst);
+            //console.log("Loading for Page " + this.CentersPage );
+            //console.log("Current List");
+            //console.log( this.centerLst);
 
           this.CentersPage++ ;
 
@@ -219,9 +217,6 @@ export class ExplorePage implements OnInit {
 
   loadSites(){
     this.showLoading = true;
-
-
-
     this._diveService.getExtendedDiveSites("*", this.SitesPage).subscribe(
       data => {
 
