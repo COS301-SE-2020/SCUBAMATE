@@ -103,7 +103,7 @@ exports.handler = async (event, context) => {
                     for(var j=i; j<resultLength; j++)
                     {
                         let check = new Date(dives.Items[j].DiveDate);
-                        if(compareDates(earliestDate,check))
+                        if(compareDates(check,earliestDate))
                         {
                             earliestDate = check;
                             index = j;
