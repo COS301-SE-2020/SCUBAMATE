@@ -77,7 +77,7 @@
            </ion-row>
            <ion-row>
             <div class="searchableSelect" style="width:90%;margin:auto;">
-              <ion-label class="searchableSelectLabel">Dive Center</ion-label><br>
+              <ion-label class="searchableSelectLabel">Dive Centre</ion-label><br>
                 <input list="diveC"  placeholder="Insert Your Dive Center" formControlName="diveCenter" [(ngModel)]="userObj.DiveCentre"  #Cent (keypress)="CenterListFinder($event.target.value)" class="searchableSelectInput">
                 <datalist id="diveC" >
                     <option *ngFor='let c of CenterLst' value={{c}}></option>

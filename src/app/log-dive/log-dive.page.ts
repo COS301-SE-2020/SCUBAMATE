@@ -83,8 +83,9 @@ export class LogDivePage implements OnInit {
     fourthPageVisible: boolean; 
 
     //Viewable Inputs
-    showCourseInput : boolean = false;
-    showDiveTypeInput : boolean = true; 
+    showCourseInput : boolean;
+    accountType : string;
+    //showDiveTypeInput : boolean; 
     allLoaded: boolean ;
     
 
@@ -103,6 +104,21 @@ export class LogDivePage implements OnInit {
   loginLabel:string ;
 
   constructor(private _accountService : accountService, private router: Router, private _diveService: diveService, private _weatherService: weatherService,private geolocation: Geolocation, public formBuilder: FormBuilder, public alertController : AlertController, private connectionService: ConnectionService) {
+    if(localStorage.getItem("accessToken")){
+      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+        this.accountType = "Instructor"
+      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+        this.accountType = "Diver"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+        this.accountType = "Admin"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+        this.accountType = "SuperAdmin"
+      }else{
+        this.accountType = "*Diver"
+      }
+    }
+    
+    
     this.connectionService.monitor().subscribe(isConnected => {  
       this.isConnected = isConnected;  
       if (this.isConnected) {  
@@ -150,7 +166,7 @@ export class LogDivePage implements OnInit {
         this.MinTempAPI = res.DailyForecasts[0].Temperature.Minimum.Value;
         this.MaxTempAPI = res.DailyForecasts[0].Temperature.Maximum.Value;
         this.MoonPhase = res.DailyForecasts[0].Moon.Phase ;
-        this.WeatherDescription = res.DailyForecasts[0].Day.IconPhrase ;
+        this.WeatherDescription = res.DailyForecasts[0].Day.IconPhrase;
         this.WindSpeed = res.DailyForecasts[0].Day.Wind.Speed.Value + " " + res.DailyForecasts[0].Day.Wind.Speed.Unit  ; 
 
 
@@ -238,7 +254,7 @@ export class LogDivePage implements OnInit {
     this.fourthPageVisible = false;
 
     this.showCourseInput = false;
-    this.showDiveTypeInput = true;
+   // this.showDiveTypeInput = true;
 
     this.instructorUserInput = new Array();
 
@@ -251,12 +267,19 @@ export class LogDivePage implements OnInit {
     }else{
       this.loginLabel = "Log Out";
     }
-
-
-  
-    //removed weather here
-
-
+    if(localStorage.getItem("accessToken")){
+      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+        this.accountType = "Instructor"
+      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+        this.accountType = "Diver"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+        this.accountType = "Admin"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+        this.accountType = "SuperAdmin"
+      }else{
+        this.accountType = "*Diver"
+      }
+    }
 
   } //end ngOnInit
 
@@ -268,8 +291,8 @@ export class LogDivePage implements OnInit {
     this.thirdPageVisible = false;
     this.fourthPageVisible = false;
 
-    this.showCourseInput = false;
-    this.showDiveTypeInput = true;
+    //this.showCourseInput = false;
+    //this.showDiveTypeInput = true;
 
     this.instructorUserInput = new Array();
 
@@ -279,24 +302,31 @@ export class LogDivePage implements OnInit {
     }else{
       this.loginLabel = "Log Out";
     }
-
-        //setup page navigation view
-        this.firstPageVisible = true;
-        this.secondPageVisible = false;
-        this.thirdPageVisible = false;
-        this.fourthPageVisible = false;
+    if(localStorage.getItem("accessToken")){
+      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+        this.accountType = "Instructor"
+      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+        this.accountType = "Diver"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+        this.accountType = "Admin"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+        this.accountType = "SuperAdmin"
+      }else{
+        this.accountType = "*Diver"
+      }
+    }
   }
 
   loginClick(){
     if(localStorage.getItem("accessToken"))
     {
       localStorage.removeItem("accessToken");
+      this.accountType = "*Diver";
       this.router.navigate(['home']);
     }else{
       this.router.navigate(['login']);
     }
   }
-
 
   onSubmit(pub: boolean, desc: string, siteOf:string, dateOf : string , timeI : string, timeO: string  , diveT: string, bud: string, vis: string, dep: string, aTemp: number, sTemp: number, bTemp: number,  event: Event) {
     event.preventDefault();
@@ -350,7 +380,9 @@ export class LogDivePage implements OnInit {
                 
                 console.log(res);
                 this.showLoading = false;
-               this.router.navigate(['my-dives']);
+                this.showCourseInput = false;
+              //  this.showDiveTypeInput = true;
+                this.router.navigate(['my-dives']);
                 console.log("after nav");
               })
             }
@@ -358,8 +390,6 @@ export class LogDivePage implements OnInit {
   }else{
     alert("To Log dives first sign in to your account");
   }
-
-
   }
 
 
@@ -370,7 +400,7 @@ export class LogDivePage implements OnInit {
         this.showLoading = true;
         this._accountService.lookAheadBuddy(this.diveObj.Buddy).subscribe(
           data => {
-              console.log(data);
+              //console.log(data);
               this.BuddyLst = data.ReturnedList ; 
               this.showLoading = false;
           }, err =>{
@@ -440,7 +470,7 @@ export class LogDivePage implements OnInit {
     this.diveObj.isCourse = this.showCourseInput ;
 
 
-    console.log(this.diveObj);
+    //console.log(this.diveObj);
 
   /*  if( !this.diveForm.valid ){
       this.presentAlert();
@@ -537,44 +567,28 @@ export class LogDivePage implements OnInit {
     
 
       if(this.firstPageVisible){
-      
         this.firstPageVisible = false;
         this.secondPageVisible = true;
-        this.thirdPageVisible = false;
-        this.fourthPageVisible = false;
       }else if(this.secondPageVisible){
-        this.firstPageVisible = false;
         this.secondPageVisible = false;
         this.thirdPageVisible = true;
-        this.fourthPageVisible = false;
       }else if (this.thirdPageVisible){
-        this.firstPageVisible = false;
-        this.secondPageVisible = false;
         this.thirdPageVisible = false;
         this.fourthPageVisible = true;
       }
   }
 
   previousPage(){
-
       if(this.firstPageVisible){
         this.firstPageVisible = true;
         this.secondPageVisible = false;
-        this.thirdPageVisible = false;
-        this.fourthPageVisible = false;
       }else if(this.secondPageVisible){
         this.firstPageVisible = true;
         this.secondPageVisible = false;
-        this.thirdPageVisible = false;
-        this.fourthPageVisible = false;
       }else if (this.thirdPageVisible){
-        this.firstPageVisible = false;
         this.secondPageVisible = true;
         this.thirdPageVisible = false;
-        this.fourthPageVisible = false;
       }else if (this.fourthPageVisible){
-        this.firstPageVisible = false;
-        this.secondPageVisible = false;
         this.thirdPageVisible = true;
         this.fourthPageVisible = false;
       }
@@ -582,8 +596,9 @@ export class LogDivePage implements OnInit {
   }
 
   viewCourse(){
-    this.showCourseInput = !this.showCourseInput ;
-    this.showDiveTypeInput = !this.showDiveTypeInput; 
+    this.showCourseInput = !this.showCourseInput;
+    this.diveObj.DiveTypeLink = "";
+    //this.showDiveTypeInput = !this.showDiveTypeInput; 
   }
 
 

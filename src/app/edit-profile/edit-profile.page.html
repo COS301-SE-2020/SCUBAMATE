@@ -36,6 +36,9 @@
         <ion-button routerLink="/profile">
           <ion-icon name="person" ></ion-icon>&nbsp; Profile
         </ion-button>
+        <ion-button *ngIf="accountType=='Admin' || accountType=='SuperAdmin'" routerLink="/admin-page" >
+          <ion-icon name="podium"></ion-icon>&nbsp; Admin
+        </ion-button>
       </ion-buttons>
       
     </ion-title>
@@ -111,6 +114,10 @@
 
           <ion-row style="padding-top:30px;">
             <input type="submit" value="Apply" (click)="UpdateSubmit()">
+            
+            <ion-button color="dark" id="Btn" routerLink="/profile" routerDirection="root" >
+              <ion-icon name="arrow-back"></ion-icon>Back
+            </ion-button>
           </ion-row>
 
          </ion-col>

@@ -54,7 +54,7 @@ export class HomePage implements OnInit {
           this.accountType = "*Diver"
         }
 
-        console.log(this.accountType);
+        //console.log(this.accountType);
    }
   }
   /********************************************/
@@ -77,11 +77,8 @@ export class HomePage implements OnInit {
       }else{
         this.accountType = "*Diver"
       }
-
      
     }
-
-   
 
   }
 
@@ -109,11 +106,17 @@ export class HomePage implements OnInit {
   loginClick(){
     if(localStorage.getItem("accessToken"))
     {
-      localStorage.removeItem("accessToken");
+      localStorage.removeItem("accessToken");  
+      this.accountType = "*Diver";
       location.reload();
     }else{
       this.router.navigate(['login']);
     }
   }
+
+  isUndefined(val): boolean { 
+    return typeof val === 'undefined'; 
+  };
+
 
 }

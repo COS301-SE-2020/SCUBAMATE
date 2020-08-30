@@ -44,6 +44,7 @@ weatherDate: string;
 
 loginLabel:string ;
 currentDiveSite: DS ;
+accountType : string;
 
 //Viewable Variables
 showLoading: Boolean;
@@ -51,9 +52,21 @@ showDiveSite : Boolean ;
 
 /********************************************/
 
-
-
-  constructor(private _weatherService: weatherService , private router: Router, private _diveService: diveService, private geolocation: Geolocation) { }
+  constructor(private _weatherService: weatherService , private router: Router, private _diveService: diveService, private geolocation: Geolocation) {
+    if(localStorage.getItem("accessToken")){
+      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+        this.accountType = "Instructor"
+      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+        this.accountType = "Diver"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+        this.accountType = "Admin"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+        this.accountType = "SuperAdmin"
+      }else{
+        this.accountType = "*Diver"
+      }
+    }
+   }
 
   ngOnInit() {
 
@@ -67,6 +80,20 @@ showDiveSite : Boolean ;
         this.loginLabel = "Login";
       }else{
         this.loginLabel = "Log Out";
+      }
+
+      if(localStorage.getItem("accessToken")){
+        if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+          this.accountType = "Instructor"
+        }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+          this.accountType = "Diver"
+        }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+          this.accountType = "Admin"
+        }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+          this.accountType = "SuperAdmin"
+        }else{
+          this.accountType = "*Diver"
+        }
       }
 
     this._diveService.getSingleDiveSite(localStorage.getItem("ViewDiveSite")).subscribe( data=>{
@@ -107,10 +134,22 @@ showDiveSite : Boolean ;
     if(localStorage.getItem("accessToken"))
     {
       localStorage.removeItem("accessToken");
+      this.accountType = "*Diver";
       this.router.navigate(['login']);
     }else{
       this.router.navigate(['login']);
     }
   }
 
+  checkURL(name): boolean { 
+    let url = "../assets/images/Weather/"+name.toLowerCase()+".png";
+    let img = new Image();
+    img.src = url;
+    if(img.width == 0){
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
 }

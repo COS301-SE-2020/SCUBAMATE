@@ -26,9 +26,7 @@ export class MyDivesPage implements OnInit {
   loginLabel:string ;
   showLoading: Boolean ;
   showDiveList : Boolean ;
-
-
-
+  accountType : string;
 
   //Internet Connectivity check
   isConnected = true;  
@@ -45,6 +43,19 @@ export class MyDivesPage implements OnInit {
         this.router.navigate(['no-internet']);
       }  
     });
+    if(localStorage.getItem("accessToken")){
+      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+        this.accountType = "Instructor"
+      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+        this.accountType = "Diver"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+        this.accountType = "Admin"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+        this.accountType = "SuperAdmin"
+      }else{
+        this.accountType = "*Diver"
+      }
+    }
   }
   
   ngOnInit() {
@@ -56,6 +67,19 @@ export class MyDivesPage implements OnInit {
       this.loginLabel = "Login";
     }else{
       this.loginLabel = "Log Out";
+    }
+    if(localStorage.getItem("accessToken")){
+      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+        this.accountType = "Instructor"
+      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+        this.accountType = "Diver"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+        this.accountType = "Admin"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+        this.accountType = "SuperAdmin"
+      }else{
+        this.accountType = "*Diver"
+      }
     }
 
     console.log("Do a Private search:");
@@ -100,7 +124,22 @@ export class MyDivesPage implements OnInit {
     }else{
       this.loginLabel = "Log Out";
     }
-
+    if(localStorage.getItem("accessToken")){
+      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+        this.accountType = "Instructor"
+      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+        this.accountType = "Diver"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+        this.accountType = "Admin"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+        this.accountType = "SuperAdmin"
+      }else{
+        this.accountType = "*Diver"
+      }
+    }
+    if(localStorage.getItem("DiveID") !== undefined){
+      localStorage.removeItem("DiveID");
+    }
     console.log("Do a Private search:");
     
       //get private dives
@@ -136,6 +175,7 @@ export class MyDivesPage implements OnInit {
     if(localStorage.getItem("accessToken"))
     {
       localStorage.removeItem("accessToken");
+      this.accountType = "*Diver";
       this.router.navigate(['home']);
     }else{
       this.router.navigate(['login']);

@@ -48,6 +48,7 @@ export class PlanningPage implements OnInit {
   suggestedCourseThreeList: CourseObj[] = new Array(); 
 
   showCourses : boolean ;
+  accountType : string;
 
   //SurveyAnswers
   surveyAnswers : string[] = new Array();
@@ -70,7 +71,19 @@ export class PlanningPage implements OnInit {
     }else{
       this.loginLabel = "Log Out";
     }
-
+    if(localStorage.getItem("accessToken")){
+      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+        this.accountType = "Instructor"
+      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+        this.accountType = "Diver"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+        this.accountType = "Admin"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+        this.accountType = "SuperAdmin"
+      }else{
+        this.accountType = "*Diver"
+      }
+    }
 
     //get Suggested Courses
     this._diveService.getSuggestedCourses().subscribe(res =>{
@@ -129,7 +142,19 @@ export class PlanningPage implements OnInit {
     }else{
       this.loginLabel = "Log Out";
     }
-
+    if(localStorage.getItem("accessToken")){
+      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+        this.accountType = "Instructor"
+      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+        this.accountType = "Diver"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+        this.accountType = "Admin"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+        this.accountType = "SuperAdmin"
+      }else{
+        this.accountType = "*Diver"
+      }
+    }
     //get Suggested Courses
     this._diveService.getSuggestedCourses().subscribe(res =>{
       console.log("Suggestions Received")
@@ -142,6 +167,7 @@ export class PlanningPage implements OnInit {
     if(localStorage.getItem("accessToken"))
     {
       localStorage.removeItem("accessToken");
+      this.accountType = "*Diver";
       location.reload();
     }else{
       this.router.navigate(['login']);

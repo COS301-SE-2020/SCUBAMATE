@@ -35,6 +35,9 @@
         <ion-button routerLink="/profile">
           <ion-icon name="person" ></ion-icon>&nbsp; Profile
         </ion-button>
+        <ion-button *ngIf="accountType=='Admin' || accountType=='SuperAdmin'" routerLink="/admin-page" >
+          <ion-icon name="podium"></ion-icon>&nbsp; Admin 
+        </ion-button>
       </ion-buttons>
       
     </ion-title>
@@ -156,16 +159,16 @@
     <ion-grid>
       <ion-row>
         <ion-col size="12" size-sm="6" size-md="4" size-lg="4">
-          <ion-card  >
+          <ion-card color = 'light'>
             <img class="cardFeedIMG" src="../../assets/images/diving-2.png" style="height:40%;width:100%;" />
               <ion-card-content>
-              <ion-card-title>
+              <ion-card-title color = 'dark'>
                    {{suggestedCourseThreeList[0].Name}}
                 </ion-card-title>
               <p>
                 <ion-grid>
                   <ion-row>
-                    <ion-col>
+                    <ion-col color = 'dark'>
                       <label class="courseTypeLabel">{{suggestedCourseThreeList[0].CourseType}}</label>
                     </ion-col>
                   </ion-row>
@@ -175,15 +178,15 @@
           </ion-card>
         </ion-col>
         <ion-col size="12" size-sm="6" size-md="4" size-lg="4">
-          <ion-card  >
+          <ion-card color = 'light' >
                <ion-card-content>
-              <ion-card-title>
+              <ion-card-title color = 'dark'>
                 {{suggestedCourseThreeList[1].Name}}
                 </ion-card-title>
               <p>
                 <ion-grid>
                   <ion-row>
-                    <ion-col>
+                    <ion-col color = 'dark'>
                       <label class="courseTypeLabel">{{suggestedCourseThreeList[1].CourseType}}</label>
                     </ion-col>
                   </ion-row>
@@ -194,16 +197,16 @@
           </ion-card>
         </ion-col>
         <ion-col size="12" size-sm="6" size-md="4" size-lg="4">
-          <ion-card  >
+          <ion-card color = 'light' >
             <img class="cardFeedIMG" src="../../assets/images/diving-2.png" style="height:40%;width:100%;" />
               <ion-card-content>
-              <ion-card-title>
+              <ion-card-title color = 'dark'>
                 {{suggestedCourseThreeList[2].Name}}
                 </ion-card-title>
               <p>
                 <ion-grid>
                   <ion-row>
-                    <ion-col>
+                    <ion-col color = 'dark'>
                       <label class="courseTypeLabel">{{suggestedCourseThreeList[2].CourseType}}</label>
                     </ion-col>
                   </ion-row>

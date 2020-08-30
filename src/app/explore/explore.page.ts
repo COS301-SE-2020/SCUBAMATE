@@ -48,8 +48,9 @@ export class ExplorePage implements OnInit {
   showLoading : boolean;
   showMoreCenters : boolean = true ;
   showMoreSites: boolean = true ;
-  pubLst: Dive[] ; 
+  pubLst: Dive[] = []; 
   loginLabel:string ;
+  accountType : string;
 
   //Internet Connectivity check
   isConnected = true;  
@@ -74,9 +75,20 @@ export class ExplorePage implements OnInit {
         this.router.navigate(['no-internet']);
       }  
     });
-  }
-
- 
+    if(localStorage.getItem("accessToken")){
+      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+        this.accountType = "Instructor"
+      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+        this.accountType = "Diver"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+        this.accountType = "Admin"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+        this.accountType = "SuperAdmin"
+      }else{
+        this.accountType = "*Diver"
+      }
+    }
+  } 
  
   ngOnInit() {
     //setup what gets displayed
@@ -93,7 +105,19 @@ export class ExplorePage implements OnInit {
     }else{
       this.loginLabel = "Log Out";
     }
-
+    if(localStorage.getItem("accessToken")){
+      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+        this.accountType = "Instructor"
+      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+        this.accountType = "Diver"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+        this.accountType = "Admin"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+        this.accountType = "SuperAdmin"
+      }else{
+        this.accountType = "*Diver"
+      }
+    }
     this.showLoading = true ; 
     this._diveService.getPublicDives().subscribe(res =>{
       this.pubLst = res;
@@ -114,10 +138,22 @@ export class ExplorePage implements OnInit {
     }else{
       this.loginLabel = "Log Out";
     }
-
+    if(localStorage.getItem("accessToken")){
+      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+        this.accountType = "Instructor"
+      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+        this.accountType = "Diver"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+        this.accountType = "Admin"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+        this.accountType = "SuperAdmin"
+      }else{
+        this.accountType = "*Diver"
+      }
+    }
     this.showLoading = true ; 
     this._diveService.getPublicDives().subscribe(res =>{
-      console.log(res);
+      //console.log(res);
       this.pubLst = res.PublicDiveLogs;
       this.showLoading = false ;
     });
@@ -127,6 +163,7 @@ export class ExplorePage implements OnInit {
     if(localStorage.getItem("accessToken"))
     {
       localStorage.removeItem("accessToken");
+      this.accountType = "*Diver";
       this.router.navigate(['login']);
     }else{
       this.router.navigate(['login']);
@@ -134,8 +171,22 @@ export class ExplorePage implements OnInit {
   }
 
 
-
-
+  checkURL(name): boolean{ 
+      //console.log(num)
+      let url = "../../assets/images/Weather/"+name.toLowerCase()+".png";
+      let img = new Image();
+      img.src = url;
+      if(img.width == 0){
+        //console.log("not found "+url)
+        return false;
+      }
+      else{
+        //console.log(" found "+url)
+        return true;
+      }
+    
+ }
+  
   /// code to edit what gets displayed
   displayDiveSites(){
     this.showLoading = true;
@@ -149,12 +200,9 @@ export class ExplorePage implements OnInit {
   }
 
   displayDiveCenters(){
-    
-
     this.showFeed =  false;
     this.showSites = false;
     this.showCenters= true;
-
     this.loadCenters();
   }
 
@@ -166,17 +214,14 @@ export class ExplorePage implements OnInit {
 
   loadCenters(){
     this.showLoading = true;
-
-
-
     this._diveService.getExtendedDiveCenters("*", this.CentersPage).subscribe(
       data => {
 
             this.centerLst.push(...data.ReturnedList);
           
-            console.log("Loading for Page " + this.CentersPage );
-            console.log("Current List");
-            console.log( this.centerLst);
+            //console.log("Loading for Page " + this.CentersPage );
+            //console.log("Current List");
+            //console.log( this.centerLst);
 
           this.CentersPage++ ;
 
@@ -209,9 +254,6 @@ export class ExplorePage implements OnInit {
 
   loadSites(){
     this.showLoading = true;
-
-
-
     this._diveService.getExtendedDiveSites("*", this.SitesPage).subscribe(
       data => {
 
