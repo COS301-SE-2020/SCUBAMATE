@@ -52,6 +52,8 @@ export class ExplorePage implements OnInit {
   loginLabel:string ;
   accountType : string;
 
+  showFeedLoaded : boolean = false ; 
+
   //Internet Connectivity check
   isConnected = true;  
   noInternetConnection: boolean;
@@ -97,6 +99,7 @@ export class ExplorePage implements OnInit {
     this.showCenters = false;
     this.centerLst = [];
     this.siteLst = [] ;
+    this.showFeedLoaded = false;
 
     this.loginLabel ="Login";
     if(!localStorage.getItem("accessToken"))
@@ -121,6 +124,7 @@ export class ExplorePage implements OnInit {
     this.showLoading = true ; 
     this._diveService.getPublicDives().subscribe(res =>{
       this.pubLst = res;
+      this.showFeedLoaded = true;
       this.showLoading = false ;
     });
 
@@ -131,6 +135,7 @@ export class ExplorePage implements OnInit {
    /**  this.showFeed = true;
     this.showSites = false;
     this.showCenters = false; */
+    this.showFeedLoaded = false;
 
     if(!localStorage.getItem("accessToken"))
     {
@@ -155,6 +160,7 @@ export class ExplorePage implements OnInit {
     this._diveService.getPublicDives().subscribe(res =>{
       //console.log(res);
       this.pubLst = res.PublicDiveLogs;
+      this.showFeedLoaded = true;
       this.showLoading = false ;
     });
   }
@@ -194,7 +200,7 @@ export class ExplorePage implements OnInit {
     this.showFeed =  false;
     this.showSites = true;
     this.showCenters = false;
-
+    this.showFeedLoaded = false;
     this.loadSites();
     
   }
@@ -203,6 +209,7 @@ export class ExplorePage implements OnInit {
     this.showFeed =  false;
     this.showSites = false;
     this.showCenters= true;
+    this.showFeedLoaded = false;
     this.loadCenters();
   }
 
@@ -210,6 +217,7 @@ export class ExplorePage implements OnInit {
     this.showFeed =  true;
     this.showSites = false;
     this.showCenters = false;
+    this.showFeedLoaded = true;
   }
 
   loadCenters(){

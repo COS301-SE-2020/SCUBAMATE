@@ -103,12 +103,14 @@
                           {{d.DiveType}}  <br>
                           {{d.DiveDate}}
                         </ion-col>
+                        <div *ngIf='showFeedLoaded'>
                           <ion-col *ngIf="checkURL((pubLst[i].Weather[2]))" >
                             <img class="weatherIMG" src= "../../assets/images/Weather/{{pubLst[i].Weather[2].toLowerCase()}}.png" />
                           </ion-col> 
                           <ion-col *ngIf="!checkURL(pubLst[i].Weather[2])" >
                             <img class="weatherIMG" src='../../assets/images/Weather/default.png' />
                           </ion-col>
+                        </div>
                       </ion-row>
                     </ion-grid>
                   </p>
