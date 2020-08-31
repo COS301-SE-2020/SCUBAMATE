@@ -49,17 +49,22 @@ margin-bottom: 2%;
 color: white;
 }
 
+
+
 .orangeButton{
-background-color: $red   ;
-border: none;
-color: #FFFFFF;
-text-align: center;
-font-size: 18px;
-width: 30%;
-transition: all 0.5s;
-cursor: pointer;
-margin-left: 5px;
-border-radius: 16px;
+  background-color: rgba(231, 111, 81, 0.7) ;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 18px;
+  width: 50%;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin-left: 5px;
+  border-radius: 16px;
+  word-wrap: break-word;
+
+ 
 }
 
 .orangeButton span:after {
@@ -83,6 +88,8 @@ right: 0;
 background-color:  $darkRed ;
 font-family: 'Righteous';
 display: swap ;
+font-size: larger;
+width: 55%;
 }
 
 table{

@@ -27,6 +27,10 @@ export class HomePage implements OnInit {
 
   accountType : string;
 
+  //Animations
+  buttonSignUpMarginLeft : string = "10px" ; 
+  buttonLoginMarginLeft  : string = "10px" ; 
+
   constructor(private router: Router,private _accountService: accountService, private connectionService: ConnectionService, private location: Location) {
     this.connectionService.monitor().subscribe(isConnected => {  
       this.isConnected = isConnected;  
@@ -117,6 +121,22 @@ export class HomePage implements OnInit {
   isUndefined(val): boolean { 
     return typeof val === 'undefined'; 
   };
+
+  moveArrowRightSignUp(){
+    this.buttonSignUpMarginLeft = "30px" ; 
+  }
+
+  moveArrowLeftSignUp(){
+    this.buttonSignUpMarginLeft = "10px" ; 
+  }
+
+  moveArrowRightLogin(){
+    this.buttonLoginMarginLeft = "30px" ; 
+  }
+
+  moveArrowLeftLogin(){
+    this.buttonLoginMarginLeft = "10px" ; 
+  }
 
 
 }

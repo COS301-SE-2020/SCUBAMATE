@@ -79,13 +79,22 @@
             </ion-row>
             <ion-row>
               <ion-col size="12">
-                <ion-button *ngIf="isUndefined(accountType) " color="danger" class="orangeButton" style="margin-left:5%;" routerLink="/signup">
+                <ion-button (mouseover)="moveArrowRightSignUp()" (mouseout)="moveArrowLeftSignUp()" *ngIf="isUndefined(accountType)" color='tan' class="orangeButton" style="margin-left:5%;" routerLink="/signup">
         
-                  Sign Up  <ion-icon name="arrow-forward"></ion-icon>
+                  New Member Sign Up  <ion-icon name="arrow-forward"  [style.padding-left]="buttonSignUpMarginLeft"  ></ion-icon>
 
                 </ion-button>
               </ion-col>
-               </ion-row>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-button (mouseover)="moveArrowRightLogin()" (mouseout)="moveArrowLeftLogin()" *ngIf="isUndefined(accountType)" color='tan' class="orangeButton" style="margin-left:5%;" routerLink="/login">
+          
+                    Returning Member Log In  <ion-icon name="arrow-forward"  [style.padding-left]="buttonLoginMarginLeft"  ></ion-icon>
+  
+                  </ion-button>
+                </ion-col>
+                </ion-row>
           </ion-col>
           
         </ion-row>
