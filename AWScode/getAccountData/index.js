@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 const AWS = require('aws-sdk');
 AWS.config.update({region: "af-south-1"});
 
@@ -58,31 +58,12 @@ exports.handler = async (event, context) => {
             statusCode = 403;
             responseBody = "Invalid Access Token" ;
         }
-        else if(data.Item.Expires){
-            const expiryDate = new Date(data.Item.Expires);
-            const today = new Date();
-            if(compareDates(today,expiryDate)){
-                responseBody = "Access Token Expired!";
-                statusCode = 403;
-            }  
+        else if( compareDates(new Date(),new Date(data.Item.Expires)) ){
+            responseBody = "Access Token Expired!";
+            statusCode = 403;
         }
-
-    } catch (err) {
-        statusCode = 403;
-        responseBody = "Invalid Access Token";
-    }
-    /* Only update account if access token is verified */
-    if(statusCode==undef){
-        const params = {
-            TableName: "Scubamate",
-            Key: {
-            "AccountGuid": AccountGuid
-            }
-        };
-
-        try{
-            const data = await documentClient.get(params).promise();
-            
+        else{
+            //Account is valid
             const AccountType = data.Item.AccountType;
             let incompleteResponse ={
                 "AccountVerified": data.Item.AccountVerified,
@@ -121,7 +102,7 @@ exports.handler = async (event, context) => {
                 const startIndexContentType = (data.Item.ProfilePhoto).lastIndexOf(".")+1;
                 const contentType = data.Item.ProfilePhoto.substring(startIndexContentType, data.Item.ProfilePhoto.length);
                 let base64Image = "data:image/"+contentType+";base64," +binaryFile.Body.toString('base64'); 
-                if(AccountType.trim() === "Instructor"){
+                if(AccountType.trim() === "Instructor"||AccountType.trim() === "Admin"){
                     /*Now get the Dive Centre's image to display */
                     let imageToGet = "https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/defaultlogo.png";
                     if(data.Item.AccountVerified){
@@ -129,7 +110,7 @@ exports.handler = async (event, context) => {
                             TableName: "DiveInfo",
                             ProjectionExpression: "LogoPhoto",
                             Key: {
-                            "ItemType": "DC-"+data.Item.DiveCentre
+                            "ItemType": "DC-"+data.Item.DiveCentre.toLowerCase()
                             }
                         };
                         try{
@@ -194,13 +175,12 @@ exports.handler = async (event, context) => {
             catch(err){
                 responseBody = incompleteResponse;
             }
-            
             statusCode = 200;
+        }
 
-        }catch(err){
-            responseBody = "Unable to get account data "+err;
-            statusCode = 403;
-        } 
+    } catch (err) {
+        statusCode = 403;
+        responseBody = "Unable to Find Account";
     }
 
     const response = {
@@ -214,4 +194,4 @@ exports.handler = async (event, context) => {
     };
 
     return response;
-}
+};
