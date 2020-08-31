@@ -47,7 +47,7 @@
 
     <div id="loginDiv">
       <img src="../assets/images/stacked wit.png" alt="Scubamate">
-        <form (submit)="onSubmit(emailInput.value, passInput.value , $event)">
+        <form (keyup.enter)="onSubmit(emailInput.value, passInput.value , $event)" (submit)="onSubmit(emailInput.value, passInput.value , $event)">
           
         <ion-grid>
           <ion-row>
