@@ -73,7 +73,7 @@ export class accountService
       var PostData = {
         "AccessToken" : lS
       }
-      return this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/getUser/getuser', PostData, options );
+      return this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/UserAccountFull/getuser', PostData, options );
  
     }
 
