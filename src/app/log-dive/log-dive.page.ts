@@ -543,6 +543,7 @@ export class LogDivePage implements OnInit {
     var log = JSON.stringify(localStorage.getItem("Backup"));
     console.log("Automatically sending log " + JSON.parse(log));
     this.showLoading = true;
+    localStorage.removeItem("Backup");
     this._diveService.logDive(JSON.parse(log)).subscribe( res =>{
 
                 
