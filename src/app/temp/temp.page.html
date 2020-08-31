@@ -1,193 +1,46 @@
-<ion-header>
-  <ion-toolbar color="dark">
-    
-    <ion-buttons slot="primary">
-      <ion-button routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >
-        {{loginLabel}}
-      </ion-button>
-      <ion-button color="secondary">
-        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-title > 
-     <ion-buttons >
-      <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo" style="height:80%;width:12%;padding-bottom:3px;padding-top:3px;margin-right:10px;"/>
-      
-        <ion-button routerLink="/home">
-          <ion-icon name="home" ></ion-icon><label class="navBtn">&nbsp; Home</label> 
-        </ion-button>
-        <ion-button routerLink="/explore">
-          <ion-icon name="color-wand-outline"></ion-icon>&nbsp; Explore
-        </ion-button>
-        <ion-button>
-          <ion-icon name="newspaper"></ion-icon>&nbsp; Plan
-        </ion-button>
-        <ion-button routerLink="/my-dives">
-          <ion-icon name="water"></ion-icon>&nbsp; My Dives
-        </ion-button>
-        <ion-button>
-          <ion-icon name="person" routerLink="/profile"></ion-icon>&nbsp; Profile
-        </ion-button>
-      </ion-buttons>
-      
-    </ion-title>
-    <ion-progress-bar type="indeterminate" ></ion-progress-bar> 
-  </ion-toolbar>
-</ion-header>
+<ion-app>
+  <ion-split-pane contentId="main-content">
+    <ion-menu side="start" contentId="main-content" type="overlay">
+        <ion-header>
+          <ion-toolbar>
+            <button ion-button menuToggle icon-only color="dark">
+              <ion-icon name='close'></ion-icon>
+            </button>
+            <ion-title></ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content>
+          <ion-list>
+            <ion-item>
+              <p class="ion-text-center">
+                <ion-thumbnail item-center>
+                  <img src="../assets/images/full logo wit.png" class="menu-picture--profile" style="border-radius: 50%; margin: auto; display: block;">
+                </ion-thumbnail>
+              </p>
+              <p class="ion-text-center">
+                username here
+              </p>
+            </ion-item>
+            <ion-menu-toggle auto-hide="false">
+              <ion-item >
+                <ion-icon slot="start" name="help-buoy"></ion-icon>
+                <ion-label>
+                  Soporte
+                </ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+            <ion-menu-toggle auto-hide="false">
+              <ion-item >
+                <ion-icon slot="start" name="power"></ion-icon>
+                <ion-label>
+                  Cerrar sesion
+                </ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </ion-list>
+        </ion-content>
 
-<ion-content fullscreen no-scroll padding >
-
-  <ion-row>
-    <ion-col  size="12" size-sm="12" size-md="6" size-lg="3" >
-      ion-col [size="12"] [size-sm]
-    </ion-col>
-    <ion-col  size="12" size-sm="12" size-md="6" size-lg="3" >
-      ion-col [size="12"] [size-sm]
-    </ion-col>
-    <ion-col size="12" size-sm="12" size-md="6" size-lg="3"  >
-      ion-col [size="12"] [size-sm]
-    </ion-col>
-    <ion-col  size="12" size-sm="12" size-md="6" size-lg="3" >
-      ion-col [size="12"] [size-sm]
-    </ion-col>
-  </ion-row>
-
-
-
-  <form [formGroup]="myForm">
-    
-  
-
-  <div id="formDiv">
-    
-    <div id="firstFormPage" *ngIf="firstPageVisible">
-      <h1>First Page</h1>
-      <ion-grid>
-        <ion-row>
-          <ion-col class="ion-align-self-start">
-            <div class="step1" *ngIf="myForm.controls.firstName.valid && myForm.controls.lastName.valid">1</div> 
-            <div class="step1" *ngIf="!myForm.controls.firstName.valid || !myForm.controls.lastName.valid" style="border-color:#eb445a;">1</div> 
-          </ion-col>
-          <ion-col class="ion-align-self-center">
-              <div class="step2" style="border:none;">2</div>
-          </ion-col>
-          <ion-col class="ion-align-self-end">
-              <div class="step3" style="border:none;">3</div>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-
-
-
-
-
-      <ion-progress-bar *ngIf="myForm.controls.firstName.valid && myForm.controls.lastName.valid" color="success" value="0.30" style="margin-bottom: 20px;--buffer-background:#264653;"></ion-progress-bar>
-      <ion-progress-bar *ngIf="!myForm.controls.firstName.valid || !myForm.controls.lastName.valid" color="danger" value="0.30" style="margin-bottom: 20px;--buffer-background:#264653;"></ion-progress-bar>
-      
-
-      <!-- Form Content -->
-      <ion-item >
-        <ion-label  position="floating">First Name</ion-label>
-        <ion-input formControlName="firstName" type="text" color="Primary"  [(ngModel)]="inputValues.firstName"  [class.invalid]="!myForm.controls.firstName.valid && (myForm.controls.firstName.dirty )"></ion-input>
-    </ion-item>
-  
-    <ion-item *ngIf="!myForm.controls.firstName.valid  && (myForm.controls.firstName.dirty )">
-        <p class="FormErrorControlMessage">Please enter a valid name.</p>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">Last Name</ion-label>
-      <ion-input formControlName="lastName" type="text" [class.invalid]="!myForm.controls.lastName.valid && (myForm.controls.age.dirty )"></ion-input>
-  </ion-item>
-
-  <ion-item *ngIf="!myForm.controls.lastName.valid  && (myForm.controls.lastName.dirty )">
-      <p class="FormErrorControlMessage">Please enter a valid name.</p>
-  </ion-item>
-
-    </div>
-    <div id="secondFormPage"*ngIf="secondPageVisible">
-      <h1>Second Page</h1>
-      <ion-grid>
-        <ion-row>
-          <ion-col class="ion-align-self-start">
-              <div class="step1">1</div> 
-          </ion-col>
-          <ion-col class="ion-align-self-center">
-              <div class="step2">2</div>
-          </ion-col>
-          <ion-col class="ion-align-self-end">
-              <div class="step3">3</div>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <ion-progress-bar color={{this.ProgressColor}}  value="0.70" style="margin-bottom: 20px;--buffer-background:#264653;"></ion-progress-bar>
-      <!-- Form Content -->
-
-      <ion-item>
-        <ion-label position="floating">Age</ion-label>
-        <ion-input formControlName="age" type="number" [class.invalid]="!myForm.controls.age.valid && (myForm.controls.age.dirty)"></ion-input>
-    </ion-item>
-  
-    <ion-item *ngIf="!myForm.controls.age.valid  && (myForm.controls.age.dirty )">
-        <p class="FormErrorControlMessage">Please enter a valid age.</p>
-    </ion-item>
-  
-    <ion-item>
-      <ion-label position="floating">Email</ion-label>
-      <ion-input formControlName="email" type="email"  [class.invalid]="!myForm.controls.email.valid && (myForm.controls.email.dirty)"></ion-input>
-    </ion-item>
-  
-    <ion-item *ngIf="!myForm.controls.email.valid  && (myForm.controls.email.dirty )">
-        <p class="FormErrorControlMessage">Please enter a valid Email.</p>
-    </ion-item>
-
-    </div>
-    <div id="thirdFormPage" *ngIf="thirdPageVisible">
-      <h1>Third Page</h1>
-      <ion-grid>
-        <ion-row>
-          <ion-col class="ion-align-self-start">
-              <div class="step1">1</div> 
-          </ion-col>
-          <ion-col class="ion-align-self-center">
-              <div class="step2">2</div>
-          </ion-col>
-          <ion-col class="ion-align-self-end">
-              <div class="step3">3</div>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <ion-progress-bar color={{this.ProgressColor}}  value="1" style="margin-bottom: 20px;--buffer-background:#264653;"></ion-progress-bar>
-
-      <!-- Form Content -->
-      <ion-item>
-        <ion-label position="floating">Password</ion-label>
-        <ion-input formControlName="password" type="password"  [class.invalid]="!myForm.controls.password.valid && (myForm.controls.password.dirty)"></ion-input>
-      </ion-item>
-    
-      <ion-item *ngIf="!myForm.controls.password.valid  && (myForm.controls.password.dirty )">
-          <p class="FormErrorControlMessage">Password not Secure. Must be 6 digits long and contain A-Z,a-z,1-9 and a special Character </p>
-      </ion-item>
-    
-    
-      <ion-item>
-        <ion-label position="floating">Confirm Password</ion-label>
-        <ion-input formControlName="confirmPassword" type="password"  [class.invalid]="!myForm.controls.confirmPassword.valid && (myForm.controls.confirmPassword.dirty)"></ion-input>
-      </ion-item>
-    
-      <ion-item *ngIf="!myForm.controls.confirmPassword.valid  && (myForm.controls.confirmPassword.dirty )">
-          <p class="FormErrorControlMessage">Passwords do not match</p>
-      </ion-item>
-
-    </div>
-    <div id="formNavControlDiv">
-      <button id="prev" *ngIf="!firstPageVisible" (click)="previousPage()">Previous</button>
-      <button id="next" *ngIf="!thirdPageVisible" (click)="nextPage()">Next</button>
-      <button id="subBtn" (click)="onSubmit()" *ngIf="thirdPageVisible">Submit this form</button>
-    </div>
-  </div>
-
-</form>
-
-
-</ion-content>
+    </ion-menu>
+    <ion-router-outlet id="main-content" main></ion-router-outlet>
+  </ion-split-pane>
+</ion-app>
