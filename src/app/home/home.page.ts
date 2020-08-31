@@ -4,6 +4,8 @@ import { accountService } from '../service/account.service';
 import {ConnectionService} from 'ng-connection-service';
 import { Location } from '@angular/common';
 
+import { Animation, AnimationController } from '@ionic/angular';
+
 export interface DiveSite{
   diveSite: string;
 }
@@ -31,7 +33,7 @@ export class HomePage implements OnInit {
   buttonSignUpMarginLeft : string = "10px" ; 
   buttonLoginMarginLeft  : string = "10px" ; 
 
-  constructor(private router: Router,private _accountService: accountService, private connectionService: ConnectionService, private location: Location) {
+  constructor(private animationCtrl: AnimationController , private router: Router,private _accountService: accountService, private connectionService: ConnectionService, private location: Location) {
     this.connectionService.monitor().subscribe(isConnected => {  
       this.isConnected = isConnected;  
       if (this.isConnected) {  
@@ -40,7 +42,7 @@ export class HomePage implements OnInit {
       else {  
         this.noInternetConnection=true;
         this.router.navigate(['no-internet']);
-      }  
+      } 
       
     });
     
@@ -60,6 +62,7 @@ export class HomePage implements OnInit {
 
         //console.log(this.accountType);
    }
+ 
   }
   /********************************************/
   ngOnInit() {
@@ -83,6 +86,20 @@ export class HomePage implements OnInit {
       }
      
     }
+
+    //animation
+    const animation = this.animationCtrl.create()
+  .addElement(document.querySelectorAll('.flyInIcon'))
+  .delay(1000)
+  .duration(1200)
+  .direction('alternate')
+  .iterations(1)
+  .fromTo('transform', 'translateX(-100px)', 'translateX(0px)')
+  .fromTo('opacity', '0.1', '1');
+  ;
+
+animation.play();
+   
 
   }
 
