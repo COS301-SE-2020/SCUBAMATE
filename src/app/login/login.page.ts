@@ -42,8 +42,14 @@ export class LoginPage implements OnInit {
  // showError: false;
  // msgErro: string ;
   loginLabel:string ;
+  passwordType : string = 'password'; 
+  showPassword : boolean = false; 
 
   ngOnInit() {
+    this.passwordType = 'password'; 
+    this.showPassword  = false;
+
+
     this.loginLabel ="Login";
     if(!localStorage.getItem("accessToken"))
     {
@@ -109,6 +115,20 @@ export class LoginPage implements OnInit {
     });
   
     await alert.present();
+  }
+
+
+  togglePassword(){
+
+    if(this.passwordType == 'password'){
+      this.showPassword = true ;
+      this.passwordType = 'text';
+    }else if( this.passwordType == 'text'){
+      this.showPassword = false ;
+      this.passwordType = 'password';
+    }
+
+
   }
 
 }
