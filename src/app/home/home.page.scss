@@ -6,6 +6,27 @@ $yellow : #E9C46A ;
 $darkRed: #d66853   ;
 $inputBackgroundColor: #181e21;
 
+@media (max-width: 767px) {
+  .orangeButton{
+    width:90% !important;
+    font-size: 13px !important; 
+  }
+
+  .infoDiv{
+    width: 95% !important;
+    padding: 5px !important;
+  }
+
+  #homeSticker{
+    width: 95% !important;
+    #homeSticker img{
+      margin:auto; 
+      object-fit: cover;
+      width: 70% !important;
+      height: 70% !important;
+      }
+  }
+}
 
 ion-content.background{
   --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
@@ -16,7 +37,7 @@ ion-content.background{
 }
 
 .infoDiv{
-  background-color: rgba(38, 70, 83, 0.5);
+  background-color: rgba(38, 70, 83, 0.6);
   margin: auto;
   width:  80% ;
   height: 30%;
@@ -56,7 +77,7 @@ ion-content.background{
 
 
 #homeSticker{
-  background-color: rgba(38, 70, 83, 0.5);
+  background-color: rgba(38, 70, 83, 0.6);
   margin: auto;
   border-bottom: solid white 0.5px;
   border-top: solid white 0.5px;

@@ -1,13 +1,50 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+<!--  <ion-router-outlet></ion-router-outlet>
   <div *ngIf="noInternetConnection" style="text-align: center;">    
     <h1>THERE IS NO INTERNET CONNECTION</h1>    
     <img width="111px" src="assets/images/no.wifi_.png" alt="Wifi Connected" />    
 </div>
-<!--
+
 <div *ngIf="!noInternetConnection" style="text-align: center;">     
     <h1>INTERNET CONNECTION IS THERE</h1>    
     <img width="111px" src="assets/images/wifi.png" alt="Wifi Disconnected" />    
 </div>-->
+<!-- when="xs"-->
+
+ <ion-split-pane contentId="main" [when]="false">
+  <!--  the side menu  -->
+  <ion-menu contentId="main">
+    <ion-header>
+      <ion-toolbar color="dark">
+        <ion-title>Menu</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-item routerLink="/home">
+          <ion-icon name="home" color="primary"></ion-icon>&nbsp; Home
+        </ion-item>
+        <ion-item routerLink="/explore">
+          <ion-icon name="color-wand-outline" color="primary"></ion-icon>&nbsp; Explore
+        </ion-item>
+        <ion-item routerLink="/planning">
+          <ion-icon name="newspaper" color="primary"></ion-icon>&nbsp; Plan</ion-item>
+        <ion-item routerLink="/my-dives">
+          <ion-icon name="water" color="primary"></ion-icon>&nbsp; My Dives
+        </ion-item >
+        <ion-item routerLink="/profile">
+          <ion-icon name="person" color="primary"></ion-icon>&nbsp; Profile
+        </ion-item>
+        <ion-item routerLink="/admin-page">
+          <ion-icon name="podium" color="primary"></ion-icon>&nbsp; Admin 
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <!-- the main content -->
+  <ion-router-outlet id="main"></ion-router-outlet>
+</ion-split-pane> 
+
 
 </ion-app>
