@@ -15,7 +15,6 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { AlertController } from '@ionic/angular';
 import { JsonPipe } from '@angular/common';
 
-
 export interface DiveLog{
   DiveID : string; 
   AccessToken: string ; 
@@ -166,8 +165,7 @@ export class LogDivePage implements OnInit {
         this.MinTempAPI = res.DailyForecasts[0].Temperature.Minimum.Value;
         this.MaxTempAPI = res.DailyForecasts[0].Temperature.Maximum.Value;
         this.MoonPhase = res.DailyForecasts[0].Moon.Phase ;
-        
-        this.WeatherDescription = res.DailyForecasts[0].Day.IconPhrase;
+        this.WeatherDescription = (res.DailyForecasts[0].Day.IconPhrase).replace('/','');
         this.WindSpeed = res.DailyForecasts[0].Day.Wind.Speed.Value + " " + res.DailyForecasts[0].Day.Wind.Speed.Unit  ; 
 
 

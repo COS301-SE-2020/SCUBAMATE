@@ -119,7 +119,7 @@ showDiveSite : Boolean ;
               this.Weather.Date = res.DailyForecasts[0].Date;
               this.Weather.Min = res.DailyForecasts[0].Temperature.Minimum.Value + " " +res.DailyForecasts[0].Temperature.Minimum.Unit;
               this.Weather.Max = res.DailyForecasts[0].Temperature.Maximum.Value + " " + res.DailyForecasts[0].Temperature.Maximum.Unit;
-              this.Weather.Day = res.DailyForecasts[0].Day.IconPhrase;
+              this.Weather.Day = (res.DailyForecasts[0].Day.IconPhrase).replace('/','');
               this.Weather.Night = res.DailyForecasts[0].Night.IconPhrase;
               this.Weather.Desc = res.Headline.Text;
               this.Weather.Wind = res.DailyForecasts[0].Day.Wind.Speed.Value + " " + res.DailyForecasts[0].Day.Wind.Speed.Unit ;
