@@ -38,16 +38,16 @@
         <ion-button routerLink="/home">
           <ion-icon name="home" ></ion-icon><label style="padding-top:7px;">&nbsp; Home</label> 
         </ion-button>
-        <ion-button routerLink="/explore">
+        <ion-button *ngIf="!isUndefined(accountType) " routerLink="/explore">
           <ion-icon name="color-wand-outline"></ion-icon>&nbsp; Explore
         </ion-button>
-        <ion-button routerLink="/planning">
+        <ion-button *ngIf="!isUndefined(accountType) " routerLink="/planning">
           <ion-icon name="newspaper"></ion-icon>&nbsp; Plan
         </ion-button>
-        <ion-button routerLink="/my-dives">
+        <ion-button *ngIf="!isUndefined(accountType) " routerLink="/my-dives">
           <ion-icon name="water"></ion-icon>&nbsp; My Dives
         </ion-button>
-        <ion-button routerLink="/profile">
+        <ion-button *ngIf="!isUndefined(accountType) " routerLink="/profile">
           <ion-icon name="person" ></ion-icon>&nbsp; Profile
         </ion-button>
         <ion-button *ngIf="accountType=='Admin' || accountType=='SuperAdmin'" routerLink="/admin-page" >
