@@ -343,7 +343,6 @@
                           </datalist>
                         </div>
                       </ion-row>
-                      
                       <ion-row >
                         <ion-item color="dark">
                           <ion-label position="stacked">Do you want this dive to be logged publicly?</ion-label>
@@ -368,7 +367,17 @@
                           <ion-textarea #desc formControlName="Description"  [(ngModel)]="diveObj.Description"  [class.invalid]="!diveForm.controls.Description.valid && (diveForm.controls.Description.dirty )"></ion-textarea>
                         </ion-item>
                       </ion-row>
-                  
+                      <ion-row>
+                        <ion-item >
+                          <ion-label  position="stacked">Rate This Dive </ion-label>
+                          <br>
+                            <rating formControlName="Rating"
+                                readonly="false" 
+                                size="default"
+                                (rateChange)="onRateChange($event)">
+                          </rating>
+                      </ion-item>
+                      </ion-row>
                  </ion-col>
                </ion-row>
             </ion-grid>

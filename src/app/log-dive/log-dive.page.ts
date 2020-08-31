@@ -15,6 +15,9 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { AlertController } from '@ionic/angular';
 import { JsonPipe } from '@angular/common';
 
+
+
+
 export interface DiveLog{
   DiveID : string; 
   AccessToken: string ; 
@@ -34,6 +37,7 @@ export interface DiveLog{
   Weather: String[] ;
   DivePublicStatus: Boolean;
   isCourse: Boolean;
+  Rating: number;
 }
 
 
@@ -70,6 +74,7 @@ export class LogDivePage implements OnInit {
     MoonPhase : string ;
     WeatherDescription: string ; 
     WindSpeed : string;
+    RateGiven : number;
 
     //Form Groups
     diveForm;
@@ -188,7 +193,8 @@ export class LogDivePage implements OnInit {
             InstructorLink: [] ,
             Weather: [] ,
             DivePublicStatus: false,
-            isCourse: false
+            isCourse: false,
+            Rating: 0
           }
 
         //setup weather info in Dive Log Object
@@ -219,7 +225,8 @@ export class LogDivePage implements OnInit {
       Description: ['', Validators.required],
       InstructorLink: [] ,
       Weather: [] ,
-      DivePublicStatus: []
+      DivePublicStatus: [],
+      Rating : []
     });
 
     router.events.pipe(
@@ -327,7 +334,7 @@ export class LogDivePage implements OnInit {
     }
   }
 
-  onSubmit(pub: boolean, desc: string, siteOf:string, dateOf : string , timeI : string, timeO: string  , diveT: string, bud: string, vis: string, dep: string, aTemp: number, sTemp: number, bTemp: number,  event: Event) {
+  onSubmit(pub: boolean, desc: string, siteOf:string, dateOf : string , timeI : string, timeO: string  , diveT: string, bud: string, vis: string, dep: string, aTemp: number, sTemp: number, bTemp: number, rting: number,  event: Event) {
     event.preventDefault();
 
     //generate GUID
@@ -338,7 +345,7 @@ export class LogDivePage implements OnInit {
     {
             if( ( siteOf =="") || (dateOf=="") || ( timeI =="") ||( timeO =="") || ( diveT=="")  )
             {
-              alert("Fill in al the fields");
+              alert("Fill in all the fields");
             }
             else
             {
@@ -370,7 +377,8 @@ export class LogDivePage implements OnInit {
                     InstructorLink: [] ,
                     Weather: [this.WindSpeed, this.MoonPhase, this.WeatherDescription],
                     DivePublicStatus: pub,
-                    isCourse: this.showCourseInput 
+                    isCourse: this.showCourseInput,
+                    Rating: rting
                   } as DiveLog;
           
               //console.log(log);
@@ -463,6 +471,8 @@ export class LogDivePage implements OnInit {
     this.diveObj.BottomTemp = Number(this.diveObj.BottomTemp );
     this.diveObj.Visibility = this.diveObj.Visibility + "m";
     this.diveObj.Depth = this.diveObj.Depth + "m";
+    this.diveObj.Rating = this.RateGiven;
+    
 
     //link Instructor Array
     this.diveObj.InstructorLink = this.instructorUserInput ; 
@@ -478,7 +488,7 @@ export class LogDivePage implements OnInit {
       console.log(this.diveObj);
      
     } */
-
+    console.log(this.diveObj);
    this.showLoading = true;
     this._diveService.logDive(this.diveObj).subscribe( res =>{
                 
@@ -503,6 +513,7 @@ export class LogDivePage implements OnInit {
     this.diveObj.BottomTemp = Number(this.diveObj.BottomTemp );
     this.diveObj.Visibility = this.diveObj.Visibility + "m";
     this.diveObj.Depth = this.diveObj.Depth + "m";
+    this.diveObj.Rating = this.RateGiven;
 
     //link Instructor Array
     this.diveObj.InstructorLink = this.instructorUserInput ; 
@@ -535,6 +546,7 @@ export class LogDivePage implements OnInit {
     //this.diveObj.InstructorLink = "-";
     this.diveObj.Visibility = log.Visibility;
     this.diveObj.Depth = log.Depth;
+    this.diveObj.Rating = log.RateGiven;
   }
 
   automaticallySendLog(){
@@ -559,12 +571,8 @@ export class LogDivePage implements OnInit {
     });
   }
 
-
-
   //Navigation of Pages
   nextPage(){
-    
-
       if(this.firstPageVisible){
         this.firstPageVisible = false;
         this.secondPageVisible = true;
@@ -691,5 +699,8 @@ export class LogDivePage implements OnInit {
          }
        ); 
 }
-
+  onRateChange(event) {
+    //console.log('Your rate:', event);
+    this.RateGiven = Number(event);
+  }
 }
