@@ -4,7 +4,6 @@ AWS.config.update({region: "af-south-1"});
 const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
 
 exports.handler = async (event, context) => {
-    // TODO implement
     let body = JSON.parse(event.body);
     
     const AccessToken = body.AccessToken;
@@ -14,7 +13,6 @@ exports.handler = async (event, context) => {
 
     const GuidSize = 36;
     const AccountGuid = AccessToken.substring(0,GuidSize);
-   
    
     function compareDates(t,e){
         let returnBool;
