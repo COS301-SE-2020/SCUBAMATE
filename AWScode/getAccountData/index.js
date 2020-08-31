@@ -65,32 +65,6 @@ exports.handler = async (event, context) => {
         else{
             //Account is valid
             const AccountType = data.Item.AccountType;
-            let incompleteResponse ={
-                "AccountVerified": data.Item.AccountVerified,
-                "DateOfBirth": data.Item.DateOfBirth,
-                "Email": data.Item.Email,
-                "EmailVerified": data.Item.EmailVerified,
-                "FirstName": data.Item.FirstName,
-                "LastName": data.Item.LastName,
-                "PublicStatus": data.Item.PublicStatus,
-                "CompletedCourses": data.Item.CompletedCourses,
-                "ProfilePhoto":"N/A"
-            };
-            if(AccountType.trim() === "Instructor"){
-                incompleteResponse ={
-                    "AccountVerified": data.Item.AccountVerified,
-                    "DateOfBirth": data.Item.DateOfBirth,
-                    "Email": data.Item.Email,
-                    "EmailVerified": data.Item.EmailVerified,
-                    "FirstName": data.Item.FirstName,
-                    "LastName": data.Item.LastName,
-                    "PublicStatus": data.Item.PublicStatus,
-                    "DiveCentre": data.Item.DiveCentre,
-                    "InstructorNumber": data.Item.InstructorNumber,
-                    "CompletedCourses,": data.Item.CompletedCourses,
-                    "ProfilePhoto":"N/A"
-                };
-            }
             const startIndex = (data.Item.ProfilePhoto).lastIndexOf("/")+1;
             let filePath = (data.Item.ProfilePhoto).substring(startIndex, (data.Item.ProfilePhoto).length);
             
@@ -140,41 +114,21 @@ exports.handler = async (event, context) => {
                     catch(err){
                         returnImg = "N/A";
                     }
-                    
-                    let completeResponse ={
-                        "AccountVerified": data.Item.AccountVerified,
-                        "DateOfBirth": data.Item.DateOfBirth,
-                        "Email": data.Item.Email,
-                        "EmailVerified": data.Item.EmailVerified,
-                        "FirstName": data.Item.FirstName,
-                        "LastName": data.Item.LastName,
-                        "PublicStatus": data.Item.PublicStatus,
-                        "DiveCentre": data.Item.DiveCentre,
-                        "InstructorNumber": data.Item.InstructorNumber,
-                        "CompletedCourses": data.Item.CompletedCourses,
-                        "ProfilePhoto": base64Image,
-                        "LogoPhoto":returnImg
-                    };
-                    responseBody = completeResponse;
+                    data.Item.LogoPhoto = returnImg;
                 }
-                else{
-                    let completeResponse ={
-                        "AccountVerified": data.Item.AccountVerified,
-                        "DateOfBirth": data.Item.DateOfBirth,
-                        "Email": data.Item.Email,
-                        "EmailVerified": data.Item.EmailVerified,
-                        "FirstName": data.Item.FirstName,
-                        "LastName": data.Item.LastName,
-                        "PublicStatus": data.Item.PublicStatus,
-                        "CompletedCourses": data.Item.CompletedCourses,
-                        "ProfilePhoto": base64Image
-                    };
-                    responseBody = completeResponse;
-                }
+                
+                data.Item.ProfilePhoto = base64Image;
+                responseBody = data.Item;
             }
             catch(err){
-                responseBody = incompleteResponse;
+                data.Item.ProfilePhoto = "N/A";
+                responseBody = data.Item;
             }
+            delete data.Item.AccountGuid; 
+            delete data.Item.AccessToken; 
+            delete data.Item.AccountType; 
+            delete data.Item.Expires; 
+            delete data.Item.Password;
             statusCode = 200;
         }
 
