@@ -226,7 +226,7 @@
                 <label class="divSubHead" style="margin-top: 10px;">Weather</label>
 
                 <div id="imgSurroundDiv">
-                  <ion-img src="../../assets/images/Weather/{{WeatherDescription}}.png" alt="{{WeatherDescription}}" id="img" ></ion-img>
+                  <ion-img src="../../assets/images/Weather/{{WeatherDescription.toLowerCase()}}.png" alt="{{WeatherDescription}}" id="img" ></ion-img>
                 </div>
 
                 <label class="infoLabel" style="text-align: left; margin-bottom:10px;">
@@ -343,6 +343,7 @@
                           </datalist>
                         </div>
                       </ion-row>
+                      
                       <ion-row >
                         <ion-item color="dark">
                           <ion-label position="stacked">Do you want this dive to be logged publicly?</ion-label>
