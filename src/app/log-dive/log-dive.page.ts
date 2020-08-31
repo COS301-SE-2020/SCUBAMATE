@@ -481,6 +481,9 @@ export class LogDivePage implements OnInit {
     } */
 
    this.showLoading = true;
+   if(localStorage.getItem("Backup")){
+    localStorage.removeItem("Backup");
+  }
     this._diveService.logDive(this.diveObj).subscribe( res =>{
                 
       console.log(res);
@@ -543,7 +546,9 @@ export class LogDivePage implements OnInit {
     var log = JSON.stringify(localStorage.getItem("Backup"));
     console.log("Automatically sending log " + JSON.parse(log));
     this.showLoading = true;
-    localStorage.removeItem("Backup");
+    if(localStorage.getItem("Backup")){
+      localStorage.removeItem("Backup");
+    }
     this._diveService.logDive(JSON.parse(log)).subscribe( res =>{
 
                 
