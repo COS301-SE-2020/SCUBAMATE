@@ -89,8 +89,8 @@ export class MyDivesPage implements OnInit {
       {
         this._diveService.getPrivateDive().subscribe( res =>{
             
-            if( res.Items){
-              this.diveLst = res.Items;
+            if( res.PrivateDiveLogs){
+              this.diveLst = res.PrivateDiveLogs;
             }else{
               this.diveLst = [];
             }
@@ -147,8 +147,8 @@ export class MyDivesPage implements OnInit {
       {
         this._diveService.getPrivateDive().subscribe( res =>{
             
-            if( res.Items){
-              this.diveLst = res.Items;
+            if( res.PrivateDiveLogs){
+              this.diveLst = res.PrivateDiveLogs;
             }else{
               this.diveLst = [];
             }
