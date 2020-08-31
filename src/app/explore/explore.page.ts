@@ -126,6 +126,11 @@ export class ExplorePage implements OnInit {
       this.pubLst = res;
       this.showFeedLoaded = true;
       this.showLoading = false ;
+    }, err=>{
+      if(err.error == "Invalid Access Token"){
+        localStorage.removeItem("accessToken");
+        this.router.navigate(['login']);
+      }
     });
 
   }

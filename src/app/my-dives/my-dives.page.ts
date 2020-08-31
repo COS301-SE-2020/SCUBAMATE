@@ -158,9 +158,14 @@ export class MyDivesPage implements OnInit {
             this.showLoading= false;
 
         }, err =>{
+          if(err.error == "Invalid Access Token"){
+            localStorage.removeItem("accessToken");
+            this.router.navigate(['login']);
+          }
+
           this.showLoading= false;
           this.showDiveList = false;
-          console.log(err.error)
+          console.log(err.error);
         });
          
       }else{

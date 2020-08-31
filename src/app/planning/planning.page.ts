@@ -92,6 +92,11 @@ export class PlanningPage implements OnInit {
 
       this.getRandomThreeCourses();
       
+    }, err=>{
+      if(err.error == "Invalid Access Token"){
+        localStorage.removeItem("accessToken");
+        this.router.navigate(['login']);
+      }
     });
 
 
@@ -124,6 +129,11 @@ export class PlanningPage implements OnInit {
       
 
     }, err =>{
+      if(err.error == "Invalid Access Token"){
+        localStorage.removeItem("accessToken");
+        this.router.navigate(['login']);
+      }
+
       this.viewChecklist = false;
       this.viewPersonalAdded = false; 
     });

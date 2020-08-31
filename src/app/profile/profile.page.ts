@@ -150,6 +150,11 @@ export class ProfilePage implements OnInit {
             this.loadUnverifiedCourses();
           }
           
+        }, err =>{
+          if(err.error == "Invalid Access Token"){
+            localStorage.removeItem("accessToken");
+            this.router.navigate(['login']);
+          }
         });
 
       }
