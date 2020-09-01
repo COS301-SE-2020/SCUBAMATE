@@ -199,7 +199,8 @@ export class PlanningPage implements OnInit {
       this.viewChecklist = false ; 
       this.OptionalReceived= res.Optional;
       this.EquipmentReceived = res.Equipment;
-
+      this.PersonalList = [];
+      this.viewPersonalAdded = false;
 
       //setup checklist object
       this.OptionalList.length = this.OptionalReceived.length;
