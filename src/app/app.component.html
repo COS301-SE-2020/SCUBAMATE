@@ -22,22 +22,28 @@
     <ion-content>
       <ion-list>
         <ion-item routerLink="/home">
-          <ion-icon name="home" color="primary"></ion-icon>&nbsp; Home
+          <ion-icon name="home" color="primary"></ion-icon>&nbsp;&nbsp;Home
         </ion-item>
-        <ion-item routerLink="/explore">
-          <ion-icon name="color-wand-outline" color="primary"></ion-icon>&nbsp; Explore
+        <ion-item routerLink="/explore" *ngIf='_globalService.activeLabel=="Log Out"'>
+          <ion-icon name="color-wand-outline" color="primary"></ion-icon>&nbsp;&nbsp;Explore
         </ion-item>
-        <ion-item routerLink="/planning">
-          <ion-icon name="newspaper" color="primary"></ion-icon>&nbsp; Plan</ion-item>
-        <ion-item routerLink="/my-dives">
-          <ion-icon name="water" color="primary"></ion-icon>&nbsp; My Dives
+        <ion-item routerLink="/planning" *ngIf='_globalService.activeLabel=="Log Out"'>
+          <ion-icon name="newspaper" color="primary"></ion-icon>&nbsp;&nbsp;Plan</ion-item>
+        <ion-item routerLink="/my-dives" *ngIf='_globalService.activeLabel=="Log Out"'>
+          <ion-icon name="water" color="primary"></ion-icon>&nbsp;&nbsp;My Dives
         </ion-item >
-        <ion-item routerLink="/profile">
-          <ion-icon name="person" color="primary"></ion-icon>&nbsp; Profile
+        <ion-item routerLink="/profile" *ngIf='_globalService.activeLabel=="Log Out"'>
+          <ion-icon name="person" color="primary"></ion-icon>&nbsp;&nbsp;Profile
         </ion-item>
-        <ion-item routerLink="/admin-page">
-          <ion-icon name="podium" color="primary"></ion-icon>&nbsp; Admin 
+        <ion-item routerLink="/admin-page" *ngIf='_globalService.activeLabel=="Log Out" && _globalService.accountRole== "10" || _globalService.accountRole== "11"'>
+          <ion-icon name="podium" color="primary"  ></ion-icon>&nbsp;&nbsp;Admin 
         </ion-item>
+        <ion-item (click)="_globalService.loginClick()">
+          <ion-icon name="log-in" color="primary"  *ngIf='_globalService.activeLabel=="Log In"'></ion-icon>
+          <ion-icon name="log-out" color="primary"  *ngIf='_globalService.activeLabel=="Log Out"'></ion-icon>
+          &nbsp;&nbsp;<label>{{_globalService.activeLabel}}</label>
+        </ion-item>
+        
       </ion-list>
     </ion-content>
   </ion-menu>

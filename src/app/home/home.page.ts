@@ -3,8 +3,11 @@ import { Router } from '@angular/router';
 import { accountService } from '../service/account.service';
 import {ConnectionService} from 'ng-connection-service';
 import { Location } from '@angular/common';
-
+import { GlobalService } from "../global.service";
 import { Animation, AnimationController } from '@ionic/angular';
+
+
+
 
 export interface DiveSite{
   diveSite: string;
@@ -33,7 +36,7 @@ export class HomePage implements OnInit {
   buttonSignUpMarginLeft : string = "10px" ; 
   buttonLoginMarginLeft  : string = "10px" ; 
 
-  constructor(private animationCtrl: AnimationController , private router: Router,private _accountService: accountService, private connectionService: ConnectionService, private location: Location) {
+  constructor(public _globalService: GlobalService, private animationCtrl: AnimationController , private router: Router,private _accountService: accountService, private connectionService: ConnectionService, private location: Location) {
     this.connectionService.monitor().subscribe(isConnected => {  
       this.isConnected = isConnected;  
       if (this.isConnected) {  
@@ -62,18 +65,25 @@ export class HomePage implements OnInit {
 
         //console.log(this.accountType);
    }
- 
+
+
+
   }
   /********************************************/
   ngOnInit() {
+
     this.loginLabel ="Login";
     if(!localStorage.getItem("accessToken"))
     {
-      this.loginLabel = "Login";
+      this.loginLabel = "Log In";
+      this._globalService.activeLabel =  "Log In";
     }else{
-      this.loginLabel = "Log Out";
+      //this.loginLabel = "Log Out";
+      this._globalService.accountRole = localStorage.getItem("accessToken").substring(36, 38) ;
+      this._globalService.activeLabel =  "Log Out";
+      this.accountType = this._globalService.accountRole; 
 
-      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+     /* if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
         this.accountType = "Instructor"
       }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
         this.accountType = "Diver"
@@ -83,9 +93,12 @@ export class HomePage implements OnInit {
         this.accountType = "SuperAdmin"
       }else{
         this.accountType = "*Diver"
-      }
+      }*/
      
     }
+
+    this.loginLabel = this._globalService.activeLabel ;
+
 
     //animation
     const animation = this.animationCtrl.create()
@@ -110,7 +123,7 @@ animation.play();
     }else{
       this.loginLabel = "Log Out";
 
-      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+     /* if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
         this.accountType = "Instructor"
       }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
         this.accountType = "Diver"
@@ -120,7 +133,7 @@ animation.play();
         this.accountType = "SuperAdmin"
       }else{
         this.accountType = "*Diver"
-      }
+      }*/
     }
   }
 
@@ -133,7 +146,7 @@ animation.play();
     }else{
       this.router.navigate(['login']);
     }
-  }
+  } 
 
   isUndefined(val): boolean { 
     return typeof val === 'undefined'; 

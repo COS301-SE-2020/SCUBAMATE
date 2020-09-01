@@ -21,6 +21,7 @@ export interface DiveSite{
   Name : string ;
   Description: string ;
   Coords: string;
+  LogoPhoto: string ;
 }
 
 export interface DiveCenter{
@@ -77,19 +78,7 @@ export class ExplorePage implements OnInit {
         this.router.navigate(['no-internet']);
       }  
     });
-    if(localStorage.getItem("accessToken")){
-      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-        this.accountType = "Instructor"
-      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-        this.accountType = "Diver"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-        this.accountType = "Admin"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-        this.accountType = "SuperAdmin"
-      }else{
-        this.accountType = "*Diver"
-      }
-    }
+   
   } 
  
   ngOnInit() {
@@ -108,19 +97,8 @@ export class ExplorePage implements OnInit {
     }else{
       this.loginLabel = "Log Out";
     }
-    if(localStorage.getItem("accessToken")){
-      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-        this.accountType = "Instructor"
-      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-        this.accountType = "Diver"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-        this.accountType = "Admin"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-        this.accountType = "SuperAdmin"
-      }else{
-        this.accountType = "*Diver"
-      }
-    }
+    
+    
     this.showLoading = true ; 
     this._diveService.getPublicDives().subscribe(res =>{
       this.pubLst = res;

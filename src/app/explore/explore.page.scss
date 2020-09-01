@@ -5,7 +5,39 @@ $red: #E76F51 ;
 $yellow : #E9C46A ;
 $inputBackgroundColor: #181e21;
 
+@media (max-width: 767px) {
+  .contentContainer{
+    margin: auto !important;
+    margin-left: 10%;
+    margin-top: 7px !important;
 
+    ion-col{
+      margin-left: 10% !important;
+    }
+  }
+
+  .thecard{
+   // width: 290px;
+   width: 100%;
+    height: 360px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: all 0.5s ease;
+    word-wrap: break-word;
+    cursor: pointer;
+  }
+  .thecardDC{
+    width: 290px;
+    height: 400px;
+  }
+
+  ion-radio-group{
+    margin: auto !important;
+    width: 80% !important;
+    margin-top: 5px !important;
+    margin-left: 10% !important ; 
+  }
+}
 
 ion-content.background{
   --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
