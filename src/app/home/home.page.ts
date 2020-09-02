@@ -82,6 +82,7 @@ export class HomePage implements OnInit {
       this._globalService.accountRole = localStorage.getItem("accessToken").substring(36, 38) ;
       this._globalService.activeLabel =  "Log Out";
       this.accountType = this._globalService.accountRole; 
+      console.log(this.accountType);
 
      /* if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
         this.accountType = "Instructor"
@@ -122,18 +123,6 @@ animation.play();
       this.loginLabel = "Login";
     }else{
       this.loginLabel = "Log Out";
-
-     /* if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-        this.accountType = "Instructor"
-      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-        this.accountType = "Diver"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-        this.accountType = "Admin"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-        this.accountType = "SuperAdmin"
-      }else{
-        this.accountType = "*Diver"
-      }*/
     }
   }
 

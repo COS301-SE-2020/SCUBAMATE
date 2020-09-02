@@ -4,6 +4,7 @@ import { diveService } from '../service/dive.service';
 import { accountService } from '../service/account.service';
 import { AlertController } from '@ionic/angular';
 import { ThrowStmt } from '@angular/compiler';
+import { GlobalService } from "../global.service";
 
 export interface UC{
   AccessToken: string;
@@ -126,7 +127,7 @@ export class AdminPagePage implements OnInit {
 
   /********************************************/
 
-  constructor( public alertController : AlertController , private _diveService: diveService,private router: Router,private _accountService: accountService) {
+  constructor(public _globalService: GlobalService, public alertController : AlertController , private _diveService: diveService,private router: Router,private _accountService: accountService) {
     this.UserToCenterObj ={
       AccessToken : localStorage.getItem("accessToken"),
       Email : "",
@@ -159,21 +160,6 @@ export class AdminPagePage implements OnInit {
       LogoPhoto: "",
       Description: "" ,
       TypeOfDives: "" 
-    }
-
-    if(localStorage.getItem("accessToken")){
-         //Setup User Role
-         if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-          this.accountType = "Instructor";
-        }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-          this.accountType = "Diver";
-        }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-          this.accountType = "Admin";
-        }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-          this.accountType = "SuperAdmin";
-        }else{
-          this.accountType = "*Diver";
-        }
     }
 
   }
@@ -228,20 +214,8 @@ export class AdminPagePage implements OnInit {
     }else{
       this.loginLabel = "Log Out";
 
-        //Setup User Role
-        if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-          this.accountType = "Instructor";
-        }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-          this.accountType = "Diver";
-        }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-          this.accountType = "Admin";
-          this.getUnverifiedInstructors();
-          this.getDiveCentreInformation();
-        }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-          this.accountType = "SuperAdmin";
-        }else{
-          this.accountType = "*Diver";
-        }
+      this._globalService.activeLabel =  "Log Out";
+      this.accountType = this._globalService.accountRole;
     }
 
     
@@ -292,19 +266,9 @@ export class AdminPagePage implements OnInit {
        this.loginLabel = "Log Out";
  
          //Setup User Role
-         if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-           this.accountType = "Instructor";
-         }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-           this.accountType = "Diver";
-         }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-           this.accountType = "Admin";
-           //this.getUnverifiedInstructors();
-           this.getDiveCentreInformation();
-         }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-           this.accountType = "SuperAdmin";
-         }else{
-           this.accountType = "*Diver";
-         }
+         this._globalService.activeLabel =  "Log Out";
+         this.accountType = this._globalService.accountRole;
+         console.log(this.accountType);
      }
   }
 

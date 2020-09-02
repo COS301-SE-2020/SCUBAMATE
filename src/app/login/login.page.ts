@@ -55,7 +55,7 @@ export class LoginPage implements OnInit {
     {
       this.loginLabel = "Login";
     }else{
-      this.loginLabel = "Sign Out";
+      this.router.navigate(['home']);
     }
   }
 
@@ -79,25 +79,16 @@ export class LoginPage implements OnInit {
   }
 
   onSubmit(iEmail: string, iPass: string , event : Event) {
-    //event.preventDefault();
-
-    //encode password
-    // let conversionEncryptOutput = CryptoJS.AES.encrypt( iEmail.trim(), iPass.trim()).toString();
-
-     //create object
      var attemptLogin = {Email: iEmail, Password: iPass} as LoginClass; 
      
 
      //request
 
     this._accountService.logUser(attemptLogin).subscribe( res =>{
-      //console.log("in res");
-      //console.log(res);
-      //console.log(res.Data[0].AccessToken)
+
       localStorage.setItem("accessToken", res.Data[0].AccessToken) ; 
-     // localStorage.setItem("accountType", res.Data[1].AccountType)  ;
-      this.router.navigate(['home']);
-      //console.log(res.body.AccessToken); 
+      location.reload();
+ 
     }, err=>{
       this.presentLoginFailAlert();
     });

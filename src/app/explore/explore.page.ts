@@ -4,6 +4,7 @@ import { diveService } from '../service/dive.service';
 //import { FlashCardComponent } from '../components/flash-card/flash-card.component';
 import {ConnectionService} from 'ng-connection-service';
 import { Location } from '@angular/common';
+import { GlobalService } from "../global.service";
 
 export interface Dive{
   FirstName : string ;
@@ -67,7 +68,7 @@ export class ExplorePage implements OnInit {
   /*********************************************/
 
   
-  constructor(private router: Router, private _diveService: diveService, private connectionService: ConnectionService, private location: Location) { 
+  constructor(public _globalService: GlobalService, private router: Router, private _diveService: diveService, private connectionService: ConnectionService, private location: Location) { 
     this.connectionService.monitor().subscribe(isConnected => {  
       this.isConnected = isConnected;  
       if (this.isConnected) {  
@@ -96,20 +97,24 @@ export class ExplorePage implements OnInit {
       this.loginLabel = "Login";
     }else{
       this.loginLabel = "Log Out";
+      this.accountType = this._globalService.accountRole;
+
+      this.showLoading = true ; 
+      this._diveService.getPublicDives().subscribe(res =>{
+        this.pubLst = res;
+        this.showFeedLoaded = true;
+        this.showLoading = false ;
+      }, err=>{
+        if(err.error == "Invalid Access Token"){
+          localStorage.removeItem("accessToken");
+          this.router.navigate(['login']);
+        }
+      });
+
     }
     
     
-    this.showLoading = true ; 
-    this._diveService.getPublicDives().subscribe(res =>{
-      this.pubLst = res;
-      this.showFeedLoaded = true;
-      this.showLoading = false ;
-    }, err=>{
-      if(err.error == "Invalid Access Token"){
-        localStorage.removeItem("accessToken");
-        this.router.navigate(['login']);
-      }
-    });
+    
 
   }
 
@@ -126,8 +131,10 @@ export class ExplorePage implements OnInit {
     }else{
       this.loginLabel = "Log Out";
     }
+   
+   
     if(localStorage.getItem("accessToken")){
-      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+    /**  if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
         this.accountType = "Instructor"
       }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
         this.accountType = "Diver"
@@ -137,15 +144,20 @@ export class ExplorePage implements OnInit {
         this.accountType = "SuperAdmin"
       }else{
         this.accountType = "*Diver"
-      }
+      }*/
+
+      this._globalService.activeLabel =  "Log Out";
+      this.accountType = this._globalService.accountRole;
+
+      this.showLoading = true ; 
+      this._diveService.getPublicDives().subscribe(res =>{
+        //console.log(res);
+        this.pubLst = res.PublicDiveLogs;
+        this.showFeedLoaded = true;
+        this.showLoading = false ;
+      });
     }
-    this.showLoading = true ; 
-    this._diveService.getPublicDives().subscribe(res =>{
-      //console.log(res);
-      this.pubLst = res.PublicDiveLogs;
-      this.showFeedLoaded = true;
-      this.showLoading = false ;
-    });
+   
   }
 
   loginClick(){
