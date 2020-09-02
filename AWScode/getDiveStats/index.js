@@ -1,4 +1,4 @@
-'use strict';
+ 'use strict';
 const AWS = require('aws-sdk');
 AWS.config.update({region: "af-south-1"});
 
@@ -7,6 +7,7 @@ exports.handler = async (event, context) => {
     let body = JSON.parse(event.body);
     let AccessToken = body.AccessToken;
     const YearToSearch = body.YearToSearch;
+    const DiveSite = body.DiveSite;
     
     const GuidSize = 36;
     const AccountGuid = AccessToken.substring(0,GuidSize);
@@ -79,16 +80,25 @@ exports.handler = async (event, context) => {
         else{
             //Account Valid
             /* Get List Of Dives */
+            let filter = "begins_with(#diveDate, :diveDate)";
+            let expVals = {
+                    ':diveDate': YearToSearch,
+                };
+            if(DiveSite !== "*"){
+                filter+=" AND DiveSite = :diveSite";
+                expVals = {
+                    ':diveDate': YearToSearch,
+                    ':diveSite': DiveSite,
+                };
+            }
             const paramsDives = {
                 TableName: 'Dives',
                 ProjectionExpression: "DiveDate", 
-                FilterExpression: "begins_with(#diveDate, :diveDate)",
+                FilterExpression: filter,
                 ExpressionAttributeNames: {
                     '#diveDate': 'DiveDate',
                 },
-                ExpressionAttributeValues: {
-                    ':diveDate': YearToSearch,
-                }
+                ExpressionAttributeValues: expVals
             };
 
             try{
@@ -123,7 +133,7 @@ exports.handler = async (event, context) => {
             }
             catch (err) {
                 statusCode = 403;
-                responseBody = "Unable to Find Dives: "+err;
+                responseBody ="Unable to Find Dives: "+err;
             }
         }
 
