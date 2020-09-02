@@ -113,7 +113,7 @@ describe('LogDivePage', () => {
   });
 
   it('Testing buddyListFinder()', () => {
-    component.buddyListFinder("John Cena");
+    //component.buddyListFinder("John Cena");
     let accountSpy = spyOn(accService, 'lookAheadBuddy').and.callThrough();
     expect(accountSpy).toBeDefined();
     expect(component.BuddyLst).toBeUndefined();
