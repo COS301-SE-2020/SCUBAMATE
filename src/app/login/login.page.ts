@@ -5,6 +5,7 @@ import * as CryptoJS from 'crypto-js';
 import {ConnectionService} from 'ng-connection-service';
 import { Location } from '@angular/common';
 import { AlertController } from '@ionic/angular';
+import { GlobalService } from "../global.service";
 
 export interface LoginClass {
   Email: string;
@@ -23,7 +24,7 @@ export class LoginPage implements OnInit {
   isConnected = true;  
   noInternetConnection: boolean;
 
-  constructor(public alertController : AlertController, private _accountService : accountService, private router: Router, private connectionService: ConnectionService, private location: Location) {
+  constructor(public _globalService: GlobalService, public alertController : AlertController, private _accountService : accountService, private router: Router, private connectionService: ConnectionService, private location: Location) {
     this.connectionService.monitor().subscribe(isConnected => {  
       this.isConnected = isConnected;  
       if (this.isConnected) {  

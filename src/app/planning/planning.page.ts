@@ -4,7 +4,7 @@ import { accountService } from '../service/account.service';
 import { diveService } from '../service/dive.service';
 import { AlertController } from '@ionic/angular';
 
-
+import { GlobalService } from "../global.service";
 
 export interface CkeckListItemObj {
   Val : String ;
@@ -57,7 +57,7 @@ export class PlanningPage implements OnInit {
 
   loginLabel:string ;
 
-  constructor(public alertController : AlertController ,private router: Router, private _accountService: accountService,  private _diveService: diveService) { }
+  constructor(public _globalService: GlobalService, public alertController : AlertController ,private router: Router, private _accountService: accountService,  private _diveService: diveService) { }
 
   ngOnInit() {
   this.showCourses = false ;
@@ -70,20 +70,9 @@ export class PlanningPage implements OnInit {
       this.loginLabel = "Login";
     }else{
       this.loginLabel = "Log Out";
+      this.accountType = this._globalService.accountRole; 
     }
-    if(localStorage.getItem("accessToken")){
-      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-        this.accountType = "Instructor"
-      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-        this.accountType = "Diver"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-        this.accountType = "Admin"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-        this.accountType = "SuperAdmin"
-      }else{
-        this.accountType = "*Diver"
-      }
-    }
+   
 
     //get Suggested Courses
     this._diveService.getSuggestedCourses().subscribe(res =>{
@@ -151,20 +140,9 @@ export class PlanningPage implements OnInit {
       this.loginLabel = "Login";
     }else{
       this.loginLabel = "Log Out";
+      this.accountType = this._globalService.accountRole; 
     }
-    if(localStorage.getItem("accessToken")){
-      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-        this.accountType = "Instructor"
-      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-        this.accountType = "Diver"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-        this.accountType = "Admin"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-        this.accountType = "SuperAdmin"
-      }else{
-        this.accountType = "*Diver"
-      }
-    }
+    
     //get Suggested Courses
     this._diveService.getSuggestedCourses().subscribe(res =>{
       console.log("Suggestions Received")

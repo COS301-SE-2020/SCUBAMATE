@@ -33,6 +33,10 @@ $red: #E76F51 ;
 $yellow : #E9C46A ;
 $aquaBlue: #00A896 ;
 
+.my-custom-class .alert-wrapper{
+  --min-width: 450px !important;
+}
+
 
 .invisible {
   visibility: hidden !important;
@@ -64,6 +68,10 @@ $aquaBlue: #00A896 ;
   #navLogo{
     width: 70% !important;
     padding: 5px !important;
+  }
+
+  .my-custom-class .alert-wrapper{
+    --min-width: 370px !important;
   }
 }
 
@@ -101,9 +109,6 @@ $aquaBlue: #00A896 ;
   display: none !important;
 }
 
-.my-custom-class .alert-wrapper{
-  --min-width: 450px !important;
-}
 
 
 ul {

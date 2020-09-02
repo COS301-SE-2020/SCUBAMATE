@@ -8,6 +8,7 @@ import * as CryptoJS from 'crypto-js';
 import { UUID } from 'angular2-uuid';
 import {ConnectionService} from 'ng-connection-service';
 import { filter } from 'rxjs/operators';
+import { GlobalService } from "../global.service";
 
 //forms
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -103,20 +104,8 @@ export class LogDivePage implements OnInit {
   };
   loginLabel:string ;
 
-  constructor(private _accountService : accountService, private router: Router, private _diveService: diveService, private _weatherService: weatherService,private geolocation: Geolocation, public formBuilder: FormBuilder, public alertController : AlertController, private connectionService: ConnectionService) {
-    if(localStorage.getItem("accessToken")){
-      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-        this.accountType = "Instructor"
-      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-        this.accountType = "Diver"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-        this.accountType = "Admin"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-        this.accountType = "SuperAdmin"
-      }else{
-        this.accountType = "*Diver"
-      }
-    }
+  constructor(public _globalService: GlobalService,  private _accountService : accountService, private router: Router, private _diveService: diveService, private _weatherService: weatherService,private geolocation: Geolocation, public formBuilder: FormBuilder, public alertController : AlertController, private connectionService: ConnectionService) {
+    
     
     
     this.connectionService.monitor().subscribe(isConnected => {  
@@ -266,20 +255,9 @@ export class LogDivePage implements OnInit {
       this.loginLabel = "Login";
     }else{
       this.loginLabel = "Log Out";
+      this.accountType = this._globalService.accountRole;
     }
-    if(localStorage.getItem("accessToken")){
-      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-        this.accountType = "Instructor"
-      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-        this.accountType = "Diver"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-        this.accountType = "Admin"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-        this.accountType = "SuperAdmin"
-      }else{
-        this.accountType = "*Diver"
-      }
-    }
+    
 
   } //end ngOnInit
 
@@ -301,20 +279,9 @@ export class LogDivePage implements OnInit {
       this.loginLabel = "Login";
     }else{
       this.loginLabel = "Log Out";
+      this.accountType = this._globalService.accountRole;
     }
-    if(localStorage.getItem("accessToken")){
-      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-        this.accountType = "Instructor"
-      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-        this.accountType = "Diver"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-        this.accountType = "Admin"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-        this.accountType = "SuperAdmin"
-      }else{
-        this.accountType = "*Diver"
-      }
-    }
+    
   }
 
   loginClick(){
