@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 const AWS = require('aws-sdk');
 AWS.config.update({region: "af-south-1"});
 const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
@@ -6,6 +6,7 @@ const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
 exports.handler = async (event, context) => {
     let body = JSON.parse(event.body);
     const AccessToken = body.AccessToken;
+    const PageNum = body.PageNum;
 
     const GuidSize = 36;
     const AccountGuid = AccessToken.substring(0,GuidSize);
@@ -57,13 +58,14 @@ exports.handler = async (event, context) => {
             statusCode = 403;
             responseBody = "Invalid Access Token" ;
         }
-        else if(data.Item.Expires){
-            const expiryDate = new Date(data.Item.Expires);
-            const today = new Date();
-            if(compareDates(today,expiryDate)){
-                responseBody = "Access Token Expired!";
-                statusCode = 403;
-            }  
+        else if(compareDates( new Date(),new Date(data.Item.Expires))){
+            responseBody = "Access Token Expired!";
+            statusCode = 403;
+    
+        }
+        else if(PageNum<1){
+            responseBody = "Invalid Page Number.";
+            statusCode = 403;
         }
 
     } catch (err) {
@@ -75,7 +77,7 @@ exports.handler = async (event, context) => {
     if(statusCode==undef){
         var diveParams = {
             TableName: "Dives",
-            ProjectionExpression: "AccountGuid, DiveSite, DiveDate, DivePublicStatus, DiveTypeLink, Weather, TimeIn , TimeOut, Buddy, Rating",
+            ProjectionExpression: "AccountGuid, DiveSite, DiveDate, DiveTypeLink, Weather, TimeIn , TimeOut, Buddy, Rating",
             FilterExpression: "#acc = :acc AND #app = :app",
             ExpressionAttributeNames:{
                 "#acc" : "DivePublicStatus",
@@ -128,7 +130,17 @@ exports.handler = async (event, context) => {
                     
                 /*sort the dives by date*/
                 const sortedDives = dives.Items.sort((a, b) => new Date(b.DiveDate) - new Date(a.DiveDate));
-                responseBody = sortedDives;
+                
+                const numOfItems = 6;
+                const start = (PageNum-1)*numOfItems ;
+                let toReturn =[];
+                /*Show next n items for current page */
+                for(let i=start;i<numOfItems+start;i++){
+                    if(sortedDives[i]!=null){
+                        toReturn.push(sortedDives[i]);
+                    }
+                }
+                responseBody = toReturn;
                 statusCode = 200;
              }
         } 
