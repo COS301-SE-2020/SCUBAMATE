@@ -3,6 +3,8 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { diveService } from '../service/dive.service';
 import { weatherService } from '../service/weather.service';
 import { Router } from '@angular/router';
+import { GlobalService } from "../global.service";
+
 
 export interface DC {
   Description: string ;
@@ -55,20 +57,8 @@ export class DiveCenterInformationPage implements OnInit {
 
   /********************************************/
 
-  constructor( private _weatherService: weatherService , private router: Router, private _diveService: diveService, private geolocation: Geolocation) { 
-    if(localStorage.getItem("accessToken")){
-          if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-            this.accountType = "Instructor"
-          }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-            this.accountType = "Diver"
-          }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-            this.accountType = "Admin"
-          }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-            this.accountType = "SuperAdmin"
-          }else{
-            this.accountType = "*Diver"
-          }
-    }
+  constructor(public _globalService: GlobalService,  private _weatherService: weatherService , private router: Router, private _diveService: diveService, private geolocation: Geolocation) { 
+    
   }
 
   ngOnInit() {
@@ -83,20 +73,9 @@ export class DiveCenterInformationPage implements OnInit {
         this.loginLabel = "Login";
       }else{
         this.loginLabel = "Log Out";
+        this.accountType = this._globalService.accountRole;
       }
-      if(localStorage.getItem("accessToken")){
-        if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-          this.accountType = "Instructor"
-        }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-          this.accountType = "Diver"
-        }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-          this.accountType = "Admin"
-        }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-          this.accountType = "SuperAdmin"
-        }else{
-          this.accountType = "*Diver"
-        }
-      }
+      
     this._diveService.getSingleDiveCenter(localStorage.getItem("ViewDiveCenter")).subscribe( data=>{
       this.currentDiveCenter = data;
       
@@ -143,20 +122,9 @@ export class DiveCenterInformationPage implements OnInit {
       this.loginLabel = "Login";
     }else{
       this.loginLabel = "Log Out";
+      this.accountType = this._globalService.accountRole;
     }
-    if(localStorage.getItem("accessToken")){
-          if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-            this.accountType = "Instructor"
-          }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-            this.accountType = "Diver"
-          }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-            this.accountType = "Admin"
-          }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-            this.accountType = "SuperAdmin"
-          }else{
-            this.accountType = "*Diver"
-          }
-    }
+   
   }
 
   loginClick(){
