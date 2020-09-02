@@ -24,7 +24,7 @@ exports.handler = async (event, context) => {
     
     let statusCode;
     let responseBody;
-    if(contains(validItemTypes, ItemType)){
+    if(PageNum>=1 && contains(validItemTypes, ItemType)){
           
         let filter = 'begins_with(#itemT , :itemT) AND contains(#itemT , :user)';
         let expressVal = {
@@ -55,7 +55,7 @@ exports.handler = async (event, context) => {
             const data = await documentClient.scan(params).promise();
             let tmp = [];
             
-            const numOfItems = 9;
+            const numOfItems = 6;
             const start = (PageNum-1)*numOfItems ;
             
             /*Show next n items for current page */
