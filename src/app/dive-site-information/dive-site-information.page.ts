@@ -4,6 +4,8 @@ import { diveService } from '../service/dive.service';
 import { weatherService } from '../service/weather.service';
 import { Router } from '@angular/router';
 
+import { GlobalService } from "../global.service";
+
 export interface DS {
   Description: string ;
   Coords: string ;
@@ -52,20 +54,8 @@ showDiveSite : Boolean ;
 
 /********************************************/
 
-  constructor(private _weatherService: weatherService , private router: Router, private _diveService: diveService, private geolocation: Geolocation) {
-    if(localStorage.getItem("accessToken")){
-      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-        this.accountType = "Instructor"
-      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-        this.accountType = "Diver"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-        this.accountType = "Admin"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-        this.accountType = "SuperAdmin"
-      }else{
-        this.accountType = "*Diver"
-      }
-    }
+  constructor(public _globalService: GlobalService, private _weatherService: weatherService , private router: Router, private _diveService: diveService, private geolocation: Geolocation) {
+    
    }
 
   ngOnInit() {
@@ -80,21 +70,10 @@ showDiveSite : Boolean ;
         this.loginLabel = "Login";
       }else{
         this.loginLabel = "Log Out";
+        this.accountType = this._globalService.accountRole; 
       }
 
-      if(localStorage.getItem("accessToken")){
-        if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-          this.accountType = "Instructor"
-        }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-          this.accountType = "Diver"
-        }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-          this.accountType = "Admin"
-        }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-          this.accountType = "SuperAdmin"
-        }else{
-          this.accountType = "*Diver"
-        }
-      }
+    
 
     this._diveService.getSingleDiveSite(localStorage.getItem("ViewDiveSite")).subscribe( data=>{
       this.currentDiveSite = data;

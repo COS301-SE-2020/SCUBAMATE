@@ -96,6 +96,7 @@ export class SignupPage implements OnInit {
   //Internet Connectivity check
   isConnected = true;  
   noInternetConnection: boolean;
+  loginLabel:string = "Log In";
 
   /********************************************/
 
@@ -182,6 +183,12 @@ export class SignupPage implements OnInit {
       }  
     });
   } //End of Constructor
+
+  loginClick(){
+    
+      this.router.navigate(['login']);
+    
+  }
 
 
   ngOnInit() {

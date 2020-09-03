@@ -6,6 +6,8 @@ import { AlertController } from '@ionic/angular';
 import {ConnectionService} from 'ng-connection-service';
 import { Location } from '@angular/common';
 
+import { GlobalService } from "../global.service";
+
 export interface AccountDetails{
   ItemType: string ;
   AccessToken: string;
@@ -71,7 +73,7 @@ export class ProfilePage implements OnInit {
   noInternetConnection: boolean;
 
   /********************************************/
-  constructor( public alertController : AlertController , private router: Router, private _accountService: accountService,  private _diveService: diveService, private connectionService: ConnectionService, private location: Location) {
+  constructor(public _globalService: GlobalService,  public alertController : AlertController , private router: Router, private _accountService: accountService,  private _diveService: diveService, private connectionService: ConnectionService, private location: Location) {
     this.connectionService.monitor().subscribe(isConnected => {  
       this.isConnected = isConnected;  
       if (this.isConnected) {  
@@ -82,19 +84,7 @@ export class ProfilePage implements OnInit {
         this.router.navigate(['no-internet']);
       }  
     });
-    if(localStorage.getItem("accessToken")){
-      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-        this.accountType = "Instructor"
-      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-        this.accountType = "Diver"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-        this.accountType = "Admin"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-        this.accountType = "SuperAdmin"
-      }else{
-        this.accountType = "*Diver"
-      }
-    }
+    
   }
 
   
@@ -111,7 +101,7 @@ export class ProfilePage implements OnInit {
       this.loginLabel = "Login";
     }else{
       this.loginLabel = "Log Out";
-    
+      this.accountType = this._globalService.accountRole; 
 
         this._accountService.getUser().subscribe(res => {
           //console.log("res");
@@ -133,23 +123,17 @@ export class ProfilePage implements OnInit {
           this.showAD = true;
           
           
-          if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-            this.accountType = "Instructor"
-          }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-            this.accountType = "Diver"
-          }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-            this.accountType = "Admin"
-          }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-            this.accountType = "SuperAdmin"
-          }else{
-            this.accountType = "*Diver"
-          }
-
+      
 
           if( this.accountType == "Instructor"){
             this.loadUnverifiedCourses();
           }
           
+        }, err =>{
+          if(err.error == "Invalid Access Token"){
+            localStorage.removeItem("accessToken");
+            this.router.navigate(['login']);
+          }
         });
 
       }
@@ -170,7 +154,7 @@ export class ProfilePage implements OnInit {
       this.loginLabel = "Login";
     }else{
       this.loginLabel = "Log Out";
-    
+      this.accountType = this._globalService.accountRole; 
 
         this._accountService.getUser().subscribe(res => {
           // console.log("res");
@@ -192,17 +176,6 @@ export class ProfilePage implements OnInit {
           this.showAD = true;
           
           
-          if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-            this.accountType = "Instructor"
-          }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-            this.accountType = "Diver"
-          }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-            this.accountType = "Admin"
-          }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-            this.accountType = "SuperAdmin"
-          }else{
-            this.accountType = "*Diver"
-          }
           
         
 

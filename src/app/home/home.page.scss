@@ -6,6 +6,27 @@ $yellow : #E9C46A ;
 $darkRed: #d66853   ;
 $inputBackgroundColor: #181e21;
 
+@media (max-width: 767px) {
+  .orangeButton{
+    width:90% !important;
+    font-size: 13px !important; 
+  }
+
+  .infoDiv{
+    width: 95% !important;
+    padding: 5px !important;
+  }
+
+  #homeSticker{
+    width: 95% !important;
+    #homeSticker img{
+      margin:auto; 
+      object-fit: cover;
+      width: 70% !important;
+      height: 70% !important;
+      }
+  }
+}
 
 ion-content.background{
   --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
@@ -15,9 +36,48 @@ ion-content.background{
   --background: transparent;
 }
 
+.infoDiv{
+  background-color: rgba(38, 70, 83, 0.6);
+  margin: auto;
+  width:  80% ;
+  height: 30%;
+  margin-top: 40px;
+  padding: 10px;
+  padding-left: 30px;
+  margin-bottom: 50px;
+
+
+  .infoImageBorder{
+    margin:auto;
+    background-color: rgba( 42, 157, 143, 0.3); 
+    width:200px;
+    height:200px;
+    border-radius: 100%;
+    text-align: center;
+
+    .innerInfoBorder{
+      background-color: rgba(231, 111, 81, 0.8);
+      width:170px;
+      height:170px;
+      border-radius: 100%;
+      position: absolute;
+      margin: 15px;
+      padding:7px;
+      font-size: 120px;
+    }
+
+    .innerInfoBorder:hover{
+      background-color: rgba(231, 111, 81, 0.9);
+      font-size: 125px;
+    }
+  }
+}
+
+
+
 
 #homeSticker{
-  background-color: rgba(38, 70, 83, 0.5);
+  background-color: rgba(38, 70, 83, 0.6);
   margin: auto;
   border-bottom: solid white 0.5px;
   border-top: solid white 0.5px;
@@ -49,17 +109,22 @@ margin-bottom: 2%;
 color: white;
 }
 
+
+
 .orangeButton{
-background-color: $red   ;
-border: none;
-color: #FFFFFF;
-text-align: center;
-font-size: 18px;
-width: 30%;
-transition: all 0.5s;
-cursor: pointer;
-margin-left: 5px;
-border-radius: 16px;
+  background-color: rgba(231, 111, 81, 0.7) ;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 18px;
+  width: 50%;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin-left: 5px;
+  border-radius: 16px;
+  word-wrap: break-word;
+
+ 
 }
 
 .orangeButton span:after {
@@ -83,6 +148,8 @@ right: 0;
 background-color:  $darkRed ;
 font-family: 'Righteous';
 display: swap ;
+font-size: larger;
+width: 55%;
 }
 
 table{

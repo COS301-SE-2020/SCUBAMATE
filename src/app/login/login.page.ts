@@ -5,6 +5,7 @@ import * as CryptoJS from 'crypto-js';
 import {ConnectionService} from 'ng-connection-service';
 import { Location } from '@angular/common';
 import { AlertController } from '@ionic/angular';
+import { GlobalService } from "../global.service";
 
 export interface LoginClass {
   Email: string;
@@ -30,7 +31,7 @@ export class LoginPage implements OnInit {
   isConnected = true;  
   noInternetConnection: boolean;
 
-  constructor(public alertController : AlertController, private _accountService : accountService, private router: Router, private connectionService: ConnectionService, private location: Location) {
+  constructor(public _globalService: GlobalService, public alertController : AlertController, private _accountService : accountService, private router: Router, private connectionService: ConnectionService, private location: Location) {
     this.connectionService.monitor().subscribe(isConnected => {  
       this.isConnected = isConnected;  
       if (this.isConnected) {  
@@ -64,14 +65,20 @@ export class LoginPage implements OnInit {
  // showError: false;
  // msgErro: string ;
   loginLabel:string ;
+  passwordType : string = 'password'; 
+  showPassword : boolean = false; 
 
   ngOnInit() {
+    this.passwordType = 'password'; 
+    this.showPassword  = false;
+
+
     this.loginLabel ="Login";
     if(!localStorage.getItem("accessToken"))
     {
       this.loginLabel = "Login";
     }else{
-      this.loginLabel = "Sign Out";
+      this.router.navigate(['home']);
     }
     if(localStorage.getItem("accessToken")){
       if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
@@ -123,25 +130,16 @@ export class LoginPage implements OnInit {
   }
 
   onSubmit(iEmail: string, iPass: string , event : Event) {
-    //event.preventDefault();
-
-    //encode password
-    // let conversionEncryptOutput = CryptoJS.AES.encrypt( iEmail.trim(), iPass.trim()).toString();
-
-     //create object
      var attemptLogin = {Email: iEmail, Password: iPass} as LoginClass; 
      
 
      //request
 
     this._accountService.logUser(attemptLogin).subscribe( res =>{
-      //console.log("in res");
-      //console.log(res);
-      //console.log(res.Data[0].AccessToken)
+
       localStorage.setItem("accessToken", res.Data[0].AccessToken) ; 
-     // localStorage.setItem("accountType", res.Data[1].AccountType)  ;
-      this.router.navigate(['home']);
-      //console.log(res.body.AccessToken); 
+      location.reload();
+ 
     }, err=>{
       this.presentLoginFailAlert();
     });
@@ -162,5 +160,21 @@ isUndefined(val): boolean {
   
     await alert.present();
   }
+
+
+  togglePassword(){
+
+    if(this.passwordType == 'password'){
+      this.showPassword = true ;
+      this.passwordType = 'text';
+    }else if( this.passwordType == 'text'){
+      this.showPassword = false ;
+      this.passwordType = 'password';
+    }
+
+
+  }
+
+
 
 }

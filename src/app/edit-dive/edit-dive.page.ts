@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { diveService } from '../service/dive.service';
 import { Router } from '@angular/router';
 import { accountService } from '../service/account.service';
-//import { REACTIVE_FORM_DIRECTIVES } from '@angular/forms'
+import { GlobalService } from "../global.service";
 import {ConnectionService} from 'ng-connection-service';
 import { Location } from '@angular/common';
 
@@ -57,7 +57,7 @@ export class EditDivePage implements OnInit {
   DiveTypeLst: [];
   DiveSiteLst: [];
   BuddyLst:[];
-  loginLabel: String;
+  loginLabel: string;
   CurrentDive: DiveLog ;
   accountType : string;
 
@@ -72,7 +72,7 @@ export class EditDivePage implements OnInit {
   /********************************************/
 
 
-  constructor(private _accountService : accountService , private router: Router, private _diveService: diveService, public formBuilder: FormBuilder, public alertController : AlertController, private connectionService: ConnectionService, private location: Location) { 
+  constructor(public _globalService: GlobalService, private _accountService : accountService , private router: Router, private _diveService: diveService, public formBuilder: FormBuilder, public alertController : AlertController, private connectionService: ConnectionService, private location: Location) { 
 
      //Dive Form
      this.diveObj ={
@@ -101,19 +101,6 @@ export class EditDivePage implements OnInit {
       }  
     });
 
-    if(localStorage.getItem("accessToken")){
-      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-        this.accountType = "Instructor"
-      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-        this.accountType = "Diver"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-        this.accountType = "Admin"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-        this.accountType = "SuperAdmin"
-      }else{
-        this.accountType = "*Diver"
-      }
-    }
   }
 
   ngOnInit() {  
@@ -125,20 +112,9 @@ export class EditDivePage implements OnInit {
         this.loginLabel = "Login";
       }else{
         this.loginLabel = "Log Out";
+        this.accountType = this._globalService.accountRole; 
       }
-      if(localStorage.getItem("accessToken")){
-        if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-          this.accountType = "Instructor"
-        }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-          this.accountType = "Diver"
-        }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-          this.accountType = "Admin"
-        }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-          this.accountType = "SuperAdmin"
-        }else{
-          this.accountType = "*Diver"
-        }
-      }
+     
 
     this.getDiveInfo();
   }
@@ -149,20 +125,9 @@ export class EditDivePage implements OnInit {
       this.loginLabel = "Login";
     }else{
       this.loginLabel = "Log Out";
+      this.accountType = this._globalService.accountRole; 
     }
-    if(localStorage.getItem("accessToken")){
-      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-        this.accountType = "Instructor"
-      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-        this.accountType = "Diver"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-        this.accountType = "Admin"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-        this.accountType = "SuperAdmin"
-      }else{
-        this.accountType = "*Diver"
-      }
-    }
+    
   }
 
   loginClick(){
@@ -200,7 +165,13 @@ export class EditDivePage implements OnInit {
         this.showLoading = false;
         localStorage.removeItem("DiveID");
         this.router.navigate(["/my-dives"]);
-      } );
+      } , err =>{
+
+        if(err.error){
+          this.presentGeneralErrorAlert(err.error);
+        }
+  
+      });
 
 
   }
@@ -239,6 +210,13 @@ export class EditDivePage implements OnInit {
         this.diveObj.Buddy = this.CurrentDive.Buddy;
         this.diveObj.Description = this.CurrentDive.Description;
         this.diveObj.DivePublicStatus = this.CurrentDive.DivePublicStatus;
+    }, err =>{
+
+      if(err.error){
+        this.presentGeneralErrorAlert(err.error);
+        this.router.navigate(["/my-dives"]);
+      }
+
     });
 
 
@@ -260,6 +238,17 @@ export class EditDivePage implements OnInit {
       cssClass: 'errorAlert',
       header: 'Dive Log Updated',
       message: 'Successfully updated dive log',
+      buttons: ['OK']
+    });
+  
+    await alert.present();
+  }
+
+  async presentGeneralErrorAlert(msg : string) {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: 'An error occured',
+      message: msg,
       buttons: ['OK']
     });
   

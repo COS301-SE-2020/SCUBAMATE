@@ -74,6 +74,14 @@
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+
+    /** tan **/
+    --ion-color-tan: #F4A261 ;
+    --ion-color-tan-rgb: 56, 128, 255;
+    --ion-color-tan-contrast: #ffffff;
+    --ion-color-tan-contrast-rgb: 0, 0, 0;
+    --ion-color-tan-shade: #E76F51;
+    --ion-color-tan-tint: #ed576b;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -154,7 +162,17 @@
     --ion-color-light-contrast-rgb: 0, 0, 0;
     --ion-color-light-shade: #d7d8da;
     --ion-color-light-tint: #f5f6f9;
+
+      /** tan **/
+  --ion-color-tan: #F4A261 ;
+  --ion-color-tan-rgb: 56, 128, 255;
+  --ion-color-tan-contrast: #ffffff;
+  --ion-color-tan-contrast-rgb: 0, 0, 0;
+  --ion-color-tan-shade: #E76F51;
+  --ion-color-tan-tint: #ed576b;
   }
+
+
 
   /*
    * iOS Dark Theme
