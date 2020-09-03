@@ -72,18 +72,31 @@ exports.handler = async (event, context) => {
 
     /*Only proceed if access token is valid*/
     if(statusCode==undef){
+        let filter = "#site = :site AND #app = :app";
+        let expNames ={
+            "#site" : "DiveSite",
+            "#app" : "Approved"
+        };
+        let expVals = {
+            ':site': DiveSite,
+            ":app" : true
+        };
+        /*Change search parameter values if all ratings should be returned */
+        if(DiveSite.localeCompare("*") == 0){
+            filter ="#app = :app";
+            expNames = {
+                "#app" : "Approved"
+            }
+            expVals = {
+                ":app" : true
+            };
+        }    
         var diveParams = {
             TableName: "Dives",
             ProjectionExpression: "Rating",
-            FilterExpression: "#site = :site AND #app = :app",
-            ExpressionAttributeNames:{
-                "#site" : "DiveSite",
-                "#app" : "Approved"
-            },
-            ExpressionAttributeValues:{
-                ":site" : DiveSite,
-                ":app" : true
-            }
+            FilterExpression: filter, 
+            ExpressionAttributeNames:expNames,
+            ExpressionAttributeValues:expVals
         };
 
         try {
