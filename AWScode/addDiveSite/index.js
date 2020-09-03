@@ -53,19 +53,11 @@ exports.handler = async (event, context, callback) => {
         });
         return returnBool;
     }
-    function hasLetters(coord){
-        let returnBool = false;
-        for (var i = 0; i < coord.length; i++) {
-          if(coord.match(/[a-z]/i)){
-                returnBool = true;
-            }
-        }
-        return returnBool;
-    }
     let responseBody;
     const undef = 0;
     let statusCode = undef;
     const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
+    const coordTest = /[-+]?[0-9]+\.?[0-9]+,[-+]?[0-9]+\.?[0-9]/;
     try {     
          /* Verify AccessToken  */
         const params = {
@@ -92,7 +84,7 @@ exports.handler = async (event, context, callback) => {
             statusCode = 403;
             responseBody = TypeOfDives +" Invalid Type of Dives";
         }
-        else if(Coords.indexOf(",")==-1 || hasLetters(Coords)){
+        else if(!coordTest.test(Coords)){
             statusCode = 403;
             responseBody = "Incorrect co-ordinate layout";
             
