@@ -32,13 +32,17 @@ import { GlobalService } from './global.service';
 //validators
 import { AgeValidator } from './validators/age';
 
+//rating 
+import { IonicRatingModule  } from 'ionic4-rating';
 
 @NgModule({
   declarations: [
     AppComponent,
     FlashCardComponent],
   entryComponents: [],
-  imports: [BrowserModule,
+  imports: [
+            IonicRatingModule ,
+            BrowserModule,
             IonicModule.forRoot(), 
             AppRoutingModule,
             HttpClientModule,

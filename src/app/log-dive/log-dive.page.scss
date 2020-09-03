@@ -307,4 +307,14 @@ ion-content.background{
   label{
     padding-top: 1%;
   }
+
+  #rating {
+    --padding-top: 0;
+    --padding-bottom: 0;
+    --padding-start: 4px;
+    --padding-end: 4px;
+    --box-shadow: none;
+    height: 20px;
+    font-size: 10px;
+  }
 }

@@ -223,7 +223,7 @@
                 <label class="divSubHead" style="margin-top: 10px;">Weather</label>
 
                 <div id="imgSurroundDiv">
-                  <ion-img src="../../assets/images/Weather/{{WeatherDescription}}.png" alt="{{WeatherDescription}}" id="img" ></ion-img>
+                  <ion-img src="../../assets/images/Weather/{{WeatherDescription.toLowerCase()}}.png" alt="{{WeatherDescription}}" id="img" ></ion-img>
                 </div>
 
                 <label class="infoLabel" style="text-align: left; margin-bottom:10px;">
@@ -364,7 +364,17 @@
                           <ion-textarea #desc formControlName="Description"  [(ngModel)]="diveObj.Description"  [class.invalid]="!diveForm.controls.Description.valid && (diveForm.controls.Description.dirty )"></ion-textarea>
                         </ion-item>
                       </ion-row>
-                  
+                      <ion-row>
+                        <ion-item >
+                          <ion-label  position="stacked">Rate This Dive </ion-label>
+                          <br>
+                            <rating formControlName="Rating"
+                                readonly="false" 
+                                size="default"
+                                (rateChange)="onRateChange($event)">
+                          </rating>
+                      </ion-item>
+                      </ion-row>
                  </ion-col>
                </ion-row>
             </ion-grid>

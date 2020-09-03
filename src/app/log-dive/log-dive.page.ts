@@ -17,6 +17,8 @@ import { AlertController } from '@ionic/angular';
 import { JsonPipe } from '@angular/common';
 
 
+
+
 export interface DiveLog{
   DiveID : string; 
   AccessToken: string ; 
@@ -36,6 +38,7 @@ export interface DiveLog{
   Weather: String[] ;
   DivePublicStatus: Boolean;
   isCourse: Boolean;
+  Rating: number;
 }
 
 
@@ -72,6 +75,7 @@ export class LogDivePage implements OnInit {
     MoonPhase : string ;
     WeatherDescription: string ; 
     WindSpeed : string;
+    RateGiven : number;
 
     //Form Groups
     diveForm;
@@ -133,29 +137,29 @@ export class LogDivePage implements OnInit {
 
     //Get coordinates and return current weather
     this.geolocation.getCurrentPosition().then((resp) => {
-      console.log("Getting Coordinates");
+      // console.log("Getting Coordinates");
       this.Coordinates.Latitude = resp.coords.latitude;
       this.Coordinates.Longitude = resp.coords.longitude;
-      console.log(this.Coordinates);
+      // console.log(this.Coordinates);
 
       this._weatherService.getLocationKey(this.Coordinates).subscribe(res => {
-        console.log("Getting location key");
+        // console.log("Getting location key");
         this.Key.key = res.Key;
-        console.log("getLocationKey returned: " + this.Key);
+        // console.log("getLocationKey returned: " + this.Key);
   
         this._weatherService.getLogWeather(this.Key).subscribe(res => {
-        console.log("Getting weather information");
-        console.log("Date: " + res.DailyForecasts[0].Date);
-        console.log("Temperature Min: " + res.DailyForecasts[0].Temperature.Minimum.Value + res.DailyForecasts[0].Temperature.Minimum.Unit);
-        console.log("Temperature Max: " + res.DailyForecasts[0].Temperature.Maximum.Value + res.DailyForecasts[0].Temperature.Maximum.Unit);
-        console.log("Day Description: " + res.DailyForecasts[0].Day.IconPhrase);
-        console.log("Night Description: " + res.DailyForecasts[0].Night.IconPhrase);
+        // console.log("Getting weather information");
+        // console.log("Date: " + res.DailyForecasts[0].Date);
+        // console.log("Temperature Min: " + res.DailyForecasts[0].Temperature.Minimum.Value + res.DailyForecasts[0].Temperature.Minimum.Unit);
+        // console.log("Temperature Max: " + res.DailyForecasts[0].Temperature.Maximum.Value + res.DailyForecasts[0].Temperature.Maximum.Unit);
+        // console.log("Day Description: " + res.DailyForecasts[0].Day.IconPhrase);
+        // console.log("Night Description: " + res.DailyForecasts[0].Night.IconPhrase);
         console.log(res.DailyForecasts[0]);
         //setup variables
         this.MinTempAPI = res.DailyForecasts[0].Temperature.Minimum.Value;
         this.MaxTempAPI = res.DailyForecasts[0].Temperature.Maximum.Value;
         this.MoonPhase = res.DailyForecasts[0].Moon.Phase ;
-        this.WeatherDescription = res.DailyForecasts[0].Day.IconPhrase;
+        this.WeatherDescription = (res.DailyForecasts[0].Day.IconPhrase).replace('/','');
         this.WindSpeed = res.DailyForecasts[0].Day.Wind.Speed.Value + " " + res.DailyForecasts[0].Day.Wind.Speed.Unit  ; 
 
 
@@ -178,7 +182,8 @@ export class LogDivePage implements OnInit {
             InstructorLink: [] ,
             Weather: [] ,
             DivePublicStatus: false,
-            isCourse: false
+            isCourse: false,
+            Rating: 0
           }
 
         //setup weather info in Dive Log Object
@@ -209,7 +214,8 @@ export class LogDivePage implements OnInit {
       Description: ['', Validators.required],
       InstructorLink: [] ,
       Weather: [] ,
-      DivePublicStatus: []
+      DivePublicStatus: [],
+      Rating : []
     });
 
     router.events.pipe(
@@ -295,7 +301,7 @@ export class LogDivePage implements OnInit {
     }
   }
 
-  onSubmit(pub: boolean, desc: string, siteOf:string, dateOf : string , timeI : string, timeO: string  , diveT: string, bud: string, vis: string, dep: string, aTemp: number, sTemp: number, bTemp: number,  event: Event) {
+  onSubmit(pub: boolean, desc: string, siteOf:string, dateOf : string , timeI : string, timeO: string  , diveT: string, bud: string, vis: string, dep: string, aTemp: number, sTemp: number, bTemp: number, rting: number,  event: Event) {
     event.preventDefault();
 
     //generate GUID
@@ -306,7 +312,7 @@ export class LogDivePage implements OnInit {
     {
             if( ( siteOf =="") || (dateOf=="") || ( timeI =="") ||( timeO =="") || ( diveT=="")  )
             {
-              alert("Fill in al the fields");
+              alert("Fill in all the fields");
             }
             else
             {
@@ -315,7 +321,7 @@ export class LogDivePage implements OnInit {
               }
               //Weather req
               this._weatherService.getLogWeather(siteOf).subscribe(res => {
-                console.log(res);
+                //console.log(res);
                 //var tempWeather: [] = [res.wind, res.moon, res.sunny, res.swell]
               });
               //logging the dive
@@ -338,19 +344,20 @@ export class LogDivePage implements OnInit {
                     InstructorLink: [] ,
                     Weather: [this.WindSpeed, this.MoonPhase, this.WeatherDescription],
                     DivePublicStatus: pub,
-                    isCourse: this.showCourseInput 
+                    isCourse: this.showCourseInput,
+                    Rating: rting
                   } as DiveLog;
           
-              console.log(log);
+              //console.log(log);
               this.showLoading = true;
               this._diveService.logDive(log).subscribe( res =>{
                 
-                console.log(res);
+                //console.log(res);
                 this.showLoading = false;
                 this.showCourseInput = false;
               //  this.showDiveTypeInput = true;
                 this.router.navigate(['my-dives']);
-                console.log("after nav");
+                //console.log("after nav");
               })
             }
     
@@ -363,7 +370,7 @@ export class LogDivePage implements OnInit {
   buddyListFinder(){
      if(this.diveObj.Buddy.length >= 2)
     {
-      console.log(this.diveObj.Buddy);
+      //console.log(this.diveObj.Buddy);
         this.showLoading = true;
         this._accountService.lookAheadBuddy(this.diveObj.Buddy).subscribe(
           data => {
@@ -408,7 +415,7 @@ export class LogDivePage implements OnInit {
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
-            console.log("Continuing to complete form.")
+            //console.log("Continuing to complete form.")
           }
         },
         {
@@ -431,6 +438,8 @@ export class LogDivePage implements OnInit {
     this.diveObj.BottomTemp = Number(this.diveObj.BottomTemp );
     this.diveObj.Visibility = this.diveObj.Visibility + "m";
     this.diveObj.Depth = this.diveObj.Depth + "m";
+    this.diveObj.Rating = this.RateGiven;
+    
 
     //link Instructor Array
     this.diveObj.InstructorLink = this.instructorUserInput ; 
@@ -446,11 +455,14 @@ export class LogDivePage implements OnInit {
       console.log(this.diveObj);
      
     } */
-
+    console.log(this.diveObj);
    this.showLoading = true;
+   if(localStorage.getItem("Backup")){
+    localStorage.removeItem("Backup");
+  }
     this._diveService.logDive(this.diveObj).subscribe( res =>{
                 
-      console.log(res);
+      //console.log(res);
       this.showLoading = false;
       this.presentSuccessAlert();
       this.router.navigate(['my-dives']);
@@ -471,16 +483,17 @@ export class LogDivePage implements OnInit {
     this.diveObj.BottomTemp = Number(this.diveObj.BottomTemp );
     this.diveObj.Visibility = this.diveObj.Visibility + "m";
     this.diveObj.Depth = this.diveObj.Depth + "m";
+    this.diveObj.Rating = this.RateGiven;
 
     //link Instructor Array
     this.diveObj.InstructorLink = this.instructorUserInput ; 
 
-    console.log(this.diveObj);
+    //console.log(this.diveObj);
     if(localStorage.getItem("Backup")){
       localStorage.removeItem("Backup");
     }
     localStorage.setItem("Backup", JSON.stringify(this.diveObj));
-    console.log("Saving the temp log to localstorage: " + localStorage.getItem("Backup"));
+    //console.log("Saving the temp log to localstorage: " + localStorage.getItem("Backup"));
   }
 
   checkCompleteLog(){
@@ -503,17 +516,21 @@ export class LogDivePage implements OnInit {
     //this.diveObj.InstructorLink = "-";
     this.diveObj.Visibility = log.Visibility;
     this.diveObj.Depth = log.Depth;
+    this.diveObj.Rating = log.RateGiven;
   }
 
   automaticallySendLog(){
-    console.log("Will automatically send log and then route as per norm.");
+    //console.log("Will automatically send log and then route as per norm.");
     var log = JSON.stringify(localStorage.getItem("Backup"));
-    console.log("Automatically sending log " + JSON.parse(log));
+    //console.log("Automatically sending log " + JSON.parse(log));
     this.showLoading = true;
+    if(localStorage.getItem("Backup")){
+      localStorage.removeItem("Backup");
+    }
     this._diveService.logDive(JSON.parse(log)).subscribe( res =>{
 
                 
-      console.log(res);
+      // console.log(res);
       this.showLoading = false;
       this.presentSuccessAlert();
       this.router.navigate(['my-dives']);
@@ -527,12 +544,8 @@ export class LogDivePage implements OnInit {
     });
   }
 
-
-
   //Navigation of Pages
   nextPage(){
-    
-
       if(this.firstPageVisible){
         this.firstPageVisible = false;
         this.secondPageVisible = true;
@@ -603,7 +616,7 @@ export class LogDivePage implements OnInit {
 
     this.showLoading = true;
     this._accountService.lookAheadInstructor(this.instructorInput).subscribe(data => {
-          console.log(data);
+          // console.log(data);
           this.InstructorLst = data.ReturnedList ; 
           this.showLoading = false;
       
@@ -627,8 +640,8 @@ export class LogDivePage implements OnInit {
       this.showInstructors = true ; 
     }
     this.InstructorLst = [] ;
-    console.log("Course Added: ");
-    console.log(this.instructorUserInput);
+    // console.log("Course Added: ");
+    // console.log(this.instructorUserInput);
     
    }
   
@@ -651,7 +664,7 @@ export class LogDivePage implements OnInit {
        this.showLoading = true;
        this._diveService.getDiveCourses(this.diveObj.DiveTypeLink).subscribe(
          data => {
-             console.log(data);
+            //  console.log(data);
              this.CourseLst = data.ReturnedList ; 
              this.showLoading = false;
          }, err=>{
@@ -659,5 +672,8 @@ export class LogDivePage implements OnInit {
          }
        ); 
 }
-
+  onRateChange(event) {
+    //console.log('Your rate:', event);
+    this.RateGiven = Number(event);
+  }
 }

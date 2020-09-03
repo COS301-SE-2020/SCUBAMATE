@@ -18,7 +18,14 @@ export interface LoginClass {
   styleUrls: ['./login.page.scss'],
 })
 
+
 export class LoginPage implements OnInit {
+
+  /*********************************************
+                Global Variables
+  *********************************************/
+  
+  accountType : string;
 
   //Internet Connectivity check
   isConnected = true;  
@@ -35,6 +42,21 @@ export class LoginPage implements OnInit {
         this.router.navigate(['no-internet']);
       }  
     });
+
+    if(localStorage.getItem("accessToken")){
+      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+        this.accountType = "Instructor"
+      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+        this.accountType = "Diver"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+        this.accountType = "Admin"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+        this.accountType = "SuperAdmin"
+      }else{
+        this.accountType = "*Diver"
+      }
+    }
+    
    }
 
 
@@ -58,6 +80,20 @@ export class LoginPage implements OnInit {
     }else{
       this.router.navigate(['home']);
     }
+    if(localStorage.getItem("accessToken")){
+      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+        this.accountType = "Instructor"
+      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+        this.accountType = "Diver"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+        this.accountType = "Admin"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+        this.accountType = "SuperAdmin"
+      }else{
+        this.accountType = "*Diver"
+      }
+    }
+    
   }
 
   ionViewWillEnter(){
@@ -67,6 +103,20 @@ export class LoginPage implements OnInit {
     }else{
       this.loginLabel = "Sign Out";
     }
+    if(localStorage.getItem("accessToken")){
+      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+        this.accountType = "Instructor"
+      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
+        this.accountType = "Diver"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
+        this.accountType = "Admin"
+      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
+        this.accountType = "SuperAdmin"
+      }else{
+        this.accountType = "*Diver"
+      }
+    }
+    
   }
 
   loginClick(){
@@ -94,9 +144,11 @@ export class LoginPage implements OnInit {
       this.presentLoginFailAlert();
     });
 
-
+    
   }
-
+isUndefined(val): boolean { 
+      return typeof val === 'undefined'; 
+    };
 
 
   async presentLoginFailAlert() {

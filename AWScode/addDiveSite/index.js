@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 const AWS = require('aws-sdk');
 AWS.config.update({region: "af-south-1"});
 
@@ -10,10 +10,11 @@ exports.handler = async (event, context, callback) => {
     const Coords = body.Coords;
     const Description = body.Description;
     const Name = body.Name;
-    
+    const TypeOfDives = body.TypeOfDives;
     const GuidSize = 36;
     const AccountGuid = AccessToken.substring(0,GuidSize);
-    
+   
+   
     function compareDates(t,e){
         let returnBool;
         if(t.getFullYear()!=e.getFullYear()){
@@ -42,6 +43,25 @@ exports.handler = async (event, context, callback) => {
         }
         return returnBool;
     }
+    const validItemTypes = ["Shore","Boat","Both"];
+    function contains(arr,search){
+        let returnBool = false;
+        arr.forEach(function(item) {
+            if(item==search){
+                returnBool=true;
+            }
+        });
+        return returnBool;
+    }
+    function hasLetters(coord){
+        let returnBool = false;
+        for (var i = 0; i < coord.length; i++) {
+          if(coord.match(/[a-z]/i)){
+                returnBool = true;
+            }
+        }
+        return returnBool;
+    }
     let responseBody;
     const undef = 0;
     let statusCode = undef;
@@ -67,6 +87,15 @@ exports.handler = async (event, context, callback) => {
         else if(data.Item.AccountType != "Admin" && data.Item.AccountType != "SuperAdmin"){
             statusCode = 403;
             responseBody = data.Item.AccountType + " Account doesn't have correct privileges";
+        }
+        else if(!contains(validItemTypes, TypeOfDives)){
+            statusCode = 403;
+            responseBody = TypeOfDives +" Invalid Type of Dives";
+        }
+        else if(Coords.indexOf(",")==-1 || hasLetters(Coords)){
+            statusCode = 403;
+            responseBody = "Incorrect co-ordinate layout";
+            
         }
         else{
             const paramsDive = {
@@ -130,7 +159,8 @@ exports.handler = async (event, context, callback) => {
                             Coords : Coords,
                             Description : Description,
                             LogoPhoto : logoLink,
-                            Name : Name
+                            Name : Name,
+                            TypeOfDives : TypeOfDives
                         }
                     };
                 
@@ -149,17 +179,14 @@ exports.handler = async (event, context, callback) => {
                 }
                 
             }catch (err) {
-                statusCode = 403;
                 responseBody = "Invalid Access Token";
+                statusCode = 403;
             }
-            
-            
-            
         }
 
     } catch (err) {
+        responseBody = "Invalid Access Token "+err;
         statusCode = 403;
-        responseBody = "Invalid Access Token";
     }
     
     const response = {
