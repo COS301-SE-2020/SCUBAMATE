@@ -15,6 +15,7 @@ export class diveService
       const options = {
           headers: new HttpHeaders({
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
           })
         };
 
@@ -31,6 +32,7 @@ export class diveService
       const options = {
           headers: new HttpHeaders({
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
           })
         };
 
@@ -47,6 +49,7 @@ export class diveService
       const options = {
           headers: new HttpHeaders({
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
           })
         };
 
@@ -64,6 +67,7 @@ export class diveService
       const options = {
           headers: new HttpHeaders({
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
           })
         };
 
@@ -82,6 +86,7 @@ export class diveService
       const options = {
           headers: new HttpHeaders({
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
           })
         };
 
@@ -100,6 +105,7 @@ export class diveService
       const options = {
           headers: new HttpHeaders({
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
           })
         };
 
@@ -115,6 +121,7 @@ export class diveService
           const options = {
               headers: new HttpHeaders({
                 'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
               })
             };
 
@@ -131,6 +138,7 @@ export class diveService
       const options = {
           headers: new HttpHeaders({
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
           })
         };
       
@@ -142,6 +150,7 @@ export class diveService
       const options = {
           headers: new HttpHeaders({
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
           })
         };
 
@@ -159,6 +168,7 @@ export class diveService
         const options = {
             headers: new HttpHeaders({
               'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*'
             })
           };
         
@@ -170,7 +180,8 @@ export class diveService
     getPrivateDive(): Observable<any>{
       const options = {
         headers: new HttpHeaders({
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         })
       };
     
@@ -191,6 +202,7 @@ export class diveService
       const options = {
           headers: new HttpHeaders({
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
           })
         };
       
@@ -202,7 +214,8 @@ export class diveService
     getIndividualDive(PostData): Observable<any>{
       const options = {
         headers: new HttpHeaders({
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         })
       };
 
@@ -213,7 +226,8 @@ export class diveService
     updateDive(PostData): Observable<any>{
       const options = {
         headers: new HttpHeaders({
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         })
       };
 
@@ -224,7 +238,8 @@ export class diveService
     getPublicDives(): Observable<any>{
       const options = {
         headers: new HttpHeaders({
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         })
       };
     
@@ -239,7 +254,8 @@ export class diveService
     getSuggestedCourses(): Observable<any>{
       const options = {
         headers: new HttpHeaders({
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         })
       };
     
@@ -255,7 +271,8 @@ export class diveService
 
       const options = {
         headers: new HttpHeaders({
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         })
       };
     
@@ -273,7 +290,8 @@ export class diveService
 
       const options = {
         headers: new HttpHeaders({
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         })
       };
     
@@ -289,7 +307,8 @@ export class diveService
 
       const options = {
         headers: new HttpHeaders({
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         })
       };
       return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/coursesurvey', PostData , options); 
@@ -300,7 +319,8 @@ export class diveService
 
       const options = {
         headers: new HttpHeaders({
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         })
       };
       return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/DiveCentre/editdivecentreinfo', PostData , options); 
@@ -311,7 +331,8 @@ export class diveService
 
       const options = {
         headers: new HttpHeaders({
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         })
       };
       return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/DiveCentre/addcoursetodivecentre', PostData , options); 
@@ -322,7 +343,8 @@ export class diveService
 
       const options = {
         headers: new HttpHeaders({
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         })
       };
       return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/DiveCentre/adddivesitetodivecentre', PostData , options); 
@@ -333,7 +355,8 @@ export class diveService
 
       const options = {
         headers: new HttpHeaders({
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         })
       };
       return this.httpClient.post('https://ek9bag0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/addcourse', PostData , options); 
@@ -344,7 +367,8 @@ export class diveService
 
       const options = {
         headers: new HttpHeaders({
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         })
       };
       return this.httpClient.post('https://ek9bag0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/adddivesite', PostData , options); 

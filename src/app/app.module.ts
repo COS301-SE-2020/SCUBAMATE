@@ -28,14 +28,15 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 //validators
 import { AgeValidator } from './validators/age';
 
-
+import {HttpModule} from '@angular/http';
 
 @NgModule({
   declarations: [
     AppComponent,
     FlashCardComponent],
   entryComponents: [],
-  imports: [BrowserModule,
+  imports: [HttpModule,
+            BrowserModule,
             IonicModule.forRoot(), 
             AppRoutingModule,
             HttpClientModule,

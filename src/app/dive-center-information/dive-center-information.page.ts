@@ -3,6 +3,8 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { diveService } from '../service/dive.service';
 import { weatherService } from '../service/weather.service';
 import { Router } from '@angular/router';
+//import { Http} from '@angular/http';
+import { HttpClient} from '@angular/common/http';
 
 export interface DC {
   Description: string ;
@@ -54,7 +56,7 @@ export class DiveCenterInformationPage implements OnInit {
 
   /********************************************/
 
-  constructor( private _weatherService: weatherService , private router: Router, private _diveService: diveService, private geolocation: Geolocation) { }
+  constructor( private _weatherService: weatherService , private router: Router, private _diveService: diveService, private geolocation: Geolocation, private http: HttpClient) { }
 
   ngOnInit() {
 
