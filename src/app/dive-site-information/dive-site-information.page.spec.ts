@@ -40,7 +40,7 @@ describe('DiveSiteInformationPage', () => {
     expect(component).toBeTruthy();
   });
 
-  it('getSingleDiveCenter() test', () => {
+  it('getSingleDiveSite() test', () => {
     var center = "Clifton Rock";
 
     divService.getSingleDiveSite(center).subscribe((resp : any) => {
