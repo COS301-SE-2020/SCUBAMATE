@@ -11,13 +11,6 @@ exports.handler = async (event, context) => {
     const GuidSize = 36;
     const AccountGuid = AccessToken.substring(0,GuidSize);
 
-    /* Verify AccessToken  */
-    const params = {
-        TableName: "Scubamate",
-        Key: {
-            "AccountGuid": AccountGuid
-        }
-    };
     
     function compareDates(t,e){
         let returnBool;
@@ -47,6 +40,15 @@ exports.handler = async (event, context) => {
         }
         return returnBool;
     }
+
+    /* Verify AccessToken  */
+    const params = {
+        TableName: "Scubamate",
+        Key: {
+            "AccountGuid": AccountGuid
+        },
+        ProjectionExpression : "AccessToken, Expires"
+    };
     let responseBody;
     const undef = 0;
     let statusCode = undef;
@@ -77,7 +79,7 @@ exports.handler = async (event, context) => {
     if(statusCode==undef){
         var diveParams = {
             TableName: "Dives",
-            ProjectionExpression: "AccountGuid, DiveSite, DiveDate, DiveTypeLink, Weather, TimeIn , TimeOut, Buddy, Rating",
+            ProjectionExpression: "AccountGuid, DiveSite, DiveDate, DiveTypeLink, Weather, TimeIn , TimeOut, Buddy, Rating, DiveImage",
             FilterExpression: "#acc = :acc AND #app = :app",
             ExpressionAttributeNames:{
                 "#acc" : "DivePublicStatus",
@@ -109,7 +111,7 @@ exports.handler = async (event, context) => {
                             "AccountGuid": accounts[i]
                         },
                         ProjectionExpression : "EmailVerified, FirstName, LastName"
-                    }
+                    };
                     try{
                         let acc = await documentClient.get(accountParams).promise(); 
                         /*If account email isn't verified, don't add it to the public dive list */
@@ -137,6 +139,31 @@ exports.handler = async (event, context) => {
                 /*Show next n items for current page */
                 for(let i=start;i<numOfItems+start;i++){
                     if(sortedDives[i]!=null){
+                        //Get Image of dive and add it 
+                        let imageToGet = "https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/defaultlogo.png";
+                        if(typeof sortedDives[i].DiveImage !=="undefined"){
+                            imageToGet = sortedDives[i].DiveImage;
+                        }
+                        const startIndex = (imageToGet).lastIndexOf("/")+1;
+                        let filePath = (imageToGet).substring(startIndex, (imageToGet).length);
+                        
+                        let paramsImg = {"Bucket": "imagedatabase-scubamate", "Key": filePath };
+                        let returnImg;
+                        
+                        const s3 = new AWS.S3({httpOptions: { timeout: 2000 }});
+                        try{
+                            const binaryFile = await s3.getObject(paramsImg).promise();
+                            const startIndexContentType = (imageToGet).lastIndexOf(".")+1;
+                            const contentType = imageToGet.substring(startIndexContentType, imageToGet.length);
+                            let base64Image = "data:image/"+contentType+";base64," +binaryFile.Body.toString('base64'); 
+                            
+                            returnImg = base64Image;
+                        }
+                        catch(err){
+                            returnImg = "N/A";
+                        }
+                        sortedDives[i].DiveImage = returnImg;
+                        
                         toReturn.push(sortedDives[i]);
                     }
                 }
