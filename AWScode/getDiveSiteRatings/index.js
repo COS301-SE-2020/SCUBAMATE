@@ -94,6 +94,7 @@ exports.handler = async (event, context) => {
                 statusCode = 404;
             }
             else{
+                /*Count amount of ratings per rating type (1,2,3,4,5) */
                 let ratings = [0,0,0,0,0];
                 let total = 0;
                 dives.Items.forEach(function(dive) {
@@ -103,13 +104,16 @@ exports.handler = async (event, context) => {
                         total++;
                     }
                 })
-                responseBody = '{ "Ratings" : [';
+                responseBody = '{ "'+ DiveSite +'" : [[';
                 for(var i=1; i<6; i++)
                 {
-                    responseBody += '{ "Rating" : "' +  i + '",' +
-                                    '"Amount" : "' + ratings[i-1] + '"},';
+                    responseBody += '{ "Rating" : "Rating ' +  i + '",' +
+                                    '"Amount" : "' + ratings[i-1] + '"}';
+                    if(i<5){
+                        responseBody += ',';
+                    }
                 } 
-                responseBody += '{ "Total" : "' + total + '"}]}';
+                responseBody += '],{ "Total" : "' + total + '"}]}';
                 responseBody = JSON.parse(responseBody);
                 statusCode = 200;      
              }
