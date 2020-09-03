@@ -127,9 +127,15 @@ export class AdminPagePage implements OnInit {
   //Charts
   @ViewChild("lineCanvasDivesAtSite") lineCanvasDivesAtSite: ElementRef;
   private lineChartDivesAtSite: Chart;
+  totalNumberOfDivesYear : string = "0";
+  dateSearch : string = "2020"; 
+  timeSearch : string = "All Day";
+  
+
 
   //Date
   currentDate = new Date();
+  
 
 
 
@@ -235,11 +241,14 @@ export class AdminPagePage implements OnInit {
           "YearOfSearch" : this.currentDate.getFullYear().toString()
         };
 
+        this.dateSearch =  this.currentDate.getFullYear().toString() ;
+
         console.log(numDivesBody);
 
         this.showLoading = true ;
           this._chartService.numberDivesAtSiteChartData(numDivesBody).subscribe( data =>{
               this.showLoading = false;
+              this.totalNumberOfDivesYear = data.TotalNumberOfDives.toString();
               console.log(data);
               this.drawNumDivesAtSiteChart(data, "All Sites");
 
@@ -252,7 +261,7 @@ export class AdminPagePage implements OnInit {
               console.log("Could not access number Dives At Site Chart Data");
             }
             
-          })
+          });
 
       }
     }
@@ -1230,53 +1239,23 @@ getDiveCentreInformation(){
     return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ', 0.7)' ;
   }
 
+  updateNumDivesAtSiteChart(returnedData, msg){
+
+
+    this.lineChartDivesAtSite.destroy();
+    this.drawNumDivesAtSiteChart(returnedData, msg);
+
+
+  }
+
   drawNumDivesAtSiteChart(returnedData, msg){
+
 
     let keys = returnedData["ReturnedList"].map(d => d.Month);
     let values = returnedData["ReturnedList"].map(d => d.AmountOfDives);
 
-    this.lineChartDivesAtSite = new Chart(this.lineCanvasDivesAtSite.nativeElement,{
-     /* type: 'line',
-      data: {
-        labels: keys,
-        datasets:[
-          {
-            data: values,
-            borderColor: "#3cba9f",
-            fill: false,
-            backgroundColor:[
-              this.random_rgba(),
-              this.random_rgba(),
-              this.random_rgba(),
-              this.random_rgba(),
-              this.random_rgba(),
-              this.random_rgba(),
-              this.random_rgba(),
-              this.random_rgba(),
-              this.random_rgba()
-            ]
-          }
-        ]
-      },
-      options:{
-        legend:{
-          display: false
-        },
-        title:{
-          display: true,
-          text: "Total Dives At Sites"
-        },
-        scales:{
-          xAxes:[{
-            display: true ,
-            ticks:{
-              min: 0
-            }
-          }]
-        }
-      }
 
-  });*/
+    this.lineChartDivesAtSite = new Chart(this.lineCanvasDivesAtSite.nativeElement,{
   type: "line",
   data: {
     labels: keys,
@@ -1285,17 +1264,17 @@ getDiveCentreInformation(){
         label: msg,
         fill: false,
         lineTension: 0.1,
-        backgroundColor: "rgba(75,192,192,0.4)",
-        borderColor: "rgba(75,192,192,1)",
+        backgroundColor: "rgba(244, 162, 97,0.4)",
+        borderColor: "rgba(244, 162, 97,1)",
         borderCapStyle: "butt",
         borderDash: [],
         borderDashOffset: 0.0,
         borderJoinStyle: "miter",
-        pointBorderColor: "rgba(75,192,192,1)",
+        pointBorderColor: "rgba(244, 162, 97,1)",
         pointBackgroundColor: "#fff",
         pointBorderWidth: 1,
         pointHoverRadius: 5,
-        pointHoverBackgroundColor: "rgba(75,192,192,1)",
+        pointHoverBackgroundColor: "rgba(231, 111, 81,1)",
         pointHoverBorderColor: "rgba(220,220,220,1)",
         pointHoverBorderWidth: 2,
         pointRadius: 1,
@@ -1331,9 +1310,64 @@ getDiveCentreInformation(){
     }
   }
 });
+  }
+
+  //Functions for Chart Searches
+
+  DoSiteYearChartSearch(yearSearch){
+
+    if(this.siteInput == "")
+    {
+      this.siteInput = "*";
+    }
+
+    if(yearSearch == 0){
+      yearSearch = this.currentDate.getFullYear();
+    }
+
+    this.dateSearch = yearSearch.toString();
+
+    if(this.dateSearch.length < 4 ){
+      for(let x = this.dateSearch.length ; x < 4; x++){
+        this.dateSearch += "0";
+      }
+    }else if(this.dateSearch.length > 4 ){
+      this.dateSearch = this.dateSearch.substring(0,4);
+    }
+
+    var numDivesBody ={
+      "AccessToken" : localStorage.getItem("accessToken") ,
+      "DiveSite" : this.siteInput,
+      "YearOfSearch" :this.dateSearch
+    };
 
 
+    console.log(numDivesBody);
 
+    this.showLoading = true ;
+          this._chartService.numberDivesAtSiteChartData(numDivesBody).subscribe( data =>{
+              this.showLoading = false;
+              this.totalNumberOfDivesYear = data.TotalNumberOfDives.toString();
+              console.log(data);
+
+              if(this.siteInput=="*")
+              { 
+                this.updateNumDivesAtSiteChart(data, "All Sites");
+              }else{
+                this.updateNumDivesAtSiteChart(data, this.siteInput);
+              }
+              
+
+          },err =>{
+            this.showLoading = false;
+            
+            if(err.error){
+              this.generalAlert("Number Of Dives Chart Error", err.error);
+            }else{
+              console.log("Could not access number Dives At Site Chart Data");
+            }
+            
+          });
 
 
   }
