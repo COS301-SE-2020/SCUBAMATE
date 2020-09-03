@@ -8,6 +8,7 @@ import { ThrowStmt } from '@angular/compiler';
 import { GlobalService } from "../global.service";
 
 import { Chart } from 'chart.js';
+import {mergeMap, groupBy, map, reduce } from 'rxjs/operators';
 
 export interface UC{
   AccessToken: string;
@@ -240,6 +241,8 @@ export class AdminPagePage implements OnInit {
           this._chartService.numberDivesAtSiteChartData(numDivesBody).subscribe( data =>{
               this.showLoading = false;
               console.log(data);
+              this.drawNumDivesAtSiteChart(data, "All Sites");
+
           },err =>{
             this.showLoading = false;
             
@@ -1217,6 +1220,122 @@ getDiveCentreInformation(){
     });
 
     await alert.present();
+  }
+
+
+
+  ///Functions for drawing charts
+  random_rgba(){
+    var o = Math.round, r= Math.random, s=255 ;
+    return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ', 0.7)' ;
+  }
+
+  drawNumDivesAtSiteChart(returnedData, msg){
+
+    let keys = returnedData["ReturnedList"].map(d => d.Month);
+    let values = returnedData["ReturnedList"].map(d => d.AmountOfDives);
+
+    this.lineChartDivesAtSite = new Chart(this.lineCanvasDivesAtSite.nativeElement,{
+     /* type: 'line',
+      data: {
+        labels: keys,
+        datasets:[
+          {
+            data: values,
+            borderColor: "#3cba9f",
+            fill: false,
+            backgroundColor:[
+              this.random_rgba(),
+              this.random_rgba(),
+              this.random_rgba(),
+              this.random_rgba(),
+              this.random_rgba(),
+              this.random_rgba(),
+              this.random_rgba(),
+              this.random_rgba(),
+              this.random_rgba()
+            ]
+          }
+        ]
+      },
+      options:{
+        legend:{
+          display: false
+        },
+        title:{
+          display: true,
+          text: "Total Dives At Sites"
+        },
+        scales:{
+          xAxes:[{
+            display: true ,
+            ticks:{
+              min: 0
+            }
+          }]
+        }
+      }
+
+  });*/
+  type: "line",
+  data: {
+    labels: keys,
+    datasets: [
+      {
+        label: msg,
+        fill: false,
+        lineTension: 0.1,
+        backgroundColor: "rgba(75,192,192,0.4)",
+        borderColor: "rgba(75,192,192,1)",
+        borderCapStyle: "butt",
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: "miter",
+        pointBorderColor: "rgba(75,192,192,1)",
+        pointBackgroundColor: "#fff",
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: "rgba(75,192,192,1)",
+        pointHoverBorderColor: "rgba(220,220,220,1)",
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        data: values,
+        spanGaps: false
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      xAxes: [ {
+        display: true,
+        scaleLabel: {
+          display: true,
+          labelString: 'Month'
+        },
+        ticks: {
+          major: {
+            fontStyle: 'bold',
+            fontColor: '#FF0000'
+          }
+        }
+      } ],
+      yAxes: [ {
+        display: true,
+        scaleLabel: {
+          display: true,
+          labelString: 'Number'
+        }
+      } ]
+    }
+  }
+});
+
+
+
+
+
   }
 
 }
