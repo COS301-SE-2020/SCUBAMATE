@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { diveService } from '../service/dive.service';
 import { accountService } from '../service/account.service';
+import { chartService } from '../service/chart.service';
 import { AlertController } from '@ionic/angular';
 import { ThrowStmt } from '@angular/compiler';
 import { GlobalService } from "../global.service";
+
+import { Chart } from 'chart.js';
 
 export interface UC{
   AccessToken: string;
@@ -120,14 +123,18 @@ export class AdminPagePage implements OnInit {
 
   currentDiveCenter: DC ;
 
-  //Forms
+  //Charts
+  @ViewChild("lineCanvasDivesAtSite") lineCanvasDivesAtSite: ElementRef;
+  private lineChartDivesAtSite: Chart;
 
+  //Date
+  currentDate = new Date();
 
 
 
   /********************************************/
 
-  constructor(public _globalService: GlobalService, public alertController : AlertController , private _diveService: diveService,private router: Router,private _accountService: accountService) {
+  constructor(private _chartService: chartService, public _globalService: GlobalService, public alertController : AlertController , private _diveService: diveService,private router: Router,private _accountService: accountService) {
     this.UserToCenterObj ={
       AccessToken : localStorage.getItem("accessToken"),
       Email : "",
@@ -215,7 +222,36 @@ export class AdminPagePage implements OnInit {
       this.loginLabel = "Log Out";
 
       this._globalService.activeLabel =  "Log Out";
+      this._globalService.accountRole = localStorage.getItem("accessToken").substring(36, 38) ;
       this.accountType = this._globalService.accountRole;
+
+      console.log("AT: " + this.accountType);
+      //get initial chart data
+      if(this.accountType == "11"){
+        var numDivesBody ={
+          "AccessToken" : localStorage.getItem("accessToken") ,
+          "DiveSite" : "*",
+          "YearOfSearch" : this.currentDate.getFullYear().toString()
+        };
+
+        console.log(numDivesBody);
+
+        this.showLoading = true ;
+          this._chartService.numberDivesAtSiteChartData(numDivesBody).subscribe( data =>{
+              this.showLoading = false;
+              console.log(data);
+          },err =>{
+            this.showLoading = false;
+            
+            if(err.error){
+              this.generalAlert("Number Of Dives Chart Error", err.error);
+            }else{
+              console.log("Could not access number Dives At Site Chart Data");
+            }
+            
+          })
+
+      }
     }
 
     
