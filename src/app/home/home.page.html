@@ -4,57 +4,158 @@
   <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
 
 </head>
-<ion-header no-border slot="fixed">
-  
+
+<ion-header no-border slot="fixed" style="margin-bottom: 20px;">
+  <ion-toolbar color="dark" class="productHeader" >
+    <ion-buttons slot="primary">
+      <ion-button routerLink="" *ngIf="loginLabel" (click)="loginClick()" class="hidden-sm-down" >
+        {{loginLabel}}
+      </ion-button>
+      <ion-menu-button autoHide="false" class="hidden-sm-up"></ion-menu-button>
+    </ion-buttons>
+    <ion-title > 
+     <ion-buttons >
+      <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo" style="height:80%;width:12%;padding-bottom:3px;padding-top:3px;margin-right:10px;"/>
+      
+        <ion-button routerLink="/home" class="hidden-sm-down">
+          <ion-icon name="home" ></ion-icon><label style="padding-top:7px;">&nbsp; Home</label> 
+        </ion-button>
+        <ion-button routerLink="/explore" class="hidden-sm-down" *ngIf="loginLabel=='Log Out'">
+          <ion-icon name="color-wand-outline"></ion-icon>&nbsp; Explore
+        </ion-button>
+        <ion-button routerLink="/planning" class="hidden-sm-down" *ngIf="loginLabel=='Log Out'">
+          <ion-icon name="newspaper"></ion-icon>&nbsp; Plan
+        </ion-button>
+        <ion-button routerLink="/my-dives" class="hidden-sm-down" *ngIf="loginLabel=='Log Out'">
+          <ion-icon name="water"></ion-icon>&nbsp; My Dives
+        </ion-button>
+        <ion-button routerLink="/profile" class="hidden-sm-down" *ngIf="loginLabel=='Log Out'">
+
+          <ion-icon name="person" ></ion-icon>&nbsp; Profile
+        </ion-button>
+        <ion-button *ngIf="accountType=='10' || accountType=='11'" routerLink="/admin-page" class="hidden-sm-down">
+          <ion-icon name="podium"></ion-icon>&nbsp; Admin 
+        </ion-button>
+      </ion-buttons>
+      
+    </ion-title> 
+  </ion-toolbar>
 </ion-header>
-<ion-toolbar class="productHeader" transparent slot="fixed">
-  
-  <ul>
-    <li style="float:right;"><a routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >{{loginLabel}}</a></li>
-    <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo">  
-    <li style="float:left;margin-left:20px;"><a routerLink="/home" >Home</a></li>  
-      <li style="float:left;"><a routerLink="/explore">Explore</a></li>  
-      <li style="float:left;"><a routerLink="/weather">Weather</a></li> 
-      <li style="float:left;"><a routerLink="/my-dives">My Dives</a></li>
-      <li style="float:left;"><a routerLink="/profile">My Account</a></li>  
-  </ul>
-</ion-toolbar>
 
 <ion-content fullscreen class="background" no-scroll padding >
   
-  <div id="container">
-    <div id="homeSticker" class="table">
-      <div class="row">
-          <div class="col-4 col-md-4">
+
+  <ion-grid id="container">
+    <div id="homeSticker">
+      	<ion-row >
+
+          <ion-col size="12" size-sm-="12" size-md="4" size-lg="4">
             <img src="../assets/images/stacked wit.png" alt="Scubamate">
-          </div>
-          <div class="col-12 col-md-8">
-            <div class="row">
+          </ion-col>
+          <ion-col size="12" size-sm-="12" size-md="8" size-lg="8">
+            <ion-row>
               <label id="about">About Us</label><br>
               <label id="aboutInfo">Scubamate is a scuba diving companion app,
                                    designed to aid divers, and diving instructors with administrative tasks,
                                    such as checking weather information, logging dives, and planning diving trips.
               </label>
+            </ion-row>
+            <ion-row>
+              <ion-col size="12">
+                <ion-button (mouseover)="moveArrowRightSignUp()" (mouseout)="moveArrowLeftSignUp()" *ngIf="isUndefined(accountType)" color='tan' class="orangeButton" style="margin-left:5%;" routerLink="/signup">
+        
+                  New Member Sign Up  <ion-icon name="arrow-forward"  [style.padding-left]="buttonSignUpMarginLeft"  ></ion-icon>
+
+                </ion-button>
+              </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-button (mouseover)="moveArrowRightLogin()" (mouseout)="moveArrowLeftLogin()" *ngIf="isUndefined(accountType)" color='tan' class="orangeButton" style="margin-left:5%;" routerLink="/login">
+          
+                    Returning Member Log In  <ion-icon name="arrow-forward"  [style.padding-left]="buttonLoginMarginLeft"  ></ion-icon>
+  
+                  </ion-button>
+                </ion-col>
+                </ion-row>
+          </ion-col>
+          
+        </ion-row>
+    </div>
+  
+
+  <div class="infoDiv">
+    <ion-grid>
+      <ion-row>
+        <ion-col size='12' size-sm='6' size-md='3' size-lg="3">
+          <div class="infoImageBorder">
+            <div class="innerInfoBorder" >
+              <ion-icon name="color-wand-outline" color='light' routerLink="/explore"></ion-icon>
             </div>
-            <div class="row">
-                <button  class="orangeButton" style="margin-left:5%;" routerLink="/signup">Sign Up <span></span></button>
-           <!--<button (click)="sendEmail()">Send Email</button>-->
-              </div>
           </div>
-      </div>
-  </div>
+        </ion-col>
+        <ion-col size='12' size-sm='6' size-md='3' size-lg="3">
+          <div class="infoDetails">
+            <label id="about">Explore</label><br>
+            <label id="aboutInfo" class="flyInIcon">Follow the dives logged by fellow scuba divers, using our public dives feed.
+                                  Disover new Dive Sites and Centres while viewing current weather conditions. 
+            </label>
+          </div>
+        </ion-col>
+        <ion-col size='12' size-sm='6' size-md='3' size-lg="3">
+          <div class="infoImageBorder">
+            <div class="innerInfoBorder" >
+              <ion-icon name="newspaper" color='light'  routerLink="/planning"></ion-icon>
+            </div>
+          </div>
+        </ion-col>
+        <ion-col size='12' size-sm='6' size-md='3' size-lg="3">
+          <div class="infoDetails">
+            <label id="about">Plan</label><br>
+            <label id="aboutInfo" class="flyInIcon">Plan future dives using a customizable checklist 
+                                  and viewing suggested courses based on completed dives or
+                                  a survey.
+            </label>
+          </div>
+        </ion-col>
 
-  <!--<div class="tableContainer">
-    <table id="feed"  >
-      <tr>
-        <th> Dive Sites </th>
-      </tr>
-      <tr *ngFor='let d of siteLst'> 
-        <td> {{d}} </td>
-      </tr>
-  </table>
-  </div> -->
-
+      </ion-row>
+      <ion-row style="padding-top: 30px;">
+        <ion-col size='12' size-sm='6' size-md='3' size-lg="3">
+          <div class="infoImageBorder">
+            <div class="innerInfoBorder" >
+              <ion-icon name="water" color='light'  routerLink="/my-dives"></ion-icon>
+            </div>
+          </div>
+        </ion-col>
+        <ion-col size='12' size-sm='6' size-md='3' size-lg="3">
+          <div class="infoDetails">
+            <label id="about">My Dives</label><br>
+            <label id="aboutInfo" class="flyInIcon">View, edit and update your personal dive log history.
+                                                    Dive automatically logs weather conditions
+                                                    for dives logged.
+            </label>
+          </div>
+        </ion-col>
+        <ion-col size='12' size-sm='6' size-md='3' size-lg="3">
+          <div class="infoImageBorder">
+            <div class="innerInfoBorder" >
+              <ion-icon name="person" color='light'  routerLink="/profile"></ion-icon>
+            </div>
+          </div>
+        </ion-col>
+        <ion-col size='12' size-sm='6' size-md='3' size-lg="3">
+          <div class="infoDetails">
+            <label id="about">Profile</label><br>
+            <label id="aboutInfo" class="flyInIcon"> Customize your account information and view all personal
+                                                     information. Make requests for upgrading to an instructor and 
+                                                     view completed courses. 
+            </label>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </div>
- 
+</ion-grid>
+
 </ion-content>

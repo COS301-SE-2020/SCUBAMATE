@@ -2,8 +2,8 @@
 const AWS = require('aws-sdk');
 AWS.config.update({region: "af-south-1"});
 
-var sesAccessKey = '[redacted]';
-var sesSecretKey = '[redacted]';
+var sesAccessKey = 'scubamate.team@gmail.com';
+var sesSecretKey = 'Scub@123';
 
 var date = new Date();
 var tim = ""+date.getTime();
@@ -27,6 +27,7 @@ exports.handler = function(event,context,callback) {
 	        pass: sesSecretKey
 	    }
   	}));
+    
     
     var mailOptions = {
 	    from: 'scubamate.team@gmail.com',

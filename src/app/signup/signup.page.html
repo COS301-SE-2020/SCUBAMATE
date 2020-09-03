@@ -4,22 +4,31 @@
   <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
 
 </head>
-<ion-header no-border slot="fixed">
-  
+<ion-header no-border slot="fixed" style="margin-bottom: 20px;">
+  <ion-toolbar color="dark" class="productHeader" >
+    <ion-buttons slot="primary">
+      <ion-button routerLink="" *ngIf="loginLabel" (click)="loginClick()" class="hidden-sm-down" >
+        {{loginLabel}}
+      </ion-button>
+      <ion-menu-button autoHide="false" class="hidden-sm-up"></ion-menu-button>
+    </ion-buttons>
+    <ion-title > 
+     <ion-buttons >
+      <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo" style="height:80%;width:12%;padding-bottom:3px;padding-top:3px;margin-right:10px;"/>
+      
+        <ion-button routerLink="/home" class="hidden-sm-down">
+          <ion-icon name="home" ></ion-icon><label style="padding-top:7px;">&nbsp; Home</label> 
+        </ion-button>
+
+      </ion-buttons>
+      
+    </ion-title> 
+     <ion-progress-bar type="indeterminate" *ngIf="showLoading"></ion-progress-bar> 
+  </ion-toolbar>
 </ion-header>
-<ion-toolbar class="productHeader" transparent slot="fixed">
-  
-  <ul>
-       <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo">  
-    <li style="float:left;margin-left:20px;"><a routerLink="/home" >Home</a></li>  
-      <li style="float:left;"><a routerLink="/explore">Explore</a></li>  
-      <li style="float:left;"><a routerLink="/weather">Weather</a></li> 
-      <li style="float:left;"><a routerLink="/my-dives">My Dives</a></li>
-      <li style="float:left;"><a routerLink="/profile">My Account</a></li>  
-  </ul>
-</ion-toolbar>
 <ion-content fullscreen class="background" no-scroll padding >
  
+  
   <div class="registerFormDiv" *ngIf="ShowAccountChoice" style="margin-top:20px;">
     <ion-label id="divHead"> Account Type </ion-label>
     <ion-grid>
@@ -36,315 +45,543 @@
       </ion-row>
     </ion-grid>
    </div> <!-- End of Account Choice-->
- 
+
+  
    <!--Diver Signup Form-->
-  <div class="registerFormDiv" *ngIf="signUpDiver">
-    <ion-label id="divHead">Diver Sign Up </ion-label>
-
+   <div class="registerFormDiv" *ngIf='signUpDiver'>
     <form [formGroup]="diverForm" >
-      <div>  
-        <ion-label class="subLabel"> User Information </ion-label>
-        <ion-grid>
+    <div id="firstFormPage" *ngIf="DiverFirstPageVisible" style="min-height: 400px;">
+      <!--Steps & Progress Bar-->
+      <div id="DiverProgress">
+        <ion-grid style="padding: 0;margin: 0;">
           <ion-row>
-            <ion-col>
-                <ion-item color="dark">
-                  <ion-label  position="floating">First Name         
-                    <b *ngIf="!diverForm.controls.firstName.valid  && (diverForm.controls.firstName.dirty )" class="FormErrorControlMessage">* Please enter a valid name  </b>
-                  </ion-label>
-                  <ion-input formControlName="firstName" type="text"  [(ngModel)]="diverObj.FirstName"  [class.invalid]="!diverForm.controls.firstName.valid && (diverForm.controls.firstName.dirty )"></ion-input>
-                </ion-item>
+            <ion-col class="ion-align-self-start">
+              <div class="step1" *ngIf="diverForm.controls.email.valid && diverForm.controls.birthday.valid && diverForm.controls.firstName.valid && diverForm.controls.lastName.valid && diverForm.controls.email.valid">1</div> 
+              <div class="step1" *ngIf="!diverForm.controls.email.valid || !diverForm.controls.birthday.valid || !diverForm.controls.firstName.valid || !diverForm.controls.lastName.valid || !diverForm.controls.email.valid" style="border-color:#eb445a;">1</div> 
+            </ion-col>
+            <ion-col class="ion-align-self-center">
+                <div class="step2" style="border:none;">2</div>
+            </ion-col>
+            <ion-col class="ion-align-self-end">
+                <div class="step3" style="border:none;">3</div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+  
+        <ion-progress-bar *ngIf="diverForm.controls.email.valid && diverForm.controls.birthday.valid && diverForm.controls.firstName.valid && diverForm.controls.lastName.valid && diverForm.controls.email.valid" color="success" value="0.30" style="margin-bottom: 20px;--buffer-background:#264653;"></ion-progress-bar>
+        <ion-progress-bar *ngIf="!diverForm.controls.email.valid || !diverForm.controls.birthday.valid ||!diverForm.controls.firstName.valid || !diverForm.controls.lastName.valid || !diverForm.controls.email.valid" color="danger" value="0.30" style="margin-bottom: 20px;--buffer-background:#264653;"></ion-progress-bar>
         
-           </ion-col>
-           <ion-col>
-            <ion-item color="dark">
-              <ion-label  position="floating">Last Name
-                <b *ngIf="!diverForm.controls.lastName.valid  && (diverForm.controls.lastName.dirty )" class="FormErrorControlMessage">* Please enter a valid name  </b>
-              </ion-label>
-              <ion-input formControlName="lastName" type="text"  [(ngModel)]="diverObj.LastName"  [class.invalid]="!diverForm.controls.lastName.valid && (diverForm.controls.lastName.dirty )"></ion-input>
-            </ion-item>
-    
-           </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>
-                <ion-item color="dark">
-                  <ion-label  position="floating">Email         
-                    <b *ngIf="!diverForm.controls.email.valid  && (diverForm.controls.email.dirty )" class="FormErrorControlMessage">* Please enter a valid email  </b>
-                  </ion-label>
-                  <ion-input formControlName="email" type="email"  [(ngModel)]="diverObj.Email"  [class.invalid]="!diverForm.controls.email.valid && (diverForm.controls.email.dirty )"></ion-input>
-                </ion-item>
+      </div>
 
-           </ion-col>
-           <ion-col>
-            <ion-item color="dark">
-              <ion-label  position="stacked">Date of Birth
-                <b *ngIf="!diverForm.controls.birthday.valid  && (diverForm.controls.birthday.dirty )" class="FormErrorControlMessage">* Please enter a valid name  </b>
-              </ion-label>
-              <ion-input formControlName="birthday" type="date"  [(ngModel)]="diverObj.DateOfBirth"  [class.invalid]="!diverForm.controls.birthday.valid && (diverForm.controls.birthday.dirty )"></ion-input>
-            </ion-item>
-    
-           </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>
+      <!--Form Fields-->
+
+      <ion-grid style="padding: 0;margin: 0;">
+        <ion-row> 
+          <!--Profile Image Pane-->
+          <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
+            <label class="divSubHead">Personal Information</label>
+            <label class="subLabel" style="margin-top:10px;">Profile Photo</label>
+            <div id="profileSurroundDiv">
+             <ion-img src={{diverObj.ProfilePhoto}} id="userProfile" ></ion-img>
+            </div>
+            
+               <ion-item color="transparent" lines="none">
+                 <ion-button expand="full" (click)="f.click()" style="margin:auto;">
+                   <ion-icon lazy="true" name="image"></ion-icon>
+                   <ion-label slot="end">Change Profile Photo</ion-label>
+                 </ion-button>
+                   <input class="ion-hide" #f type="file" (change)="onFileSelected($event)" id="file-input"
+                     accept="image/png, image/jpeg">
+ 
+                </ion-item>
+          </ion-col>
+          <!-- User Information Pane-->
+          <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane">
+            
+            <ion-row>
+              <ion-item color="dark">
+                <ion-label  position="floating">First Name         
+                  <b *ngIf="!diverForm.controls.firstName.valid  && (diverForm.controls.firstName.dirty )" class="FormErrorControlMessage">* Please enter a valid name  </b>
+                </ion-label>
+                <ion-input formControlName="firstName" type="text"  [(ngModel)]="diverObj.FirstName"  [class.invalid]="!diverForm.controls.firstName.valid && (diverForm.controls.firstName.dirty )"></ion-input>
+              </ion-item>
+            </ion-row>
+            <ion-row>
+              <ion-item color="dark">
+                <ion-label  position="floating">Last Name
+                  <b *ngIf="!diverForm.controls.lastName.valid  && (diverForm.controls.lastName.dirty )" class="FormErrorControlMessage">* Please enter a valid name  </b>
+                </ion-label>
+                <ion-input formControlName="lastName" type="text"  [(ngModel)]="diverObj.LastName"  [class.invalid]="!diverForm.controls.lastName.valid && (diverForm.controls.lastName.dirty )"></ion-input>
+              </ion-item>
+            </ion-row>
+            <ion-row>
+              <ion-item color="dark">
+                <ion-label  position="floating">Email         
+                  <b *ngIf="!diverForm.controls.email.valid  && (diverForm.controls.email.dirty )" class="FormErrorControlMessage">* Please enter a valid email  </b>
+                </ion-label>
+                <ion-input formControlName="email" type="email"  [(ngModel)]="diverObj.Email"  [class.invalid]="!diverForm.controls.email.valid && (diverForm.controls.email.dirty )"></ion-input>
+              </ion-item>
+            </ion-row>
+            <ion-row>
+              <ion-item color="dark">
+                <ion-label  position="stacked">Date of Birth
+                  <b *ngIf="!diverForm.controls.birthday.valid  && (diverForm.controls.birthday.dirty )" class="FormErrorControlMessage">* Please enter a valid name  </b>
+                </ion-label>
+                <ion-input formControlName="birthday" type="date"  [(ngModel)]="diverObj.DateOfBirth"  [class.invalid]="!diverForm.controls.birthday.valid && (diverForm.controls.birthday.dirty )"></ion-input>
+              </ion-item>
+            </ion-row>
+            <ion-row>
               <ion-item color="dark">
                 <ion-label position="stacked">Do you want your dives to be logged publicly?</ion-label>
                 <ion-checkbox color="dark" disabled="false" formControlName="publicStatus" [(ngModel)]="diverObj.PublicStatus" ></ion-checkbox>
               </ion-item>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+
+    </div>
+    <div id="secondFormPage" *ngIf="DiverSecondPageVisible" >
+       <!--Steps & Progress Bar-->
+       <div id="DiverProgress">
+        <ion-grid style="padding: 0;margin: 0;">
+          <ion-row>
+            <ion-col class="ion-align-self-start">
+              <div class="step1" *ngIf="diverForm.controls.email.valid && diverForm.controls.birthday.valid && diverForm.controls.firstName.valid && diverForm.controls.lastName.valid && diverForm.controls.email.valid">1</div> 
+              <div class="step1" *ngIf="!diverForm.controls.email.valid || !diverForm.controls.birthday.valid ||!diverForm.controls.firstName.valid || !diverForm.controls.lastName.valid || !diverForm.controls.email.valid" style="border-color:#eb445a;">1</div> 
             </ion-col>
-            <ion-col>
-              <ion-item color="dark">
-                <ion-label position="stacked">Profile Picture</ion-label>
-                <ion-input type="file" accept="image/*" formControlName="profile" (change)="onFileSelected($event)" ></ion-input> 
-              </ion-item>
+            <ion-col class="ion-align-self-center">
+              <div class="step2" *ngIf="diverForm.controls.password.valid && diverForm.controls.confirmPassword.valid">2</div>
+                <div class="step2" *ngIf="!diverForm.controls.password.valid || !diverForm.controls.confirmPassword.valid " style="border-color:#eb445a;">2</div>
+            </ion-col>
+            <ion-col class="ion-align-self-end">
+                <div class="step3" style="border:none;">3</div>
             </ion-col>
           </ion-row>
         </ion-grid>
-      </div>
-      <div>
-        <ion-label class="subLabel">Password Setup </ion-label>
-        <ion-grid>
-          <ion-row>
-            <ion-col>
-              
-              <ion-item color="dark">
-                <ion-label position="floating">Password
-                  <p *ngIf="!diverForm.controls.password.valid  && (diverForm.controls.password.dirty )" class="FormErrorControlMessage">Must be 6 digits long and contain A-Z,a-z,1-9 and a special Character </p>
-                </ion-label>
-                <ion-input formControlName="password" type="password" [(ngModel)]="diverObj.Password" [class.invalid]="!diverForm.controls.password.valid && (diverForm.controls.password.dirty)"></ion-input>
-              </ion-item>
+  
+        <ion-progress-bar *ngIf="diverForm.controls.email.valid && diverForm.controls.birthday.valid && diverForm.controls.firstName.valid && diverForm.controls.lastName.valid && diverForm.controls.email.valid && diverForm.controls.password.valid && diverForm.controls.confirmPassword.valid" color="success" value="0.60" style="margin-bottom: 20px;--buffer-background:#264653;"></ion-progress-bar>
+        <ion-progress-bar *ngIf="!diverForm.controls.email.valid || !diverForm.controls.birthday.valid ||!diverForm.controls.firstName.valid || !diverForm.controls.lastName.valid || !diverForm.controls.email.valid || !diverForm.controls.password.valid || !diverForm.controls.confirmPassword.valid" color="danger" value="0.60" style="margin-bottom: 20px;--buffer-background:#264653;"></ion-progress-bar>
+        
+
+        <ion-grid style="padding: 0;margin: 0;">
+          <ion-row> 
+            <!--Title Image Pane-->
+            <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
+              <label class="divSubHead" style="margin-top:25%;">Password Setup</label>
+            </ion-col>
+            <!-- User Information Pane-->
+            <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane">
+              <ion-row style="margin-top:7%;">
+                <ion-item color="dark">
+                  <ion-label position="floating">Password
+                    <p *ngIf="!diverForm.controls.password.valid  && (diverForm.controls.password.dirty )" class="FormErrorControlMessage">Must be 6 digits long and contain A-Z,a-z,1-9 and a special Character </p>
+                  </ion-label>
+                  <ion-input formControlName="password" type="password" [(ngModel)]="diverObj.Password" [class.invalid]="!diverForm.controls.password.valid && (diverForm.controls.password.dirty)"></ion-input>
+                </ion-item>
+              </ion-row>
+              <ion-row>
+                <ion-item color="dark">
+                  <ion-label position="floating">Confirm Password
+                    <p class="FormErrorControlMessage" *ngIf="!diverForm.controls.confirmPassword.valid  && (diverForm.controls.confirmPassword.dirty )">* Passwords do not match</p>
+                  </ion-label>
+                  <ion-input formControlName="confirmPassword" type="password"  [class.invalid]="!diverForm.controls.confirmPassword.valid && (diverForm.controls.confirmPassword.dirty)"></ion-input>
+                </ion-item>
+              </ion-row>
             
             </ion-col>
-            <ion-col>
-              
-              <ion-item color="dark">
-                <ion-label position="floating">Confirm Password
-                  <p class="FormErrorControlMessage" *ngIf="!diverForm.controls.confirmPassword.valid  && (diverForm.controls.confirmPassword.dirty )">* Passwords do not match</p>
-                </ion-label>
-                <ion-input formControlName="confirmPassword" type="password"  [class.invalid]="!diverForm.controls.confirmPassword.valid && (diverForm.controls.confirmPassword.dirty)"></ion-input>
-              </ion-item>
-          
-            </ion-col>
           </ion-row>
         </ion-grid>
-      </div> <!-- end of passSetup-->
-      <div >
-        <ion-label class="subLabel"> Diver Credentials </ion-label>
-        <ion-grid>
-          <ion-row>
-            <ion-col >
-              <div class="searchableSelect" color="dark">
-                <ion-label class="searchableSelectLabel">Qualification</ion-label><br>
-                  <input list="diveQ" formControlName="qualification" [(ngModel)]="diverObj.Qualification"  placeholder="Insert Your Qualification" class="searchableSelectInput" #Qual (keypress)="QualificationListFinder($event.target.value)">
-                  <datalist id="diveQ" >
-                      <option *ngFor='let q of QualificationLst' value={{q}}></option>
-                  </datalist>
-              </div>
-              </ion-col>
-          </ion-row>
-          <ion-row >
-            <div class="searchableSelect" >
-              <ion-row>
-                <ion-col>
-                  <ion-label class="searchableSelectLabel" >Add Specialisations</ion-label>
-                  <input list="diveS"  placeholder="Add Your Specialisation"  [(ngModel)]="specialisationInputField" formControlName="specialisation" #Spec (input)="SpecializationListFinder()" class="searchableSelectInput" >
-                    <datalist id="diveS">
-                        <option *ngFor='let s of SpecializationLst' value={{s}}></option>
-                    </datalist>
+  
+
+
+
+      </div>
+    </div>
+    <div id="thirdFormPage" *ngIf="DiverThirdPageVisible">
+             <!--Steps & Progress Bar-->
+             <div id="DiverProgress">
+              <ion-grid style="padding: 0;margin: 0;">
+                <ion-row>
+                  <ion-col class="ion-align-self-start">
+                    <div class="step1" *ngIf="diverForm.controls.email.valid && diverForm.controls.birthday.valid && diverForm.controls.firstName.valid && diverForm.controls.lastName.valid && diverForm.controls.email.valid">1</div> 
+                    <div class="step1" *ngIf="!diverForm.controls.email.valid || !diverForm.controls.birthday.valid ||!diverForm.controls.firstName.valid || !diverForm.controls.lastName.valid || !diverForm.controls.email.valid" style="border-color:#eb445a;">1</div> 
+                  </ion-col>
+                  <ion-col class="ion-align-self-center">
+                    <div class="step2" *ngIf="diverForm.controls.password.valid && diverForm.controls.confirmPassword.valid">2</div>
+                      <div class="step2" *ngIf="!diverForm.controls.password.valid || !diverForm.controls.confirmPassword.valid " style="border-color:#eb445a;">2</div>
+                  </ion-col>
+                  <ion-col class="ion-align-self-end">
+                    <div class="step3" *ngIf="courseValid">3</div>
+                    <div class="step3" *ngIf="!courseValid" style="border-color:#eb445a;">3</div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+        
+              <ion-progress-bar *ngIf="diverForm.controls.email.valid && diverForm.controls.birthday.valid && courseValid && diverForm.controls.firstName.valid && diverForm.controls.lastName.valid && diverForm.controls.email.valid && diverForm.controls.password.valid && diverForm.controls.confirmPassword.valid" color="success" value="1" style="margin-bottom: 20px;--buffer-background:#264653;"></ion-progress-bar>
+              <ion-progress-bar *ngIf="!diverForm.controls.email.valid || !diverForm.controls.birthday.valid ||!courseValid  || !diverForm.controls.firstName.valid || !diverForm.controls.lastName.valid || !diverForm.controls.email.valid || !diverForm.controls.password.valid || !diverForm.controls.confirmPassword.valid" color="danger" value="1" style="margin-bottom: 20px;--buffer-background:#264653;"></ion-progress-bar>
+            </div>
+      
+
+            <ion-grid style="padding: 0;margin: 0;">
+              <ion-row > 
+                <!--Title Image Pane-->
+                <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
+                  <label class="divSubHead" style="margin-top:25%;">Diver <br> Credentials</label>
                 </ion-col>
-                <ion-col>
-                  <ion-button id="addBtn" #addBtn (click)="addSpecialisation(Spec.value)"   >
-                    <ion-icon name="add"></ion-icon>
-                  </ion-button>
+                <!-- User Information Pane-->
+                <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane">
+                  <ion-row style="margin-top:4%;">
+                    <div class="searchableSelect" >
+                      <ion-row>
+                        <ion-col>
+                          <ion-label class="searchableSelectLabel" >Add Completed Course</ion-label>
+                          <input list="diveC"  placeholder="Add Your Completed Course"  [(ngModel)]="courseInputField" formControlName="courses" #Spec (input)="CourseListFinder()" class="searchableSelectInput" >
+                            <datalist id="diveC">
+                                <option *ngFor='let c of CourseLst' value={{c}}></option>
+                            </datalist>
+                        </ion-col>
+                        <ion-col>
+                          <ion-button id="addBtn" #addBtn (click)="addCourse()"   >
+                            <ion-icon name="add"></ion-icon>
+                          </ion-button>
+                        </ion-col>
+                      </ion-row>
+                      </div>
+                  </ion-row>
+                  <ion-row *ngIf="showCourses">
+                        <ion-grid id="CoursesTable">
+                          <ion-row class="CourseListHead"> Courses </ion-row>
+                          <ion-row  *ngFor='let uc of userCourses' class="CourseListTableRow">
+                              <ion-col size="12">
+                                <label>{{ uc }} </label>
+                                <ion-button (click)="removeCourse(uc)" color="dark" id='removeBtn'>
+                                  <ion-icon name="trash-bin"></ion-icon>
+                                </ion-button>
+                              </ion-col>
+                          </ion-row>
+                        </ion-grid>
+                  </ion-row>
+                
                 </ion-col>
               </ion-row>
-              </div>
-          </ion-row>
-          <ion-row *ngIf="showSpecialization">
-                  <table>
-                    <th>
-                      Specialisation
-                    </th>
-                    <tr *ngFor='let us of userSpecialisation'>
-                      <td>{{ us }}</td>
-                      <td>
-                        <ion-button (click)="removeSpecialisation(us)" color="dark">
-                          <ion-icon name="trash-bin"></ion-icon>
-                        </ion-button>
-                      </td>
-                    </tr>
-                    <tr></tr>
-                  </table>
+            </ion-grid>
+
+
+
+    </div>
+     </form>
+     <div id="formNavControlDiv">
+      <button id="prev" *ngIf="!DiverFirstPageVisible" (click)="previousPage()">Previous</button>
+      <button id="next" *ngIf="!DiverThirdPageVisible" (click)="nextPage()">Next</button>
+      <button id="subBtn"  *ngIf="DiverThirdPageVisible" (click)="DiverSubmit()">Submit</button>
+    </div>
+   </div>
+
+   <!--End of Diver Form Pages-->
+
+   <!--Instructor Signup Form-->
+   <div class="registerFormDiv" *ngIf='signUpInstructor'>
+    <form [formGroup]="instructorForm" >
+    <div id="firstFormPage" *ngIf="InstructorFirstPageVisible" style="min-height: 400px;">
+      <!--Steps & Progress Bar-->
+      <div id="InstructorProgress">
+        <ion-grid style="padding: 0;margin: 0;">
+          <ion-row>
+            <ion-col class="ion-align-self-start">
+              <div class="step1" *ngIf="instructorForm.controls.email.valid && instructorForm.controls.birthday.valid && instructorForm.controls.firstName.valid && instructorForm.controls.lastName.valid && instructorForm.controls.email.valid">1</div> 
+              <div class="step1" *ngIf="!instructorForm.controls.email.valid || !instructorForm.controls.birthday.valid ||!instructorForm.controls.firstName.valid || !instructorForm.controls.lastName.valid || !instructorForm.controls.email.valid" style="border-color:#eb445a;">1</div> 
+            </ion-col>
+            <ion-col class="ion-align-self-center">
+                <div class="step2" style="border:none;">2</div>
+            </ion-col>
+            <ion-col class="ion-align-self-end">
+                <div class="step3" style="border:none;">3</div>
+            </ion-col>
+            <ion-col class="ion-align-self-end">
+              <div class="step4" style="border:none;">4</div>
+          </ion-col>
           </ion-row>
         </ion-grid>
-      </div><!-- end of dive credentials-->
-      <input type="submit" value="Sign Up" (click)="DiverSubmit()">
-    </form>
-  </div>
-
-     <!--Instructor Signup Form-->
-     <div class="registerFormDiv" *ngIf="signUpInstructor">
-      <ion-label id="divHead">Instructor Sign Up </ion-label>
   
-      <form [formGroup]="instructorForm" >
-        <div>  
-          <ion-label class="subLabel"> User Information </ion-label>
-          <ion-grid>
+        <ion-progress-bar *ngIf="instructorForm.controls.email.valid && instructorForm.controls.birthday.valid && instructorForm.controls.firstName.valid && instructorForm.controls.lastName.valid && instructorForm.controls.email.valid" color="success" value="0.25" style="margin-bottom: 20px;--buffer-background:#264653;"></ion-progress-bar>
+        <ion-progress-bar *ngIf="!instructorForm.controls.email.valid || !instructorForm.controls.birthday.valid ||!instructorForm.controls.firstName.valid || !instructorForm.controls.lastName.valid || !instructorForm.controls.email.valid" color="danger" value="0.25" style="margin-bottom: 20px;--buffer-background:#264653;"></ion-progress-bar>
+        
+      </div>
+
+      <!--Form Fields-->
+
+      <ion-grid style="padding: 0;margin: 0;">
+        <ion-row> 
+          <!--Profile Image Pane-->
+          <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
+            <label class="divSubHead">Personal Information</label>
+            <label class="subLabel" style="margin-top:10px;">Profile Photo</label>
+            <div id="profileSurroundDiv">
+             <ion-img src={{instructorObj.ProfilePhoto}} id="userProfile" ></ion-img>
+            </div>
+            
+               <ion-item color="transparent" lines="none">
+                 <ion-button expand="full" (click)="f.click()" style="margin:auto;">
+                   <ion-icon lazy="true" name="image"></ion-icon>
+                   <ion-label slot="end">Change Profile Photo</ion-label>
+                 </ion-button>
+                   <input class="ion-hide" #f type="file" (change)="onFileSelected($event)" id="file-input"
+                     accept="image/png, image/jpeg">
+ 
+                </ion-item>
+          </ion-col>
+          <!-- User Information Pane-->
+          <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane">
+            
             <ion-row>
-              <ion-col>
-                  <ion-item color="dark">
-                    <ion-label  position="floating">First Name         
-                      <b *ngIf="!instructorForm.controls.firstName.valid  && (instructorForm.controls.firstName.dirty )" class="FormErrorControlMessage">* Please enter a valid name  </b>
-                    </ion-label>
-                    <ion-input formControlName="firstName" type="text"  [(ngModel)]="instructorObj.FirstName"  [class.invalid]="!instructorForm.controls.firstName.valid && (instructorForm.controls.firstName.dirty )"></ion-input>
-                  </ion-item>
-          
-             </ion-col>
-             <ion-col>
+              <ion-item color="dark">
+                <ion-label  position="floating">First Name         
+                  <b *ngIf="!instructorForm.controls.firstName.valid  && (instructorForm.controls.firstName.dirty )" class="FormErrorControlMessage">* Please enter a valid name  </b>
+                </ion-label>
+                <ion-input formControlName="firstName" type="text"  [(ngModel)]="instructorObj.FirstName"  [class.invalid]="!instructorForm.controls.firstName.valid && (instructorForm.controls.firstName.dirty )"></ion-input>
+              </ion-item>
+            </ion-row>
+            <ion-row>
               <ion-item color="dark">
                 <ion-label  position="floating">Last Name
                   <b *ngIf="!instructorForm.controls.lastName.valid  && (instructorForm.controls.lastName.dirty )" class="FormErrorControlMessage">* Please enter a valid name  </b>
                 </ion-label>
                 <ion-input formControlName="lastName" type="text"  [(ngModel)]="instructorObj.LastName"  [class.invalid]="!instructorForm.controls.lastName.valid && (instructorForm.controls.lastName.dirty )"></ion-input>
               </ion-item>
-      
-             </ion-col>
             </ion-row>
             <ion-row>
-              <ion-col>
-                  <ion-item color="dark">
-                    <ion-label  position="floating">Email         
-                      <b *ngIf="!instructorForm.controls.email.valid  && (instructorForm.controls.email.dirty )" class="FormErrorControlMessage">* Please enter a valid email  </b>
-                    </ion-label>
-                    <ion-input formControlName="email" type="email"  [(ngModel)]="instructorObj.Email"  [class.invalid]="!instructorForm.controls.email.valid && (instructorForm.controls.email.dirty )"></ion-input>
-                  </ion-item>
-  
-             </ion-col>
-             <ion-col>
+              <ion-item color="dark">
+                <ion-label  position="floating">Email         
+                  <b *ngIf="!instructorForm.controls.email.valid  && (instructorForm.controls.email.dirty )" class="FormErrorControlMessage">* Please enter a valid email  </b>
+                </ion-label>
+                <ion-input formControlName="email" type="email"  [(ngModel)]="instructorObj.Email"  [class.invalid]="!instructorForm.controls.email.valid && (instructorForm.controls.email.dirty )"></ion-input>
+              </ion-item>
+            </ion-row>
+            <ion-row>
               <ion-item color="dark">
                 <ion-label  position="stacked">Date of Birth
                   <b *ngIf="!instructorForm.controls.birthday.valid  && (instructorForm.controls.birthday.dirty )" class="FormErrorControlMessage">* Please enter a valid name  </b>
                 </ion-label>
                 <ion-input formControlName="birthday" type="date"  [(ngModel)]="instructorObj.DateOfBirth"  [class.invalid]="!instructorForm.controls.birthday.valid && (instructorForm.controls.birthday.dirty )"></ion-input>
               </ion-item>
-      
-             </ion-col>
             </ion-row>
             <ion-row>
-              <ion-col>
-                <ion-item color="dark">
-                  <ion-label position="stacked">Do you want your dives to be logged publicly?</ion-label>
-                  <ion-checkbox color="dark" disabled="false" formControlName="publicStatus" [(ngModel)]="instructorObj.PublicStatus" ></ion-checkbox>
-                </ion-item>
-              </ion-col>
-              <ion-col>
-                <ion-item color="dark">
-                  <ion-label position="stacked">Profile Picture</ion-label>
-                  <ion-input type="file" accept="image/*" formControlName="profile" (change)="onFileSelected($event)" ></ion-input> <!--removed id-->
-                </ion-item>
-              </ion-col>
+              <ion-item color="dark">
+                <ion-label position="stacked">Do you want your dives to be logged publicly?</ion-label>
+                <ion-checkbox color="dark" disabled="false" formControlName="publicStatus" [(ngModel)]="instructorObj.PublicStatus" ></ion-checkbox>
+              </ion-item>
             </ion-row>
-          </ion-grid>
-        </div>
-        <div>
-          <ion-label class="subLabel">Password Setup </ion-label>
-          <ion-grid>
-            <ion-row>
-              <ion-col>
-                
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+
+    </div>
+    <div id="secondFormPage" *ngIf="InstructorSecondPageVisible" >
+       <!--Steps & Progress Bar-->
+       <div id="InstructorProgress">
+        <ion-grid style="padding: 0;margin: 0;">
+          <ion-row>
+            <ion-col class="ion-align-self-start">
+              <div class="step1" *ngIf="instructorForm.controls.email.valid && instructorForm.controls.birthday.valid && instructorForm.controls.firstName.valid && instructorForm.controls.lastName.valid && instructorForm.controls.email.valid">1</div> 
+              <div class="step1" *ngIf="!instructorForm.controls.email.valid || !instructorForm.controls.birthday.valid ||!instructorForm.controls.firstName.valid || !instructorForm.controls.lastName.valid || !instructorForm.controls.email.valid" style="border-color:#eb445a;">1</div> 
+            </ion-col>
+            <ion-col class="ion-align-self-center">
+              <div class="step2" *ngIf="instructorForm.controls.password.valid && instructorForm.controls.confirmPassword.valid">2</div>
+                <div class="step2" *ngIf="!instructorForm.controls.password.valid || !instructorForm.controls.confirmPassword.valid " style="border-color:#eb445a;">2</div>
+            </ion-col>
+            <ion-col class="ion-align-self-end">
+                <div class="step3" style="border:none;">3</div>
+            </ion-col>
+            <ion-col class="ion-align-self-end">
+              <div class="step4" style="border:none;">4</div>
+          </ion-col>
+          </ion-row>
+        </ion-grid>
+  
+        <ion-progress-bar *ngIf="instructorForm.controls.email.valid && instructorForm.controls.birthday.valid && instructorForm.controls.firstName.valid && instructorForm.controls.lastName.valid && instructorForm.controls.email.valid && instructorForm.controls.password.valid && instructorForm.controls.confirmPassword.valid" color="success" value="0.50" style="margin-bottom: 20px;--buffer-background:#264653;"></ion-progress-bar>
+        <ion-progress-bar *ngIf="!instructorForm.controls.email.valid || !instructorForm.controls.birthday.valid ||!instructorForm.controls.firstName.valid || !instructorForm.controls.lastName.valid || !instructorForm.controls.email.valid || !instructorForm.controls.password.valid || !instructorForm.controls.confirmPassword.valid" color="danger" value="0.50" style="margin-bottom: 20px;--buffer-background:#264653;"></ion-progress-bar>
+        
+
+        <ion-grid style="padding: 0;margin: 0;">
+          <ion-row> 
+            <!--Title Image Pane-->
+            <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
+              <label class="divSubHead" style="margin-top:25%;">Password Setup</label>
+            </ion-col>
+            <!-- User Information Pane-->
+            <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane">
+              <ion-row style="margin-top:7%;">
                 <ion-item color="dark">
                   <ion-label position="floating">Password
                     <p *ngIf="!instructorForm.controls.password.valid  && (instructorForm.controls.password.dirty )" class="FormErrorControlMessage">Must be 6 digits long and contain A-Z,a-z,1-9 and a special Character </p>
                   </ion-label>
                   <ion-input formControlName="password" type="password" [(ngModel)]="instructorObj.Password" [class.invalid]="!instructorForm.controls.password.valid && (instructorForm.controls.password.dirty)"></ion-input>
                 </ion-item>
-              
-              </ion-col>
-              <ion-col>
-                
+              </ion-row>
+              <ion-row>
                 <ion-item color="dark">
                   <ion-label position="floating">Confirm Password
                     <p class="FormErrorControlMessage" *ngIf="!instructorForm.controls.confirmPassword.valid  && (instructorForm.controls.confirmPassword.dirty )">* Passwords do not match</p>
                   </ion-label>
                   <ion-input formControlName="confirmPassword" type="password"  [class.invalid]="!instructorForm.controls.confirmPassword.valid && (instructorForm.controls.confirmPassword.dirty)"></ion-input>
                 </ion-item>
+              </ion-row>
             
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </div> <!-- end of passSetup-->
-        <div >
-          <ion-label class="subLabel"> Diver Credentials </ion-label>
-          <ion-grid>
-            <ion-row>
-              <ion-col >
-                <div class="searchableSelect">
-                  <ion-label class="searchableSelectLabel">Dive Center</ion-label><br>
-                    <input list="diveC"  placeholder="Insert Your Dive Center" formControlName="diveCenter" [(ngModel)]="instructorObj.DiveCentre"  #Cent (keypress)="CenterListFinder($event.target.value)" class="searchableSelectInput">
-                    <datalist id="diveC" >
-                        <option *ngFor='let c of CenterLst' value={{c}}></option>
-                    </datalist>
-                </div>
-                </ion-col>
-                <ion-col>
-                  <ion-item color="dark">
-                    <ion-label position="floating">Instructor Number
-                      <p *ngIf="!instructorForm.controls.instructorNumber.valid  && (instructorForm.controls.instructorNumber.dirty )" class="FormErrorControlMessage">Invalid Number </p>
-                    </ion-label>
-                    <ion-input formControlName="instructorNumber" type="text" [(ngModel)]="instructorObj.InstructorNumber" [class.invalid]="!instructorForm.controls.instructorNumber.valid && (instructorForm.controls.instructorNumber.dirty)"></ion-input>
-                  </ion-item>
-                </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col >
-                <div class="searchableSelect" color="dark">
-                  <ion-label class="searchableSelectLabel">Qualification</ion-label><br>
-                    <input list="diveQ" formControlName="qualification" [(ngModel)]="instructorObj.Qualification"  placeholder="Insert Your Qualification" class="searchableSelectInput" #Qual (keypress)="QualificationListFinder($event.target.value)">
-                    <datalist id="diveQ" >
-                        <option *ngFor='let q of QualificationLst' value={{q}}></option>
-                    </datalist>
-                </div>
-                </ion-col>
-            </ion-row>
-            <ion-row >
-              <div class="searchableSelect" >
-                <ion-row>
-                  <ion-col>
-                    <ion-label class="searchableSelectLabel" >Add Specialisations</ion-label>
-                    <input list="diveS"  placeholder="Add Your Specialisation" formControlName="specialisation"  [(ngModel)]="specialisationInputField" formControlName="specialisation" #Spec (input)="SpecializationListFinder()" class="searchableSelectInput" >
-                      <datalist id="diveS">
-                          <option *ngFor='let s of SpecializationLst' value={{s}}></option>
-                      </datalist>
-                  </ion-col>
-                  <ion-col>
-                    <ion-button id="addBtn" #addBtn (click)="addSpecialisation(Spec.value)"   >
-                      <ion-icon name="add"></ion-icon>
-                    </ion-button>
-                  </ion-col>
-                </ion-row>
-                </div>
-            </ion-row>
-            <ion-row *ngIf="showSpecialization">
-                    <table>
-                      <th>
-                        Specialisation
-                      </th>
-                      <tr *ngFor='let us of userSpecialisation'>
-                        <td>{{ us }}</td>
-                        <td>
-                          <ion-button (click)="removeSpecialisation(us)" color="dark">
-                            <ion-icon name="trash-bin"></ion-icon>
-                          </ion-button>
-                        </td>
-                      </tr>
-                      <tr></tr>
-                    </table>
-            </ion-row>
-          </ion-grid>
-        </div><!-- end of dive credentials-->
-        <input type="submit" value="Sign Up" (click)="InstructorSubmit()">
-      </form>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+  
+
+
+
+      </div>
     </div>
+    <div id="thirdFormPage" *ngIf="InstructorThirdPageVisible">
+             <!--Steps & Progress Bar-->
+             <div id="InstructorProgress">
+              <ion-grid style="padding: 0;margin: 0;">
+                <ion-row>
+                  <ion-col class="ion-align-self-start">
+                    <div class="step1" *ngIf="instructorForm.controls.email.valid && instructorForm.controls.birthday.valid && instructorForm.controls.firstName.valid && instructorForm.controls.lastName.valid && instructorForm.controls.email.valid">1</div> 
+                    <div class="step1" *ngIf="!instructorForm.controls.email.valid || !instructorForm.controls.birthday.valid ||!instructorForm.controls.firstName.valid || !instructorForm.controls.lastName.valid || !instructorForm.controls.email.valid" style="border-color:#eb445a;">1</div> 
+                  </ion-col>
+                  <ion-col class="ion-align-self-center">
+                    <div class="step2" *ngIf="instructorForm.controls.password.valid && instructorForm.controls.confirmPassword.valid">2</div>
+                      <div class="step2" *ngIf="!instructorForm.controls.password.valid || !instructorForm.controls.confirmPassword.valid " style="border-color:#eb445a;">2</div>
+                  </ion-col>
+                  <ion-col class="ion-align-self-end">
+                    <div class="step3" *ngIf="courseValid">3</div>
+                    <div class="step3" *ngIf="!courseValid" style="border-color:#eb445a;">3</div>
+                  </ion-col>
+                  <ion-col class="ion-align-self-end">
+                    <div class="step4" style="border:none;">4</div>
+                </ion-col>
+                </ion-row>
+              </ion-grid>
+        
+              <ion-progress-bar *ngIf="instructorForm.controls.email.valid && instructorForm.controls.birthday.valid && courseValid && instructorForm.controls.firstName.valid && instructorForm.controls.lastName.valid && instructorForm.controls.email.valid && instructorForm.controls.password.valid && instructorForm.controls.confirmPassword.valid" color="success" value="0.75" style="margin-bottom: 20px;--buffer-background:#264653;"></ion-progress-bar>
+              <ion-progress-bar *ngIf="!instructorForm.controls.email.valid || !instructorForm.controls.birthday.valid ||!courseValid  || !instructorForm.controls.firstName.valid || !instructorForm.controls.lastName.valid || !instructorForm.controls.email.valid || !instructorForm.controls.password.valid || !instructorForm.controls.confirmPassword.valid" color="danger" value="0.75" style="margin-bottom: 20px;--buffer-background:#264653;"></ion-progress-bar>
+            </div>
+      
+
+            <ion-grid style="padding: 0;margin: 0;">
+              <ion-row > 
+                <!--Title Image Pane-->
+                <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
+                  <label class="divSubHead" style="margin-top:25%;">Diver <br> Credentials</label>
+                </ion-col>
+                <!-- User Information Pane-->
+                <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane">
+                  <ion-row style="margin-top:4%;">
+                    <div class="searchableSelect" >
+                      <ion-row>
+                        <ion-col>
+                          <ion-label class="searchableSelectLabel" >Add Completed Course</ion-label>
+                          <input list="diveC"  placeholder="Add Your Completed Course"  [(ngModel)]="courseInputField" formControlName="courses" #Spec (input)="CourseListFinder()" class="searchableSelectInput" >
+                            <datalist id="diveC">
+                                <option *ngFor='let c of CourseLst' value={{c}}></option>
+                            </datalist>
+                        </ion-col>
+                        <ion-col>
+                          <ion-button id="addBtn" #addBtn (click)="addCourse()"   >
+                            <ion-icon name="add"></ion-icon>
+                          </ion-button>
+                        </ion-col>
+                      </ion-row>
+                      </div>
+                  </ion-row>
+                  <ion-row *ngIf="showCourses">
+                        <ion-grid id="CoursesTable">
+                          <ion-row class="CourseListHead"> Courses </ion-row>
+                          <ion-row  *ngFor='let uc of userCourses' class="CourseListTableRow">
+                              <ion-col size="12">
+                                <label>{{ uc }} </label>
+                                <ion-button (click)="removeCourse(uc)" color="dark" id='removeBtn'>
+                                  <ion-icon name="trash-bin"></ion-icon>
+                                </ion-button>
+                              </ion-col>
+                          </ion-row>
+                        </ion-grid>
+                  </ion-row>
+                
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+
+
+
+    </div>
+    <div id="FourthFormPage" *ngIf="InstructorFourthPageVisible">
+      <!--Steps & Progress Bar-->
+      <div id="InstructorProgress">
+       <ion-grid style="padding: 0;margin: 0;">
+         <ion-row>
+           <ion-col class="ion-align-self-start">
+             <div class="step1" *ngIf="instructorForm.controls.email.valid && instructorForm.controls.birthday.valid && instructorForm.controls.firstName.valid && instructorForm.controls.lastName.valid && instructorForm.controls.email.valid">1</div> 
+             <div class="step1" *ngIf="!instructorForm.controls.email.valid || !instructorForm.controls.birthday.valid ||!instructorForm.controls.firstName.valid || !instructorForm.controls.lastName.valid || !instructorForm.controls.email.valid" style="border-color:#eb445a;">1</div> 
+           </ion-col>
+           <ion-col class="ion-align-self-center">
+             <div class="step2" *ngIf="instructorForm.controls.password.valid && instructorForm.controls.confirmPassword.valid">2</div>
+               <div class="step2" *ngIf="!instructorForm.controls.password.valid || !instructorForm.controls.confirmPassword.valid " style="border-color:#eb445a;">2</div>
+           </ion-col>
+           <ion-col class="ion-align-self-end">
+             <div class="step3" *ngIf="courseValid">3</div>
+             <div class="step3" *ngIf="!courseValid" style="border-color:#eb445a;">3</div>
+           </ion-col>
+           <ion-col class="ion-align-self-end">
+            <div class="step4" *ngIf="instructorForm.controls.instructorNumber.valid && instructorForm.controls.diveCenter.valid ">4</div>
+            <div class="step4" *ngIf="!instructorForm.controls.instructorNumber.valid || !instructorForm.controls.diveCenter.valid" style="border-color:#eb445a;">4</div>
+          </ion-col>
+         </ion-row>
+       </ion-grid>
+ 
+       <ion-progress-bar *ngIf="instructorForm.controls.email.valid && instructorForm.controls.birthday.valid &&  instructorForm.controls.instructorNumber.valid && instructorForm.controls.diveCenter.valid && courseValid && instructorForm.controls.firstName.valid && instructorForm.controls.lastName.valid && instructorForm.controls.email.valid && instructorForm.controls.password.valid && instructorForm.controls.confirmPassword.valid" color="success" value="1" style="margin-bottom: 20px;--buffer-background:#264653;"></ion-progress-bar>
+       <ion-progress-bar *ngIf="!instructorForm.controls.email.valid || !instructorForm.controls.birthday.valid || !instructorForm.controls.instructorNumber.valid || !instructorForm.controls.diveCenter.valid || !courseValid  || !instructorForm.controls.firstName.valid || !instructorForm.controls.lastName.valid || !instructorForm.controls.email.valid || !instructorForm.controls.password.valid || !instructorForm.controls.confirmPassword.valid" color="danger" value="1" style="margin-bottom: 20px;--buffer-background:#264653;"></ion-progress-bar>
+     </div>
+
+     <ion-grid style="padding: 0;margin: 0;">
+      <ion-row> 
+        <!--Title Image Pane-->
+        <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
+          <label class="divSubHead" style="margin-top:25%;">Instructor <br> Credentials</label>
+        </ion-col>
+        <!-- User Information Pane-->
+        <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane">
+          <ion-row style="margin-top:7%;padding:0;">
+            <ion-item color="dark">
+              <ion-label position="stacked">Instructor Number
+                <p *ngIf="!instructorForm.controls.instructorNumber.valid  && (instructorForm.controls.instructorNumber.dirty )" class="FormErrorControlMessage">Invalid Number </p>
+              </ion-label>
+              <ion-input formControlName="instructorNumber" type="text" [(ngModel)]="instructorObj.InstructorNumber" [class.invalid]="!instructorForm.controls.instructorNumber.valid && (instructorForm.controls.instructorNumber.dirty)"></ion-input>
+            </ion-item>
+          </ion-row>
+          <ion-row>
+            <div class="searchableSelect" style="width:90%;margin:auto;">
+              <ion-label class="searchableSelectLabel">Dive Centre</ion-label><br>
+                <input list="diveC"  placeholder="Insert Your Dive Centre" formControlName="diveCenter" [(ngModel)]="instructorObj.DiveCentre"  #Cent (keypress)="CenterListFinder($event.target.value)" class="searchableSelectInput">
+                <datalist id="diveC" >
+                    <option *ngFor='let c of CenterLst' value={{c}}></option>
+                </datalist>
+            </div>
+          </ion-row>
+        
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+
+
+    </div>
+     </form>
+     <div id="formNavControlDiv">
+      <button id="prev" *ngIf="!InstructorFirstPageVisible" (click)="previousPage()">Previous</button>
+      <button id="next" *ngIf="!InstructorFourthPageVisible" (click)="nextPage()">Next</button>
+      <button id="subBtn"  *ngIf="InstructorFourthPageVisible" (click)="InstructorSubmit()">Submit</button>
+    </div>
+   </div>
 
 
 </ion-content>

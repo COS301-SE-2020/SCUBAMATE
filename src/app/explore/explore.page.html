@@ -5,7 +5,7 @@
 
 </head>
 
-<ion-header no-border slot="fixed">
+<!-- <ion-header no-border slot="fixed">
  
 </ion-header>
 <ion-toolbar class="productHeader" transparent slot="fixed">
@@ -21,45 +21,88 @@
       <ion-progress-bar type="indeterminate" *ngIf="showLoading"></ion-progress-bar>   
 </ul>
 </ion-toolbar>
+-->
+<ion-header no-border slot="fixed" style="margin-bottom: 20px;">
+  <ion-toolbar color="dark" class="productHeader" >
+    
+ <!--  <ion-buttons slot="primary">
+      <ion-button routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >
+        {{loginLabel}}
+      </ion-button>
+      <ion-button color="secondary">
+        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title > 
+     <ion-buttons >
+      <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo" style="height:80%;width:12%;padding-bottom:3px;padding-top:3px;margin-right:10px;"/>
+      
+        <ion-button routerLink="/home">
+          <ion-icon name="home" ></ion-icon><label style="padding-top:7px;">&nbsp; Home</label> 
+        </ion-button>
+        <ion-button routerLink="/explore">
+          <ion-icon name="color-wand-outline"></ion-icon>&nbsp; Explore
+        </ion-button>
+        <ion-button routerLink="/planning">
+          <ion-icon name="newspaper"></ion-icon>&nbsp; Plan
+        </ion-button>
+        <ion-button routerLink="/my-dives">
+          <ion-icon name="water"></ion-icon>&nbsp; My Dives
+        </ion-button>
+        <ion-button routerLink="/profile">
+          <ion-icon name="person" ></ion-icon>&nbsp; Profile
+        </ion-button>
+        <ion-button *ngIf="accountType=='Admin' || accountType=='SuperAdmin'" routerLink="/admin-page" >
+          <ion-icon name="podium"></ion-icon>&nbsp; Admin
+        </ion-button>
+      </ion-buttons>
+      
+    </ion-title>-->
+    <ion-buttons slot="primary">
+      <ion-button routerLink="" *ngIf="loginLabel" (click)="loginClick()" class="hidden-sm-down" >
+        {{loginLabel}}
+      </ion-button>
+      <ion-menu-button autoHide="false" class="hidden-sm-up"></ion-menu-button>
+    </ion-buttons>
+    <ion-title > 
+     <ion-buttons >
+      <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo" style="height:80%;width:12%;padding-bottom:3px;padding-top:3px;margin-right:10px;"/>
+      
+        <ion-button routerLink="/home" class="hidden-sm-down">
+          <ion-icon name="home" ></ion-icon><label style="padding-top:7px;">&nbsp; Home</label> 
+        </ion-button>
+        <ion-button routerLink="/explore" class="hidden-sm-down" *ngIf="loginLabel=='Log Out'">
+          <ion-icon name="color-wand-outline"></ion-icon>&nbsp; Explore
+        </ion-button>
+        <ion-button routerLink="/planning" class="hidden-sm-down" *ngIf="loginLabel=='Log Out'">
+          <ion-icon name="newspaper"></ion-icon>&nbsp; Plan
+        </ion-button>
+        <ion-button routerLink="/my-dives" class="hidden-sm-down" *ngIf="loginLabel=='Log Out'">
+          <ion-icon name="water"></ion-icon>&nbsp; My Dives
+        </ion-button>
+        <ion-button routerLink="/profile" class="hidden-sm-down" *ngIf="loginLabel=='Log Out'">
+          <ion-icon name="person" ></ion-icon>&nbsp; Profile
+        </ion-button>
+        <ion-button *ngIf="accountType=='10' || accountType=='11'" routerLink="/admin-page" class="hidden-sm-down">
+          <ion-icon name="podium"></ion-icon>&nbsp; Admin 
+        </ion-button>
+      </ion-buttons>
+      
+    </ion-title> 
+     <ion-progress-bar type="indeterminate" *ngIf="showLoading"></ion-progress-bar> 
+  </ion-toolbar>
+</ion-header>
 
 <ion-content fullscreen class="background" no-scroll padding >
 
-<!--
-<ion-radio-group color="dark" slot="fixed" style="width:100%;margin-top:-15px;" >
+<ion-radio-group color="dark" slot="fixed" style="width:20%;margin-top:2%;margin-left:2%;" value="feed" class="hidden-sm-down">
   <ion-row>
-    <ion-col style="padding:0;padding-left:10%;padding-right:2px;">
-         <ion-item color="dark" (click)="displayFeed()" style="width:100%;--border-radius:27px;">
-            <ion-label>Public Feed</ion-label>
-            <ion-radio value="feed"></ion-radio>
-       </ion-item>
-     </ion-col>
-
-    <ion-col style="padding:0;padding-right:2px;">
-        <ion-item color="dark" (click)="displayDiveCenters()" style="width:100%;--border-radius:27px;">
-            <ion-label>Dive Centers</ion-label>
-            <ion-radio value="centers" ></ion-radio>
-       </ion-item>
-    </ion-col>
-
-    <ion-col style="padding:0;padding-right:10%;">
-        <ion-item color="dark" (click)="displayDiveSites()" style="width:100%;--border-radius:27px;">
-            <ion-label>Dive Sites</ion-label>
-            <ion-radio value="sites"></ion-radio>
-       </ion-item>
-    </ion-col>
-
-</ion-row>
-</ion-radio-group>
--->
-<ion-radio-group color="dark" slot="fixed" style="width:20%;margin-top:2%;margin-left:2%;" >
-  <ion-row>
-    <ion-item color="dark"  (click)="displayFeed()" style="width:100%;--border-radius:27px;" >
+    <ion-item color="dark" (click)="displayFeed()" style="width:100%;--border-radius:27px;" >
       <ion-label>Public Feed</ion-label>
-      <ion-radio value="feed" ></ion-radio>
+      <ion-radio  value="feed" ></ion-radio>
     </ion-item>
-
     <ion-item color="dark"  (click)="displayDiveCenters()" style="width:100%;--border-radius:27px;margin-top:8px;">
-      <ion-label>Dive Centers</ion-label>
+      <ion-label>Dive Centres</ion-label>
       <ion-radio value="centers"></ion-radio>
     </ion-item>
     <ion-item color="dark"  (click)="displayDiveSites()" style="width:100%;--border-radius:27px;margin-top:8px;">
@@ -67,106 +110,108 @@
       <ion-radio value="sites" ></ion-radio>
     </ion-item>
 </ion-row>
+</ion-radio-group> 
+
+
+<ion-radio-group color="dark" slot="fixed"  value="feed" class="hidden-sm-up">
+  <ion-row>
+    <ion-col size="4">
+      <ion-item color="dark" (click)="displayFeed()" style="display:inline;" >
+        <ion-label>Public <br> Feed</ion-label>
+        <ion-radio  value="feed" ></ion-radio>
+      </ion-item>
+    </ion-col>
+    <ion-col size="4">
+      <ion-item color="dark"  (click)="displayDiveCenters()" style="display:inline;">
+        <ion-label>Dive <br> Centres</ion-label>
+        <ion-radio value="centers"></ion-radio>
+      </ion-item>
+    </ion-col>
+    <ion-col size="4">
+      <ion-item color="dark"  (click)="displayDiveSites()" style="display:inline;">
+        <ion-label>Dive <br> Sites</ion-label>
+        <ion-radio value="sites" ></ion-radio>
+      </ion-item>
+    </ion-col>
+  </ion-row>
 </ion-radio-group>
 
 
 
 <ion-grid class="contentContainer" *ngIf='showFeed'>
   <ion-row>
-    <ion-col *ngFor="let d of pubLst" style="margin:0;" >
-      <div class="thecard" >
-        <div class="thefront">
-          <ion-card  >
-            <img class="cardFeedIMG" src="../../assets/images/DiveSites/{{d.DiveSite}}.jpg" />
-              <ion-card-content>
-              <ion-card-title>
-                  {{d.FirstName}} {{d.LastName}}
-                </ion-card-title>
-              <p>
-                <ion-grid>
-                  <ion-row>
-                    <ion-col>
-                      {{d.DiveSite}}  <br>
-                      {{d.DiveType}}  <br>
-                      {{d.DiveDate}}
-                    </ion-col>
-                    <ion-col>
-                      <img class="weatherIMG" src="../../assets/images/Weather/{{d.Weather[2]}}.png" />
-                    </ion-col>
-                  </ion-row>
-                </ion-grid>
-              </p>
-            </ion-card-content>
-          </ion-card>
-        </div>
-        <div class="theback">
-          <ion-card  >
-              <ion-card-content>
-              
-               
-                <ion-item-divider style="--background:rgba(38, 70, 83, 0.5);" >
-                  <ion-card-title >
-                    {{d.FirstName}} {{d.LastName}}
-                  </ion-card-title>
-                </ion-item-divider>
-                <ion-item-divider >
-                   <b class="WeatherDescriptionCard">{{d.Weather[2]}} </b> 
-                   <img class="weatherIMG" src="../../assets/images/Weather/{{d.Weather[2]}}.png" />
-                </ion-item-divider>
-                <p style="padding-left: 20px;">
-                  Wind:                         {{d.Weather[0]}} <br>
-                  Moon Phase:                   {{d.Weather[1]}} <br><br>
-
-                <b class="WeatherDescriptionCard">Site:</b> {{d.DiveSite}} <br>
-                  <b class="WeatherDescriptionCard">Type:</b> {{d.DiveType}} <br>
-                  <b class="WeatherDescriptionCard">Date:</b> {{d.DiveDate}} <br>
-                  <b class="WeatherDescriptionCard">Time:</b> {{d.TimeIn}} - {{d.TimeOut}} <br>
-                  <b class="WeatherDescriptionCard">Buddy:</b> {{d.Buddy.substring(0, d.Buddy.indexOf("(") -1 )}}
-                </p>
-              
-            </ion-card-content>
-          </ion-card>
-        </div>
-      </div>
-    </ion-col>
+    <ng-container *ngIf="pubLst.length>1"> 
+      <ion-col *ngFor="let d of pubLst;  index as i; " style="margin:0;" >
+          <div *ngIf="d!==undefined" class="thecard" >
+            <div class="thefront">
+              <ion-card color = "light" >
+                <img class="cardFeedIMG" src="../../assets/images/DiveSites/{{d.DiveSite}}.jpg" />
+                  <ion-card-content>
+                  <ion-card-title>
+                      {{d.FirstName}} {{d.LastName}}
+                    </ion-card-title>
+                  <p>
+                    <ion-grid>
+                      <ion-row>
+                        <ion-col>
+                          {{d.DiveSite}}  <br>
+                          {{d.DiveType}}  <br>
+                          {{d.DiveDate}}
+                        </ion-col>
+                        <div *ngIf='showFeedLoaded'>
+                          <ion-col *ngIf="checkURL((pubLst[i].Weather[2]))" >
+                            <img class="weatherIMG" src= "../../assets/images/Weather/{{pubLst[i].Weather[2].toLowerCase()}}.png" />
+                          </ion-col> 
+                          <ion-col *ngIf="!checkURL(pubLst[i].Weather[2])" >
+                            <img class="weatherIMG" src='../../assets/images/Weather/default.png' />
+                          </ion-col>
+                        </div>
+                      </ion-row>
+                    </ion-grid>
+                  </p>
+                </ion-card-content>
+              </ion-card>
+            </div>
+            <div class="theback">
+              <ion-card color="light">
+                  <ion-card-content>
+                    <ion-item-divider color="medium" >
+                      <ion-card-title color="dark">
+                        {{d.FirstName}} {{d.LastName}}
+                      </ion-card-title>
+                    </ion-item-divider>
+                    <ion-item-divider color="light">
+                      <b class="WeatherDescriptionCard" >{{d.Weather[2]}} </b> 
+                        <ion-col *ngIf="checkURL((pubLst[i].Weather[2]))" >
+                          <img class="weatherIMG" src= "../../assets/images/Weather/{{pubLst[i].Weather[2].toLowerCase()}}.png" />
+                        </ion-col>
+                        <ion-col *ngIf="!checkURL(pubLst[i].Weather[2])" >
+                          <img class="weatherIMG" src='../../assets/images/Weather/default.png' />
+                        </ion-col>
+                    </ion-item-divider>
+                    <p style="padding-left: 20px;">
+                      Wind:                         {{d.Weather[0]}} <br>
+                      Moon Phase:                   {{d.Weather[1]}} <br><br>
+    
+                    <b class="WeatherDescriptionCard">Site:</b> {{d.DiveSite}} <br>
+                      <b class="WeatherDescriptionCard">Type:</b> {{d.DiveType}} <br>
+                      <b class="WeatherDescriptionCard">Date:</b> {{d.DiveDate}} <br>
+                      <b class="WeatherDescriptionCard">Duration:</b> {{d.TimeIn}} - {{d.TimeOut}} <br>
+                      <b class="WeatherDescriptionCard">Buddy:</b> {{d.Buddy.substring(0, d.Buddy.indexOf("(") -1 )}}
+                    </p>
+                  
+                </ion-card-content>
+              </ion-card>
+            </div>
+          </div>
+      </ion-col>
+    </ng-container>
 </ion-row>
 
 </ion-grid>
 
 
-
 <!--
-<div id="classContainer" style="margin-right:5%;margin-left:30%;margin-top:20px;" *ngIf='showFeed'>
-  <ion-item *ngFor="let d of pubLst" style="width:45%; margin: auto;margin-left:1%;display: inline-block;" >
-    <ion-card  >
-      <img src="../../assets/images/jellyfish.jpg" />
-        <ion-card-content>
-        <ion-card-title>
-            {{d.FirstName}} {{d.LastName}}
-          </ion-card-title>
-        <p>
-          {{d.DiveSite}} <br>
-          {{d.DiveType}} <br>
-          {{d.DiveDate}}
-        </p>
-      </ion-card-content>
-    </ion-card>
-  </ion-item>
-</div>
--->
-
-
-
-<div class="tableContainer"  *ngIf='showSites'>
-  <table id="feed"  >
-    <tr>
-      <th> Dive Sites </th>
-    </tr>
-    <tr *ngFor='let d of siteLst'> 
-      <td> {{d}} </td>
-    </tr>
-</table>
-</div>
 
 <div class="tableContainer"  *ngIf='showCenters'>
   <table id="feed"  >
@@ -178,5 +223,103 @@
     </tr>
 </table>
 </div>
+
+-->
+
+    <ion-grid class="contentContainer" *ngIf='showCenters'>
+      <ion-row>
+        <ion-col *ngFor="let dc of centerLst" style="margin:0;" >
+          <div class="thecardDC" >
+            <div class="thefront">
+              <ion-card color="light">
+                 
+                <img class="cardFeedIMG" src={{dc.LogoPhoto}} />
+                <ion-card-content fixed>
+                    <ion-card-title fixed>
+                       <label class="DiveCenterName" fixed> {{dc.Name}} </label> 
+                       <label class="ViewDiveCenterLink" fixed><a (click)="ViewMoreDiveCenter(dc.Name)">View More</a> </label>
+                    </ion-card-title>
+                </ion-card-content>
+                  
+              </ion-card>
+            </div>
+            <div class="theback">
+              <ion-card color="light">
+                  <ion-card-content >                   
+                    <ion-item-divider color="medium" >
+                      <ion-card-title color="light">
+                        {{dc.Name}}
+                      </ion-card-title>
+                    </ion-item-divider>
+                    <div style="padding-top: 10px; text-align: left;" class="DiveCenterDescription">
+                      {{dc.Description}} 
+                    </div>
+                  
+                </ion-card-content>
+              </ion-card>
+            </div>
+          </div>
+        </ion-col>
+    </ion-row>
+    <ion-row style="margin-top:30px;margin-bottom: 40px;" *ngIf="showMoreCenters">
+      <ion-button id="loadMoreBtn" (click)="loadCenters()">
+        <ion-icon name="code-download-outline"></ion-icon>
+      </ion-button>
+    </ion-row>
+    </ion-grid>
+
+<!-- <div class="tableContainer"  *ngIf='showSites'>
+  <table id="feed"  >
+    <tr>
+      <th> Dive Sites </th>
+    </tr>
+    <tr *ngFor='let d of siteLst'> 
+      <td> {{d}} </td>
+    </tr>
+</table>
+</div>  -->
+
+
+<ion-grid class="contentContainer" *ngIf='showSites'>
+  <ion-row>
+    <ion-col *ngFor='let ds of siteLst' style="margin:0;" >
+      <div class="thecard" >
+        <div class="thefront">
+          <ion-card color="light" >
+            <img class="cardFeedIMG" src={{ds.LogoPhoto}} />
+              <ion-card-content>
+              <ion-card-title>
+                 <label class="DiveCenterName"> {{ds.Name}} </label> 
+                 <label class="ViewDiveCenterLink"><a (click)="ViewMoreDiveSite(ds.Name)">View More</a> </label>
+              </ion-card-title>
+                 </ion-card-content>
+          </ion-card>
+        </div>
+        <div class="theback">
+          <ion-card color="light" >
+              <ion-card-content >
+                <ion-item-divider color="medium" >
+                  <ion-card-title color="light">
+                    {{ds.Name}}
+                  </ion-card-title>
+                </ion-item-divider>
+                <div style="padding-top: 10px; text-align: left;" class="DiveCenterDescription">
+                  {{ds.Description}} 
+                </div>
+              
+            </ion-card-content>
+          </ion-card>
+        </div>
+      </div>
+    </ion-col>
+</ion-row>
+<ion-row style="margin-top:30px;margin-bottom: 40px;" *ngIf="showMoreSites">
+  <ion-button id="loadMoreBtn" (click)="loadSites()">
+    <ion-icon name="code-download-outline"></ion-icon>
+  </ion-button>
+</ion-row>
+</ion-grid>
+
+
 
 </ion-content>

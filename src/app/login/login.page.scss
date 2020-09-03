@@ -6,12 +6,28 @@ $yellow : #E9C46A ;
 $inputBackgroundColor: #181e21;
 $darkRed: #d66853;
 
-body{
-    background-image: url("../../assets/images/sea.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-  
-  }
+@media (max-width: 767px) {
+    #loginDiv{
+      width: 95% !important;
+      padding: 5px !important;
+      margin-top: 10px !important;
+      padding-bottom: 10px !important;
+    }
+
+    ion-item{
+      width: 95% !important ;
+      margin: auto;
+    }
+}
+
+ion-content.background{
+  --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
+}
+
+
+.productHeader {
+  --background: transparent;
+}
 
 
 #loginDiv{
@@ -35,6 +51,12 @@ body{
   border: none;
   border-radius: 2px;
   width: 55% ;
+}
+
+ion-item{
+  width: 70% ;
+  margin: auto;
+  font-size: 15px;
 }
 
 #loginDiv input[type=submit], button{
@@ -67,3 +89,9 @@ body{
   width:40%;
   height: 40%;
 }
+
+.viewPasswordIcon{
+  cursor: pointer;
+  text-align: right;
+}
+

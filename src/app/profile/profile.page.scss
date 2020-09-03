@@ -6,13 +6,38 @@ $yellow : #E9C46A ;
 $inputBackgroundColor: #181e21;
 
 
+@media (max-width: 767px) {
+  #Credentials{
+    width: 95% !important;
+    
+  }
+
+  #ProfileInfo{
+    width: 95% !important;
+    top: -20px !important;
+
+    .leftPane{
+      top: -20px !important;
+    }
+    
+  }
+
+  #Credentials{
+    .divHeadSection{
+      padding-left: 0px !important;
+      ion-button{
+        margin: auto !important;
+      }
+    }
+  }
+  
+}
+
 #EmailLink{
   color: $red;
   font-weight: bold;
   text-decoration: underline;
-  cursor: pointer;
-
-   
+  cursor: pointer; 
 }
 
 #EmailLink:hover{
@@ -27,14 +52,7 @@ $inputBackgroundColor: #181e21;
   margin-bottom: 20px;
 }
 
-ion-button{
-  float:right;
-  margin-right: 7%;
-  width: 50px;
-  height:50px;
-  padding:0;
 
-}
 
 .searchableSelect{
   background-color: white;
@@ -57,8 +75,6 @@ ion-button{
 
 .searchableSelect{
   background-color: #222428 ;
-
-
 }
 
 .searchableSelectInput{
@@ -77,6 +93,7 @@ ion-button{
 ion-content.background{
   --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
 }
+
 
 .productHeader {
   --background: transparent;
@@ -103,6 +120,7 @@ ion-grid {
   width:  70% ;
   padding: 0;
   margin-top: 30px;
+  margin-bottom: 50px;
 }
 
 #checkListDiv{
@@ -119,7 +137,7 @@ ion-grid {
 }
 
 #ProfileInfo{
-  background-color: rgba(38, 70, 83, 0.6);
+  background-color: rgba(38, 70, 83, 0.8);
   margin: auto;
   margin-top: 30px;
   border-bottom: solid white 0.5px;
@@ -129,7 +147,7 @@ ion-grid {
   height: 80%;
   display: block;
 
-  #leftPane{
+  .leftPane{
     background-color: rgba(38, 70, 83, 0.9);
     height: inherit  ;
     margin:0;
@@ -148,7 +166,14 @@ ion-grid {
   }
 
 
-  
+  ion-button{
+    float:right;
+    margin-right: 7%;
+    width: 50px;
+    height:50px;
+    padding:0;
+    --border-radius: 100%;
+  }
 
 
 
@@ -230,6 +255,15 @@ ion-grid {
   padding-left: 25px;
   padding-top: 5px;
   padding-bottom: 5px;
+
+  ion-button{
+    float:right;
+    margin-right: 7%;
+    width: 50px;
+    height:50px;
+    padding:0;
+    --border-radius: 100%;
+  }
 }
 
 .divBodySection{
@@ -237,6 +271,8 @@ ion-grid {
   padding-right: 25px;
   padding-top: 10px;
   padding-bottom: 10px;
+
+
 }
 
 table{
@@ -305,4 +341,46 @@ table{
     float: right;
   }
   
+}
+
+
+#UnverifiedListsInfo{
+
+  ion-button{
+    float:right;
+    margin-right: 7%;
+    width: 50px;
+    height:50px;
+    padding:0;
+    --border-radius: 100%;
+  }
+    
+
+  .UnverifiedListHead{
+    font-size:  20px ;
+    font-weight: bold;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    color: white;
+    border-bottom: solid white 0.5px;
+    border-top: solid white 0.5px;
+    margin-top:10px;
+    width:100%;
+    padding-left: 2%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  .UnverifiedListTableRow{
+    background-color: $inputBackgroundColor ;
+    color: white;
+    padding: 5px;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .UnverifiedListTableRow :hover{
+    font-weight: bold;
+  }
+
 }

@@ -22,7 +22,8 @@ var validData = {
   dep: "12m",
   aT: 12,
   surfaceT: 13,
-  bottomT: 7, 
+  bottomT: 7,
+  accessToken : "d1d7391d-c035-28ab-0193-68a7d263d4be11ac76afb3c161…0702085a1c423b0ed53f38b9a0e6e0ad8bfe8cd3712f14be7"
 };
 
 describe('LogDivePage', () => {
@@ -55,9 +56,9 @@ describe('LogDivePage', () => {
   });
 
   it('Testing Log-Dive Components', () => {
-    expect(component.uuidValue).toBeUndefined();
+    expect(component.uuidValue).toBeDefined();
     expect(component.showLoading).toBeFalse();
-    expect(component.DiveTypeLst).toBeDefined();
+    expect(component.DiveTypeLst).toBeUndefined();
     expect(component.DiveSiteLst).toBeDefined();
     expect(component.BuddyLst).toBeUndefined();
     expect(component.cDate).toBeDefined();
@@ -77,7 +78,7 @@ describe('LogDivePage', () => {
     expect(component.cDate).toBeInstanceOf(Date);
     expect(component.currentDate).toBeDefined();
     expect(component.showLoading).toBeTrue();
-    expect(component.loginLabel).toBe("Login");
+    expect(component.loginLabel).toBe("Log Out");
     let diveSpy = spyOn(divService, 'getDiveSites').and.callThrough();
     expect(diveSpy).toBeDefined();
     diveSpy = spyOn(divService, 'getDiveTypes').and.callThrough();
@@ -87,7 +88,7 @@ describe('LogDivePage', () => {
     weatherSpy = spyOn(weatService, 'getLogWeather').and.callThrough();
     expect(weatherSpy).toBeDefined();
     expect(component.DiveSiteLst).toBeDefined();
-    expect(component.DiveTypeLst).toBeDefined();
+    expect(component.DiveTypeLst).toBeUndefined();
     expect(component.Coordinates).toBeDefined();
     expect(component.Key).toBeDefined();
     expect(component.MaxTempAPI).toBeUndefined();
@@ -99,24 +100,16 @@ describe('LogDivePage', () => {
   });
 
   it('Testing ionViewWillEnter()', () => {
+    localStorage.setItem("accessToken", validData.accessToken);
     component.ionViewWillEnter();
-    expect(component.loginLabel).toBe("Login");
+    expect(component.loginLabel).toBe("Log Out");
   });
 
   it('Testing loginClick()', () => {
+    localStorage.setItem("accessToken", validData.accessToken);
     let navigateSpy = spyOn(router, 'navigate');
     component.loginClick();
-    expect(navigateSpy).toHaveBeenCalledWith(['login']);
-  });
-
-  it('Testing onSubmit()', () => {
-    //component.onSubmit(validData.pub, validData.desc, validData.site, validData.date, validData.timeIn, validData.timeOut, validData.diveType, validData.buddy, validData.vis, validData.dep, validData.aT, validData.surfaceT, validData.bottomT, event);
-    expect(component.uuidValue).toBeUndefined();
-    let weatherSpy = spyOn(weatService, 'getLogWeather').and.callThrough();
-    expect(weatherSpy).toBeDefined();
-    let diveSpy = spyOn(divService, 'logDive').and.callThrough();
-    expect(diveSpy).toBeDefined();
-    expect(component.showLoading).toBeFalse();
+    expect(navigateSpy).toHaveBeenCalledWith(['home']);
   });
 
   it('Testing buddyListFinder()', () => {
@@ -127,11 +120,20 @@ describe('LogDivePage', () => {
     expect(component.showLoading).toBeTrue();
   });
 
+  it('Testing DiveLogSubmit()', () => {
+    let navigateSpy = spyOn(router, 'navigate');
+    component.DiveLogSubmit();
+    let diveSpy = spyOn(divService, 'logDive').and.callThrough();
+    expect(diveSpy).toBeDefined();
+    expect(component.showLoading).toBeTrue();
+    expect(navigateSpy).toHaveBeenCalledWith(['my-dives']);
+  }); 
+
   it('Testing Log-Dive Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.ionViewWillEnter).toBeTruthy();
     expect(component.loginClick).toBeTruthy();
-    expect(component.onSubmit).toBeTruthy();
+    expect(component.DiveLogSubmit).toBeTruthy();
     expect(component.buddyListFinder).toBeTruthy();
   });
 });

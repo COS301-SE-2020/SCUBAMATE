@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 const AWS = require('aws-sdk');
 AWS.config.update({region: "af-south-1"});
 
@@ -58,62 +58,13 @@ exports.handler = async (event, context) => {
             statusCode = 403;
             responseBody = "Invalid Access Token" ;
         }
-        else if(data.Item.Expires){
-            const expiryDate = new Date(data.Item.Expires);
-            const today = new Date();
-            if(compareDates(today,expiryDate)){
-                responseBody = "Access Token Expired!";
-                statusCode = 403;
-            }  
+        else if( compareDates(new Date(),new Date(data.Item.Expires)) ){
+            responseBody = "Access Token Expired!";
+            statusCode = 403;
         }
-
-    } catch (err) {
-        statusCode = 403;
-        responseBody = "Invalid Access Token";
-    }
-    /* Only update account if access token is verified */
-    if(statusCode==undef){
-        const params = {
-            TableName: "Scubamate",
-            Key: {
-            "AccountGuid": AccountGuid
-            }
-        };
-
-        try{
-            const data = await documentClient.get(params).promise();
-            
+        else{
+            //Account is valid
             const AccountType = data.Item.AccountType;
-            let incompleteResponse ={
-                "AccountType": AccountType,
-                "AccountVerified": data.Item.AccountVerified,
-                "DateOfBirth": data.Item.DateOfBirth,
-                "Email": data.Item.Email,
-                "EmailVerified": data.Item.EmailVerified,
-                "FirstName": data.Item.FirstName,
-                "LastName": data.Item.LastName,
-                "PublicStatus": data.Item.PublicStatus,
-                "Qualification,": data.Item.Qualification,
-                "Specialisation": data.Item.Specialisation,
-                "ProfilePhoto":"N/A"
-            };
-            if(AccountType.trim() === "Instructor"){
-                incompleteResponse ={
-                    "AccountType": AccountType,
-                    "AccountVerified": data.Item.AccountVerified,
-                    "DateOfBirth": data.Item.DateOfBirth,
-                    "Email": data.Item.Email,
-                    "EmailVerified": data.Item.EmailVerified,
-                    "FirstName": data.Item.FirstName,
-                    "LastName": data.Item.LastName,
-                    "PublicStatus": data.Item.PublicStatus,
-                    "DiveCentre": data.Item.DiveCentre,
-                    "InstructorNumber": data.Item.InstructorNumber,
-                    "Qualification,": data.Item.Qualification,
-                    "Specialisation": data.Item.Specialisation,
-                    "ProfilePhoto":"N/A"
-                };
-            }
             const startIndex = (data.Item.ProfilePhoto).lastIndexOf("/")+1;
             let filePath = (data.Item.ProfilePhoto).substring(startIndex, (data.Item.ProfilePhoto).length);
             
@@ -125,35 +76,65 @@ exports.handler = async (event, context) => {
                 const startIndexContentType = (data.Item.ProfilePhoto).lastIndexOf(".")+1;
                 const contentType = data.Item.ProfilePhoto.substring(startIndexContentType, data.Item.ProfilePhoto.length);
                 let base64Image = "data:image/"+contentType+";base64," +binaryFile.Body.toString('base64'); 
+                if(AccountType.trim() === "Instructor"||AccountType.trim() === "Admin"){
+                    /*Now get the Dive Centre's image to display */
+                    let imageToGet = "https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/defaultlogo.png";
+                    if(data.Item.AccountVerified){
+                        const paramsDC = {
+                            TableName: "DiveInfo",
+                            ProjectionExpression: "LogoPhoto",
+                            Key: {
+                            "ItemType": "DC-"+data.Item.DiveCentre.toLowerCase()
+                            }
+                        };
+                        try{
+                            const dataDC = await documentClient.get(paramsDC).promise();
+                            imageToGet = dataDC.Item.LogoPhoto;
+                        }
+                        catch(err){
+                            /*Couldn't get image - use default image */
+                            imageToGet = "https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/defaultlogo.png";
+                        }
+                    }
+                    const startIndex = (imageToGet).lastIndexOf("/")+1;
+                    let filePath = (imageToGet).substring(startIndex, (imageToGet).length);
+                    
+                    let paramsImg = {"Bucket": "imagedatabase-scubamate", "Key": filePath };
+                    let returnImg;
+                    
+                    const s3 = new AWS.S3({httpOptions: { timeout: 2000 }});
+                    try{
+                        const binaryFile = await s3.getObject(paramsImg).promise();
+                        const startIndexContentType = (imageToGet).lastIndexOf(".")+1;
+                        const contentType = imageToGet.substring(startIndexContentType, imageToGet.length);
+                        let base64Image = "data:image/"+contentType+";base64," +binaryFile.Body.toString('base64'); 
+                        
+                        returnImg = base64Image;
+                    }
+                    catch(err){
+                        returnImg = "N/A";
+                    }
+                    data.Item.LogoPhoto = returnImg;
+                }
                 
-                let completeResponse ={
-                    "AccountType": AccountType,
-                    "AccountVerified": data.Item.AccountVerified,
-                    "DateOfBirth": data.Item.DateOfBirth,
-                    "Email": data.Item.Email,
-                    "EmailVerified": data.Item.EmailVerified,
-                    "FirstName": data.Item.FirstName,
-                    "LastName": data.Item.LastName,
-                    "PublicStatus": data.Item.PublicStatus,
-                    "DiveCentre": data.Item.DiveCentre,
-                    "InstructorNumber": data.Item.InstructorNumber,
-                    "Qualification,": data.Item.Qualification,
-                    "Specialisation": data.Item.Specialisation,
-                    "ProfilePhoto": base64Image
-                };
-                
-                responseBody = completeResponse;
+                data.Item.ProfilePhoto = base64Image;
+                responseBody = data.Item;
             }
             catch(err){
-                responseBody = incompleteResponse;
+                data.Item.ProfilePhoto = "N/A";
+                responseBody = data.Item;
             }
-            
+            delete data.Item.AccountGuid; 
+            delete data.Item.AccessToken; 
+            delete data.Item.AccountType; 
+            delete data.Item.Expires; 
+            delete data.Item.Password;
             statusCode = 200;
+        }
 
-        }catch(err){
-            responseBody = "Unable to get account data "+err;
-            statusCode = 403;
-        } 
+    } catch (err) {
+        statusCode = 403;
+        responseBody = "Unable to Find Account";
     }
 
     const response = {
@@ -167,4 +148,4 @@ exports.handler = async (event, context) => {
     };
 
     return response;
-}
+};

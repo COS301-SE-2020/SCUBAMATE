@@ -63,80 +63,154 @@ exports.handler = async (event, context, callback) => {
             statusCode = 403;
             responseBody = "Invalid Access Token" ;
         }
-        else if(data.Item.Expires){
-            const expiryDate = new Date(data.Item.Expires);
-            const today = new Date();
-            if(compareDates(today,expiryDate))
-            {
-                responseBody = "Access Token Expired!";
-                statusCode = 403;
-            }  
+        else if( compareDates(new Date(),new Date(data.Item.Expires)) ){
+            responseBody = "Access Token Expired!";
+            statusCode = 403;
         }
-
+        else{
+            /* update account if access token is verified */
+            let imageToGet = data.Item.ProfilePhoto;
+            let returnImg;
+            if(data.Item.ProfilePhoto != "undefined"){
+                let startIndex = (imageToGet).lastIndexOf("/")+1;
+                let filePath = (imageToGet).substring(startIndex, (imageToGet).length);
+                
+                let paramsImg = {"Bucket": "profilephoto-imagedatabase-scubamate", "Key": filePath };
+                const s3 = new AWS.S3({httpOptions: { timeout: 2000 }});
+                try{
+                    const binaryFile = await s3.getObject(paramsImg).promise();
+                    const startIndexContentType = (imageToGet).lastIndexOf(".")+1;
+                    let contentType = imageToGet.substring(startIndexContentType, imageToGet.length);
+                    let base64Image = "data:image/"+contentType+";base64," +binaryFile.Body.toString('base64'); 
+                    
+                    returnImg = base64Image;
+                }
+                catch(err){
+                    returnImg = "N/A";
+        
+                }
+            }
+            else{
+                let imageToGet = "https://profilephoto-imagedatabase-scubamate.s3.af-south-1.amazonaws.com/image2.jpg";
+            }
+            let profileLink = imageToGet;
+            if(ProfilePhoto!=returnImg){
+                /* Put new image if it is different*/
+                /* data:image/png;base64, is send at the front of ProfilePhoto thus find the first , */
+                const startContentType = ProfilePhoto.indexOf(":")+1;
+                const endContentType = ProfilePhoto.indexOf(";");
+                let contentType = ProfilePhoto.substring(startContentType, endContentType);
+                
+                const startExt = contentType.indexOf("/")+1;
+                const extension = contentType.substring(startExt, contentType.length);
+                
+                let startIndex = ProfilePhoto.indexOf(",")+1;
+                
+                const encodedImage = ProfilePhoto.substring(startIndex, ProfilePhoto.length);
+                const decodedImage = Buffer.from(encodedImage.replace(/^data:image\/\w+;base64,/, ""),'base64');
+              
+                let filePath = "profilephoto" + AccountGuid + "."+extension;
+                
+                profileLink ="https://profilephoto-imagedatabase-scubamate.s3.af-south-1.amazonaws.com/"+filePath;
+            
+                const paramsImage = {
+                  "Body": decodedImage,
+                  "Bucket": "profilephoto-imagedatabase-scubamate",
+                  "Key": filePath,
+                  "ContentEncoding": 'base64',
+                  "ContentType" : contentType
+                };
+                
+                const s3 = new AWS.S3({apiVersion: '2006-03-01'});
+                s3.putObject(paramsImage, function(err, data){
+                    if(err) {
+                        responseBody = "Could not update image.";
+                        statusCode = 500;
+                    }
+                });
+            }
+            
+            if(data.Item.AccountType == "Instructor"&& data.Item.AccountVerified){
+                /*update DC and dives*/
+                const infoUsed = data.Item.FirstName+ " "+ data.Item.LastName+" ("+data.Item.Email+") - "+data.Item.DiveCentre;
+                const infoNeeded = FirstName + " "+ LastName + " ("+data.Item.Email+") - "+data.Item.DiveCentre;
+                const paramsDC = {
+                    TableName: "DiveInfo",
+                    Key: {
+                        'ItemType' : 'DC-'+data.Item.DiveCentre.toLowerCase(),
+                    },
+                    ProjectionExpression: "Instructors"
+                };
+                
+                try{
+                    const dataDC = await documentClient.get(paramsDC).promise();
+                    let tmp =[];
+                    dataDC.Item.Instructors.forEach(function (item){
+                      if(item == infoUsed){
+                          tmp.push(infoNeeded);
+                      } 
+                      else{
+                          tmp.push(item);
+                      }
+                    });
+                    const paramsUpdateDC = {
+                        TableName: "DiveInfo",
+                        Key: {
+                            'ItemType' : 'DC-'+data.Item.DiveCentre.toLowerCase(),
+                        },
+                        UpdateExpression: 'set Instructors = :i',
+                        ExpressionAttributeValues: {
+                            ':i' : tmp
+                        }
+                    };
+                    try{
+                        const dataUpdateDC = await documentClient.update(paramsUpdateDC).promise();
+                        /* Can extend to update dives */
+                            
+                    }
+                    catch(err){
+                        responseBody = "Unable to edit account."+ err +" ";
+                        statusCode = 403;
+                    }
+                }catch(err){
+                    responseBody = "Unable to edit account."+ err +" ";
+                    statusCode = 403;
+                } 
+            }
+            
+            if(statusCode==undef){
+                const paramsR = {
+                    TableName: "Scubamate",
+                    Key: {
+                        'AccountGuid' : AccountGuid,
+                    },
+                    UpdateExpression: 'set FirstName = :f, LastName = :l, DateOfBirth = :d, PublicStatus = :ps, ProfilePhoto = :pl',
+                    ExpressionAttributeValues: {
+                        ':f' : FirstName,
+                        ':l' :LastName,
+                        ':d': DateOfBirth,
+                        ':ps': PublicStatus,
+                        ':pl': profileLink
+                    }
+                };
+                try{
+                    const dataR = await documentClient.update(paramsR).promise();
+                    responseBody = "Successfully updated account!";
+                    statusCode = 200;
+                }catch(err){
+                    responseBody = "Unable to update account."+ err +" ";
+                    statusCode = 403;
+                }
+            }
+        
+        }
     } catch (err) {
         statusCode = 403;
         responseBody = "Invalid Access Token";
     }
-    /* Put new image */
-    /* data:image/png;base64, is send at the front of ProfilePhoto thus find the first , */
-    const startContentType = ProfilePhoto.indexOf(":")+1;
-    const endContentType = ProfilePhoto.indexOf(";");
-    const contentType = ProfilePhoto.substring(startContentType, endContentType);
-    
-    const startExt = contentType.indexOf("/")+1;
-    const extension = contentType.substring(startExt, contentType.length);
-    
-    const startIndex = ProfilePhoto.indexOf(",")+1;
-    
-    const encodedImage = ProfilePhoto.substring(startIndex, ProfilePhoto.length);
-    const decodedImage = Buffer.from(encodedImage.replace(/^data:image\/\w+;base64,/, ""),'base64');
-  
-    const filePath = "profilephoto" + AccountGuid + "."+extension;
-    
-    let profileLink ="https://profilephoto-imagedatabase-scubamate.s3.af-south-1.amazonaws.com/"+filePath;
-
-    const paramsImage = {
-      "Body": decodedImage,
-      "Bucket": "profilephoto-imagedatabase-scubamate",
-      "Key": filePath,
-      "ContentEncoding": 'base64',
-      "ContentType" : contentType
-    };
-    
-    const s3 = new AWS.S3({apiVersion: '2006-03-01'});
-    s3.putObject(paramsImage, function(err, data){
-        if(err) {
-            responseBody = "Could not update image.";
-            statusCode = 500;
-        }
-    });
     
     
-    /* Only update account if access token is verified */
-    if(statusCode==undef){
-        const params = {
-            TableName: "Scubamate",
-            Key: {
-                'AccountGuid' : AccountGuid,
-            },
-            UpdateExpression: 'set FirstName = :f, LastName = :l, DateOfBirth = :d, PublicStatus = :ps, ProfilePhoto = :pl',
-            ExpressionAttributeValues: {
-                ':f' : FirstName,
-                ':l' :LastName,
-                ':d': DateOfBirth,
-                ':ps': PublicStatus,
-                ':pl': profileLink
-            }
-        };
-        try{
-            const data = await documentClient.update(params).promise();
-            responseBody = "Successfully updated account!";
-            statusCode = 201;
-        }catch(err){
-            responseBody = "Unable to update account."+ err +" ";
-            statusCode = 403;
-        } 
-    }
+    
 
     const response = {
         statusCode: statusCode,

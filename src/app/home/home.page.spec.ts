@@ -7,6 +7,8 @@ import { accountService } from '../service/account.service';
 import { HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
 
+var accessToken = "d1d7391d-c035-28ab-0193-68a7d263d4be11ac76afb3c161…0702085a1c423b0ed53f38b9a0e6e0ad8bfe8cd3712f14be7";
+
 describe('HomePage', () => {
   let component: HomePage;
   let fixture: ComponentFixture<HomePage>;
@@ -38,25 +40,20 @@ describe('HomePage', () => {
   });
 
   it('Testing ngOnInit()', () => {
+    localStorage.setItem("accessToken", accessToken);
     component.ngOnInit();
-    expect(component.loginLabel).toBe("Login");
+    expect(component.loginLabel).toBe("Log Out");
   });
 
   it('Testing ionViewWillEnter()', () => {
+    localStorage.setItem("accessToken", accessToken);
     component.ionViewWillEnter();
-    expect(component.loginLabel).toBe("Login");
+    expect(component.loginLabel).toBe("Log Out");
   });
 
   it('Testing loginClick()', () => {
-    let navigateSpy = spyOn(router, 'navigate');
     component.loginClick();
-    expect(navigateSpy).toHaveBeenCalledWith(['login']);
-  });
-
-  it('Testing sendEmail()', () => {
-    component.sendEmail();
-    let accountSpy = spyOn(accService, 'sendValidationEmail').and.callThrough();
-    expect(accountSpy).toBeDefined();
+    expect(localStorage.getItem("accessToken")).toBeDefined();
   });
 
   it('Testing Home Functionality', () => {

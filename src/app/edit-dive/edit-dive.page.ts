@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { diveService } from '../service/dive.service';
 import { Router } from '@angular/router';
 import { accountService } from '../service/account.service';
-
+import { GlobalService } from "../global.service";
+import {ConnectionService} from 'ng-connection-service';
+import { Location } from '@angular/common';
 
 //forms
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -34,7 +36,7 @@ export interface EditDiveLog{
   DiveID: string;
   AccessToken: string;
   Buddy: string;
-  InstructorLink: string;
+  InstructorLink: [];
   Description: string;
   DivePublicStatus: boolean;
 }
@@ -43,7 +45,7 @@ export interface EditDiveLog{
 @Component({
   selector: 'app-edit-dive',
   templateUrl: './edit-dive.page.html',
-  styleUrls: ['./edit-dive.page.scss'],
+  styleUrls: ['./edit-dive.page.scss']
 })
 export class EditDivePage implements OnInit {
 
@@ -55,24 +57,29 @@ export class EditDivePage implements OnInit {
   DiveTypeLst: [];
   DiveSiteLst: [];
   BuddyLst:[];
-  loginLabel:string ;
+  loginLabel: string;
   CurrentDive: DiveLog ;
+  accountType : string;
 
   //Form Groups
   diveForm;
   diveObj: EditDiveLog;
 
+  //Internet connectivity check
+  isConnected = true;  
+  noInternetConnection: boolean;
+
   /********************************************/
 
 
-  constructor(private _accountService : accountService , private router: Router, private _diveService: diveService, public formBuilder: FormBuilder, public alertController : AlertController) { 
+  constructor(public _globalService: GlobalService, private _accountService : accountService , private router: Router, private _diveService: diveService, public formBuilder: FormBuilder, public alertController : AlertController, private connectionService: ConnectionService, private location: Location) { 
 
      //Dive Form
      this.diveObj ={
-        DiveID: localStorage.getItem("DiveID"),
+        DiveID: localStorage.getItem("DiveID"), 
         AccessToken: localStorage.getItem("accessToken"),
         Buddy: "",
-        InstructorLink: "-",
+        InstructorLink: [],
         Description: "",
         DivePublicStatus: false
     }
@@ -83,8 +90,16 @@ export class EditDivePage implements OnInit {
       DivePublicStatus: []
     }); 
 
-
-
+    this.connectionService.monitor().subscribe(isConnected => {  
+      this.isConnected = isConnected;  
+      if (this.isConnected) {  
+        this.noInternetConnection=false;
+      }  
+      else {  
+        this.noInternetConnection=true;
+        this.router.navigate(['no-internet']);
+      }  
+    });
 
   }
 
@@ -96,14 +111,12 @@ export class EditDivePage implements OnInit {
       {
         this.loginLabel = "Login";
       }else{
-        this.loginLabel = "Sign Out";
+        this.loginLabel = "Log Out";
+        this.accountType = this._globalService.accountRole; 
       }
-
+     
 
     this.getDiveInfo();
-
-    
-
   }
 
   ionViewWillEnter(){
@@ -111,14 +124,17 @@ export class EditDivePage implements OnInit {
     {
       this.loginLabel = "Login";
     }else{
-      this.loginLabel = "Sign Out";
+      this.loginLabel = "Log Out";
+      this.accountType = this._globalService.accountRole; 
     }
+    
   }
 
   loginClick(){
     if(localStorage.getItem("accessToken"))
     {
       localStorage.removeItem("accessToken");
+      this.accountType = "*Diver";
       this.router.navigate(['home']);
     }else{
       this.router.navigate(['login']);
@@ -149,7 +165,13 @@ export class EditDivePage implements OnInit {
         this.showLoading = false;
         localStorage.removeItem("DiveID");
         this.router.navigate(["/my-dives"]);
-      } );
+      } , err =>{
+
+        if(err.error){
+          this.presentGeneralErrorAlert(err.error);
+        }
+  
+      });
 
 
   }
@@ -188,6 +210,13 @@ export class EditDivePage implements OnInit {
         this.diveObj.Buddy = this.CurrentDive.Buddy;
         this.diveObj.Description = this.CurrentDive.Description;
         this.diveObj.DivePublicStatus = this.CurrentDive.DivePublicStatus;
+    }, err =>{
+
+      if(err.error){
+        this.presentGeneralErrorAlert(err.error);
+        this.router.navigate(["/my-dives"]);
+      }
+
     });
 
 
@@ -209,6 +238,17 @@ export class EditDivePage implements OnInit {
       cssClass: 'errorAlert',
       header: 'Dive Log Updated',
       message: 'Successfully updated dive log',
+      buttons: ['OK']
+    });
+  
+    await alert.present();
+  }
+
+  async presentGeneralErrorAlert(msg : string) {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: 'An error occured',
+      message: msg,
       buttons: ['OK']
     });
   

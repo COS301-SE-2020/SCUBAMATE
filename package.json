@@ -28,6 +28,8 @@
     "aws-sdk": "^2.696.0",
     "cordova-plugin-geolocation": "^4.0.2",
     "crypto-js": "^4.0.0",
+    "ionic4-rating": "^1.0.9",
+    "ng-connection-service": "^1.0.4",
     "rxjs": "~6.5.1",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"

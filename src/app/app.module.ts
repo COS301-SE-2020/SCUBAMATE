@@ -16,6 +16,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms' ;
 //api
 import { HttpClientModule } from '@angular/common/http';
 
+//Connection check
+import {ConnectionServiceModule} from 'ng-connection-service';
 
 //services 
 import { accountService } from './service/account.service';
@@ -23,19 +25,28 @@ import { diveService } from './service/dive.service';
 import { weatherService } from './service/weather.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 
-//validators
-import { AgeValidator } from './validators/age' ;
+//Global
+import { GlobalService } from './global.service';
 
+
+//validators
+import { AgeValidator } from './validators/age';
+
+//rating 
+import { IonicRatingModule  } from 'ionic4-rating';
 
 @NgModule({
   declarations: [
     AppComponent,
     FlashCardComponent],
   entryComponents: [],
-  imports: [BrowserModule,
+  imports: [
+            IonicRatingModule ,
+            BrowserModule,
             IonicModule.forRoot(), 
             AppRoutingModule,
             HttpClientModule,
+            ConnectionServiceModule,
             FormsModule,
             ReactiveFormsModule],
   providers: [
@@ -45,6 +56,7 @@ import { AgeValidator } from './validators/age' ;
     diveService,
     weatherService,
     AgeValidator,
+    GlobalService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     Geolocation
   ],

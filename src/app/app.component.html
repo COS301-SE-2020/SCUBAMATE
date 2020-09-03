@@ -1,3 +1,56 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+<!--  <ion-router-outlet></ion-router-outlet>
+  <div *ngIf="noInternetConnection" style="text-align: center;">    
+    <h1>THERE IS NO INTERNET CONNECTION</h1>    
+    <img width="111px" src="assets/images/no.wifi_.png" alt="Wifi Connected" />    
+</div>
+
+<div *ngIf="!noInternetConnection" style="text-align: center;">     
+    <h1>INTERNET CONNECTION IS THERE</h1>    
+    <img width="111px" src="assets/images/wifi.png" alt="Wifi Disconnected" />    
+</div>-->
+<!-- when="xs"-->
+
+ <ion-split-pane contentId="main" [when]="false">
+  <!--  the side menu  -->
+  <ion-menu contentId="main">
+    <ion-header>
+      <ion-toolbar color="dark">
+        <ion-title>Menu</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-item routerLink="/home">
+          <ion-icon name="home" color="primary"></ion-icon>&nbsp;&nbsp;Home
+        </ion-item>
+        <ion-item routerLink="/explore" *ngIf='_globalService.activeLabel=="Log Out"'>
+          <ion-icon name="color-wand-outline" color="primary"></ion-icon>&nbsp;&nbsp;Explore
+        </ion-item>
+        <ion-item routerLink="/planning" *ngIf='_globalService.activeLabel=="Log Out"'>
+          <ion-icon name="newspaper" color="primary"></ion-icon>&nbsp;&nbsp;Plan</ion-item>
+        <ion-item routerLink="/my-dives" *ngIf='_globalService.activeLabel=="Log Out"'>
+          <ion-icon name="water" color="primary"></ion-icon>&nbsp;&nbsp;My Dives
+        </ion-item >
+        <ion-item routerLink="/profile" *ngIf='_globalService.activeLabel=="Log Out"'>
+          <ion-icon name="person" color="primary"></ion-icon>&nbsp;&nbsp;Profile
+        </ion-item>
+        <ion-item routerLink="/admin-page" *ngIf='_globalService.activeLabel=="Log Out" && _globalService.accountRole== "10" || _globalService.accountRole== "11"'>
+          <ion-icon name="podium" color="primary"  ></ion-icon>&nbsp;&nbsp;Admin 
+        </ion-item>
+        <ion-item (click)="_globalService.loginClick()">
+          <ion-icon name="log-in" color="primary"  *ngIf='_globalService.activeLabel=="Log In"'></ion-icon>
+          <ion-icon name="log-out" color="primary"  *ngIf='_globalService.activeLabel=="Log Out"'></ion-icon>
+          &nbsp;&nbsp;<label>{{_globalService.activeLabel}}</label>
+        </ion-item>
+        
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <!-- the main content -->
+  <ion-router-outlet id="main"></ion-router-outlet>
+</ion-split-pane> 
+
+
 </ion-app>
