@@ -6,7 +6,7 @@ exports.handler = async (event, context) => {
 
     let body = JSON.parse(event.body);
     let AccessToken = body.AccessToken;
-    const YearToSearch = body.YearToSearch;
+    const YearOfSearch = body.YearOfSearch;
     const DiveSite = body.DiveSite;
     
     const GuidSize = 36;
@@ -57,11 +57,19 @@ exports.handler = async (event, context) => {
         });
         return returnBool;
     }
+    function contains(arr,search){
+        let returnBool = false;
+        arr.forEach(function(item) {
+            if(item==search){
+                returnBool=true;
+            }
+        });
+        return returnBool;
+    }
     let responseBody;
     const undef = 0;
     let statusCode = undef;
     const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
-    
     try {     
         const data = await documentClient.get(params).promise();
         
@@ -82,12 +90,12 @@ exports.handler = async (event, context) => {
             /* Get List Of Dives */
             let filter = "begins_with(#diveDate, :diveDate)";
             let expVals = {
-                    ':diveDate': YearToSearch,
+                    ':diveDate': YearOfSearch,
                 };
             if(DiveSite !== "*"){
                 filter+=" AND DiveSite = :diveSite";
                 expVals = {
-                    ':diveDate': YearToSearch,
+                    ':diveDate': YearOfSearch,
                     ':diveSite': DiveSite,
                 };
             }
@@ -126,6 +134,17 @@ exports.handler = async (event, context) => {
                         addedMonths.push(Month);
                     }
                 });
+                const months = ["01","02","03","04","05","06","07","08","09","10","11","12"];
+                months.forEach(function (item){
+                   if (!contains(addedMonths,item)){
+                       let itemToReturn = {
+                            "Month" : item,
+                            "AmountOfDives" : 0
+                        };
+                        toReturn.push(itemToReturn);
+                        addedMonths.push(item);
+                   }
+                });
                 var returnList = [];
                 returnList.push({ReturnedList: toReturn});
                 responseBody = returnList[0];
@@ -133,7 +152,7 @@ exports.handler = async (event, context) => {
             }
             catch (err) {
                 statusCode = 403;
-                responseBody ="Unable to Find Dives: "+err;
+                responseBody = "Unable to Find Dives: "+err;
             }
         }
 
