@@ -21,6 +21,18 @@ export class chartService
      
     }
 
+    ratingAtDiveSiteChartData(postData): Observable<any>{
+    
+      const options = {
+             headers: new HttpHeaders({
+               'Content-Type': 'application/json',
+             }) 
+           };
+         
+  return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/getdivesiteratings', postData, options );
+   
+  }
+
 
 
 }

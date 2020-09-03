@@ -11,6 +11,9 @@ ion-content.background{
   --background: url(../../assets/images/sea.jpg) 0 0/100% 100% no-repeat;
 }
 
+canvas{
+  min-height: 250px;
+}
 
 #profileSurroundDiv{
   width:230px;

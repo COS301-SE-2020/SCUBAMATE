@@ -130,8 +130,10 @@ export class AdminPagePage implements OnInit {
   totalNumberOfDivesYear : string = "0";
   dateSearch : string = "2020"; 
   timeSearch : string = "All Day";
-  
 
+  
+  @ViewChild("pieCanvasDivesAtSiteRating") pieCanvasDivesAtSiteRating: ElementRef;
+  private pieChartDivesAtSiteRating: Chart;
 
   //Date
   currentDate = new Date();
@@ -262,6 +264,34 @@ export class AdminPagePage implements OnInit {
             }
             
           });
+
+
+          var rateDivesBody ={
+            "AccessToken" : localStorage.getItem("accessToken") ,
+            "DiveSite" : "Shark Alley"
+          };
+
+          this.showLoading = true ;
+          this._chartService.ratingAtDiveSiteChartData(rateDivesBody).subscribe( data =>{
+              this.showLoading = false;
+              
+              console.log(data);
+      
+                this.drawRatingDivesAtSiteChart(data, "Rating of Shark Alley");
+            
+        
+          },err =>{
+            this.showLoading = false;
+            
+            if(err.error){
+              this.generalAlert("Rating Of Dives Chart Error", err.error);
+            }else{
+              console.log("Could not access rating of  Dives At Site Chart Data");
+            }
+            
+          });
+
+      
 
       }
     }
@@ -1312,6 +1342,41 @@ getDiveCentreInformation(){
 });
   }
 
+  updateRatingDivesAtSiteChart(returnedData, msg){
+
+
+    this.pieChartDivesAtSiteRating.destroy();
+    this.drawRatingDivesAtSiteChart(returnedData, msg);
+
+
+  }
+
+  drawRatingDivesAtSiteChart(returnedData, msg){
+
+
+    let keys = returnedData["Ratings"].map(d => d.Rating);
+    let values = returnedData["Ratings"].map(d => d.Amount);
+
+
+    this.pieChartDivesAtSiteRating = new Chart(this.pieCanvasDivesAtSiteRating.nativeElement,{
+      type: 'doughnut',
+      data: {
+        labels: keys,
+        datasets: [{
+          label: "Rating of Dive Site",
+          backgroundColor: ["#c45850","#ed576b","#F4A261","#2A9D8F","#2dd36f"],
+          data: values
+        }]
+      },
+      options: {
+        title: {
+          display: true,
+          text: msg
+        }
+      }
+      });
+  }
+
   //Functions for Chart Searches
 
   DoSiteYearChartSearch(yearSearch){
@@ -1368,6 +1433,42 @@ getDiveCentreInformation(){
             }
             
           });
+
+
+  }
+
+  DoSiteRatingChartSearch(){
+    if(this.siteInput == "")
+    {
+      this.siteInput = "Shark Alley";
+    }
+
+    var rateDivesBody ={
+      "AccessToken" : localStorage.getItem("accessToken") ,
+      "DiveSite" : this.siteInput
+    };
+
+    this.showLoading = true ;
+    this._chartService.ratingAtDiveSiteChartData(rateDivesBody).subscribe( data =>{
+        this.showLoading = false;
+        
+        console.log(data);
+
+          this.updateRatingDivesAtSiteChart(data, "Rating of " +this.siteInput);
+      
+  
+    },err =>{
+      this.showLoading = false;
+      
+      if(err.error){
+        this.generalAlert("Rating Of Dives Chart Error", err.error);
+      }else{
+        console.log("Could not access rating of  Dives At Site Chart Data");
+      }
+      
+    });
+
+
 
 
   }
