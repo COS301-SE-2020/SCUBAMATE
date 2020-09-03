@@ -6,6 +6,34 @@ $yellow : #E9C46A ;
 $inputBackgroundColor: #181e21;
 $darkRed: #d66853;
 
+@media (max-width: 767px) {
+    .registerFormDiv{
+      width: 95% !important ; 
+    }
+
+    
+    .step1{
+      margin-left: 25% !important;
+    }
+
+    .step2{
+      margin-left: 25% !important; 
+    }
+
+    .step3{
+      margin-left: 25% !important; 
+    }
+
+    .step4{
+      margin-left: 25% !important;
+    }
+
+    label.divSubHead{
+      margin-top: 10% !important;
+    }
+}
+
+
 ion-content.background{
     --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
 }

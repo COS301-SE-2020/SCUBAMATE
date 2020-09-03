@@ -7,6 +7,14 @@ $inputBackgroundColor: #181e21;
 $darkRed: #d66853;
 
 
+@media (max-width: 767px) {
+
+  .newUser{
+    width: 95% !important ; 
+  }
+
+}
+
 ion-content.background{
   --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
 }

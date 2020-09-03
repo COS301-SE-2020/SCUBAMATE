@@ -7,7 +7,7 @@ import { diveService } from '../service/dive.service';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
-
+import { GlobalService } from "../global.service";
 
 
 export interface UpgradeClass {
@@ -31,11 +31,12 @@ export class UpgradeInstructorPage implements OnInit {
   userObj: UpgradeClass;
   CenterLst : string[];
   showLoading: boolean;
+  accountType: string;
 
 
   /********************************************/
 
-  constructor(private _diveService: diveService, private _accountService : accountService, private router: Router, public formBuilder: FormBuilder, public alertController : AlertController) { 
+  constructor(public _globalService: GlobalService, private _diveService: diveService, private _accountService : accountService, private router: Router, public formBuilder: FormBuilder, public alertController : AlertController) { 
        //User Form
     this.userObj ={
       AccessToken: localStorage.getItem("accessToken"),
@@ -52,6 +53,11 @@ export class UpgradeInstructorPage implements OnInit {
   }
 
   ngOnInit() {
+    this.accountType = this._globalService.accountRole; 
+  }
+
+  ionViewWillEnter(){
+    this.accountType = this._globalService.accountRole; 
   }
 
 

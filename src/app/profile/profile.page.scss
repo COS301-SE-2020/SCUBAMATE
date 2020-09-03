@@ -6,13 +6,38 @@ $yellow : #E9C46A ;
 $inputBackgroundColor: #181e21;
 
 
+@media (max-width: 767px) {
+  #Credentials{
+    width: 95% !important;
+    
+  }
+
+  #ProfileInfo{
+    width: 95% !important;
+    top: -20px !important;
+
+    .leftPane{
+      top: -20px !important;
+    }
+    
+  }
+
+  #Credentials{
+    .divHeadSection{
+      padding-left: 0px !important;
+      ion-button{
+        margin: auto !important;
+      }
+    }
+  }
+  
+}
+
 #EmailLink{
   color: $red;
   font-weight: bold;
   text-decoration: underline;
-  cursor: pointer;
-
-   
+  cursor: pointer; 
 }
 
 #EmailLink:hover{

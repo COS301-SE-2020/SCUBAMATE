@@ -51,7 +51,7 @@ exports.handler = async (event, context, callback) => {
     const undef = 0;
     let statusCode = undef;
     const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
-
+    const coordTest = /[-+]?[0-9]+\.?[0-9]+,[-+]?[0-9]+\.?[0-9]/;
     try {     
         const params = {
             TableName: "Scubamate",
@@ -72,6 +72,11 @@ exports.handler = async (event, context, callback) => {
         else if(data.Item.AccountType != "SuperAdmin"){
             statusCode = 403;
             responseBody = "Account doesn't have correct privileges";
+        }
+        else if(!coordTest.test(Coords)){
+            statusCode = 403;
+            responseBody = "Incorrect co-ordinate layout";
+            
         }
         else{
             
@@ -111,7 +116,7 @@ exports.handler = async (event, context, callback) => {
                             /*Upgrade dive centre account to admin*/
                             AccountGuid = accdata.Items[0].AccountGuid;
                             const oldToken = accdata.Items[0].AccessToken;
-                            let newToken = oldToken.substring(0,GuidSize) + "10" + oldToken.substring(GuidSize+2,oldToken.length);
+                            let newToken = oldToken.substring(0,GuidSize) + "11" + oldToken.substring(GuidSize+2,oldToken.length);
         
                             const typeParams = {
                                 TableName: "Scubamate",

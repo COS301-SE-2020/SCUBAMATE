@@ -25,6 +25,10 @@ import { diveService } from './service/dive.service';
 import { weatherService } from './service/weather.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 
+//Global
+import { GlobalService } from './global.service';
+
+
 //validators
 import { AgeValidator } from './validators/age';
 
@@ -52,6 +56,7 @@ import { IonicRatingModule  } from 'ionic4-rating';
     diveService,
     weatherService,
     AgeValidator,
+    GlobalService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     Geolocation
   ],

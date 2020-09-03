@@ -113,7 +113,8 @@ exports.handler = async (event, context) => {
                     dives.Items[index] = dives.Items[i];
                     dives.Items[i] = temp;
 
-                    responseBody += '{ "DiveSite" : "' +  dives.Items[i].DiveSite + '",' +
+                    responseBody += '{ "DiveID" : "' +  dives.Items[i].DiveID + '",' +
+                                        '"DiveSite" : "' +  dives.Items[i].DiveSite + '",' +
                                         '"DiveDate" : "' + dives.Items[i].DiveDate + '",' +
                                         '"DiveType" : "' + dives.Items[i].DiveTypeLink + '",' +
                                         '"TimeIn" : "' + dives.Items[i].TimeIn + '",' +

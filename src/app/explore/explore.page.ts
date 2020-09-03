@@ -4,6 +4,7 @@ import { diveService } from '../service/dive.service';
 //import { FlashCardComponent } from '../components/flash-card/flash-card.component';
 import {ConnectionService} from 'ng-connection-service';
 import { Location } from '@angular/common';
+import { GlobalService } from "../global.service";
 
 export interface Dive{
   FirstName : string ;
@@ -21,6 +22,7 @@ export interface DiveSite{
   Name : string ;
   Description: string ;
   Coords: string;
+  LogoPhoto: string ;
 }
 
 export interface DiveCenter{
@@ -52,6 +54,8 @@ export class ExplorePage implements OnInit {
   loginLabel:string ;
   accountType : string;
 
+  showFeedLoaded : boolean = false ; 
+
   //Internet Connectivity check
   isConnected = true;  
   noInternetConnection: boolean;
@@ -64,7 +68,7 @@ export class ExplorePage implements OnInit {
   /*********************************************/
 
   
-  constructor(private router: Router, private _diveService: diveService, private connectionService: ConnectionService, private location: Location) { 
+  constructor(public _globalService: GlobalService, private router: Router, private _diveService: diveService, private connectionService: ConnectionService, private location: Location) { 
     this.connectionService.monitor().subscribe(isConnected => {  
       this.isConnected = isConnected;  
       if (this.isConnected) {  
@@ -75,19 +79,7 @@ export class ExplorePage implements OnInit {
         this.router.navigate(['no-internet']);
       }  
     });
-    if(localStorage.getItem("accessToken")){
-      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-        this.accountType = "Instructor"
-      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-        this.accountType = "Diver"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-        this.accountType = "Admin"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-        this.accountType = "SuperAdmin"
-      }else{
-        this.accountType = "*Diver"
-      }
-    }
+   
   } 
  
   ngOnInit() {
@@ -97,6 +89,7 @@ export class ExplorePage implements OnInit {
     this.showCenters = false;
     this.centerLst = [];
     this.siteLst = [] ;
+    this.showFeedLoaded = false;
 
     this.loginLabel ="Login";
     if(!localStorage.getItem("accessToken"))
@@ -104,25 +97,24 @@ export class ExplorePage implements OnInit {
       this.loginLabel = "Login";
     }else{
       this.loginLabel = "Log Out";
+      this.accountType = this._globalService.accountRole;
+
+      this.showLoading = true ; 
+      this._diveService.getPublicDives().subscribe(res =>{
+        this.pubLst = res;
+        this.showFeedLoaded = true;
+        this.showLoading = false ;
+      }, err=>{
+        if(err.error == "Invalid Access Token"){
+          localStorage.removeItem("accessToken");
+          this.router.navigate(['login']);
+        }
+      });
+
     }
-    if(localStorage.getItem("accessToken")){
-      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-        this.accountType = "Instructor"
-      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-        this.accountType = "Diver"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-        this.accountType = "Admin"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-        this.accountType = "SuperAdmin"
-      }else{
-        this.accountType = "*Diver"
-      }
-    }
-    this.showLoading = true ; 
-    this._diveService.getPublicDives().subscribe(res =>{
-      this.pubLst = res;
-      this.showLoading = false ;
-    });
+    
+    
+    
 
   }
 
@@ -131,6 +123,7 @@ export class ExplorePage implements OnInit {
    /**  this.showFeed = true;
     this.showSites = false;
     this.showCenters = false; */
+    this.showFeedLoaded = false;
 
     if(!localStorage.getItem("accessToken"))
     {
@@ -138,8 +131,10 @@ export class ExplorePage implements OnInit {
     }else{
       this.loginLabel = "Log Out";
     }
+   
+   
     if(localStorage.getItem("accessToken")){
-      if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
+    /**  if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
         this.accountType = "Instructor"
       }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
         this.accountType = "Diver"
@@ -149,14 +144,20 @@ export class ExplorePage implements OnInit {
         this.accountType = "SuperAdmin"
       }else{
         this.accountType = "*Diver"
-      }
+      }*/
+
+      this._globalService.activeLabel =  "Log Out";
+      this.accountType = this._globalService.accountRole;
+
+      this.showLoading = true ; 
+      this._diveService.getPublicDives().subscribe(res =>{
+        //console.log(res);
+        this.pubLst = res.PublicDiveLogs;
+        this.showFeedLoaded = true;
+        this.showLoading = false ;
+      });
     }
-    this.showLoading = true ; 
-    this._diveService.getPublicDives().subscribe(res =>{
-      //console.log(res);
-      this.pubLst = res.PublicDiveLogs;
-      this.showLoading = false ;
-    });
+   
   }
 
   loginClick(){
@@ -194,7 +195,7 @@ export class ExplorePage implements OnInit {
     this.showFeed =  false;
     this.showSites = true;
     this.showCenters = false;
-
+    this.showFeedLoaded = false;
     this.loadSites();
     
   }
@@ -203,6 +204,7 @@ export class ExplorePage implements OnInit {
     this.showFeed =  false;
     this.showSites = false;
     this.showCenters= true;
+    this.showFeedLoaded = false;
     this.loadCenters();
   }
 
@@ -210,6 +212,7 @@ export class ExplorePage implements OnInit {
     this.showFeed =  true;
     this.showSites = false;
     this.showCenters = false;
+    this.showFeedLoaded = true;
   }
 
   loadCenters(){
