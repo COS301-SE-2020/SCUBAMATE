@@ -148,12 +148,6 @@ export class LogDivePage implements OnInit {
         // console.log("getLocationKey returned: " + this.Key);
   
         this._weatherService.getLogWeather(this.Key).subscribe(res => {
-        // console.log("Getting weather information");
-        // console.log("Date: " + res.DailyForecasts[0].Date);
-        // console.log("Temperature Min: " + res.DailyForecasts[0].Temperature.Minimum.Value + res.DailyForecasts[0].Temperature.Minimum.Unit);
-        // console.log("Temperature Max: " + res.DailyForecasts[0].Temperature.Maximum.Value + res.DailyForecasts[0].Temperature.Maximum.Unit);
-        // console.log("Day Description: " + res.DailyForecasts[0].Day.IconPhrase);
-        // console.log("Night Description: " + res.DailyForecasts[0].Night.IconPhrase);
         console.log(res.DailyForecasts[0]);
         //setup variables
         this.MinTempAPI = res.DailyForecasts[0].Temperature.Minimum.Value;
@@ -332,8 +326,8 @@ export class LogDivePage implements OnInit {
                     DiveDate: dateOf ,
                     TimeIn: timeI ,
                     TimeOut: timeO ,
-                    Visibility: vis + "m",
-                    Depth: dep + "m",
+                    Visibility: vis ,
+                    Depth: dep ,
                     Buddy: bud ,
                     DiveTypeLink: diveT   ,
                     AirTemp: Number(aTemp) ,
@@ -436,8 +430,8 @@ export class LogDivePage implements OnInit {
     this.diveObj.AirTemp = Number(this.diveObj.AirTemp );
     this.diveObj.SurfaceTemp = Number(this.diveObj.SurfaceTemp );
     this.diveObj.BottomTemp = Number(this.diveObj.BottomTemp );
-    this.diveObj.Visibility = this.diveObj.Visibility + "m";
-    this.diveObj.Depth = this.diveObj.Depth + "m";
+    this.diveObj.Visibility = this.diveObj.Visibility ;
+    this.diveObj.Depth = this.diveObj.Depth;
     this.diveObj.Rating = this.RateGiven;
     
 
@@ -448,13 +442,6 @@ export class LogDivePage implements OnInit {
 
     //console.log(this.diveObj);
 
-  /*  if( !this.diveForm.valid ){
-      this.presentAlert();
-    }else{
- 
-      console.log(this.diveObj);
-     
-    } */
     console.log(this.diveObj);
    this.showLoading = true;
    if(localStorage.getItem("Backup")){
@@ -481,8 +468,8 @@ export class LogDivePage implements OnInit {
     this.diveObj.AirTemp = Number(this.diveObj.AirTemp );
     this.diveObj.SurfaceTemp = Number(this.diveObj.SurfaceTemp );
     this.diveObj.BottomTemp = Number(this.diveObj.BottomTemp );
-    this.diveObj.Visibility = this.diveObj.Visibility + "m";
-    this.diveObj.Depth = this.diveObj.Depth + "m";
+    this.diveObj.Visibility = this.diveObj.Visibility ;
+    this.diveObj.Depth = this.diveObj.Depth ;
     this.diveObj.Rating = this.RateGiven;
 
     //link Instructor Array
