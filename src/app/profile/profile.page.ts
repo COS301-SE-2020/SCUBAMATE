@@ -125,7 +125,7 @@ export class ProfilePage implements OnInit {
           
       
 
-          if( this.accountType == "Instructor"){
+          if( this.accountType == "01"){
             this.loadUnverifiedCourses();
           }
           

@@ -265,8 +265,6 @@ export class diveService
 
       return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/getunverifiedcourses', PostData , options); 
 
-
-
     }
 
     VerifyCourse(PostData): Observable<any>{
