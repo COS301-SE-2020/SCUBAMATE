@@ -57,15 +57,6 @@ exports.handler = async (event, context) => {
         });
         return returnBool;
     }
-    function contains(arr,search){
-        let returnBool = false;
-        arr.forEach(function(item) {
-            if(item==search){
-                returnBool=true;
-            }
-        });
-        return returnBool;
-    }
     let responseBody;
     const undef = 0;
     let statusCode = undef;
@@ -114,7 +105,9 @@ exports.handler = async (event, context) => {
                 let toReturn = [];
                 let addedMonths = [];
                 const lengthOfYear = 5;
+                let totalDives = 0;
                 dataD.Items.forEach(function (item){
+                    totalDives++;
                     let Month = item.DiveDate.substring(lengthOfYear, lengthOfYear+2);
                     item.Month=Month;
                     if(contains(addedMonths,Month)){
@@ -145,8 +138,22 @@ exports.handler = async (event, context) => {
                         addedMonths.push(item);
                    }
                 });
+                toReturn.sort((a, b) => a.Month - b.Month);
+                toReturn[0].Month = "Jan";
+                toReturn[1].Month = "Feb";
+                toReturn[2].Month = "Mar";
+                toReturn[3].Month = "Apr";
+                toReturn[4].Month = "May";
+                toReturn[5].Month = "Jun";
+                toReturn[6].Month = "Jul";
+                toReturn[7].Month = "Aug";
+                toReturn[8].Month = "Sep";
+                toReturn[9].Month = "Oct";
+                toReturn[10].Month = "Nov";
+                toReturn[11].Month = "Dec";
+                
                 var returnList = [];
-                returnList.push({ReturnedList: toReturn});
+                returnList.push({TotalNumberOfDives: totalDives, ReturnedList: toReturn});
                 responseBody = returnList[0];
                 statusCode = 200;
             }
