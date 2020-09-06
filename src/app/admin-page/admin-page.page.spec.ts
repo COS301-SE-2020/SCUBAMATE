@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 import { AdminPagePage } from './admin-page.page';
 import { diveService } from '../service/dive.service';
@@ -23,7 +23,7 @@ describe('AdminPagePage', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ AdminPagePage ],
-      imports: [IonicModule.forRoot(), RouterTestingModule.withRoutes([]), HttpClientTestingModule, HttpModule],
+      imports: [ RouterTestingModule.withRoutes([]), HttpClientTestingModule, HttpModule],
       providers: [diveService, HttpModule, accountService, FormBuilder]
     }).compileComponents();
 
@@ -59,44 +59,62 @@ describe('AdminPagePage', () => {
   });
 
   it('lookAheadBuddy() test', () => {
-    var eventValue = "";
+    var eventValue = "John";
 
-    accService.lookAheadBuddy(eventValue).subscribe((resp : any) => {
+    accService.lookAheadBuddy(eventValue).subscribe((resp) => {
       console.log(resp);
     });
 
-    expect(eventValue).toBe("");
+    expect(eventValue).toBe("John");
   });
 
   it('centerListFinder() test', () => {
-    var eventValue = "";
+    var eventValue = "Reef";
 
     divService.getDiveCenters(eventValue).subscribe((resp : any) => {
       console.log(resp);
     });
 
-    expect(eventValue).toBe("");
+    expect(eventValue).toBe("Reef");
   });
 
   it('courseListFinder() test', () => {
-    var eventValue = "";
+    var eventValue = "Night";
 
     divService.getDiveCourses(eventValue).subscribe((resp : any) => {
       console.log(resp);
     });
 
-    expect(eventValue).toBe("");
+    expect(eventValue).toBe("Night");
   });
 
   it('getDiveSites() test', () => {
-    var reqBody = "";
+    var reqBody = "Reef";
 
     divService.getDiveSites(reqBody).subscribe((resp : any) => {
       console.log(resp);
     });
 
-    expect(reqBody).toBeDefined();
+    expect(reqBody).toBe("Reef");
   });
+
+  it('getUnverifiedInsrtuctors() test', fakeAsync(() => {
+    let response = null;
+    console.log("Getting ready to call getUnverifiedInstructors()...")
+    accService.getUnverifiedInstructors().subscribe(
+      (resp: any) => {
+        response = resp;
+        console.log(response);
+        console.log('Calling api')
+      },
+      (error: any) => {
+        console.error();
+      }
+    );
+    console.log("Done calling")
+    tick();
+    expect(response).toBeDefined();
+  }));
 
   it('getUnverifiedInsrtuctors() test', () => {
     var eventValue = "";
@@ -109,9 +127,11 @@ describe('AdminPagePage', () => {
   });
 
   it('getAdmimDiveCenter() test', () => {
-    var bod = "";
+    var bod = {
+      AccessToken: "d1d7391d-c035-28ab-0193-68a7d263d4be119b81fe6d1062ae1debb83521e940bcad6efea2c0c42c0e5224745a2078835b3b"
+    };
 
-    divService.getDiveSites(bod).subscribe((resp : any) => {
+    divService.getAdminDiveCenter(bod).subscribe((resp : any) => {
       console.log(resp);
     });
 
@@ -144,7 +164,9 @@ describe('AdminPagePage', () => {
 
   it('verifyInstructor() test', () => {
     var eventValue = {
-
+      AccountVerified: true,
+      AccessToken: "d1d7391d-c035-28ab-0193-68a7d263d4be119b81fe6d1062ae1debb83521e940bcad6efea2c0c42c0e5224745a2078835b3b",
+      AccountGuid: "d1d7391d-c035-28ab-0193-68a7d263d4be"
     };
 
     accService.verifyInstructor(eventValue).subscribe((resp : any) => {
@@ -155,68 +177,80 @@ describe('AdminPagePage', () => {
   });
 
   it('updateDiveCenterSubmit() test', () => {
-    var diveObj = {
-      AccessToken: "",
-      DiveID: ""
-    }
+    var body ={
+      "AccessToken" : "" ,
+      "Name" : "" ,
+      "Coords": "" , 
+      "Description": "",
+      "LogoPhoto" :  ""
+    };
 
-    divService.editBasicDiveCentre(diveObj).subscribe((resp : any) => {
+    divService.editBasicDiveCentre(body).subscribe((resp : any) => {
       console.log(resp);
     });
 
-    expect(diveObj).toBeDefined();
+    expect(body).toBeDefined();
   });
 
   it('addCoursesToDiveCenter() test', () => {
-    var diveObj = {
-      AccessToken: "",
-      DiveID: ""
+    var body ={
+      "AccessToken" : "" ,
+      "Name" : "" ,
+      "Courses": ""
     }
 
-    divService.addCoursesToDiveCentre(diveObj).subscribe((resp : any) => {
+    divService.addCoursesToDiveCentre(body).subscribe((resp : any) => {
       console.log(resp);
     });
 
-    expect(diveObj).toBeDefined();
+    expect(body).toBeDefined();
   });
 
   it('addDiveSitesToCentre() test', () => {
-    var diveObj = {
-      AccessToken: "",
-      DiveID: ""
+    var body ={
+      "AccessToken" : "" ,
+      "Name" : "" ,
+      "DiveSites": ""
     }
 
-    divService.addDiveSitesToCentre(diveObj).subscribe((resp : any) => {
+    divService.addDiveSitesToCentre(body).subscribe((resp : any) => {
       console.log(resp);
     });
 
-    expect(diveObj).toBeDefined();
+    expect(body).toBeDefined();
   });
 
   it('createNewCourse() test', () => {
-    var diveObj = {
-      AccessToken: "",
-      DiveID: ""
+    var body = {
+      "AccessToken" : "" ,
+      "Name": "" , 
+      "CourseType": "" ,
+      "MinAgeRequired": "" ,
+      "SurveyAnswer": "" ,
+      "RequiredCourses": "" ,
+      "QualificationType": ""
     }
 
-    divService.createNewCourse(diveObj).subscribe((resp : any) => {
+    divService.createNewCourse(body).subscribe((resp : any) => {
       console.log(resp);
     });
 
-    expect(diveObj).toBeDefined();
+    expect(body).toBeDefined();
   });
 
   it('createNewSite() test', () => {
-    var diveObj = {
-      AccessToken: "",
-      DiveID: ""
+    var body = {
+      "AccessToken" : "" ,
+      "Name" : "" ,
+      "Coords" : "",
+      "Description" : ""
     }
 
-    divService.createNewSite(diveObj).subscribe((resp : any) => {
+    divService.createNewSite(body).subscribe((resp : any) => {
       console.log(resp);
     });
 
-    expect(diveObj).toBeDefined();
+    expect(body).toBeDefined();
   });
 
 });
