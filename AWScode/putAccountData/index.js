@@ -114,7 +114,9 @@ exports.handler = async (event, context, callback) => {
                 PublicStatus: PublicStatus,
                 EmailVerified: false,
                 AccountVerified: false,
-                CompletedCourses: CompletedCourses
+                CompletedCourses: CompletedCourses,
+                Goal: 1,
+                GoalProgress: 0
             }
         };
     
