@@ -25,6 +25,7 @@ exports.handler = async (event, context) => {
     const DivePublicStatus = body.DivePublicStatus;
     const isCourse = body.isCourse;
     const Rating = body.Rating;
+    const WaterType = body.WaterType;
     
     const guid = AccessToken.substring(0,36);
 
@@ -91,7 +92,7 @@ exports.handler = async (event, context) => {
                 responseBody = "Invalid Rating";
                 statusCode = 403;
             }
-            let dsImage = "https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/defaultlogo.png"
+            let dsImage = "https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/defaultlogo.png";
             const paramsCheck = {
                 TableName: "DiveInfo",
                 Key: {
@@ -116,40 +117,6 @@ exports.handler = async (event, context) => {
             
             /* Only log the dive if above is verified */
             if(statusCode==undef){
-                var timestamp = new Date();
-                var yy = timestamp.getFullYear();
-                if(yy < 10)
-                {
-                    yy = "0" + yy;
-                }
-                var mm = timestamp.getMonth() + 1;
-                if(mm < 10)
-                {
-                    mm = "0" + mm;
-                }
-                var dd = timestamp.getDate();
-                if(dd < 10)
-                {
-                    dd = "0" + dd;
-                }
-                var hh = timestamp.getUTCHours() + 2;
-                if(hh < 10)
-                {
-                    hh = "0" + hh;
-                }
-                var mins = timestamp.getMinutes();
-                if(mins < 10)
-                {
-                    mins = "0" + mins;
-                }
-                var ss = timestamp.getSeconds();
-                if(ss < 10)
-                {
-                    ss = "0" + ss;
-                }
-                var ms = timestamp.getMilliseconds();
-                var now = yy + "/" + mm + "/" + dd + " " + hh + ":" + mins + ":" + ss + ":" + ms;
-                
                 let Approved = true;
                 if(isCourse){
                     Approved = false;
@@ -173,47 +140,68 @@ exports.handler = async (event, context) => {
                         SurfaceTemp: SurfaceTemp,
                         TimeIn: TimeIn,
                         TimeOut: TimeOut,
-                        TimeStamp : now,
                         Visibility: Visibility+"m",
                         Weather: Weather,
                         DivePublicStatus: DivePublicStatus,
                         DiveVerified: false,
                         Rating: Rating,
                         AITraining : false,
-                        DiveImage : dsImage
+                        DiveImage : dsImage,
+                        WaterType: WaterType
                     }
                 };
                 try{
                     const Divedata = await documentClient.put(params).promise();
-                    if(typeof data.Item.Goal != "undefined"){
-                        const params = {
-                            TableName: "Scubamate",
-                            Key: {
-                                AccountGuid: guid
-                            },
-                            UpdateExpression: "set GoalProgress = :gp",
-                            ExpressionAttributeValues:{
-                                ":gp": (data.Item.GoalProgress+1)
-                            },
-                            ReturnValues:"UPDATED_NEW"
-                        };
-                        
-                        try{
-                            const updateStatement = await documentClient.update(params).promise();
+                    const currProgress = data.Item.GoalProgress+1;
+                    let goal = data.Item.Goal;
+                    let achievements = [];
+                    let completed = false;
+                    if(currProgress==goal){
+                        completed = true;
+                        if(typeof data.Item.Achievements !=="undefined"){
+                            achievements = data.Item.Achievements;
+                        }
+                        achievements.push("Completed "+currProgress+" Dives!");
+                        if(goal==1){
+                            goal+=4; //Goes to 5
+                        }
+                        else{
+                            //at 5, 10 etc so add another 5 to goal
+                            goal+=5;
+                        }
+                    }
+                    const paramsUpdate = {
+                        TableName: "Scubamate",
+                        Key: {
+                            AccountGuid: guid
+                        },
+                        UpdateExpression: "set GoalProgress = :gp, Goal = :g, Achievements = :a",
+                        ExpressionAttributeValues:{
+                            ":gp": currProgress,
+                            ":g":goal,
+                            ":a":achievements,
+                        },
+                        ReturnValues:"UPDATED_NEW"
+                    };
+                    
+                    try{
+                        const updateStatement = await documentClient.update(paramsUpdate).promise();
+                        if(completed){
+                            responseBody = "Dive successfully logged! Goal Reached! ";
+                        }
+                        else{
                             responseBody = "Dive successfully logged! ";
-                            statusCode = 201;
-                        }catch(err){
-                            statusCode = 404;
-                            responseBody = "Dive Logged but Updating Goal Failed: "+err;
-                        } 
-                    }
-                    else{
-                        responseBody = "Dive successfully logged! ";
+                        }
+                        
                         statusCode = 201;
-                    }
+                    }catch(err){
+                        statusCode = 404;
+                        responseBody = "Dive Log Failed: "+err;
+                    } 
+                    
                     
                 }catch(err){
-                    responseBody = "Unable log dive " + err;
+                    responseBody = "Unable to log dive " + err;
                     statusCode = 403;
                 } 
             }
