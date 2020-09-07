@@ -5,38 +5,74 @@
 
 </head>
 
+<ion-header no-border slot="fixed" style="margin-bottom: 20px;">
+  <ion-toolbar color="dark" class="productHeader" >
+    <ion-buttons slot="primary">
+      <ion-button routerLink="" *ngIf="loginLabel" (click)="loginClick()" class="hidden-sm-down" >
+        {{loginLabel}}
+      </ion-button>
+      <ion-menu-button autoHide="false" class="hidden-sm-up"></ion-menu-button>
+    </ion-buttons>
+    <ion-title > 
+     <ion-buttons >
+      <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo" style="height:80%;width:12%;padding-bottom:3px;padding-top:3px;margin-right:10px;"/>
+      
+        <ion-button routerLink="/home" class="hidden-sm-down">
+          <ion-icon name="home" ></ion-icon><label style="padding-top:7px;">&nbsp; Home</label> 
+        </ion-button>
+      </ion-buttons>
+      
+    </ion-title> 
+  </ion-toolbar>
+</ion-header>
 
-<body>
-  
-
-  <ion-header>
-    <ul>
-     <li style="margin-top:5px; margin-bottom:5px;right:0;float:right;"><ion-searchbar animated></ion-searchbar></li>        
-        <li style="float:left;margin-left:20px;"><a routerLink="/home" >Home</a></li>  
-        <li style="float:left;"><a routerLink="/explore">Explore</a></li>  
-        <li style="float:left;"><a routerLink="/weather">Weather</a></li> 
-        <li style="float:left;"><a routerLink="/my-dives">My Dives</a></li>
-        <li style="float:left;"><a routerLink="/profile">My Account</a></li>   
-  </ul>
-  </ion-header>
+<ion-content fullscreen class="background" no-scroll padding >
   
   <div class="container">
 
     <div id="loginDiv">
-      <img src="../assets/images/stacked.png" alt="Scubamate">
-        <form (submit)="onSubmit(emailInput.value, passInput.value , $event)">
-          <ion-label for="emailInput">Email</ion-label> <br>
-          <input type="email"  #emailInput required> <br>
-
-          <ion-label for="passInput">Password</ion-label> <br>
-          <input type="password" #passInput required><br>
-
-          <input type="submit" value="Login"> <br><br>
-          <ion-label>Don't have an account?<a routerLink="/signup"> Sign up here</a> </ion-label>
+      <img src="../assets/images/stacked wit.png" alt="Scubamate">
+        <form (keyup.enter)="onSubmit(emailInput.value, passInput.value , $event)" (submit)="onSubmit(emailInput.value, passInput.value , $event)">
+          
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-item color='dark'>
+                <ion-label position="stacked">Email</ion-label>
+                <ion-input type="text" placeholder="example@mail.com" #emailInput></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row >
+            <ion-col>
+              <ion-item color='dark' >
+                <ion-row>
+                  <ion-col>
+                    <ion-label position='stacked'>Password</ion-label>
+                  </ion-col>
+                </ion-row>
+                <ion-row style="width:100%;">
+                  <ion-col size='10'>
+                    <ion-input type="{{passwordType}}" #passInput></ion-input>
+                  </ion-col>
+                  <ion-col size='2' class="viewPasswordIcon">
+                    <ion-icon name='eye' (click)='togglePassword()'  [color]="showPassword === true ? 'primary' : 'medium'" style='font-size: 20px;'></ion-icon>
+                  </ion-col>
+                </ion-row>
+            </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <input type="submit" value="Login"> <br><br>
+              <ion-label>Don't have an account?<a routerLink="/signup"> Sign up here</a> </ion-label>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
 
         </form>
     </div>
 
   </div>
 
-  </body>
+</ion-content>

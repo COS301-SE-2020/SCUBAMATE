@@ -6,9 +6,94 @@ $yellow : #E9C46A ;
 $inputBackgroundColor: #181e21;
 
 
-ion-content.background{
-  --background: url(../../assets/images/whale.jpg) 0 0/100% 100% no-repeat;
+@media (max-width: 767px) {
+  #Credentials{
+    width: 95% !important;
+    
+  }
+
+  #ProfileInfo{
+    width: 95% !important;
+    top: -20px !important;
+
+    .leftPane{
+      top: -20px !important;
+    }
+    
+  }
+
+  #Credentials{
+    .divHeadSection{
+      padding-left: 0px !important;
+      ion-button{
+        margin: auto !important;
+      }
+    }
+  }
+  
 }
+
+#EmailLink{
+  color: $red;
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer; 
+}
+
+#EmailLink:hover{
+  color: $orange;
+}
+
+.diveCenterIMG{
+  width: 110px;
+  height: 110px;
+  margin: auto;
+  margin-top: 20%;
+  margin-bottom: 20px;
+}
+
+
+
+.searchableSelect{
+  background-color: white;
+  border-radius: 1px;
+  text-align: left;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 100%;
+  height:100%;
+
+  input{
+      width: 100%;
+      margin: auto;
+      border: none;
+      font-size: medium;
+  }
+
+}
+
+.searchableSelect{
+  background-color: #222428 ;
+}
+
+.searchableSelectInput{
+  margin-top:10px;
+  width:100%;
+  background-color: #222428 ;
+  color:white;
+}
+
+.searchableSelectLabel{
+  color: white;
+  font-size: small;
+  margin: auto;
+}
+
+ion-content.background{
+  --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
+}
+
 
 .productHeader {
   --background: transparent;
@@ -26,20 +111,35 @@ ion-grid {
   }
 }
 
-#checkListDiv{
-  background-color: rgba(38, 70, 83, 0.5);
+#Credentials{
+  padding: 0;
+  background-color: rgba(38, 70, 83, 0.6);
   margin: auto;
   border-bottom: solid white 0.5px;
   border-top: solid white 0.5px;
   width:  70% ;
   padding: 0;
   margin-top: 30px;
-  padding: 20px;
+  margin-bottom: 50px;
+}
+
+#checkListDiv{
+  background-color: rgba(38, 70, 83, 0.6);
+  margin: auto;
+  border-bottom: solid white 0.5px;
+  border-top: solid white 0.5px;
+  width:  70% ;
+  padding: 0;
+  margin-top: 30px;
+  padding: 0px;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 #ProfileInfo{
-  background-color: rgba(38, 70, 83, 0.5);
+  background-color: rgba(38, 70, 83, 0.8);
   margin: auto;
+  margin-top: 30px;
   border-bottom: solid white 0.5px;
   border-top: solid white 0.5px;
   width:  70% ;
@@ -47,7 +147,7 @@ ion-grid {
   height: 80%;
   display: block;
 
-  #leftPane{
+  .leftPane{
     background-color: rgba(38, 70, 83, 0.9);
     height: inherit  ;
     margin:0;
@@ -65,16 +165,15 @@ ion-grid {
     padding-top: 20px;
   }
 
-  #userProfile{
-    object-fit: cover;
-    width: 150px;
-    height: 150px;
-    margin: auto;
-    margin-top: 5%;
-    margin-bottom: 2%;
-  }
 
-  
+  ion-button{
+    float:right;
+    margin-right: 7%;
+    width: 50px;
+    height:50px;
+    padding:0;
+    --border-radius: 100%;
+  }
 
 
 
@@ -86,6 +185,32 @@ ion-grid {
 
 
 }
+
+
+#userProfile{
+  width: 160px;
+  height: 160px;
+  margin: auto;
+  margin-top: 6%;
+  margin-bottom: 6%;
+  border-radius: 100% !important;
+  overflow: hidden;
+  
+}
+
+#profileSurroundDiv{
+  width:180px;
+  height:180px;
+  padding:0;
+  margin: auto;
+  margin-top: 2%;
+  margin-bottom: 3%;
+  border-radius: 100% !important;
+  overflow: hidden;
+  background-color:  rgba(24, 30, 33, 0.4) ;
+  text-align: center;
+}
+
 
 .subLabel{
   font-size:  20px ;
@@ -112,6 +237,42 @@ ion-grid {
   margin-bottom: 20px;
   margin-top: 15px; 
   margin-left: 20px;
+}
+
+.divSubHead{
+  font-size:  25px ;
+  font-family: 'Righteous';
+  display: swap ;
+  color: white;
+  width: 100%;
+  margin: auto;
+  margin-bottom: 20px;
+  margin-top: 15px; 
+}
+
+.divHeadSection{
+  background-color: rgba(38, 70, 83, 0.9);
+  padding-left: 25px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+
+  ion-button{
+    float:right;
+    margin-right: 7%;
+    width: 50px;
+    height:50px;
+    padding:0;
+    --border-radius: 100%;
+  }
+}
+
+.divBodySection{
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+
 }
 
 table{
@@ -165,3 +326,61 @@ table{
  }
 
 } 
+
+#EmailVerificationDiv{
+  width: 80%;
+  margin: auto;
+  color: white;
+  text-align: center;
+  background-color: $inputBackgroundColor;
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  padding: 10px;
+  border-radius: 10px;
+
+  ion-icon{
+    float: right;
+  }
+  
+}
+
+
+#UnverifiedListsInfo{
+
+  ion-button{
+    float:right;
+    margin-right: 7%;
+    width: 50px;
+    height:50px;
+    padding:0;
+    --border-radius: 100%;
+  }
+    
+
+  .UnverifiedListHead{
+    font-size:  20px ;
+    font-weight: bold;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    color: white;
+    border-bottom: solid white 0.5px;
+    border-top: solid white 0.5px;
+    margin-top:10px;
+    width:100%;
+    padding-left: 2%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  .UnverifiedListTableRow{
+    background-color: $inputBackgroundColor ;
+    color: white;
+    padding: 5px;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .UnverifiedListTableRow :hover{
+    font-weight: bold;
+  }
+
+}

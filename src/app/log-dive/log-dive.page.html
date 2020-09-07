@@ -5,146 +5,388 @@
 
 </head>
 
-<ion-header no-border slot="fixed">
- 
+<ion-header no-border slot="fixed" style="margin-bottom: 20px;">
+  <ion-toolbar color="dark" class="productHeader" >
+    <ion-buttons slot="primary">
+      <ion-button routerLink="" *ngIf="loginLabel" (click)="loginClick()" class="hidden-sm-down" >
+        {{loginLabel}}
+      </ion-button>
+      <ion-menu-button autoHide="false" class="hidden-sm-up"></ion-menu-button>
+    </ion-buttons>
+    <ion-title > 
+     <ion-buttons >
+      <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo" style="height:80%;width:12%;padding-bottom:3px;padding-top:3px;margin-right:10px;"/>
+      
+        <ion-button routerLink="/home" class="hidden-sm-down">
+          <ion-icon name="home" ></ion-icon><label style="padding-top:7px;">&nbsp; Home</label> 
+        </ion-button>
+        <ion-button routerLink="/explore" class="hidden-sm-down" *ngIf="loginLabel=='Log Out'">
+          <ion-icon name="color-wand-outline"></ion-icon>&nbsp; Explore
+        </ion-button>
+        <ion-button routerLink="/planning" class="hidden-sm-down" *ngIf="loginLabel=='Log Out'">
+          <ion-icon name="newspaper"></ion-icon>&nbsp; Plan
+        </ion-button>
+        <ion-button routerLink="/my-dives" class="hidden-sm-down" *ngIf="loginLabel=='Log Out'">
+          <ion-icon name="water"></ion-icon>&nbsp; My Dives
+        </ion-button>
+        <ion-button routerLink="/profile" class="hidden-sm-down" *ngIf="loginLabel=='Log Out'">
+          <ion-icon name="person" ></ion-icon>&nbsp; Profile
+        </ion-button>
+        <ion-button *ngIf="accountType=='10' || accountType=='11'" routerLink="/admin-page" class="hidden-sm-down">
+          <ion-icon name="podium"></ion-icon>&nbsp; Admin 
+        </ion-button>
+      </ion-buttons>
+      
+    </ion-title> 
+     <ion-progress-bar type="indeterminate" *ngIf="showLoading"></ion-progress-bar> 
+  </ion-toolbar>
 </ion-header>
-<ion-toolbar class="productHeader" transparent slot="fixed">
-  <ul>
-    <li style="float:right;"><a routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >{{loginLabel}}</a></li>
-    <li style="margin-top:5px; margin-bottom:5px;right:0;float:right;"><ion-searchbar animated></ion-searchbar></li>        
-      <li style="float:left;margin-left:20px;"><a routerLink="/home" >Home</a></li>  
-      <li style="float:left;"><a routerLink="/explore">Explore</a></li>  
-      <li style="float:left;"><a routerLink="/weather">Weather</a></li> 
-      <li style="float:left;"><a routerLink="/my-dives">My Dives</a></li>
-      <li style="float:left;"><a routerLink="/profile">My Account</a></li>   
-  </ul>
-</ion-toolbar>
 
 <ion-content fullscreen class="background" no-scroll padding >
- 
-  <div id="newDiveDiv">
-    <ion-label id="divHead">Log a new Dive</ion-label>
+  
 
-    <form (submit)="onSubmit(desc.value, siteOf.value, dateOf.value, timeIn.value, timeOut.value, diveType.value, bud.value, vis.value, dep.value, aTemp.value, sTemp.value, bTemp.value,  $event)">
-    <div id="locationInfo">
-      <ion-label class="subLabel"> Dive Location </ion-label>
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <ion-item >
-              <ion-label>Dive Site*</ion-label>
-              <ion-select placeholder="Select One" #siteOf required >
-                <ion-select-option *ngFor='let s of siteLst'> {{ s }}</ion-select-option>
-              </ion-select>
-            </ion-item>
+  <div class="LogDiveDiv" *ngIf="allLoaded">
+    <form [formGroup]="diveForm" >
+    <div id="firstFormPage" *ngIf="firstPageVisible" style="min-height: 400px;">
+      <!--Steps & Progress Bar-->
+      <div id="DiveProgress">
+        <ion-grid style="padding: 0;margin: 0;">
+          <ion-row>
+            <ion-col class="ion-align-self-center">
+              <div class="step1" *ngIf="diveForm.controls.DiveTypeLink.valid && diveForm.controls.DiveSite.valid ">1</div> 
+              <div class="step1" *ngIf="!diveForm.controls.DiveTypeLink.valid || !diveForm.controls.DiveSite.valid" style="border-color:#eb445a;">1</div> 
+            </ion-col>
+            <ion-col class="ion-align-self-center">
+                <div class="step2" style="border:none;">2</div>
+            </ion-col>
+            <ion-col class="ion-align-self-center">
+                <div class="step3" style="border:none;">3</div>
+            </ion-col>
+            <ion-col class="ion-align-self-center">
+              <div class="step4" style="border:none;">4</div>
           </ion-col>
-        </ion-row>
-      </ion-grid>
-    </div>
-    <div id="dateTimeDive">
-      <ion-label class="subLabel"> Date And Time </ion-label>
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <ion-item>
-              <ion-label position="stacked">Date of Dive*</ion-label>
-              <ion-input type="date" #dateOf></ion-input>
-            </ion-item>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <ion-item>
-              <ion-label position="stacked">Time In*</ion-label>
-              <ion-input type="time" #timeIn></ion-input>
-            </ion-item>
-          </ion-col>
-          <ion-col>
-            <ion-item>
-              <ion-label position="stacked">Time Out*</ion-label>
-              <ion-input type="time" #timeOut></ion-input>
-            </ion-item>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </div> <!-- end of dateTimeDive -->
-    <div id="conditions">
-      <ion-label class="subLabel"> Water Temperature (°C)</ion-label>
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <ion-item>
-              <ion-label position="floating">Air Temperature</ion-label>
-              <ion-input type="number" #aTemp ></ion-input>
-            </ion-item>
-          </ion-col>
-          <ion-col>
-            <ion-item>
-              <ion-label position="floating">Surface Temperature</ion-label>
-              <ion-input type="number" #sTemp></ion-input>
-            </ion-item>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-        <ion-col>
-          <ion-item>
-            <ion-label position="floating">Bottom Temperature</ion-label>
-            <ion-input type="number" #bTemp ></ion-input>
-          </ion-item>
-        </ion-col>
-        <ion-col>
+          </ion-row>
+        </ion-grid>
+  
+        <ion-progress-bar *ngIf="diveForm.controls.DiveTypeLink.valid && diveForm.controls.DiveSite.valid " color="success" value="0.25" style="margin-bottom: 20px;--buffer-background:#264653;"></ion-progress-bar>
+        <ion-progress-bar *ngIf="!diveForm.controls.DiveTypeLink.valid || !diveForm.controls.DiveSite.valid" color="danger" value="0.25" style="margin-bottom: 20px;--buffer-background:#264653;"></ion-progress-bar>
+        
+      </div>
 
-        </ion-col>
-      </ion-row>
-      </ion-grid>
-    </div> <!-- end of conditions-->
-    <div id="diveDetails">
-      <ion-label class="subLabel"> Dive Details </ion-label>
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <ion-item>
-              <ion-label>Dive Type*</ion-label>
-              <ion-select placeholder="Select One" #diveType required>
-                <ion-select-option *ngFor='let t of typeLst'> {{ t }}</ion-select-option>
-              </ion-select>
-            </ion-item>
-          </ion-col>
-          <ion-col>
-            <ion-item>
-              <ion-label position="floating">Buddy</ion-label>
-              <ion-input type="text" #bud></ion-input>
-            </ion-item>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <ion-item>
-              <ion-label position="floating">Visibility (m)</ion-label>
-              <ion-input type="number" #vis></ion-input>
-            </ion-item>
-          </ion-col>
-          <ion-col>
-            <ion-item>
-              <ion-label position="floating">Depth (m)</ion-label>
-              <ion-input type="number" #dep></ion-input>
-            </ion-item>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <ion-item>
-              <ion-label position="floating">Dive Description</ion-label>
-              <ion-textarea #desc></ion-textarea>
-            </ion-item>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </div> <!-- end of diveDetails-->
-   
-    <input type="submit" value="Log Dive">
+      <!--Form Fields-->
 
-    </form>
-  </div>  <!--End of newDiveDiv -->
+      <ion-grid style="padding: 0;margin: 0;">
+        <ion-row> 
+          <!--Left Title Pane-->
+          <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
+            <label class="divSubHead">Dive Location</label>
+                <ion-row>
+                  <ion-item color="dark"  (click)="viewCourse()" style="--border-radius:27px;text-align: center;" >
+                    <ion-label>Course</ion-label>
+                    <ion-checkbox color="dark" [(ngModel)]="diveObj.isCourse"></ion-checkbox>
+                  </ion-item>
+                </ion-row>
+              <label class="subLabel" style="margin-top: 15px;">Choose A Dive Type</label>
+          </ion-col>
+          <!-- Dive Location Pane -->
+          <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane" style="padding-top:7%;">
+                <ion-row *ngIf="showCourseInput">
+                  <div class="searchableSelect" color="dark">
+                    <ion-label class="searchableSelectLabel">Course</ion-label>
+                    <input list="courses" formControlName="DiveTypeLink" class="searchableSelectInput" [(ngModel)]="diveObj.DiveTypeLink" (input)="CourseListFinder()" placeholder="Insert The Completed Course" #diveCourse>
+                    <datalist id="courses" >
+                        <option *ngFor='let c of CourseLst' value={{c}}></option>
+                    </datalist>
+                  </div>
+                </ion-row>
+                <ion-row *ngIf="!showCourseInput">
+                  <div class="searchableSelect" color="dark">
+                    <ion-label class="searchableSelectLabel">Dive Type</ion-label>
+                    <input list="diveTypes" formControlName="DiveTypeLink" class="searchableSelectInput" [(ngModel)]="diveObj.DiveTypeLink" (input)="DiveTypeListFinder()" placeholder="Insert The Type Of Dive" #diveType>
+                    <datalist id="diveTypes" >
+                        <option *ngFor='let t of DiveTypeLst' value={{t}}></option>
+                    </datalist>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="searchableSelect" color="dark" >
+                    <ion-label class="searchableSelectLabel">Dive Site</ion-label><br>
+                      <input list="diveSites" formControlName="DiveSite" class="searchableSelectInput" [(ngModel)]="diveObj.DiveSite"  (input)="DiveSiteListFinder()" placeholder="Insert A Dive Site" #siteOf>
+                      <datalist id="diveSites" >
+                          <option *ngFor='let s of DiveSiteLst' value={{s}}></option>
+                      </datalist>
+                  </div>
+                </ion-row>
+           </ion-col>
+         </ion-row>
+      </ion-grid>
+      </div>
+
+      <div id="secondFormPage" *ngIf="secondPageVisible" style="min-height: 400px;">
+        <!--Steps & Progress Bar-->
+        <div id="DiveProgress">
+          <ion-grid style="padding: 0;margin: 0;">
+            <ion-row>
+              <ion-col class="ion-align-self-center">
+                <div class="step1" *ngIf="diveForm.controls.DiveTypeLink.valid && diveForm.controls.DiveSite.valid ">1</div> 
+                <div class="step1" *ngIf="!diveForm.controls.DiveTypeLink.valid || !diveForm.controls.DiveSite.valid" style="border-color:#eb445a;">1</div> 
+          
+              </ion-col>
+              <ion-col class="ion-align-self-center">
+                  <div class="step2" *ngIf="diveForm.controls.TimeOut.valid && diveForm.controls.TimeIn.valid && diveForm.controls.DiveDate.valid"  style="border-color:#2dd36f">2</div>
+                  <div class="step2" *ngIf="!diveForm.controls.TimeOut.valid || !diveForm.controls.TimeIn.valid || !diveForm.controls.DiveDate.valid" style="border-color:#eb445a;">2</div>
+              </ion-col>
+              <ion-col class="ion-align-self-center">
+                  <div class="step3" style="border:none;">3</div>
+              </ion-col>
+              <ion-col class="ion-align-self-center">
+                <div class="step4" style="border:none;">4</div>
+            </ion-col>
+            </ion-row>
+          </ion-grid>
+    
+          <ion-progress-bar *ngIf="diveForm.controls.TimeOut.valid && diveForm.controls.TimeIn.valid && diveForm.controls.DiveDate.valid && diveForm.controls.DiveTypeLink.valid && diveForm.controls.DiveSite.valid " color="success" value="0.50" style="margin-bottom: 20px;--buffer-background:#264653;"></ion-progress-bar>
+          <ion-progress-bar *ngIf="!diveForm.controls.TimeOut.valid || !diveForm.controls.TimeIn.valid || !diveForm.controls.DiveDate.valid || !diveForm.controls.DiveTypeLink.valid || !diveForm.controls.DiveSite.valid" color="danger" value="0.50" style="margin-bottom: 20px;--buffer-background:#264653;"></ion-progress-bar>
+          
+        </div>
+  
+        <!--Form Fields-->
+  
+        <ion-grid style="padding: 0;margin: 0;">
+          <ion-row> 
+            <!--Left Title Pane-->
+            <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
+              <label class="divSubHead">Date & Time </label>
+            </ion-col>
+            <!-- Dive Location Pane -->
+            <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane" style="padding-top:7%;">
+                  <ion-row >
+                    <ion-item color="dark">
+                      <ion-label  position="stacked">Date of Dive
+                        <b *ngIf="!diveForm.controls.DiveDate.valid  && (diveForm.controls.DiveDate.dirty )" class="FormErrorControlMessage">* Please enter a valid name  </b>
+                      </ion-label>
+                      <ion-input formControlName="DiveDate" type="date" value={{currentDate}} [(ngModel)]="diveObj.DiveDate"  [class.invalid]="!diveForm.controls.DiveDate.valid && (diveForm.controls.DiveDate.dirty )"></ion-input>
+                    </ion-item>
+                  </ion-row>
+                  <ion-row >
+                    <ion-item color="dark">
+                      <ion-label position="stacked">Time In</ion-label>
+                      <ion-input type="time" #timeIn formControlName="TimeIn"  [(ngModel)]="diveObj.TimeIn"  [class.invalid]="!diveForm.controls.TimeIn.valid && (diveForm.controls.TimeIn.dirty )"></ion-input>
+                    </ion-item>
+                  </ion-row>
+                  <ion-row>
+                    <ion-item color="dark">
+                      <ion-label position="stacked">Time Out</ion-label>
+                      <ion-input type="time" #timeOut formControlName="TimeOut"  [(ngModel)]="diveObj.TimeOut"  [class.invalid]="!diveForm.controls.TimeOut.valid && (diveForm.controls.TimeOut.dirty )"></ion-input>
+                    </ion-item>
+                  </ion-row>
+             </ion-col>
+           </ion-row>
+        </ion-grid>
+  
+        </div>
+        <div id="thirdFormPage" *ngIf="thirdPageVisible" style="min-height: 400px;">
+          <!--Steps & Progress Bar-->
+          <div id="DiveProgress">
+            <ion-grid style="padding: 0;margin: 0;">
+              <ion-row>
+                <ion-col class="ion-align-self-center">
+                  <div class="step1" *ngIf="diveForm.controls.DiveTypeLink.valid && diveForm.controls.DiveSite.valid ">1</div> 
+                  <div class="step1" *ngIf="!diveForm.controls.DiveTypeLink.valid || !diveForm.controls.DiveSite.valid" style="border-color:#eb445a;">1</div> 
+            
+                </ion-col>
+                <ion-col class="ion-align-self-center">
+                    <div class="step2" *ngIf="diveForm.controls.TimeOut.valid && diveForm.controls.TimeIn.valid && diveForm.controls.DiveDate.valid"  style="border:none;">2</div>
+                    <div class="step2" *ngIf="!diveForm.controls.TimeOut.valid || !diveForm.controls.TimeIn.valid || !diveForm.controls.DiveDate.valid" style="border-color:#eb445a;">2</div>
+                </ion-col>
+                <ion-col class="ion-align-self-center">
+                    <div class="step3" *ngIf="diveForm.controls.AirTemp.valid && diveForm.controls.SurfaceTemp.valid && diveForm.controls.BottomTemp.valid" style="border:none;">3</div>
+                    <div class="step3" *ngIf="!diveForm.controls.AirTemp.valid || !diveForm.controls.SurfaceTemp.valid || !diveForm.controls.BottomTemp.valid" style="border-color:#eb445a;">3</div>
+                </ion-col>
+                <ion-col class="ion-align-self-center">
+                  <div class="step4" style="border:none;">4</div>
+              </ion-col>
+              </ion-row>
+            </ion-grid>
+      
+            <ion-progress-bar *ngIf="diveForm.controls.AirTemp.valid && diveForm.controls.SurfaceTemp.valid && diveForm.controls.BottomTemp.valid && diveForm.controls.TimeOut.valid && diveForm.controls.TimeIn.valid && diveForm.controls.DiveDate.valid && diveForm.controls.DiveTypeLink.valid && diveForm.controls.DiveSite.valid " color="success" value="0.75" style="margin-bottom: 20px;--buffer-background:#264653;"></ion-progress-bar>
+            <ion-progress-bar *ngIf="!diveForm.controls.AirTemp.valid || !diveForm.controls.SurfaceTemp.valid || !diveForm.controls.BottomTemp.valid || !diveForm.controls.TimeOut.valid || !diveForm.controls.TimeIn.valid || !diveForm.controls.DiveDate.valid || !diveForm.controls.DiveTypeLink.valid || !diveForm.controls.DiveSite.valid" color="danger" value="0.75" style="margin-bottom: 20px;--buffer-background:#264653;"></ion-progress-bar>
+            
+          </div>
+    
+          <!--Form Fields-->
+    
+          <ion-grid style="padding: 0;margin: 0;">
+            <ion-row> 
+              <!--Left Title Pane-->
+              <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
+                <label class="divSubHead" style="margin-top: 10px;">Weather</label>
+
+                <div id="imgSurroundDiv">
+                  <ion-img src="../../assets/images/Weather/{{WeatherDescription.toLowerCase()}}.png" alt="{{WeatherDescription}}" id="img" ></ion-img>
+                </div>
+
+                <label class="infoLabel" style="text-align: left; margin-bottom:10px;">
+                  Moon Phase: {{MoonPhase}} <br>
+                  Wind Speed: {{WindSpeed}} <br>
+                  Temperature: {{MinTempAPI}}°C - {{MaxTempAPI}}°C <br>
+                </label>
+
+              </ion-col>
+              <!-- Dive Location Pane -->
+              <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane" style="padding-top:10%;">
+                    <ion-row >
+                        <ion-item color="dark">
+                          <ion-label position="floating">Air Temperature (°C)</ion-label>
+                          <ion-input type="number" #aTemp placeholder={{MaxTempAPI}}  formControlName="AirTemp"  [(ngModel)]="diveObj.AirTemp"  [class.invalid]="!diveForm.controls.AirTemp.valid && (diveForm.controls.AirTemp.dirty )"></ion-input>
+                        </ion-item>
+                    </ion-row>
+                    <ion-row >
+                      <ion-item color="dark">
+                        <ion-label position="floating">Surface Temperature (°C)</ion-label>
+                        <ion-input type="number" #sTemp placeholder={{MinTempAPI}} formControlName="SurfaceTemp"  [(ngModel)]="diveObj.SurfaceTemp"  [class.invalid]="!diveForm.controls.SurfaceTemp.valid && (diveForm.controls.SurfaceTemp.dirty )"></ion-input>
+                      </ion-item>
+                    </ion-row>
+                    <ion-row>
+                      <ion-item color="dark">
+                        <ion-label position="floating">Bottom Temperature (°C)</ion-label>
+                        <ion-input type="number" #bTemp placeholder={{MinTempAPI}} formControlName="BottomTemp"  [(ngModel)]="diveObj.BottomTemp"  [class.invalid]="!diveForm.controls.BottomTemp.valid && (diveForm.controls.BottomTemp.dirty )"></ion-input>
+                      </ion-item>
+                    </ion-row>
+               </ion-col>
+             </ion-row>
+          </ion-grid>
+    
+          </div>
+          <div id="fourthFormPage" *ngIf="fourthPageVisible" style="min-height: 400px;">
+            <!--Steps & Progress Bar-->
+            <div id="DiveProgress">
+              <ion-grid style="padding: 0;margin: 0;">
+                <ion-row>
+                  <ion-col class="ion-align-self-center">
+                    <div class="step1" *ngIf="diveForm.controls.DiveTypeLink.valid && diveForm.controls.DiveSite.valid ">1</div> 
+                    <div class="step1" *ngIf="!diveForm.controls.DiveTypeLink.valid || !diveForm.controls.DiveSite.valid" style="border-color:#eb445a;">1</div> 
+              
+                  </ion-col>
+                  <ion-col class="ion-align-self-center">
+                      <div class="step2" *ngIf="diveForm.controls.TimeOut.valid && diveForm.controls.TimeIn.valid && diveForm.controls.DiveDate.valid"  style="border:none;">2</div>
+                      <div class="step2" *ngIf="!diveForm.controls.TimeOut.valid || !diveForm.controls.TimeIn.valid || !diveForm.controls.DiveDate.valid" style="border-color:#eb445a;">2</div>
+                  </ion-col>
+                  <ion-col class="ion-align-self-center">
+                      <div class="step3" *ngIf="diveForm.controls.AirTemp.valid && diveForm.controls.SurfaceTemp.valid && diveForm.controls.BottomTemp.valid" style="border:none;">3</div>
+                      <div class="step3" *ngIf="!diveForm.controls.AirTemp.valid || !diveForm.controls.SurfaceTemp.valid || !diveForm.controls.BottomTemp.valid" style="border-color:#eb445a;">3</div>
+                  </ion-col>
+                  <ion-col class="ion-align-self-center">
+                    <div class="step4" *ngIf="diveForm.controls.Description.valid && diveForm.controls.Depth.valid && diveForm.controls.Visibility.valid && diveForm.controls.Buddy.valid && diveForm.controls.DivePublicStatus.valid"  style="border:none;">4</div>
+                    <div class="step4" *ngIf="!diveForm.controls.Description.valid || !diveForm.controls.Depth.valid || !diveForm.controls.Visibility.valid || !diveForm.controls.Buddy.valid || !diveForm.controls.DivePublicStatus.valid"  style="border-color:#eb445a;">4</div>
+                </ion-col>
+                </ion-row>
+              </ion-grid>
+        
+              <ion-progress-bar *ngIf="diveForm.controls.Description.valid && diveForm.controls.Depth.valid && diveForm.controls.Visibility.valid && diveForm.controls.Buddy.valid && diveForm.controls.DivePublicStatus.valid && diveForm.controls.AirTemp.valid && diveForm.controls.SurfaceTemp.valid && diveForm.controls.BottomTemp.valid && diveForm.controls.TimeOut.valid && diveForm.controls.TimeIn.valid && diveForm.controls.DiveDate.valid && diveForm.controls.DiveTypeLink.valid && diveForm.controls.DiveSite.valid " color="success" value="1" style="margin-bottom: 20px;--buffer-background:#264653;"></ion-progress-bar>
+              <ion-progress-bar *ngIf="!diveForm.controls.Description.valid || !diveForm.controls.Depth.valid || !diveForm.controls.Visibility.valid || !diveForm.controls.Buddy.valid || !diveForm.controls.DivePublicStatus.valid || !diveForm.controls.AirTemp.valid || !diveForm.controls.SurfaceTemp.valid || !diveForm.controls.BottomTemp.valid || !diveForm.controls.TimeOut.valid || !diveForm.controls.TimeIn.valid || !diveForm.controls.DiveDate.valid || !diveForm.controls.DiveTypeLink.valid || !diveForm.controls.DiveSite.valid" color="danger" value="1" style="margin-bottom: 20px;--buffer-background:#264653;"></ion-progress-bar>
+              
+            </div>
+      
+            <!--Form Fields-->
+      
+            <ion-grid style="padding: 0;margin: 0;">
+              <ion-row> 
+                <!--Left Title Pane-->
+                <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
+                  <ion-row>
+                    <label class="divSubHead" style="margin-top: 10%">Dive Details</label>
+                  </ion-row>
+                  <ion-row style="margin-top:4%;">
+                    <div class="searchableSelect" >
+                      <ion-row>
+                        <ion-col>
+                          <ion-label class="searchableSelectLabel" >Add Instructor</ion-label>
+                          <input list="diveI"  placeholder="Add Instructor"  [(ngModel)]="instructorInput" formControlName="InstructorLink" #Spec (input)="InstructorListFinder()" class="searchableSelectInput" >
+                            <datalist id="diveI">
+                                <option *ngFor='let i of InstructorLst' value={{i}}></option>
+                            </datalist>
+                        </ion-col>
+                        <ion-col>
+                          <ion-button id="addBtn" #addBtn (click)="addInstructor()"   >
+                            <ion-icon name="add"></ion-icon>
+                          </ion-button>
+                        </ion-col>
+                      </ion-row>
+                      </div>
+                  </ion-row>
+                  <ion-row *ngIf="showInstructors">
+                        <ion-grid id="InstructorTable">
+                          <ion-row class="InstructorListHead"> Instructors </ion-row>
+                          <ion-row  *ngFor='let ui of instructorUserInput' class="InstructorListTableRow">
+                              <ion-col size="12">
+                                <label>{{ ui }} </label>
+                                <ion-button (click)="removeInstructor(ui)" color="dark" id='removeBtn'>
+                                  <ion-icon name="trash-bin"></ion-icon>
+                                </ion-button>
+                              </ion-col>
+                          </ion-row>
+                        </ion-grid>
+                  </ion-row>
+                </ion-col>
+                <!-- Dive Location Pane -->
+                <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane" style="padding-top:10px;">
+                      <ion-row >
+                        <div class="searchableSelect" style="width:90%;margin:auto;">
+                          <ion-label class="searchableSelectLabel">Buddy</ion-label>
+                          <input list="buddylst" formControlName="Buddy" class="searchableSelectInput" [(ngModel)]="diveObj.Buddy" placeholder="Insert Buddy" (keypress)="buddyListFinder()" #bud>
+                          <datalist id="buddylst" >
+                              <option *ngFor='let b of BuddyLst' value={{b}}></option>
+                          </datalist>
+                        </div>
+                      </ion-row>
+                      <ion-row >
+                        <ion-item color="dark">
+                          <ion-label position="stacked">Do you want this dive to be logged publicly?</ion-label>
+                          <ion-checkbox color="dark"  #public formControlName="DivePublicStatus"  [(ngModel)]="diveObj.DivePublicStatus"  [class.invalid]="!diveForm.controls.DivePublicStatus.valid && (diveForm.controls.DivePublicStatus.dirty )" ></ion-checkbox>
+                        </ion-item>
+                      </ion-row>
+                      <ion-row>
+                        <ion-item color="dark">
+                          <ion-label position="floating">Visibility (m)</ion-label>
+                          <ion-input type="number" #vis formControlName="Visibility"  [(ngModel)]="diveObj.Visibility"  [class.invalid]="!diveForm.controls.Visibility.valid && (diveForm.controls.Visibility.dirty )"></ion-input>
+                        </ion-item>
+                      </ion-row>
+                      <ion-row >
+                        <ion-item color="dark">
+                          <ion-label position="floating">Depth (m)</ion-label>
+                          <ion-input type="number" #dep formControlName="Depth"  [(ngModel)]="diveObj.Depth"  [class.invalid]="!diveForm.controls.Depth.valid && (diveForm.controls.Depth.dirty )"></ion-input>
+                        </ion-item>
+                      </ion-row>
+                      <ion-row >
+                        <ion-item color="dark">
+                          <ion-label position="floating">Dive Description</ion-label>
+                          <ion-textarea #desc formControlName="Description"  [(ngModel)]="diveObj.Description"  [class.invalid]="!diveForm.controls.Description.valid && (diveForm.controls.Description.dirty )"></ion-textarea>
+                        </ion-item>
+                      </ion-row>
+                      <ion-row>
+                        <ion-item >
+                          <ion-label  position="stacked">Rate This Dive </ion-label>
+                          <br>
+                            <rating formControlName="Rating"
+                                readonly="false" 
+                                size="default"
+                                (rateChange)="onRateChange($event)">
+                          </rating>
+                      </ion-item>
+                      </ion-row>
+                 </ion-col>
+               </ion-row>
+            </ion-grid>
+      
+            </div>
+      </form>
+      <div id="formNavControlDiv">
+        <button id="prev" *ngIf="!firstPageVisible" (click)="previousPage()">Previous</button>
+        <button id="next" *ngIf="!fourthPageVisible" (click)="nextPage()">Next</button>
+        <button id="subBtn"  *ngIf="fourthPageVisible" (click)="DiveLogSubmit()">Submit</button>
+      </div>
+  </div>
+
 
 </ion-content>

@@ -5,6 +5,13 @@ $red: #E76F51 ;
 $yellow : #E9C46A ;
 $inputBackgroundColor: #181e21;
 
+@media (max-width: 767px) {
+  .TableContainer{
+    width: 95% !important;
+  }
+
+}
+
 
 ion-content.background{
   --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
@@ -24,7 +31,6 @@ table{
    box-shadow:          3px 3px 2px 3px $lightBlue;
 
   th, td {
-  padding: 0.25rem;
   overflow-y:hidden;
   top: 0;
   }
@@ -36,7 +42,7 @@ table{
 
 
    td{
-       padding: 10px;
+       padding: 5px;
        font-family: 'Barlow Semi Condensed', sans-serif;
    }
 
@@ -91,13 +97,107 @@ table{
 
 
 
-ion-button{
-  float:right;
-  --border-radius: 100% ;
-  margin-right: 7%;
-  margin-top: 10px;
-  width: 50px;
-  height:50px;
-  padding:0;
+
+
+
+.PopUpMessageDiv{
+  width: 80%;
+  margin: auto;
+  color: white;
+  text-align: center;
+  background-color: $inputBackgroundColor;
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top:7%;
+  min-height: 100px;
+
+  ion-icon{
+    float: right;
+  }
+
+  .PopUpMessageMsg{
+    margin-top:2%;
+    margin-bottom: 2%;
+  }
+
+  .PopUpMessageLink{
+    color: $red;
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+
+  .PopUpMessageLink:hover{
+    color: $orange;
+  }
+  
+
+}
+
+@mixin DivContainers{
+  background-color: rgba(38, 70, 83, 0.6);
+  margin: auto;
+  border-bottom: solid white 0.5px;
+  border-top: solid white 0.5px;
+  width:  70% ;
+  padding: 0;
+  margin-top: 30px;
+  padding: 0px;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+
+  ion-button{
+    float:right;
+    --border-radius: 100% ;
+    margin-right: 7%;
+    width: 50px;
+    height:50px;
+    padding:0;
+    margin-top:0px !important;
+  }
+}
+
+.TableContainer{
+  @include DivContainers;
+}
+
+.PrivateDiveLogTable{
+
+
+  .PrivateDiveLogHead{
+    text-align: center;
+    background-color: $inputBackgroundColor ;
+    color: $orange ;
+    padding: 5px;
+    position: sticky;
+    top: 0;
+    font-family: 'Righteous';
+    display: swap ;
+    font-size: larger;
+
+    .TableHeadText{
+      padding-top: 15px;
+      font-size: x-large;
+    }
+    
+  }
+
+  .PrivateDiveLogRow{
+    background-color: $inputBackgroundColor ;
+    color: white;
+    padding: 5px;
+    font-size: large;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    cursor: pointer;
+    text-align: center;
+    
+  }
+
+  .PrivateDiveLogRow:hover{
+    background-color: $darkBlue;
+  }
+
 }
 

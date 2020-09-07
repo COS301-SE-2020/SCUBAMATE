@@ -1,0 +1,176 @@
+$darkBlue : #264653 ;
+$lightBlue : #2A9D8F ;
+$orange: #F4A261 ; 
+$red: #E76F51 ;
+$yellow : #E9C46A ;
+$inputBackgroundColor: #181e21;
+$darkRed: #d66853;
+
+
+@media (max-width: 767px) {
+
+  .newUser{
+    width: 95% !important ; 
+  }
+
+}
+
+ion-content.background{
+  --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
+}
+.productHeader {
+    --background: transparent;
+}
+
+ion-grid {
+  --ion-grid-padding: 0px;
+  ion-row {
+      padding: 0px;
+  }
+
+  ion-col {
+      padding: 0px;
+      width:100%;
+  }
+}
+
+
+.newUser{
+  background-color: rgba(38, 70, 83, 0.4);
+  width: 70%;
+  margin: auto;
+  border-bottom: solid white 0.5px;
+  border-top: solid white 0.5px;
+  text-align: center;
+  margin-bottom: 50px;
+
+
+  #rightPane{
+    padding: 2%;
+  }
+  #leftPane{
+    background-color: rgba(38, 70, 83, 0.9);
+    height: inherit  ;
+    margin:0;
+    text-align: center;
+    padding-bottom: 1%;
+  }
+
+  #profileSurroundDiv{
+      width:230px;
+      height:230px;
+      padding:0;
+      margin: auto;
+      margin-top: 5%;
+      margin-bottom: 5%;
+      border-radius: 100% !important;
+      overflow: hidden;
+      background-color:  rgba(24, 30, 33, 0.4) ;
+      text-align: center;
+  }
+
+  #userProfile{
+    //  object-fit: cover;
+
+      width:200px;
+      height:200px;
+      padding:0;
+      margin: auto;
+      margin-top:7%;
+      margin-bottom:7%;
+      border-radius: 100% !important;
+      overflow: hidden;
+      
+    }
+
+
+    #divHead{
+        font-size:  30px ;
+        font-family: 'Righteous';
+        display: swap ;
+        color: white;
+        margin-bottom: 20px;
+    }
+
+  .subLabel{
+    font-size:  20px ;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    color: white;
+    border-bottom: solid white 0.5px;
+    border-top: solid white 0.5px;
+  }
+
+  input[type=submit]{
+    padding-top:70%;
+    margin-top: 40px;
+    margin-bottom: 50px;
+    width: 50%;
+    background-color: $red  ;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 5px;
+    margin:auto;
+  }
+
+   input[type=submit]:hover{
+    background-color: $darkRed ;
+    font-family: 'Righteous';
+    display: swap ;
+  }
+
+
+
+}
+
+#subBtn{
+  padding-top:70%;
+  margin-top: 40px;
+  margin-bottom: 50px;
+  width: 50%;
+  background-color: $red  ;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 5px;
+  margin:auto;
+}
+
+.divSubHead{
+  font-size:  25px ;
+  font-family: 'Righteous';
+  display: swap ;
+  color: white;
+  width: 100%;
+  margin: auto;
+  margin-bottom: 20px;
+  margin-top: 15px; 
+}
+
+.divHeadSection{
+  background-color: rgba(38, 70, 83, 0.9);
+  padding-left: 25px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.divBodySection{
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.FormErrorControlMessage{
+  color: #ff5b71 ;
+}
+
+
+
+ 
+
+  
