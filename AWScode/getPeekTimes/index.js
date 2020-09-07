@@ -1,16 +1,25 @@
-'use strict';
+ 'use strict';
 const AWS = require('aws-sdk');
 AWS.config.update({region: "af-south-1"});
-const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
 
 exports.handler = async (event, context) => {
-    let body = JSON.parse(event.body);
-    const AccessToken = body.AccessToken;
-    const DiveSite = body.DiveSite;
 
+    let body = JSON.parse(event.body);
+    let AccessToken = body.AccessToken;
+    const DiveSite = body.DiveSite;
+    const YearToSearch = body.YearToSearch;
+    
     const GuidSize = 36;
     const AccountGuid = AccessToken.substring(0,GuidSize);
 
+    /* Verify AccessToken  */
+    const params = {
+        TableName: "Scubamate",
+        Key: {
+            "AccountGuid": AccountGuid
+        }
+    };
+    
     function compareDates(t,e){
         let returnBool;
         if(t.getFullYear()!=e.getFullYear()){
@@ -39,18 +48,19 @@ exports.handler = async (event, context) => {
         }
         return returnBool;
     }
-
-    /* Verify AccessToken  */
-    const params = {
-        TableName: "Scubamate",
-        Key: {
-            "AccountGuid": AccountGuid
-        },
-        ProjectionExpression : "AccessToken, Expires"
-    };
+    function contains(arr,search){
+        let returnBool = false;
+        arr.forEach(function(item) {
+            if(item==search){
+                returnBool=true;
+            }
+        });
+        return returnBool;
+    }
     let responseBody;
     const undef = 0;
     let statusCode = undef;
+    const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
     
     try {     
         const data = await documentClient.get(params).promise();
@@ -59,110 +69,106 @@ exports.handler = async (event, context) => {
             statusCode = 403;
             responseBody = "Invalid Access Token" ;
         }
-        else if(compareDates( new Date(),new Date(data.Item.Expires))){
+        else if( compareDates(new Date(),new Date(data.Item.Expires)) ){
             responseBody = "Access Token Expired!";
             statusCode = 403;
-    
+        }
+        if(data.Item.AccountType != "Admin" && data.Item.AccountType != "SuperAdmin"){
+            statusCode = 403;
+            responseBody = "Invalid Permissions" ;
+        }
+        else{
+            //Account Valid
+            /* Get List Of Dives */
+            let filter = "begins_with(DiveID, :check)";
+            let expVals = {
+                    ':check': "D",
+                };
+                
+            //specialise if year to search is given
+            if(YearToSearch!=="*"){
+                expVals = {
+                    ':diveDate': YearToSearch,
+                };
+            }
+            
+            //specialise if dive site is given
+            if(DiveSite !== "*"){
+                if(YearToSearch !=="*" ){
+                    filter+=" begins_with(#diveDate, :diveDate) AND DiveSite = :diveSite";
+                    expVals = {
+                        ':diveDate': YearToSearch,
+                        ':diveSite': DiveSite,
+                    };
+                }
+                else{
+                    filter =" DiveSite = :diveSite";
+                    expVals = {
+                        ':diveSite': DiveSite,
+                    };
+                }
+                
+            }
+            const paramsDives = {
+                TableName: 'Dives',
+                ProjectionExpression: "#diveDate, TimeIn", 
+                FilterExpression: filter,
+                ExpressionAttributeNames: {
+                    '#diveDate': 'DiveDate',
+                },
+                ExpressionAttributeValues: expVals
+            };
+
+            try{
+                const dataD = await documentClient.scan(paramsDives).promise();
+                let toReturn = [];
+                let addedTimes = [];
+                const hourLength = 2;
+                dataD.Items.forEach(function (item){
+                    let Hour = item.TimeIn.substring(0, hourLength);
+                    item.Hour=Hour;
+                    if(contains(addedTimes,Hour)){
+                        //If hour has been added already
+                        let result = toReturn.filter(obj => {
+                          return obj.Hour === Hour;
+                        });
+                        result[0].AmountOfDives++;
+                    }
+                    else{
+                        //Hour not added yet
+                        let itemToReturn = {
+                            "Hour" : Hour,
+                            "AmountOfDives" : 1
+                        };
+                        toReturn.push(itemToReturn);
+                        addedTimes.push(Hour);
+                    }
+                });
+                var returnList = [];
+                returnList.push({ReturnedList: toReturn});
+                responseBody = returnList[0];
+                statusCode = 200;
+            }
+            catch (err) {
+                statusCode = 403;
+                responseBody ="Unable to Find Dives: "+err;
+            }
         }
 
     } catch (err) {
         statusCode = 403;
-        responseBody = "Invalid Access Token " + err;
+        responseBody = "Unable to Find Information";
     }
 
-    /*Only proceed if access token is valid*/
-    if(statusCode==undef){
-        let filter = "#site = :site AND #app = :app";
-        let expVals = {
-            ':diveSite': DiveSite,
-            ":app" : true
-        };
-        let expNames ={
-            "#site" : "DiveSite",
-            "#app" : "Approved"
-        };
-
-        if(DiveSite.localeCompare("*") == 0){
-            filter ="#app = :app";
-            expNames = {
-                "#app" : "Approved"
-            }
-            expVals = {
-                ":app" : true
-            };
-         }
-            
-        var diveParams = {
-            TableName: "Dives",
-            ProjectionExpression: "Rating",
-            FilterExpression: filter, 
-            ExpressionAttributeNames:expNames,
-            ExpressionAttributeValues:expVals
-        };
-        
-        try {
-            const dives = await documentClient.scan(diveParams).promise();
-            
-            if(dives.Items.length==0){
-                responseBody = "No ratings found for this dive site";
-                statusCode = 404;
-            }
-            else{
-                /*Count amount of ratings per rating type (1,2,3,4,5) */
-                let ratings = [0,0,0,0,0];
-                let total = 0;
-                dives.Items.forEach(function(dive) {
-                    if(dive.Rating != undefined)
-                    {
-                        ratings[dive.Rating-1] += 1;
-                        total++;
-                    }
-                })
-                responseBody = '{ "'+ DiveSite +'" : [[';
-                for(var i=1; i<6; i++)
-                {
-                    responseBody += '{ "Rating" : "Rating ' +  i + '",' +
-                                    '"Amount" : "' + ratings[i-1] + '"}';
-                    if(i<5){
-                        responseBody += ',';
-                    }
-                } 
-                responseBody += '],{ "Total" : "' + total + '"}],';
-                responseBody += '"' + DiveSite +'2" : [[';
-                for(var i=1; i<6; i++)
-                {
-                    responseBody += '{ "Rating" : "Rating ' +  i + '",' +
-                                    '"Amount" : "' + ratings[i-1] + '"}';
-                    if(i<5){
-                        responseBody += ',';
-                    }
-                } 
-                responseBody += '],{ "Total" : "' + total + '"}]}';
-                responseBody = JSON.parse(responseBody);
-                statusCode = 200;      
-             }
-        } 
-        catch(err){
-            responseBody = "No dives found at this dive site" + err + " " + responseBody;
-            statusCode = 404;
-        }
-        
-    }   
-  
-    /*Final response to be sent back*/
     const response = {
         statusCode: statusCode,
         headers: {
             "Content-Type" : "application/json",
-            "Access-Control-Allow-Origin" : "*",
-            "Access-Control-Allow-Methods" : "OPTIONS,POST,GET",
-            "Access-Control-Allow-Credentials" : true
+            "access-control-allow-origin" : "*"
         },
         body : JSON.stringify(responseBody),
         isBase64Encoded: false
     };
 
     return response;
-
 };
-
