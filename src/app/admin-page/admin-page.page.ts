@@ -59,7 +59,7 @@ export interface newSite{
   Name: string ;
   Coords: string ;
   Description: string ;
-  LogoPhoto: string ; 
+  LogoPhoto: string ;  
   TypeOfDives: string;
 }
 

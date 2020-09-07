@@ -39,6 +39,7 @@ export interface DiveLog{
   DivePublicStatus: Boolean;
   isCourse: Boolean;
   Rating: number;
+  WaterType: String;
 }
 
 
@@ -177,7 +178,8 @@ export class LogDivePage implements OnInit {
             Weather: [] ,
             DivePublicStatus: false,
             isCourse: false,
-            Rating: 0
+            Rating: 0, 
+            WaterType: "Saltwater"
           }
 
         //setup weather info in Dive Log Object
@@ -209,7 +211,8 @@ export class LogDivePage implements OnInit {
       InstructorLink: [] ,
       Weather: [] ,
       DivePublicStatus: [],
-      Rating : []
+      Rating : [],
+      WaterType: []
     });
 
     router.events.pipe(
@@ -295,7 +298,7 @@ export class LogDivePage implements OnInit {
     }
   }
 
-  onSubmit(pub: boolean, desc: string, siteOf:string, dateOf : string , timeI : string, timeO: string  , diveT: string, bud: string, vis: string, dep: string, aTemp: number, sTemp: number, bTemp: number, rting: number,  event: Event) {
+  onSubmit(pub: boolean, desc: string, siteOf:string, dateOf : string , timeI : string, timeO: string  , diveT: string, bud: string, vis: string, dep: string, aTemp: number, sTemp: number, bTemp: number, rting: number, wtype:string, event: Event) {
     event.preventDefault();
 
     //generate GUID
@@ -339,7 +342,8 @@ export class LogDivePage implements OnInit {
                     Weather: [this.WindSpeed, this.MoonPhase, this.WeatherDescription],
                     DivePublicStatus: pub,
                     isCourse: this.showCourseInput,
-                    Rating: rting
+                    Rating: rting,
+                    WaterType: wtype
                   } as DiveLog;
           
               //console.log(log);
@@ -433,14 +437,11 @@ export class LogDivePage implements OnInit {
     this.diveObj.Visibility = this.diveObj.Visibility ;
     this.diveObj.Depth = this.diveObj.Depth;
     this.diveObj.Rating = this.RateGiven;
-    
-
+    this.diveObj.WaterType = this.diveObj.WaterType;
     //link Instructor Array
     this.diveObj.InstructorLink = this.instructorUserInput ; 
     this.diveObj.isCourse = this.showCourseInput ;
 
-
-    //console.log(this.diveObj);
 
     console.log(this.diveObj);
    this.showLoading = true;

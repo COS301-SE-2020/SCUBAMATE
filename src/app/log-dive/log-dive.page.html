@@ -253,6 +253,25 @@
                         <ion-input type="number" #bTemp placeholder={{MinTempAPI}} formControlName="BottomTemp"  [(ngModel)]="diveObj.BottomTemp"  [class.invalid]="!diveForm.controls.BottomTemp.valid && (diveForm.controls.BottomTemp.dirty )"></ion-input>
                       </ion-item>
                     </ion-row>
+                    <ion-row size="12" size-sm="12" size-md="4" size-lg="4">
+                      <ion-radio-group [(ngModel)]="diveObj.WaterType"  value="Freshwater">
+                        <ion-list-header color="dark" style="text-align:left;">
+                          <ion-label>
+                            Water Type for Dive
+                          </ion-label>
+                        </ion-list-header>
+        
+                          <ion-item color="dark">
+                            <ion-label>Freshwater</ion-label>
+                            <ion-radio value="Freshwater" (ionSelect)="radioChecked('value')"></ion-radio>
+                          </ion-item>
+                      
+                          <ion-item color="dark">
+                            <ion-label>Saltwater</ion-label>
+                            <ion-radio value="Saltwater" (ionSelect)="radioChecked('value')"></ion-radio>
+                          </ion-item>
+                      </ion-radio-group>
+                    </ion-row>
                </ion-col>
              </ion-row>
           </ion-grid>
