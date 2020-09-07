@@ -7,7 +7,7 @@ exports.handler = async (event, context) => {
     let body = JSON.parse(event.body);
     let AccessToken = body.AccessToken;
     const DiveSite = body.DiveSite;
-    const YearToSearch = body.YearToSearch;
+    const YearOfSearch  = body.YearOfSearch;
     
     const GuidSize = 36;
     const AccountGuid = AccessToken.substring(0,GuidSize);
@@ -86,18 +86,19 @@ exports.handler = async (event, context) => {
                 };
                 
             //specialise if year to search is given
-            if(YearToSearch!=="*"){
+            if(YearOfSearch !=="*"){
+                filter = "begins_with(#diveDate, :diveDate)";
                 expVals = {
-                    ':diveDate': YearToSearch,
+                    ':diveDate': YearOfSearch ,
                 };
             }
             
             //specialise if dive site is given
             if(DiveSite !== "*"){
-                if(YearToSearch !=="*" ){
-                    filter+=" begins_with(#diveDate, :diveDate) AND DiveSite = :diveSite";
+                if(YearOfSearch  !=="*" ){
+                    filter =" begins_with(#diveDate, :diveDate) AND DiveSite = :diveSite";
                     expVals = {
-                        ':diveDate': YearToSearch,
+                        ':diveDate': YearOfSearch ,
                         ':diveSite': DiveSite,
                     };
                 }
@@ -124,7 +125,9 @@ exports.handler = async (event, context) => {
                 let toReturn = [];
                 let addedTimes = [];
                 const hourLength = 2;
+                let totalDives = 0;
                 dataD.Items.forEach(function (item){
+                    totalDives++;
                     let Hour = item.TimeIn.substring(0, hourLength);
                     item.Hour=Hour;
                     if(contains(addedTimes,Hour)){
@@ -144,8 +147,9 @@ exports.handler = async (event, context) => {
                         addedTimes.push(Hour);
                     }
                 });
+                
                 var returnList = [];
-                returnList.push({ReturnedList: toReturn});
+                returnList.push({TotalNumberOfDives: totalDives, ReturnedList: toReturn});
                 responseBody = returnList[0];
                 statusCode = 200;
             }
