@@ -7,7 +7,7 @@ exports.handler = async (event, context) => {
     let body = JSON.parse(event.body);
     let AccessToken = body.AccessToken;
     const DiveSite = body.DiveSite;
-    const YearToSearch = body.YearToSearch;
+    const YearOfSearch  = body.YearOfSearch;
     
     const GuidSize = 36;
     const AccountGuid = AccessToken.substring(0,GuidSize);
@@ -73,37 +73,41 @@ exports.handler = async (event, context) => {
             responseBody = "Access Token Expired!";
             statusCode = 403;
         }
-        if(data.Item.AccountType != "Admin" && data.Item.AccountType != "SuperAdmin"){
+        if(typeof data.Item.AccountType === "undefined"){
             statusCode = 403;
             responseBody = "Invalid Permissions" ;
         }
         else{
             //Account Valid
             /* Get List Of Dives */
-            let filter = "begins_with(DiveID, :check)";
+            let filter = "Approved, :check";
             let expVals = {
-                    ':check': "D",
+                    ':check': true,
                 };
                 
             //specialise if year to search is given
-            if(YearToSearch!=="*"){
+            if(YearOfSearch !=="*"){
+                filter += " AND begins_with(#diveDate, :diveDate)";
                 expVals = {
-                    ':diveDate': YearToSearch,
+                    ':check': true,
+                    ':diveDate': YearOfSearch ,
                 };
             }
             
             //specialise if dive site is given
             if(DiveSite !== "*"){
-                if(YearToSearch !=="*" ){
-                    filter+=" begins_with(#diveDate, :diveDate) AND DiveSite = :diveSite";
+                if(YearOfSearch  !=="*" ){
+                    filter += " AND begins_with(#diveDate, :diveDate) AND DiveSite = :diveSite";
                     expVals = {
-                        ':diveDate': YearToSearch,
+                        ':check': true,
+                        ':diveDate': YearOfSearch ,
                         ':diveSite': DiveSite,
                     };
                 }
                 else{
-                    filter =" DiveSite = :diveSite";
+                    filter +=" AND DiveSite = :diveSite";
                     expVals = {
+                        ':check': true,
                         ':diveSite': DiveSite,
                     };
                 }
@@ -124,7 +128,9 @@ exports.handler = async (event, context) => {
                 let toReturn = [];
                 let addedTimes = [];
                 const hourLength = 2;
+                let totalDives = 0;
                 dataD.Items.forEach(function (item){
+                    totalDives++;
                     let Hour = item.TimeIn.substring(0, hourLength);
                     item.Hour=Hour;
                     if(contains(addedTimes,Hour)){
@@ -144,8 +150,23 @@ exports.handler = async (event, context) => {
                         addedTimes.push(Hour);
                     }
                 });
+                const hours = ["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","00"];
+                hours.forEach(function (item){
+                   if (!contains(addedTimes,item)){
+                       let itemToReturn = {
+                            "Hour" : item,
+                            "AmountOfDives" : 0
+                        };
+                        toReturn.push(itemToReturn);
+                        addedTimes.push(item);
+                   }
+                });
+                toReturn.sort((a, b) => a.Hour - b.Hour);
+                toReturn.forEach(function (item){
+                   item.Hour = item.Hour +":00";
+                });
                 var returnList = [];
-                returnList.push({ReturnedList: toReturn});
+                returnList.push({TotalNumberOfDives: totalDives, ReturnedList: toReturn});
                 responseBody = returnList[0];
                 statusCode = 200;
             }
