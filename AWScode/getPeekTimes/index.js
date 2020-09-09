@@ -80,15 +80,16 @@ exports.handler = async (event, context) => {
         else{
             //Account Valid
             /* Get List Of Dives */
-            let filter = "begins_with(DiveID, :check)";
+            let filter = "Approved, :check";
             let expVals = {
-                    ':check': "D",
+                    ':check': true,
                 };
                 
             //specialise if year to search is given
             if(YearOfSearch !=="*"){
-                filter = "begins_with(#diveDate, :diveDate)";
+                filter += " AND begins_with(#diveDate, :diveDate)";
                 expVals = {
+                    ':check': true,
                     ':diveDate': YearOfSearch ,
                 };
             }
@@ -96,15 +97,17 @@ exports.handler = async (event, context) => {
             //specialise if dive site is given
             if(DiveSite !== "*"){
                 if(YearOfSearch  !=="*" ){
-                    filter =" begins_with(#diveDate, :diveDate) AND DiveSite = :diveSite";
+                    filter += " AND begins_with(#diveDate, :diveDate) AND DiveSite = :diveSite";
                     expVals = {
+                        ':check': true,
                         ':diveDate': YearOfSearch ,
                         ':diveSite': DiveSite,
                     };
                 }
                 else{
-                    filter =" DiveSite = :diveSite";
+                    filter +=" AND DiveSite = :diveSite";
                     expVals = {
+                        ':check': true,
                         ':diveSite': DiveSite,
                     };
                 }
