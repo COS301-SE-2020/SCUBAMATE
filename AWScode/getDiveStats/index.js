@@ -1,4 +1,4 @@
- 'use strict';
+'use strict';
 const AWS = require('aws-sdk');
 AWS.config.update({region: "af-south-1"});
 
@@ -72,7 +72,7 @@ exports.handler = async (event, context) => {
             responseBody = "Access Token Expired!";
             statusCode = 403;
         }
-        if(data.Item.AccountType != "Admin" && data.Item.AccountType != "SuperAdmin"){
+        if(typeof data.Item.AccountType === "undefined"){
             statusCode = 403;
             responseBody = "Invalid Permissions" ;
         }
@@ -138,6 +138,7 @@ exports.handler = async (event, context) => {
                         addedMonths.push(item);
                    }
                 });
+                
                 toReturn.sort((a, b) => a.Month - b.Month);
                 toReturn[0].Month = "Jan";
                 toReturn[1].Month = "Feb";
