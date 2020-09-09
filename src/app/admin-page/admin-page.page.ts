@@ -1600,9 +1600,9 @@ getDiveCentreInformation(){
             this.showLoading = false;
             
             if(err.error){
-              this.generalAlert("Number Of Dives Chart Error", err.error);
+              this.generalAlert("Peak Time Dives Chart Error", err.error);
             }else{
-              console.log("Could not access number Dives At Site Chart Data");
+              console.log("Could not access peak times Dives At Site Chart Data");
             }
             
           });
