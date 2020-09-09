@@ -268,7 +268,7 @@ export class AdminPagePage implements OnInit {
 
           var rateDivesBody ={
             "AccessToken" : localStorage.getItem("accessToken") ,
-            "DiveSite" : "Shark Alley"
+            "DiveSite" : "*"
           };
 
           this.showLoading = true ;
@@ -277,7 +277,7 @@ export class AdminPagePage implements OnInit {
               
               console.log(data);
       
-                this.drawRatingDivesAtSiteChart(data, "Rating of Shark Alley");
+                this.drawRatingDivesAtSiteChart(data, "Rating of All Dive Sites");
             
         
           },err =>{
@@ -1264,6 +1264,11 @@ getDiveCentreInformation(){
 
 
   ///Functions for drawing charts
+  searchAllDiveSitesCharts( YS ){
+    this.DoSiteYearChartSearch(YS) ;
+    this.DoSiteRatingChartSearch() ;
+  }
+
   random_rgba(){
     var o = Math.round, r= Math.random, s=255 ;
     return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ', 0.7)' ;
@@ -1334,7 +1339,7 @@ getDiveCentreInformation(){
         display: true,
         scaleLabel: {
           display: true,
-          labelString: 'Number'
+          labelString: 'Total Dives'
         }
       } ]
     }
@@ -1354,8 +1359,8 @@ getDiveCentreInformation(){
   drawRatingDivesAtSiteChart(returnedData, msg){
 
 
-    let keys = returnedData["Ratings"].map(d => d.Rating);
-    let values = returnedData["Ratings"].map(d => d.Amount);
+    let keys = returnedData["Ratings"][0].map(d => d.Rating);
+    let values = returnedData["Ratings"][0].map(d => d.Amount);
 
 
     this.pieChartDivesAtSiteRating = new Chart(this.pieCanvasDivesAtSiteRating.nativeElement,{
@@ -1454,7 +1459,13 @@ getDiveCentreInformation(){
         
         console.log(data);
 
+        if(this.siteInput=="*")
+        { 
+          this.updateRatingDivesAtSiteChart(data, "Overall Rating of All Sites");
+        }else{
           this.updateRatingDivesAtSiteChart(data, "Rating of " +this.siteInput);
+        }
+          
       
   
     },err =>{

@@ -11,9 +11,7 @@ ion-content.background{
   --background: url(../../assets/images/sea.jpg) 0 0/100% 100% no-repeat;
 }
 
-canvas{
-  min-height: 250px;
-}
+
 
 #profileSurroundDiv{
   width:230px;
@@ -262,3 +260,18 @@ canvas{
     font-family: 'Barlow Semi Condensed', sans-serif;
     color: gray;
   }
+
+//Graphs
+
+#diveSiteGraphsDiv{
+  @include divContainer;
+  width: 90%;
+
+  #diveGraphSearch{
+    width: 100%;
+  }
+
+  canvas{
+    min-height: 270px;
+  }
+}
