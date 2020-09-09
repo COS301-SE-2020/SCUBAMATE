@@ -80,7 +80,7 @@ exports.handler = async (event, context) => {
         else{
             //Account Valid
             /* Get List Of Dives */
-            let filter = "Approved, :check";
+            let filter = "Approved = :check";
             let expVals = {
                     ':check': true,
                 };
