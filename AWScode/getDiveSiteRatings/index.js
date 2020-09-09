@@ -117,7 +117,7 @@ exports.handler = async (event, context) => {
                         total++;
                     }
                 })
-                responseBody = '{ "'+ DiveSite +'" : [[';
+                responseBody = '{ "Ratings" : [[';
                 for(var i=1; i<6; i++)
                 {
                     responseBody += '{ "Rating" : "Rating ' +  i + '",' +
