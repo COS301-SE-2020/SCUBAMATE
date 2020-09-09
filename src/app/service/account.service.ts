@@ -16,6 +16,7 @@ export class accountService
       const options = {
             headers: new HttpHeaders({
               'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*'
             })
           };
 
@@ -36,6 +37,7 @@ export class accountService
       const options = {
             headers: new HttpHeaders({
               'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*'
             })
           };
 
@@ -53,6 +55,7 @@ export class accountService
    const options = {
           headers: new HttpHeaders({
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
           }) 
         };
       
@@ -65,15 +68,16 @@ export class accountService
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         }) 
       };
 
       let lS =  localStorage.getItem("accessToken");
-      console.log(lS);
+     // console.log(lS);
       var PostData = {
         "AccessToken" : lS
       }
-      return this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/getUser/getuser', PostData, options );
+      return this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/UserAccountFull/getuser', PostData, options );
  
     }
 
@@ -81,6 +85,7 @@ export class accountService
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         }) 
       };
 
@@ -94,6 +99,7 @@ export class accountService
       const options = {
           headers: new HttpHeaders({
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
           })
         };
 
@@ -111,6 +117,7 @@ export class accountService
       const options = {
           headers: new HttpHeaders({
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
           })
         };
 
@@ -127,6 +134,7 @@ export class accountService
       const options = {
           headers: new HttpHeaders({
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
           })
         };
 
@@ -134,8 +142,8 @@ export class accountService
           "ItemType" : "C" ,
           "UserEntry" : entry
         } ;
-        console.log("Buddy Req");
-        console.log(body);
+       // console.log("Buddy Req");
+       // console.log(body);
 
        return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveTypesAndSitesAdded/divelist',body, options);
     }
@@ -145,6 +153,7 @@ export class accountService
       const options = {
           headers: new HttpHeaders({
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
           })
         };
 
@@ -152,8 +161,8 @@ export class accountService
           "ItemType" : "S" ,
           "UserEntry" : entry
         } ;
-        console.log("Buddy Req");
-        console.log(body);
+       // console.log("Buddy Req");
+        //console.log(body);
 
        return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/DiveTypesAndSitesAdded/divelist',body, options);
     }
@@ -162,6 +171,7 @@ export class accountService
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         })
       };
 
@@ -169,7 +179,7 @@ export class accountService
         Email : newUserEmail
       }
 
-      console.log(postData);
+    //  console.log(postData);
 
      return  this.httpClient.post('https://10n4obqtkh.execute-api.af-south-1.amazonaws.com/email/emailsender', postData, options );
    
@@ -179,6 +189,7 @@ export class accountService
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         })
       };
 
@@ -186,7 +197,7 @@ export class accountService
         Email : newUserEmail
       }
 
-      console.log(postData);
+     // console.log(postData);
 
      return  this.httpClient.post('https://10n4obqtkh.execute-api.af-south-1.amazonaws.com/email/emailresponder', postData, options );
    
@@ -196,11 +207,12 @@ export class accountService
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         })
       };
 
   
-      console.log(postData);
+     // console.log(postData);
 
      return  this.httpClient.post('https://8shtmsbbn8.execute-api.af-south-1.amazonaws.com/UserAccountFull/upgradeaccount', postData, options );
    
@@ -210,6 +222,7 @@ export class accountService
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         }) 
       };
 
@@ -224,6 +237,7 @@ export class accountService
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         }) 
       };
 
@@ -237,6 +251,7 @@ export class accountService
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         }) 
       };
 
@@ -249,6 +264,7 @@ export class accountService
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         }) 
       };
 
@@ -261,10 +277,9 @@ export class accountService
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         }) 
       };
-
-      
       return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/DiveCentre/updatedivecentre', PostData, options );
  
     }
@@ -273,6 +288,7 @@ export class accountService
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         }) 
       };
 
@@ -288,6 +304,7 @@ export class accountService
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         }) 
       };
 
@@ -301,6 +318,7 @@ export class accountService
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         }) 
       };
 
