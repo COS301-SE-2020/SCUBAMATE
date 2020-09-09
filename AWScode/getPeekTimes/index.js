@@ -73,7 +73,7 @@ exports.handler = async (event, context) => {
             responseBody = "Access Token Expired!";
             statusCode = 403;
         }
-        if(data.Item.AccountType != "Admin" && data.Item.AccountType != "SuperAdmin"){
+        if(typeof data.Item.AccountType === "undefined"){
             statusCode = 403;
             responseBody = "Invalid Permissions" ;
         }
@@ -147,7 +147,21 @@ exports.handler = async (event, context) => {
                         addedTimes.push(Hour);
                     }
                 });
-                
+                const hours = ["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","00"];
+                hours.forEach(function (item){
+                   if (!contains(addedTimes,item)){
+                       let itemToReturn = {
+                            "Hour" : item,
+                            "AmountOfDives" : 0
+                        };
+                        toReturn.push(itemToReturn);
+                        addedTimes.push(item);
+                   }
+                });
+                toReturn.sort((a, b) => a.Hour - b.Hour);
+                toReturn.forEach(function (item){
+                   item.Hour = item.Hour +":00";
+                });
                 var returnList = [];
                 returnList.push({TotalNumberOfDives: totalDives, ReturnedList: toReturn});
                 responseBody = returnList[0];
