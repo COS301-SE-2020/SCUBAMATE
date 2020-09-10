@@ -129,7 +129,7 @@ export class LoginPage implements OnInit {
     }
   }
 
-  onSubmit(iEmail: string, iPass: string , event : Event) {
+  onSubmit(iEmail: any , iPass: any , event : Event) {
      var attemptLogin = {Email: iEmail, Password: iPass} as LoginClass; 
      
 
