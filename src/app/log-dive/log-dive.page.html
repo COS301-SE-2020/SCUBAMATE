@@ -81,16 +81,30 @@
           <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
             <label class="divSubHead">Dive Location</label>
                 <ion-row>
-                  <ion-item color="dark"  (click)="viewCourse()" style="--border-radius:27px;text-align: center;" >
+                 <!-- <ion-item color="dark"  (click)="viewCourse()" style="--border-radius:27px;text-align: center;" >
                     <ion-label>Course</ion-label>
                     <ion-checkbox color="dark" [(ngModel)]="diveObj.isCourse"></ion-checkbox>
                   </ion-item>
+                  -->
+                  <ion-radio-group value="{{currentDiveTypeSelected}}" (ionChange)="viewCourse($event.target.value)" style="width:100%;">
+                    <ion-item color="dark">
+                      <ion-label>Course</ion-label>
+                      <ion-radio value="Course" disabled="false" (select)="diveObj.isCourse = true"></ion-radio>
+                    </ion-item>
+                    <ion-item color="dark">
+                      <ion-label>Normal</ion-label>
+                      <ion-radio value="Normal" disabled="false" (select)="diveObj.isCourse = false"></ion-radio>
+                    </ion-item>
+                  </ion-radio-group>
+
+
                 </ion-row>
               <label class="subLabel" style="margin-top: 15px;">Choose A Dive Type</label>
           </ion-col>
           <!-- Dive Location Pane -->
           <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane" style="padding-top:7%;">
-                <ion-row *ngIf="showCourseInput">
+                <!-- <ion-row  *ngIf="showCourseInput"  >-->
+                  <ion-row  *ngIf="diveObj.isCourse"  >
                   <div class="searchableSelect" color="dark">
                     <ion-label class="searchableSelectLabel">Course</ion-label>
                     <input list="courses" formControlName="DiveTypeLink" class="searchableSelectInput" [(ngModel)]="diveObj.DiveTypeLink" (input)="CourseListFinder()" placeholder="Insert The Completed Course" #diveCourse>
@@ -99,7 +113,8 @@
                     </datalist>
                   </div>
                 </ion-row>
-                <ion-row *ngIf="!showCourseInput">
+                <!-- <ion-row *ngIf="!showCourseInput"> -->
+                  <ion-row *ngIf="!diveObj.isCourse"> 
                   <div class="searchableSelect" color="dark">
                     <ion-label class="searchableSelectLabel">Dive Type</ion-label>
                     <input list="diveTypes" formControlName="DiveTypeLink" class="searchableSelectInput" [(ngModel)]="diveObj.DiveTypeLink" (input)="DiveTypeListFinder()" placeholder="Insert The Type Of Dive" #diveType>

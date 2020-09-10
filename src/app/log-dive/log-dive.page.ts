@@ -91,6 +91,7 @@ export class LogDivePage implements OnInit {
     //Viewable Inputs
     showCourseInput : boolean;
     accountType : string;
+    currentDiveTypeSelected : string = "Normal";
     //showDiveTypeInput : boolean; 
     allLoaded: boolean ;
     
@@ -393,6 +394,17 @@ export class LogDivePage implements OnInit {
     await alert.present();
   }
 
+  async presentGeneralAlert(hd, msg) {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: hd,
+      message: msg,
+      buttons: ['OK']
+    });
+  
+    await alert.present();
+  }
+
   async presentSuccessAlert() {
     const alert = await this.alertController.create({
       cssClass: 'errorAlert',
@@ -563,8 +575,16 @@ export class LogDivePage implements OnInit {
 
   }
 
-  viewCourse(){
-    this.showCourseInput = !this.showCourseInput;
+  viewCourse(typeDive: string){
+    if(typeDive == 'Normal'){
+      this.showCourseInput = false ;
+      this.diveObj.isCourse = false ;
+    }else{
+      this.showCourseInput = true ;
+      this.diveObj.isCourse = true ;
+    }
+    this.currentDiveTypeSelected = typeDive;
+    //this.showCourseInput = !this.showCourseInput;
     this.diveObj.DiveTypeLink = "";
     //this.showDiveTypeInput = !this.showDiveTypeInput; 
   }
