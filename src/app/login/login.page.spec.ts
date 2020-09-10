@@ -9,12 +9,16 @@ import {HttpModule} from '@angular/http';
 import { HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
 import { FormBuilder} from '@angular/forms';
+import { map } from 'rxjs/operators';
 
 var validData = {
-  email: "teamav301@gmail.com",
-  pass: "Scuba@AWS301!",
   accessToken : "d1d7391d-c035-28ab-0193-68a7d263d4be11ac76afb3c161…0702085a1c423b0ed53f38b9a0e6e0ad8bfe8cd3712f14be7"
 };
+
+var test ={
+  Email: "teamav301@gmail.com",
+  Password: "ScubaAWS@301!"
+}
 
 describe('LoginPage', () => {
   let component: LoginPage;
@@ -45,31 +49,6 @@ describe('LoginPage', () => {
     expect(component).toBeTruthy();
   });
 
-  it('LogUser() test', fakeAsync(() => {
-    let response = null;
-    var eventValue = {
-      Email: "teamav301@gmail.com",
-      Password: "Scuba@AWS301!"
-    };
-
-    console.log("Getting ready to call LogUser()...")
-    accService.logUser(eventValue).subscribe(
-      (resp: any) => {
-        console.log(resp);
-        response = resp;
-        console.log(response);
-        console.log('Calling api')
-      },
-      (error: any) => {
-        console.error();
-      }
-    );
-    console.log("Done calling")
-    tick();
-    expect(eventValue).toBeDefined();
-    expect(response).toBeDefined();
-  }));
-
   it('Testing ngOnInit()', () => {
     component.ngOnInit();
     expect(component.loginLabel).toBe("Sign Out");
@@ -80,11 +59,14 @@ describe('LoginPage', () => {
     expect(component.loginLabel).toBe("Sign Out");
   });
 
-  it('Testing onSubmit()', () => {
-    let navigateSpy = spyOn(router, 'navigate');
-    component.onSubmit(validData.email, validData.pass, event);
+  it('Testing LogUser()', () => {
     let accountSpy = spyOn(accService, 'logUser').and.callThrough();
+    let ans = accService.logUser(test).pipe(
+      map( res => res.body)
+    );
+    console.log(ans.operator);
     expect(accountSpy).toBeDefined();
+    expect(accService.logUser).toHaveBeenCalledWith(test);
   });
 
   it('Testing Login Functionality', () => {
