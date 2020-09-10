@@ -53,7 +53,7 @@
         <ion-grid style="padding: 0;margin: 0;">
           <ion-row>
             <ion-col class="ion-align-self-center">
-              <div class="step1" *ngIf="diveForm.controls.DiveTypeLink.valid && diveForm.controls.DiveSite.valid ">1</div> 
+              <div class="step1" *ngIf="diveForm.controls.DiveTypeLink.valid && diveForm.controls.DiveSite.valid" style="border-color:#2dd36f;">1</div> 
               <div class="step1" *ngIf="!diveForm.controls.DiveTypeLink.valid || !diveForm.controls.DiveSite.valid" style="border-color:#eb445a;">1</div> 
             </ion-col>
             <ion-col class="ion-align-self-center">
@@ -81,16 +81,24 @@
           <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
             <label class="divSubHead">Dive Location</label>
                 <ion-row>
-                  <ion-item color="dark"  (click)="viewCourse()" style="--border-radius:27px;text-align: center;" >
-                    <ion-label>Course</ion-label>
-                    <ion-checkbox color="dark" [(ngModel)]="diveObj.isCourse"></ion-checkbox>
-                  </ion-item>
+                  <ion-radio-group value="{{currentDiveTypeSelected}}" (ionChange)="viewCourse($event.target.value)" style="width:100%;">
+                    <ion-item color="dark">
+                      <ion-label>Course</ion-label>
+                      <ion-radio value="Course" disabled="false" (select)="diveObj.isCourse = true"></ion-radio>
+                    </ion-item>
+                    <ion-item color="dark">
+                      <ion-label>Normal</ion-label>
+                      <ion-radio value="Normal" disabled="false" (select)="diveObj.isCourse = false"></ion-radio>
+                    </ion-item>
+                  </ion-radio-group>
+
+
                 </ion-row>
               <label class="subLabel" style="margin-top: 15px;">Choose A Dive Type</label>
           </ion-col>
           <!-- Dive Location Pane -->
           <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane" style="padding-top:7%;">
-                <ion-row *ngIf="showCourseInput">
+                  <ion-row  *ngIf="diveObj.isCourse"  >
                   <div class="searchableSelect" color="dark">
                     <ion-label class="searchableSelectLabel">Course</ion-label>
                     <input list="courses" formControlName="DiveTypeLink" class="searchableSelectInput" [(ngModel)]="diveObj.DiveTypeLink" (input)="CourseListFinder()" placeholder="Insert The Completed Course" #diveCourse>
@@ -99,7 +107,7 @@
                     </datalist>
                   </div>
                 </ion-row>
-                <ion-row *ngIf="!showCourseInput">
+                  <ion-row *ngIf="!diveObj.isCourse"> 
                   <div class="searchableSelect" color="dark">
                     <ion-label class="searchableSelectLabel">Dive Type</ion-label>
                     <input list="diveTypes" formControlName="DiveTypeLink" class="searchableSelectInput" [(ngModel)]="diveObj.DiveTypeLink" (input)="DiveTypeListFinder()" placeholder="Insert The Type Of Dive" #diveType>
@@ -128,12 +136,12 @@
           <ion-grid style="padding: 0;margin: 0;">
             <ion-row>
               <ion-col class="ion-align-self-center">
-                <div class="step1" *ngIf="diveForm.controls.DiveTypeLink.valid && diveForm.controls.DiveSite.valid ">1</div> 
+                <div class="step1" *ngIf="diveForm.controls.DiveTypeLink.valid && diveForm.controls.DiveSite.valid " style="border-color:#2dd36f;">1</div> 
                 <div class="step1" *ngIf="!diveForm.controls.DiveTypeLink.valid || !diveForm.controls.DiveSite.valid" style="border-color:#eb445a;">1</div> 
           
               </ion-col>
               <ion-col class="ion-align-self-center">
-                  <div class="step2" *ngIf="diveForm.controls.TimeOut.valid && diveForm.controls.TimeIn.valid && diveForm.controls.DiveDate.valid"  style="border-color:#2dd36f">2</div>
+                  <div class="step2" *ngIf="diveForm.controls.TimeOut.valid && diveForm.controls.TimeIn.valid && diveForm.controls.DiveDate.valid"  style="border-color:#2dd36f;">2</div>
                   <div class="step2" *ngIf="!diveForm.controls.TimeOut.valid || !diveForm.controls.TimeIn.valid || !diveForm.controls.DiveDate.valid" style="border-color:#eb445a;">2</div>
               </ion-col>
               <ion-col class="ion-align-self-center">
@@ -191,16 +199,16 @@
             <ion-grid style="padding: 0;margin: 0;">
               <ion-row>
                 <ion-col class="ion-align-self-center">
-                  <div class="step1" *ngIf="diveForm.controls.DiveTypeLink.valid && diveForm.controls.DiveSite.valid ">1</div> 
+                  <div class="step1" *ngIf="diveForm.controls.DiveTypeLink.valid && diveForm.controls.DiveSite.valid " style="border-color:#2dd36f;">1</div> 
                   <div class="step1" *ngIf="!diveForm.controls.DiveTypeLink.valid || !diveForm.controls.DiveSite.valid" style="border-color:#eb445a;">1</div> 
             
                 </ion-col>
                 <ion-col class="ion-align-self-center">
-                    <div class="step2" *ngIf="diveForm.controls.TimeOut.valid && diveForm.controls.TimeIn.valid && diveForm.controls.DiveDate.valid"  style="border:none;">2</div>
+                    <div class="step2" *ngIf="diveForm.controls.TimeOut.valid && diveForm.controls.TimeIn.valid && diveForm.controls.DiveDate.valid"  style="border-color:#2dd36f;">2</div>
                     <div class="step2" *ngIf="!diveForm.controls.TimeOut.valid || !diveForm.controls.TimeIn.valid || !diveForm.controls.DiveDate.valid" style="border-color:#eb445a;">2</div>
                 </ion-col>
                 <ion-col class="ion-align-self-center">
-                    <div class="step3" *ngIf="diveForm.controls.AirTemp.valid && diveForm.controls.SurfaceTemp.valid && diveForm.controls.BottomTemp.valid" style="border:none;">3</div>
+                    <div class="step3" *ngIf="diveForm.controls.AirTemp.valid && diveForm.controls.SurfaceTemp.valid && diveForm.controls.BottomTemp.valid" style="border-color:#2dd36f;">3</div>
                     <div class="step3" *ngIf="!diveForm.controls.AirTemp.valid || !diveForm.controls.SurfaceTemp.valid || !diveForm.controls.BottomTemp.valid" style="border-color:#eb445a;">3</div>
                 </ion-col>
                 <ion-col class="ion-align-self-center">
@@ -234,8 +242,27 @@
 
               </ion-col>
               <!-- Dive Location Pane -->
-              <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane" style="padding-top:10%;">
-                    <ion-row >
+              <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane" style="padding-top:5%;">
+                <ion-row >
+                  <ion-col>
+                  <ion-radio-group  value="{{diveObj.WaterType}}" style="width: 100%;" (ionChange)="setWaterType($event.target.value)">
+                      <ion-list-header color="dark" style="text-align:left;width:90%;margin:auto;">
+                        <ion-label>
+                          Water Type for Dive
+                        </ion-label>
+                      </ion-list-header>
+                      <ion-item color="dark">
+                        <ion-label>Freshwater</ion-label>
+                        <ion-radio value="Freshwater" ></ion-radio>
+                      </ion-item>
+                      <ion-item color="dark">
+                        <ion-label>Saltwater</ion-label>
+                        <ion-radio value="Saltwater"></ion-radio>
+                      </ion-item>
+                  </ion-radio-group>
+                </ion-col>
+                </ion-row>
+                 <ion-row >
                         <ion-item color="dark">
                           <ion-label position="floating">Air Temperature (°C)</ion-label>
                           <ion-input type="number" #aTemp placeholder={{MaxTempAPI}}  formControlName="AirTemp"  [(ngModel)]="diveObj.AirTemp"  [class.invalid]="!diveForm.controls.AirTemp.valid && (diveForm.controls.AirTemp.dirty )"></ion-input>
@@ -264,20 +291,20 @@
               <ion-grid style="padding: 0;margin: 0;">
                 <ion-row>
                   <ion-col class="ion-align-self-center">
-                    <div class="step1" *ngIf="diveForm.controls.DiveTypeLink.valid && diveForm.controls.DiveSite.valid ">1</div> 
+                    <div class="step1" *ngIf="diveForm.controls.DiveTypeLink.valid && diveForm.controls.DiveSite.valid " style="border-color:#2dd36f;">1</div> 
                     <div class="step1" *ngIf="!diveForm.controls.DiveTypeLink.valid || !diveForm.controls.DiveSite.valid" style="border-color:#eb445a;">1</div> 
               
                   </ion-col>
                   <ion-col class="ion-align-self-center">
-                      <div class="step2" *ngIf="diveForm.controls.TimeOut.valid && diveForm.controls.TimeIn.valid && diveForm.controls.DiveDate.valid"  style="border:none;">2</div>
+                      <div class="step2" *ngIf="diveForm.controls.TimeOut.valid && diveForm.controls.TimeIn.valid && diveForm.controls.DiveDate.valid"  style="border-color:#2dd36f;">2</div>
                       <div class="step2" *ngIf="!diveForm.controls.TimeOut.valid || !diveForm.controls.TimeIn.valid || !diveForm.controls.DiveDate.valid" style="border-color:#eb445a;">2</div>
                   </ion-col>
                   <ion-col class="ion-align-self-center">
-                      <div class="step3" *ngIf="diveForm.controls.AirTemp.valid && diveForm.controls.SurfaceTemp.valid && diveForm.controls.BottomTemp.valid" style="border:none;">3</div>
+                      <div class="step3" *ngIf="diveForm.controls.AirTemp.valid && diveForm.controls.SurfaceTemp.valid && diveForm.controls.BottomTemp.valid" style="border-color:#2dd36f;">3</div>
                       <div class="step3" *ngIf="!diveForm.controls.AirTemp.valid || !diveForm.controls.SurfaceTemp.valid || !diveForm.controls.BottomTemp.valid" style="border-color:#eb445a;">3</div>
                   </ion-col>
                   <ion-col class="ion-align-self-center">
-                    <div class="step4" *ngIf="diveForm.controls.Description.valid && diveForm.controls.Depth.valid && diveForm.controls.Visibility.valid && diveForm.controls.Buddy.valid && diveForm.controls.DivePublicStatus.valid"  style="border:none;">4</div>
+                    <div class="step4" *ngIf="diveForm.controls.Description.valid && diveForm.controls.Depth.valid && diveForm.controls.Visibility.valid && diveForm.controls.Buddy.valid && diveForm.controls.DivePublicStatus.valid"  style="border-color:#2dd36f;">4</div>
                     <div class="step4" *ngIf="!diveForm.controls.Description.valid || !diveForm.controls.Depth.valid || !diveForm.controls.Visibility.valid || !diveForm.controls.Buddy.valid || !diveForm.controls.DivePublicStatus.valid"  style="border-color:#eb445a;">4</div>
                 </ion-col>
                 </ion-row>
@@ -365,7 +392,7 @@
                         </ion-item>
                       </ion-row>
                       <ion-row>
-                        <ion-item >
+                        <ion-item color="dark">
                           <ion-label  position="stacked">Rate This Dive </ion-label>
                           <br>
                             <rating formControlName="Rating"
@@ -384,7 +411,11 @@
       <div id="formNavControlDiv">
         <button id="prev" *ngIf="!firstPageVisible" (click)="previousPage()">Previous</button>
         <button id="next" *ngIf="!fourthPageVisible" (click)="nextPage()">Next</button>
-        <button id="subBtn"  *ngIf="fourthPageVisible" (click)="DiveLogSubmit()">Submit</button>
+        <button id="subBtn" *ngIf="fourthPageVisible && diveForm.controls.Description.valid && diveForm.controls.Depth.valid && diveForm.controls.Visibility.valid && diveForm.controls.Buddy.valid && diveForm.controls.DivePublicStatus.valid && diveForm.controls.AirTemp.valid && diveForm.controls.SurfaceTemp.valid && diveForm.controls.BottomTemp.valid && diveForm.controls.TimeOut.valid && diveForm.controls.TimeIn.valid && diveForm.controls.DiveDate.valid && diveForm.controls.DiveTypeLink.valid && diveForm.controls.DiveSite.valid "  (click)="DiveLogSubmit()">Submit</button>
+        <button id="subBtn" *ngIf="fourthPageVisible && !(diveForm.controls.Description.valid && diveForm.controls.Depth.valid && diveForm.controls.Visibility.valid && diveForm.controls.Buddy.valid && diveForm.controls.DivePublicStatus.valid && diveForm.controls.AirTemp.valid && diveForm.controls.SurfaceTemp.valid && diveForm.controls.BottomTemp.valid && diveForm.controls.TimeOut.valid && diveForm.controls.TimeIn.valid && diveForm.controls.DiveDate.valid && diveForm.controls.DiveTypeLink.valid && diveForm.controls.DiveSite.valid )" (click)='this.presentGeneralAlert("Invalid Dive Log", "Please provide all the information neccessary to log a dive")'>Submit</button>
+        
+            
+
       </div>
   </div>
 

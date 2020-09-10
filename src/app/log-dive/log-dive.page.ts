@@ -39,6 +39,7 @@ export interface DiveLog{
   DivePublicStatus: Boolean;
   isCourse: Boolean;
   Rating: number;
+  WaterType: String;
 }
 
 
@@ -90,6 +91,7 @@ export class LogDivePage implements OnInit {
     //Viewable Inputs
     showCourseInput : boolean;
     accountType : string;
+    currentDiveTypeSelected : string = "Normal";
     //showDiveTypeInput : boolean; 
     allLoaded: boolean ;
     
@@ -177,7 +179,8 @@ export class LogDivePage implements OnInit {
             Weather: [] ,
             DivePublicStatus: false,
             isCourse: false,
-            Rating: 0
+            Rating: 0, 
+            WaterType: "Saltwater"
           }
 
         //setup weather info in Dive Log Object
@@ -194,22 +197,23 @@ export class LogDivePage implements OnInit {
     this.diveForm = formBuilder.group({
       DiveID: ['', Validators.required],
       AccessToken: ['', Validators.required],
-      DiveDate: [Validators.required],
-      TimeIn: [ Validators.required],
-      TimeOut: [ Validators.required],
+      DiveDate: ['',Validators.required],
+      TimeIn: ['', Validators.required],
+      TimeOut: ['', Validators.required],
       Visibility:[ Validators.required],
       Depth: [ Validators.required],
       Buddy: ['', Validators.required],
       DiveTypeLink: ['', Validators.required],
-      AirTemp: [Validators.required],
-      SurfaceTemp: [ Validators.required],
-      BottomTemp: [ Validators.required],
+      AirTemp: ['',Validators.required],
+      SurfaceTemp: ['', Validators.required],
+      BottomTemp: ['', Validators.required],
       DiveSite: ['', Validators.required],
       Description: ['', Validators.required],
-      InstructorLink: [] ,
-      Weather: [] ,
-      DivePublicStatus: [],
-      Rating : []
+      InstructorLink: [''] ,
+      Weather: [''] ,
+      DivePublicStatus: [''],
+      Rating : [''],
+      WaterType: ['']
     });
 
     router.events.pipe(
@@ -295,7 +299,7 @@ export class LogDivePage implements OnInit {
     }
   }
 
-  onSubmit(pub: boolean, desc: string, siteOf:string, dateOf : string , timeI : string, timeO: string  , diveT: string, bud: string, vis: string, dep: string, aTemp: number, sTemp: number, bTemp: number, rting: number,  event: Event) {
+  onSubmit(pub: boolean, desc: string, siteOf:string, dateOf : string , timeI : string, timeO: string  , diveT: string, bud: string, vis: string, dep: string, aTemp: number, sTemp: number, bTemp: number, rting: number, wtype:string, event: Event) {
     event.preventDefault();
 
     //generate GUID
@@ -339,7 +343,8 @@ export class LogDivePage implements OnInit {
                     Weather: [this.WindSpeed, this.MoonPhase, this.WeatherDescription],
                     DivePublicStatus: pub,
                     isCourse: this.showCourseInput,
-                    Rating: rting
+                    Rating: rting,
+                    WaterType: wtype
                   } as DiveLog;
           
               //console.log(log);
@@ -389,6 +394,17 @@ export class LogDivePage implements OnInit {
     await alert.present();
   }
 
+  async presentGeneralAlert(hd, msg) {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: hd,
+      message: msg,
+      buttons: ['OK']
+    });
+  
+    await alert.present();
+  }
+
   async presentSuccessAlert() {
     const alert = await this.alertController.create({
       cssClass: 'errorAlert',
@@ -426,41 +442,41 @@ export class LogDivePage implements OnInit {
 
   DiveLogSubmit(){
 
+
     //setup weather final 
     this.diveObj.AirTemp = Number(this.diveObj.AirTemp );
     this.diveObj.SurfaceTemp = Number(this.diveObj.SurfaceTemp );
     this.diveObj.BottomTemp = Number(this.diveObj.BottomTemp );
-    this.diveObj.Visibility = this.diveObj.Visibility ;
-    this.diveObj.Depth = this.diveObj.Depth;
-    this.diveObj.Rating = this.RateGiven;
-    
-
+    this.diveObj.Rating = this.RateGiven ; 
     //link Instructor Array
     this.diveObj.InstructorLink = this.instructorUserInput ; 
     this.diveObj.isCourse = this.showCourseInput ;
 
-
-    //console.log(this.diveObj);
-
     console.log(this.diveObj);
-   this.showLoading = true;
-   if(localStorage.getItem("Backup")){
-    localStorage.removeItem("Backup");
-  }
-    this._diveService.logDive(this.diveObj).subscribe( res =>{
-                
-      //console.log(res);
-      this.showLoading = false;
-      this.presentSuccessAlert();
-      this.router.navigate(['my-dives']);
-    }, err =>{
-      if(err.error)
-      {
-        alert( err.error);
-      }else{
-        alert("Something went wrong..");
+
+      if(localStorage.getItem("Backup")){
+        localStorage.removeItem("Backup");
       }
-    });
+  
+      this.showLoading = true;
+      this._diveService.logDive(this.diveObj).subscribe( res =>{
+                  
+        //console.log(res);
+        this.showLoading = false;
+        this.presentSuccessAlert();
+        this.router.navigate(['my-dives']);
+      }, err =>{
+        if(err.error)
+        {
+          alert( err.error);
+          this.presentGeneralAlert("Unable to Log Dive", err.error);
+        }else{
+          this.presentGeneralAlert("Unable to Log Dive", "Something went wrong.. please try again");
+        }
+      });
+
+    
+    
   }
 
   saveTempLog(){
@@ -562,10 +578,22 @@ export class LogDivePage implements OnInit {
 
   }
 
-  viewCourse(){
-    this.showCourseInput = !this.showCourseInput;
+  viewCourse(typeDive: string){
+    if(typeDive == 'Normal'){
+      this.showCourseInput = false ;
+      this.diveObj.isCourse = false ;
+    }else{
+      this.showCourseInput = true ;
+      this.diveObj.isCourse = true ;
+    }
+    this.currentDiveTypeSelected = typeDive;
+    //this.showCourseInput = !this.showCourseInput;
     this.diveObj.DiveTypeLink = "";
     //this.showDiveTypeInput = !this.showDiveTypeInput; 
+  }
+
+  setWaterType(wDive: string){
+    this.diveObj.WaterType = wDive ; 
   }
 
 
