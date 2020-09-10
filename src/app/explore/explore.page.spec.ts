@@ -9,6 +9,7 @@ import {HttpModule} from '@angular/http';
 import { HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
 import { FormBuilder} from '@angular/forms';
+import { map } from 'rxjs/operators';
 
 var accessToken = "d1d7391d-c035-28ab-0193-68a7d263d4be11ac76afb3c161…0702085a1c423b0ed53f38b9a0e6e0ad8bfe8cd3712f14be7";
 
@@ -44,23 +45,28 @@ describe('ExplorePage', () => {
   });
 
   it('getPublicDives() test', () => {
-    var eventValue = "";
-
-    divService.getPublicDives().subscribe((resp : any) => {
-      console.log(resp);
-    });
-
-    expect(eventValue).toBe("");
+    let editDiveSpy = spyOn(divService, 'getPublicDives').and.callThrough();
+    expect(editDiveSpy).toBeDefined();
+    let response = divService.getPublicDives().pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(editDiveSpy).toBeDefined();
+    expect(divService.getPublicDives).toHaveBeenCalled();
   });
 
   it('getExtendedDiveCenters() test', () => {
-    var eventValue = "";
-
-    divService.getDiveCenters(eventValue).subscribe((resp : any) => {
-      console.log(resp);
-    });
-
-    expect(eventValue).toBe("");
+    var eventValue = "*";
+    var digit: number;
+    digit = 1;
+    let editDiveSpy = spyOn(divService, 'getExtendedDiveCenters').and.callThrough();
+    expect(editDiveSpy).toBeDefined();
+    let response = divService.getExtendedDiveCenters(eventValue, digit).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(editDiveSpy).toBeDefined();
+    expect(divService.getExtendedDiveCenters).toHaveBeenCalledWith(eventValue, digit);
   });
 
   it('Testing Explore Components', () => {
