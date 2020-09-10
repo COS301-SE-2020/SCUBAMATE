@@ -9,6 +9,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import {HttpModule} from '@angular/http';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { map } from 'rxjs/operators';
 
 describe('DiveSiteInformationPage', () => {
   let component: DiveSiteInformationPage;
@@ -40,14 +41,17 @@ describe('DiveSiteInformationPage', () => {
     expect(component).toBeTruthy();
   });
 
-  it('getSingleDiveSite() test', () => {
+  it('getSingleDiveCenter() test', () => {
     var center = "Clifton Rock";
 
-    divService.getSingleDiveSite(center).subscribe((resp : any) => {
-      console.log(resp);
-    });
-
-    expect(center).toBe("Clifton Rock");
+    let divSpy = spyOn(divService, 'getSingleDiveCenter').and.callThrough();
+    expect(divSpy).toBeDefined();
+    let response = divService.getSingleDiveCenter(center).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(divSpy).toBeDefined();
+    expect(divService.getSingleDiveCenter).toHaveBeenCalledWith(center);
   });
 
   it('getLocationKey() test', () => {
@@ -56,12 +60,14 @@ describe('DiveSiteInformationPage', () => {
       Longitude: "28.245230"
     };
 
-    weatService.getLocationKey(Coordinates).subscribe((resp : any) => {
-      console.log(resp);
-    });
-
-    expect(Coordinates.Latitude).toBe("-25.840380");
-    expect(Coordinates.Longitude).toBe("28.245230");
+    let weathearSpy = spyOn(weatService, 'getLocationKey').and.callThrough();
+    expect(weathearSpy).toBeDefined();
+    let response = weatService.getLocationKey(Coordinates).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(weathearSpy).toBeDefined();
+    expect(weatService.getLocationKey).toHaveBeenCalledWith(Coordinates);
   });
 
   it('getLogWeather() test', () => {
@@ -72,12 +78,13 @@ describe('DiveSiteInformationPage', () => {
       province: null
     };
 
-    weatService.getLogWeather(Key).subscribe((resp : any) => {
-      console.log(resp);
-    });
-
-    expect(Key.key).toBeNull();
-    expect(Key.city).toBeNull();
-    expect(Key.province).toBeNull();
+    let weathearSpy = spyOn(weatService, 'getLocationKey').and.callThrough();
+    expect(weathearSpy).toBeDefined();
+    let response = weatService.getLocationKey(Key).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(weathearSpy).toBeDefined();
+    expect(weatService.getLocationKey).toHaveBeenCalledWith(Key);
   });
 });
