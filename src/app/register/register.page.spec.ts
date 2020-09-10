@@ -209,7 +209,7 @@ describe('RegisterPage', () => {
     expect(accountSpy).toBeDefined();
   });
 
-  fit('Testing nextPage()', () => {
+  it('Testing nextPage()', () => {
     component.nextPage();
     if(component.signUpDiver){
       if(component.DiverFirstPageVisible){
