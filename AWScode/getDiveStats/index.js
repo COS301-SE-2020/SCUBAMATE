@@ -79,20 +79,44 @@ exports.handler = async (event, context) => {
         else{
             //Account Valid
             /* Get List Of Dives */
-            let filter = "begins_with(#diveDate, :diveDate)";
+            
+            let filter = "Approved = :check";
             let expVals = {
-                    ':diveDate': YearOfSearch,
+                    ':check': true,
                 };
-            if(DiveSite !== "*"){
-                filter+=" AND DiveSite = :diveSite";
+                
+            //specialise if year to search is given
+            if(YearOfSearch !=="*"){
+                filter += " AND begins_with(#diveDate, :diveDate)";
                 expVals = {
-                    ':diveDate': YearOfSearch,
-                    ':diveSite': DiveSite,
+                    ':check': true,
+                    ':diveDate': YearOfSearch ,
                 };
             }
+            
+            //specialise if dive site is given
+            if(DiveSite !== "*"){
+                if(YearOfSearch  !=="*" ){
+                    filter += " AND begins_with(#diveDate, :diveDate) AND DiveSite = :diveSite";
+                    expVals = {
+                        ':check': true,
+                        ':diveDate': YearOfSearch ,
+                        ':diveSite': DiveSite,
+                    };
+                }
+                else{
+                    filter +=" AND DiveSite = :diveSite";
+                    expVals = {
+                        ':check': true,
+                        ':diveSite': DiveSite,
+                    };
+                }
+                
+            }
+            
             const paramsDives = {
                 TableName: 'Dives',
-                ProjectionExpression: "DiveDate", 
+                ProjectionExpression: "#diveDate", 
                 FilterExpression: filter,
                 ExpressionAttributeNames: {
                     '#diveDate': 'DiveDate',
