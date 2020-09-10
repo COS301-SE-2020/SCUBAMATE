@@ -849,6 +849,41 @@
       </ion-row>
   </ion-grid>
 
+  <ion-grid id="diveSiteGraphsDiv" *ngIf="accountType=='11'">
+    <ion-row>
+      <ion-item color='dark' style="width:100%;text-align: center;">
+        <ion-col size="12">
+          <label class="subLabel" style="width:100%;border-top:none;"> User Statistics </label>
+        </ion-col>
+      </ion-item>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" size-sm="12" size-md="6" size-lg="4">
+        <ion-card color="dark"> 
+          <ion-card-header>
+            <ion-item-divider color="dark">
+              <ion-row style="width:100%;">
+                <ion-col size="12">
+                  <label class="chartHeader">
+                    Age Groups 
+                  </label>
+                </ion-col>
+              </ion-row>
+            </ion-item-divider>
+          </ion-card-header>
+          <ion-card-content>
+              <canvas #lineCanvasChartAgeGroup></canvas>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+
+
+
+
+
 
 
 

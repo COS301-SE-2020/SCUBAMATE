@@ -46,5 +46,17 @@ export class chartService
   }
 
 
+  ageGroupChartData(postData): Observable<any>{
+    
+    const options = {
+           headers: new HttpHeaders({
+             'Content-Type': 'application/json',
+           }) 
+         };
+       
+return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/getagegroups', postData, options );
+ 
+}
+
 
 }

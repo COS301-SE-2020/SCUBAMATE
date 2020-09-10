@@ -138,6 +138,9 @@ export class AdminPagePage implements OnInit {
   @ViewChild("lineCanvasChartPeekDivesAtSite") lineCanvasChartPeekDivesAtSite: ElementRef;
   private lineChartPeekDivesAtSite: Chart;
 
+  @ViewChild("lineCanvasChartAgeGroup") lineCanvasChartAgeGroup: ElementRef;
+  private lineChartAgeGroup: Chart;
+
   //Date
   currentDate = new Date();
   
@@ -314,6 +317,28 @@ export class AdminPagePage implements OnInit {
               this.generalAlert("Number Of Dives Chart Error", err.error);
             }else{
               console.log("Could not access number Dives At Site Chart Data");
+            }
+            
+          });
+
+          var ageGroupBody ={
+            "AccessToken" : localStorage.getItem("accessToken") 
+          };
+
+          this.showLoading = true ;
+          this._chartService.ageGroupChartData(ageGroupBody).subscribe( data =>{
+              this.showLoading = false;
+              console.log(data);
+              this.drawAgeGroupChart(data, "Age Groups of Users");
+             
+
+          },err =>{
+            this.showLoading = false;
+            
+            if(err.error){
+              this.generalAlert("Age Groups Chart Error", err.error);
+            }else{
+              console.log("Could not access number Age Groups Chart Data");
             }
             
           });
@@ -1492,6 +1517,82 @@ getDiveCentreInformation(){
 
   }
 
+  drawAgeGroupChart(returnedData, msg){
+
+
+    let keys = returnedData["ReturnedList"].map(d => d.AgeGroup);
+    let values = returnedData["ReturnedList"].map(d => d.AmountOfUsers);
+
+    
+    this.lineChartAgeGroup = new Chart(this.lineCanvasChartAgeGroup.nativeElement,{
+      type: "line",
+      data: {
+        labels: keys,
+        datasets: [
+          {
+            label: msg,
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: "rgba(42, 157, 143)",
+            borderColor: "rgba(42, 157, 143)",
+            borderCapStyle: "butt",
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: "miter",
+            pointBorderColor: "rgba(244, 162, 97,1)",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "rgba(32, 117, 107)",
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data: values,
+            spanGaps: false
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          xAxes: [ {
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Age Groups'
+            },
+            ticks: {
+              major: {
+                fontStyle: 'bold',
+                fontColor: '#FF0000'
+              }
+            }
+          } ],
+          yAxes: [ {
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Total Users'
+            }
+          } ]
+        }
+      }
+    });
+
+
+  }
+
+  updateAgeGroupChart(returnedData, msg){
+
+
+    this.lineChartPeekDivesAtSite.destroy();
+    this.drawAgeGroupChart(returnedData, msg);
+
+
+  }
+
   //Functions for Chart Searches
 
   DoSiteYearChartSearch(yearSearch){
@@ -1651,7 +1752,5 @@ getDiveCentreInformation(){
 
 
   }
-
-
 
 }
