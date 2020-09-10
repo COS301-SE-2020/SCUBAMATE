@@ -329,7 +329,7 @@ export class AdminPagePage implements OnInit {
           this._chartService.ageGroupChartData(ageGroupBody).subscribe( data =>{
               this.showLoading = false;
               console.log(data);
-              this.drawAgeGroupChart(data, "Age Groups of Users");
+              this.drawAgeGroupChart(data, "Total Users in Age Group");
              
 
           },err =>{
@@ -1525,7 +1525,7 @@ getDiveCentreInformation(){
 
     
     this.lineChartAgeGroup = new Chart(this.lineCanvasChartAgeGroup.nativeElement,{
-      type: "line",
+      type: "bar",
       data: {
         labels: keys,
         datasets: [
