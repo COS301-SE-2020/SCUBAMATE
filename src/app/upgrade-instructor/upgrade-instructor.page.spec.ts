@@ -9,8 +9,23 @@ import { HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
 import { FormBuilder} from '@angular/forms';
 import { UpgradeInstructorPage } from './upgrade-instructor.page';
+import { map } from 'rxjs/operators';
 
 var accessToken = "d1d7391d-c035-28ab-0193-68a7d263d4be11ac76afb3c161…0702085a1c423b0ed53f38b9a0e6e0ad8bfe8cd3712f14be7";
+var validData = {
+  event: "",
+  center: "Reefteach",
+  qualification: "Advanced Open Water Diver",
+  specialization: "Wreck Diver",
+  bday: "1990-03-02",
+  firstN: "Harold",
+  lastN: "James Potter",
+  pub: false, 
+  email: "harrypotter@gmail.com",
+  pass: "Hermoine321!",
+  cPass: "Hermoine321!",
+  iNum: "9989889"
+};
 
 describe('UpgradeInstructorPage', () => {
   let component: UpgradeInstructorPage;
@@ -44,23 +59,27 @@ describe('UpgradeInstructorPage', () => {
   });
 
   it('centerListFinder() test', () => {
-    var eventValue = "";
-
-    divService.getDiveCenters(eventValue).subscribe((resp : any) => {
-      console.log(resp);
-    });
-
-    expect(eventValue).toBe("");
+    let diveSpy = spyOn(divService, 'getDiveCenters').and.callThrough();
+    expect(diveSpy).toBeDefined();
+    let response = divService.getDiveCenters(validData.center).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(diveSpy).toBeDefined();
+    expect(divService.getDiveCenters).toHaveBeenCalledWith(validData.center);
   });
 
   it('upgradeToInstructor() test', () => {
     var eventValue = "";
 
-    accService.upgradeToInstructor(eventValue).subscribe((resp : any) => {
-      console.log(resp);
-    });
-
-    expect(eventValue).toBe("");
+    let accSpy = spyOn(accService, 'upgradeToInstructor').and.callThrough();
+    expect(accSpy).toBeDefined();
+    let response = accService.upgradeToInstructor(eventValue).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(accSpy).toBeDefined();
+    expect(accService.upgradeToInstructor).toHaveBeenCalledWith(eventValue);
   });
 
   it('Testing Instuctor Components', () => {
