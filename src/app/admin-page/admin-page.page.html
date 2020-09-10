@@ -666,7 +666,7 @@
       </ion-row>
   </ion-grid>
 
-  <ion-grid>
+ <!-- <ion-grid>
     <ion-row *ngIf="accountType=='11'">
       <ion-col size="12" size-sm="12" size-md="6" size-lg="4">
         <ion-card color="dark"> 
@@ -751,6 +751,90 @@
         </ion-card>
       </ion-col>
     </ion-row>
+  </ion-grid> -->
+
+  <ion-grid id="diveSiteGraphsDiv" *ngIf="accountType=='11'">
+      <ion-row>
+        <ion-item color='dark' id="diveGraphSearch">
+          <ion-col size="12" size-sm="12" size-md="6" size-lg="7">
+            <input list="diveI"  placeholder="Search Dive Site"  [(ngModel)]="siteInput"  #Spec (input)="DiveSiteListFinder()" class="searchableSelectInput" >
+              <datalist id="diveI">
+                  <option *ngFor='let i of DiveSiteLst' value={{i}}></option>
+              </datalist>
+          </ion-col>
+          <ion-col size="12" size-sm="12" size-md="6" size-lg="3">
+            <ion-item color="dark">
+                <ion-label floating>Year &nbsp;</ion-label>
+                <ion-input type="number" value={{dateSearch}} #YearSearch></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size="12" size-sm="12" size-md="12" size-lg="2">
+            <ion-button  color='primary'  (click)='searchAllDiveSitesCharts(YearSearch.value)'>Search</ion-button>
+          </ion-col>
+        </ion-item>
+      </ion-row>
+      <ion-row>  <!-- Dive Site Graphs-->
+        <ion-col size="12" size-sm="12" size-md="6" size-lg="4">
+          <ion-card color="dark"> 
+            <ion-card-header>
+              <ion-item-divider color="dark">
+                <ion-row style="width:100%;">
+                  <ion-col size="12" size-sm="12" size-md="9" size-lg="9">
+                    <label class="chartHeader">
+                      Number of Dives at Dive Site 
+                    </label>
+                  </ion-col>
+                  <ion-col size="12" size-sm="12" size-md="3" size-lg="3">
+                    <label class="infoHeader" >
+                      Year: {{dateSearch}} <br>
+                      Total: {{totalNumberOfDivesYear}}  
+                    </label>
+                  </ion-col>
+                </ion-row>
+              </ion-item-divider>
+            </ion-card-header>
+            <ion-card-content>
+                <canvas #lineCanvasDivesAtSite></canvas>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col size="12" size-sm="12" size-md="6" size-lg="4">
+          <ion-card color="dark"> 
+            <ion-card-header>
+              <ion-item-divider color="dark">
+                <ion-row style="width:100%;">
+                  <ion-col size="12" size-sm="12" size-md="12" size-lg="12">
+                    <label class="chartHeader">
+                      Rating of Dives at Dive Site 
+                    </label>
+                  </ion-col>
+                </ion-row>
+              </ion-item-divider>
+            </ion-card-header>
+            <ion-card-content>
+                <canvas #pieCanvasDivesAtSiteRating></canvas>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col size="12" size-sm="12" size-md="6" size-lg="4">
+          <ion-card color="dark"> 
+            <ion-card-header>
+              <ion-item-divider color="dark">
+                <ion-row style="width:100%;">
+                  <ion-col size="12" size-sm="12" size-md="12" size-lg="12">
+                    <label class="chartHeader">
+                      Peek Times of Dives at Dive Site 
+                    </label>
+                  </ion-col>
+                </ion-row>
+              </ion-item-divider>
+            </ion-card-header>
+            <ion-card-content>
+                <canvas #lineCanvasChartPeekDivesAtSite></canvas>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
   </ion-grid>
 
 

@@ -135,6 +135,9 @@ export class AdminPagePage implements OnInit {
   @ViewChild("pieCanvasDivesAtSiteRating") pieCanvasDivesAtSiteRating: ElementRef;
   private pieChartDivesAtSiteRating: Chart;
 
+  @ViewChild("lineCanvasChartPeekDivesAtSite") lineCanvasChartPeekDivesAtSite: ElementRef;
+  private lineChartPeekDivesAtSite: Chart;
+
   //Date
   currentDate = new Date();
   
@@ -252,7 +255,7 @@ export class AdminPagePage implements OnInit {
               this.showLoading = false;
               this.totalNumberOfDivesYear = data.TotalNumberOfDives.toString();
               console.log(data);
-              this.drawNumDivesAtSiteChart(data, "All Sites");
+              this.drawNumDivesAtSiteChart(data, "All Dive Sites");
 
           },err =>{
             this.showLoading = false;
@@ -268,7 +271,7 @@ export class AdminPagePage implements OnInit {
 
           var rateDivesBody ={
             "AccessToken" : localStorage.getItem("accessToken") ,
-            "DiveSite" : "Shark Alley"
+            "DiveSite" : "*"
           };
 
           this.showLoading = true ;
@@ -277,7 +280,7 @@ export class AdminPagePage implements OnInit {
               
               console.log(data);
       
-                this.drawRatingDivesAtSiteChart(data, "Rating of Shark Alley");
+                this.drawRatingDivesAtSiteChart(data, "Rating of All Dive Sites");
             
         
           },err =>{
@@ -290,6 +293,32 @@ export class AdminPagePage implements OnInit {
             }
             
           });
+
+          var peekDivesBody ={
+            "AccessToken" : localStorage.getItem("accessToken") ,
+            "DiveSite" : "*",
+            "YearOfSearch" : this.currentDate.getFullYear().toString()
+          };
+
+          this.showLoading = true ;
+          this._chartService.peakTimesDivesAtSiteChartData(peekDivesBody).subscribe( data =>{
+              this.showLoading = false;
+              this.drawPeekDivesAtSiteChart(data, "All Dive Sites");
+              console.log(data);
+              //this.drawNumDivesAtSiteChart(data, "All Sites");
+
+          },err =>{
+            this.showLoading = false;
+            
+            if(err.error){
+              this.generalAlert("Number Of Dives Chart Error", err.error);
+            }else{
+              console.log("Could not access number Dives At Site Chart Data");
+            }
+            
+          });
+
+
 
       
 
@@ -1264,6 +1293,12 @@ getDiveCentreInformation(){
 
 
   ///Functions for drawing charts
+  searchAllDiveSitesCharts( YS ){
+    this.DoSiteYearChartSearch(YS) ;
+    this.DoSiteRatingChartSearch() ;
+    this.DoPeekSiteYearChartSearch(YS);
+  }
+
   random_rgba(){
     var o = Math.round, r= Math.random, s=255 ;
     return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ', 0.7)' ;
@@ -1316,6 +1351,7 @@ getDiveCentreInformation(){
   },
   options: {
     responsive: true,
+    maintainAspectRatio: false,
     scales: {
       xAxes: [ {
         display: true,
@@ -1334,7 +1370,7 @@ getDiveCentreInformation(){
         display: true,
         scaleLabel: {
           display: true,
-          labelString: 'Number'
+          labelString: 'Total Dives'
         }
       } ]
     }
@@ -1354,8 +1390,8 @@ getDiveCentreInformation(){
   drawRatingDivesAtSiteChart(returnedData, msg){
 
 
-    let keys = returnedData["Ratings"].map(d => d.Rating);
-    let values = returnedData["Ratings"].map(d => d.Amount);
+    let keys = returnedData["Ratings"][0].map(d => d.Rating);
+    let values = returnedData["Ratings"][0].map(d => d.Amount);
 
 
     this.pieChartDivesAtSiteRating = new Chart(this.pieCanvasDivesAtSiteRating.nativeElement,{
@@ -1369,12 +1405,91 @@ getDiveCentreInformation(){
         }]
       },
       options: {
+        responsive: true,
+        maintainAspectRatio: false,
         title: {
           display: true,
           text: msg
         }
       }
       });
+  }
+
+
+  drawPeekDivesAtSiteChart(returnedData, msg){
+
+
+    let keys = returnedData["ReturnedList"].map(d => d.Hour);
+    let values = returnedData["ReturnedList"].map(d => d.AmountOfDives);
+
+    
+    this.lineChartPeekDivesAtSite = new Chart(this.lineCanvasChartPeekDivesAtSite.nativeElement,{
+      type: "line",
+      data: {
+        labels: keys,
+        datasets: [
+          {
+            label: msg,
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: "rgba(244, 162, 97,0.4)",
+            borderColor: "rgba(244, 162, 97,1)",
+            borderCapStyle: "butt",
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: "miter",
+            pointBorderColor: "rgba(244, 162, 97,1)",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "rgba(231, 111, 81,1)",
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data: values,
+            spanGaps: false
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          xAxes: [ {
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Time'
+            },
+            ticks: {
+              major: {
+                fontStyle: 'bold',
+                fontColor: '#FF0000'
+              }
+            }
+          } ],
+          yAxes: [ {
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Total Dives'
+            }
+          } ]
+        }
+      }
+    });
+
+
+  }
+
+  updatePeekDivesAtSiteChart(returnedData, msg){
+
+
+    this.lineChartPeekDivesAtSite.destroy();
+    this.drawPeekDivesAtSiteChart(returnedData, msg);
+
+
   }
 
   //Functions for Chart Searches
@@ -1417,9 +1532,67 @@ getDiveCentreInformation(){
 
               if(this.siteInput=="*")
               { 
-                this.updateNumDivesAtSiteChart(data, "All Sites");
+                this.updateNumDivesAtSiteChart(data, "All Dive Sites");
               }else{
                 this.updateNumDivesAtSiteChart(data, this.siteInput);
+              }
+              
+
+          },err =>{
+            this.showLoading = false;
+            
+            if(err.error){
+              this.generalAlert("Number Of Dives Chart Error", err.error);
+            }else{
+              console.log("Could not access number Dives At Site Chart Data");
+            }
+            
+          });
+
+
+  }
+
+  DoPeekSiteYearChartSearch(yearSearch){
+
+    if(this.siteInput == "")
+    {
+      this.siteInput = "*";
+    }
+
+    if(yearSearch == 0){
+      yearSearch = this.currentDate.getFullYear();
+    }
+
+    this.dateSearch = yearSearch.toString();
+
+    if(this.dateSearch.length < 4 ){
+      for(let x = this.dateSearch.length ; x < 4; x++){
+        this.dateSearch += "0";
+      }
+    }else if(this.dateSearch.length > 4 ){
+      this.dateSearch = this.dateSearch.substring(0,4);
+    }
+
+    var numDivesBody ={
+      "AccessToken" : localStorage.getItem("accessToken") ,
+      "DiveSite" : this.siteInput,
+      "YearOfSearch" :this.dateSearch
+    };
+
+    console.log("Peek Search");
+    console.log(numDivesBody);
+
+
+    this.showLoading = true ;
+          this._chartService.peakTimesDivesAtSiteChartData(numDivesBody).subscribe( data =>{
+              this.showLoading = false;
+              console.log(data);
+
+              if(this.siteInput=="*")
+              { 
+                this.updatePeekDivesAtSiteChart(data, "All Dive Sites");
+              }else{
+                this.updatePeekDivesAtSiteChart(data, this.siteInput);
               }
               
 
@@ -1454,7 +1627,13 @@ getDiveCentreInformation(){
         
         console.log(data);
 
+        if(this.siteInput=="*")
+        { 
+          this.updateRatingDivesAtSiteChart(data, "Overall Rating of All Sites");
+        }else{
           this.updateRatingDivesAtSiteChart(data, "Rating of " +this.siteInput);
+        }
+          
       
   
     },err =>{
@@ -1472,5 +1651,7 @@ getDiveCentreInformation(){
 
 
   }
+
+
 
 }
