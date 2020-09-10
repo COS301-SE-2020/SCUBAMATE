@@ -4,6 +4,8 @@ import { diveService } from '../service/dive.service';
 import { weatherService } from '../service/weather.service';
 import { Router } from '@angular/router';
 
+import { GlobalService } from "../global.service";
+
 export interface DS {
   Description: string ;
   Coords: string ;
@@ -44,6 +46,7 @@ weatherDate: string;
 
 loginLabel:string ;
 currentDiveSite: DS ;
+accountType : string;
 
 //Viewable Variables
 showLoading: Boolean;
@@ -51,9 +54,9 @@ showDiveSite : Boolean ;
 
 /********************************************/
 
-
-
-  constructor(private _weatherService: weatherService , private router: Router, private _diveService: diveService, private geolocation: Geolocation) { }
+  constructor(public _globalService: GlobalService, private _weatherService: weatherService , private router: Router, private _diveService: diveService, private geolocation: Geolocation) {
+    
+   }
 
   ngOnInit() {
 
@@ -67,7 +70,10 @@ showDiveSite : Boolean ;
         this.loginLabel = "Login";
       }else{
         this.loginLabel = "Log Out";
+        this.accountType = this._globalService.accountRole; 
       }
+
+    
 
     this._diveService.getSingleDiveSite(localStorage.getItem("ViewDiveSite")).subscribe( data=>{
       this.currentDiveSite = data;
@@ -92,7 +98,7 @@ showDiveSite : Boolean ;
               this.Weather.Date = res.DailyForecasts[0].Date;
               this.Weather.Min = res.DailyForecasts[0].Temperature.Minimum.Value + " " +res.DailyForecasts[0].Temperature.Minimum.Unit;
               this.Weather.Max = res.DailyForecasts[0].Temperature.Maximum.Value + " " + res.DailyForecasts[0].Temperature.Maximum.Unit;
-              this.Weather.Day = res.DailyForecasts[0].Day.IconPhrase;
+              this.Weather.Day = (res.DailyForecasts[0].Day.IconPhrase).replace('/','');
               this.Weather.Night = res.DailyForecasts[0].Night.IconPhrase;
               this.Weather.Desc = res.Headline.Text;
               this.Weather.Wind = res.DailyForecasts[0].Day.Wind.Speed.Value + " " + res.DailyForecasts[0].Day.Wind.Speed.Unit ;
@@ -107,10 +113,22 @@ showDiveSite : Boolean ;
     if(localStorage.getItem("accessToken"))
     {
       localStorage.removeItem("accessToken");
+      this.accountType = "*Diver";
       this.router.navigate(['login']);
     }else{
       this.router.navigate(['login']);
     }
   }
 
+  checkURL(name): boolean { 
+    let url = "../assets/images/Weather/"+name.toLowerCase()+".png";
+    let img = new Image();
+    img.src = url;
+    if(img.width == 0){
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
 }

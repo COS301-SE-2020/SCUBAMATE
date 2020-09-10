@@ -6,37 +6,37 @@
 </head>
 <ion-header no-border slot="fixed" style="margin-bottom: 20px;">
   <ion-toolbar color="dark" class="productHeader" >
-    
     <ion-buttons slot="primary">
-      <ion-button routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >
+      <ion-button routerLink="" *ngIf="loginLabel" (click)="loginClick()" class="hidden-sm-down" >
         {{loginLabel}}
       </ion-button>
-      <ion-button color="secondary">
-        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
-      </ion-button>
+      <ion-menu-button autoHide="false" class="hidden-sm-up"></ion-menu-button>
     </ion-buttons>
     <ion-title > 
      <ion-buttons >
       <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo" style="height:80%;width:12%;padding-bottom:3px;padding-top:3px;margin-right:10px;"/>
       
-        <ion-button routerLink="/home">
+        <ion-button routerLink="/home" class="hidden-sm-down">
           <ion-icon name="home" ></ion-icon><label style="padding-top:7px;">&nbsp; Home</label> 
         </ion-button>
-        <ion-button routerLink="/explore">
+        <ion-button routerLink="/explore" class="hidden-sm-down" >
           <ion-icon name="color-wand-outline"></ion-icon>&nbsp; Explore
         </ion-button>
-        <ion-button routerLink="/planning">
+        <ion-button routerLink="/planning" class="hidden-sm-down">
           <ion-icon name="newspaper"></ion-icon>&nbsp; Plan
         </ion-button>
-        <ion-button routerLink="/my-dives">
+        <ion-button routerLink="/my-dives" class="hidden-sm-down" >
           <ion-icon name="water"></ion-icon>&nbsp; My Dives
         </ion-button>
-        <ion-button routerLink="/profile">
+        <ion-button routerLink="/profile" class="hidden-sm-down" >
           <ion-icon name="person" ></ion-icon>&nbsp; Profile
+        </ion-button>
+        <ion-button *ngIf="accountType=='10' || accountType=='11'" routerLink="/admin-page" class="hidden-sm-down">
+          <ion-icon name="podium"></ion-icon>&nbsp; Admin 
         </ion-button>
       </ion-buttons>
       
-    </ion-title>
+    </ion-title> 
      <ion-progress-bar type="indeterminate" *ngIf="showLoading"></ion-progress-bar> 
   </ion-toolbar>
 </ion-header>
@@ -77,7 +77,7 @@
            </ion-row>
            <ion-row>
             <div class="searchableSelect" style="width:90%;margin:auto;">
-              <ion-label class="searchableSelectLabel">Dive Center</ion-label><br>
+              <ion-label class="searchableSelectLabel">Dive Centre</ion-label><br>
                 <input list="diveC"  placeholder="Insert Your Dive Center" formControlName="diveCenter" [(ngModel)]="userObj.DiveCentre"  #Cent (keypress)="CenterListFinder($event.target.value)" class="searchableSelectInput">
                 <datalist id="diveC" >
                     <option *ngFor='let c of CenterLst' value={{c}}></option>

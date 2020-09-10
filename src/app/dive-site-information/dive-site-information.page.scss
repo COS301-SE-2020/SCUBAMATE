@@ -5,6 +5,23 @@ $red: #E76F51 ;
 $yellow : #E9C46A ;
 $inputBackgroundColor: #181e21;
 
+@media (max-width: 767px) {
+  .containerDiv{
+    width:  95% !important ;
+    margin-top: 10px !important ;
+    margin-bottom: 20px !important;
+  }
+
+  .containerDivBack{
+    width:  95% !important ;
+    margin-top: 10px !important ;
+    margin-bottom: 20px !important;
+  }
+
+
+}
+
+
 ion-content.background{
     --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
   }
@@ -27,7 +44,17 @@ ion-content.background{
     color:white ; 
 }
 
-
+.containerDivBack{
+  margin: auto;
+  border-bottom: solid white 0.5px;
+  width:  70% ;
+  padding: 0;
+  margin-top: 30px;
+  padding: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 20px;
+  color:white ; 
+}
 .subLabel{
     font-size:  20px ;
     font-weight: bold;

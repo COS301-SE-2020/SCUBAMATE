@@ -5,6 +5,7 @@ import { weatherService } from '../service/weather.service';
 import { Router } from '@angular/router';
 //import { Http} from '@angular/http';
 import { HttpClient} from '@angular/common/http';
+import { GlobalService } from "../global.service";
 
 export interface DC {
   Description: string ;
@@ -48,6 +49,7 @@ export class DiveCenterInformationPage implements OnInit {
 
   loginLabel:string ;
   currentDiveCenter: DC ;
+  accountType : string;
 
   //Viewable Variables
   showLoading: Boolean;
@@ -56,7 +58,10 @@ export class DiveCenterInformationPage implements OnInit {
 
   /********************************************/
 
-  constructor( private _weatherService: weatherService , private router: Router, private _diveService: diveService, private geolocation: Geolocation, private http: HttpClient) { }
+  constructor(public _globalService: GlobalService,  private _weatherService: weatherService , private router: Router, private _diveService: diveService, private geolocation: Geolocation, private http: HttpClient) { 
+    
+  }
+
 
   ngOnInit() {
 
@@ -70,14 +75,11 @@ export class DiveCenterInformationPage implements OnInit {
         this.loginLabel = "Login";
       }else{
         this.loginLabel = "Log Out";
+        this.accountType = this._globalService.accountRole;
       }
-
+      
     this._diveService.getSingleDiveCenter(localStorage.getItem("ViewDiveCenter")).subscribe( data=>{
       this.currentDiveCenter = data;
-
-
-
-
       
       this.showDiveCenter = true ;
 
@@ -97,27 +99,20 @@ export class DiveCenterInformationPage implements OnInit {
               this.Weather.Date = res.DailyForecasts[0].Date;
               this.Weather.Min = res.DailyForecasts[0].Temperature.Minimum.Value + " " +res.DailyForecasts[0].Temperature.Minimum.Unit;
               this.Weather.Max = res.DailyForecasts[0].Temperature.Maximum.Value + " " + res.DailyForecasts[0].Temperature.Maximum.Unit;
-              this.Weather.Day = res.DailyForecasts[0].Day.IconPhrase;
+              this.Weather.Day = (res.DailyForecasts[0].Day.IconPhrase).replace('/','');
               this.Weather.Night = res.DailyForecasts[0].Night.IconPhrase;
               this.Weather.Desc = res.Headline.Text;
               this.Weather.Wind = res.DailyForecasts[0].Day.Wind.Speed.Value + " " + res.DailyForecasts[0].Day.Wind.Speed.Unit ;
 
-             this.showWeather = true ; 
-
+             this.showWeather = true; 
+             
+             //console.log("Weather Pic: " +  this.Weather.Day );
 
              this.showLoading = false;
           });
       });
 
-
-
-
-
     });
-
-
-
-   
 
   }
 
@@ -127,19 +122,32 @@ export class DiveCenterInformationPage implements OnInit {
       this.loginLabel = "Login";
     }else{
       this.loginLabel = "Log Out";
+      this.accountType = this._globalService.accountRole;
     }
+   
   }
 
   loginClick(){
     if(localStorage.getItem("accessToken"))
     {
       localStorage.removeItem("accessToken");
+      this.accountType = "*Diver";
       this.router.navigate(['login']);
     }else{
       this.router.navigate(['login']);
     }
   }
 
-
+  checkURL(name): boolean { 
+    let url = "../assets/images/Weather/"+name.toLowerCase()+".png";
+    let img = new Image();
+    img.src = url;
+    if(img.width == 0){
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
 
 }

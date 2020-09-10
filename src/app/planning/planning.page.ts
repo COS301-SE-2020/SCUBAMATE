@@ -4,7 +4,7 @@ import { accountService } from '../service/account.service';
 import { diveService } from '../service/dive.service';
 import { AlertController } from '@ionic/angular';
 
-
+import { GlobalService } from "../global.service";
 
 export interface CkeckListItemObj {
   Val : String ;
@@ -48,6 +48,7 @@ export class PlanningPage implements OnInit {
   suggestedCourseThreeList: CourseObj[] = new Array(); 
 
   showCourses : boolean ;
+  accountType : string;
 
   //SurveyAnswers
   surveyAnswers : string[] = new Array();
@@ -56,7 +57,7 @@ export class PlanningPage implements OnInit {
 
   loginLabel:string ;
 
-  constructor(public alertController : AlertController ,private router: Router, private _accountService: accountService,  private _diveService: diveService) { }
+  constructor(public _globalService: GlobalService, public alertController : AlertController ,private router: Router, private _accountService: accountService,  private _diveService: diveService) { }
 
   ngOnInit() {
   this.showCourses = false ;
@@ -69,8 +70,9 @@ export class PlanningPage implements OnInit {
       this.loginLabel = "Login";
     }else{
       this.loginLabel = "Log Out";
+      this.accountType = this._globalService.accountRole; 
     }
-
+   
 
     //get Suggested Courses
     this._diveService.getSuggestedCourses().subscribe(res =>{
@@ -79,6 +81,11 @@ export class PlanningPage implements OnInit {
 
       this.getRandomThreeCourses();
       
+    }, err=>{
+      if(err.error == "Invalid Access Token"){
+        localStorage.removeItem("accessToken");
+        this.router.navigate(['login']);
+      }
     });
 
 
@@ -111,6 +118,11 @@ export class PlanningPage implements OnInit {
       
 
     }, err =>{
+      if(err.error == "Invalid Access Token"){
+        localStorage.removeItem("accessToken");
+        this.router.navigate(['login']);
+      }
+
       this.viewChecklist = false;
       this.viewPersonalAdded = false; 
     });
@@ -128,8 +140,9 @@ export class PlanningPage implements OnInit {
       this.loginLabel = "Login";
     }else{
       this.loginLabel = "Log Out";
+      this.accountType = this._globalService.accountRole; 
     }
-
+    
     //get Suggested Courses
     this._diveService.getSuggestedCourses().subscribe(res =>{
       console.log("Suggestions Received")
@@ -142,6 +155,7 @@ export class PlanningPage implements OnInit {
     if(localStorage.getItem("accessToken"))
     {
       localStorage.removeItem("accessToken");
+      this.accountType = "*Diver";
       location.reload();
     }else{
       this.router.navigate(['login']);
@@ -163,7 +177,8 @@ export class PlanningPage implements OnInit {
       this.viewChecklist = false ; 
       this.OptionalReceived= res.Optional;
       this.EquipmentReceived = res.Equipment;
-
+      this.PersonalList = [];
+      this.viewPersonalAdded = false;
 
       //setup checklist object
       this.OptionalList.length = this.OptionalReceived.length;

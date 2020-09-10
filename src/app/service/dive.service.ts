@@ -235,7 +235,7 @@ export class diveService
    
     }
 
-    getPublicDives(): Observable<any>{
+    getPublicDives(pageNumber: number): Observable<any>{
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
@@ -244,9 +244,9 @@ export class diveService
       };
     
       var PostData = {
-        "AccessToken" : localStorage.getItem("accessToken")
+        "AccessToken" : localStorage.getItem("accessToken"),
+        "PageNum" : pageNumber
       }
-
       return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/getpublicdives', PostData , options); 
 
     }
@@ -281,8 +281,6 @@ export class diveService
       }
 
       return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/getunverifiedcourses', PostData , options); 
-
-
 
     }
 
@@ -359,7 +357,7 @@ export class diveService
           'Access-Control-Allow-Origin': '*'
         })
       };
-      return this.httpClient.post('https://ek9bag0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/addcourse', PostData , options); 
+      return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/addcourse', PostData , options); 
 
     }
 
@@ -371,7 +369,7 @@ export class diveService
           'Access-Control-Allow-Origin': '*'
         })
       };
-      return this.httpClient.post('https://ek9bag0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/adddivesite', PostData , options); 
+      return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/adddivesite', PostData , options); 
 
     }
 

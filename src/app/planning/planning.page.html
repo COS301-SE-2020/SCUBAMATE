@@ -7,37 +7,37 @@
 </head>
 <ion-header no-border slot="fixed" style="margin-bottom: 20px;">
   <ion-toolbar color="dark" class="productHeader" >
-    
     <ion-buttons slot="primary">
-      <ion-button routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >
+      <ion-button routerLink="" *ngIf="loginLabel" (click)="loginClick()" class="hidden-sm-down" >
         {{loginLabel}}
       </ion-button>
-      <ion-button color="secondary">
-        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
-      </ion-button>
+      <ion-menu-button autoHide="false" class="hidden-sm-up"></ion-menu-button>
     </ion-buttons>
     <ion-title > 
      <ion-buttons >
       <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo" style="height:80%;width:12%;padding-bottom:3px;padding-top:3px;margin-right:10px;"/>
       
-        <ion-button routerLink="/home">
+        <ion-button routerLink="/home" class="hidden-sm-down">
           <ion-icon name="home" ></ion-icon><label style="padding-top:7px;">&nbsp; Home</label> 
         </ion-button>
-        <ion-button routerLink="/explore">
+        <ion-button routerLink="/explore" class="hidden-sm-down" *ngIf="loginLabel=='Log Out'">
           <ion-icon name="color-wand-outline"></ion-icon>&nbsp; Explore
         </ion-button>
-        <ion-button routerLink="/planning">
+        <ion-button routerLink="/planning" class="hidden-sm-down" *ngIf="loginLabel=='Log Out'">
           <ion-icon name="newspaper"></ion-icon>&nbsp; Plan
         </ion-button>
-        <ion-button routerLink="/my-dives">
+        <ion-button routerLink="/my-dives" class="hidden-sm-down" *ngIf="loginLabel=='Log Out'">
           <ion-icon name="water"></ion-icon>&nbsp; My Dives
         </ion-button>
-        <ion-button routerLink="/profile">
+        <ion-button routerLink="/profile" class="hidden-sm-down" *ngIf="loginLabel=='Log Out'">
           <ion-icon name="person" ></ion-icon>&nbsp; Profile
+        </ion-button>
+        <ion-button *ngIf="accountType=='10' || accountType=='11'" routerLink="/admin-page" class="hidden-sm-down">
+          <ion-icon name="podium"></ion-icon>&nbsp; Admin 
         </ion-button>
       </ion-buttons>
       
-    </ion-title>
+    </ion-title> 
      <ion-progress-bar type="indeterminate" *ngIf="showLoading"></ion-progress-bar> 
   </ion-toolbar>
 </ion-header>
@@ -156,21 +156,17 @@
     <ion-grid>
       <ion-row>
         <ion-col size="12" size-sm="6" size-md="4" size-lg="4">
-          <ion-card  >
+          <ion-card color = 'light'>
             <img class="cardFeedIMG" src="../../assets/images/diving-2.png" style="height:40%;width:100%;" />
               <ion-card-content>
-              <ion-card-title>
+              <ion-card-title color = 'dark'>
                    {{suggestedCourseThreeList[0].Name}}
                 </ion-card-title>
               <p>
                 <ion-grid>
                   <ion-row>
-                    <ion-col>
+                    <ion-col color = 'dark'>
                       <label class="courseTypeLabel">{{suggestedCourseThreeList[0].CourseType}}</label>
-                      <label *ngIf="suggestedCourseThreeList[0].RequiredCourses" class="requirementsLabel">
-                        <label>Requirements</label> <br>
-                        <label ><ion-icon name="play-outline"></ion-icon> {{suggestedCourseThreeList[0].RequiredCourses[0]}}</label><br>
-                      </label>
                     </ion-col>
                   </ion-row>
                 </ion-grid>
@@ -179,20 +175,16 @@
           </ion-card>
         </ion-col>
         <ion-col size="12" size-sm="6" size-md="4" size-lg="4">
-          <ion-card  >
+          <ion-card color = 'light' >
                <ion-card-content>
-              <ion-card-title>
+              <ion-card-title color = 'dark'>
                 {{suggestedCourseThreeList[1].Name}}
                 </ion-card-title>
               <p>
                 <ion-grid>
                   <ion-row>
-                    <ion-col>
+                    <ion-col color = 'dark'>
                       <label class="courseTypeLabel">{{suggestedCourseThreeList[1].CourseType}}</label>
-                      <label *ngIf="suggestedCourseThreeList[1].RequiredCourses" class="requirementsLabel">
-                        <label>Requirements</label> <br>
-                        <label ><ion-icon name="play-outline"></ion-icon> {{suggestedCourseThreeList[1].RequiredCourses[0]}}</label><br>
-                      </label>
                     </ion-col>
                   </ion-row>
                 </ion-grid>
@@ -202,21 +194,17 @@
           </ion-card>
         </ion-col>
         <ion-col size="12" size-sm="6" size-md="4" size-lg="4">
-          <ion-card  >
+          <ion-card color = 'light' >
             <img class="cardFeedIMG" src="../../assets/images/diving-2.png" style="height:40%;width:100%;" />
               <ion-card-content>
-              <ion-card-title>
+              <ion-card-title color = 'dark'>
                 {{suggestedCourseThreeList[2].Name}}
                 </ion-card-title>
               <p>
                 <ion-grid>
                   <ion-row>
-                    <ion-col>
+                    <ion-col color = 'dark'>
                       <label class="courseTypeLabel">{{suggestedCourseThreeList[2].CourseType}}</label>
-                      <label *ngIf="suggestedCourseThreeList[2].RequiredCourses" class="requirementsLabel">
-                        <label>Requirements</label> <br>
-                        <label ><ion-icon name="play-outline"></ion-icon> {{suggestedCourseThreeList[2].RequiredCourses[0]}}</label><br>
-                      </label>
                     </ion-col>
                   </ion-row>
                 </ion-grid>

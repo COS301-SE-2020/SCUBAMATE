@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { diveService } from '../service/dive.service';
 import { Router } from '@angular/router';
 import { accountService } from '../service/account.service';
-//import { REACTIVE_FORM_DIRECTIVES } from '@angular/forms'
+import { GlobalService } from "../global.service";
 import {ConnectionService} from 'ng-connection-service';
 import { Location } from '@angular/common';
 
@@ -57,8 +57,9 @@ export class EditDivePage implements OnInit {
   DiveTypeLst: [];
   DiveSiteLst: [];
   BuddyLst:[];
-  loginLabel: String;
+  loginLabel: string;
   CurrentDive: DiveLog ;
+  accountType : string;
 
   //Form Groups
   diveForm;
@@ -71,11 +72,11 @@ export class EditDivePage implements OnInit {
   /********************************************/
 
 
-  constructor(private _accountService : accountService , private router: Router, private _diveService: diveService, public formBuilder: FormBuilder, public alertController : AlertController, private connectionService: ConnectionService, private location: Location) { 
+  constructor(public _globalService: GlobalService, private _accountService : accountService , private router: Router, private _diveService: diveService, public formBuilder: FormBuilder, public alertController : AlertController, private connectionService: ConnectionService, private location: Location) { 
 
      //Dive Form
      this.diveObj ={
-        DiveID: localStorage.getItem("DiveID"),
+        DiveID: localStorage.getItem("DiveID"), 
         AccessToken: localStorage.getItem("accessToken"),
         Buddy: "",
         InstructorLink: [],
@@ -111,8 +112,9 @@ export class EditDivePage implements OnInit {
         this.loginLabel = "Login";
       }else{
         this.loginLabel = "Log Out";
+        this.accountType = this._globalService.accountRole; 
       }
-
+     
 
     this.getDiveInfo();
   }
@@ -123,13 +125,16 @@ export class EditDivePage implements OnInit {
       this.loginLabel = "Login";
     }else{
       this.loginLabel = "Log Out";
+      this.accountType = this._globalService.accountRole; 
     }
+    
   }
 
   loginClick(){
     if(localStorage.getItem("accessToken"))
     {
       localStorage.removeItem("accessToken");
+      this.accountType = "*Diver";
       this.router.navigate(['home']);
     }else{
       this.router.navigate(['login']);
@@ -160,7 +165,13 @@ export class EditDivePage implements OnInit {
         this.showLoading = false;
         localStorage.removeItem("DiveID");
         this.router.navigate(["/my-dives"]);
-      } );
+      } , err =>{
+
+        if(err.error){
+          this.presentGeneralErrorAlert(err.error);
+        }
+  
+      });
 
 
   }
@@ -199,6 +210,13 @@ export class EditDivePage implements OnInit {
         this.diveObj.Buddy = this.CurrentDive.Buddy;
         this.diveObj.Description = this.CurrentDive.Description;
         this.diveObj.DivePublicStatus = this.CurrentDive.DivePublicStatus;
+    }, err =>{
+
+      if(err.error){
+        this.presentGeneralErrorAlert(err.error);
+        this.router.navigate(["/my-dives"]);
+      }
+
     });
 
 
@@ -220,6 +238,17 @@ export class EditDivePage implements OnInit {
       cssClass: 'errorAlert',
       header: 'Dive Log Updated',
       message: 'Successfully updated dive log',
+      buttons: ['OK']
+    });
+  
+    await alert.present();
+  }
+
+  async presentGeneralErrorAlert(msg : string) {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: 'An error occured',
+      message: msg,
       buttons: ['OK']
     });
   

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { diveService } from '../service/dive.service';
 import {ConnectionService} from 'ng-connection-service';
 import { Location } from '@angular/common';
+import { GlobalService } from "../global.service";
 
 export interface Dive{
   Buddy : string;
@@ -26,15 +27,13 @@ export class MyDivesPage implements OnInit {
   loginLabel:string ;
   showLoading: Boolean ;
   showDiveList : Boolean ;
-
-
-
+  accountType : string;
 
   //Internet Connectivity check
   isConnected = true;  
   noInternetConnection: boolean;
 
-  constructor(private router: Router, private _diveService: diveService, private connectionService: ConnectionService, private location: Location) {
+  constructor(public _globalService: GlobalService, private router: Router, private _diveService: diveService, private connectionService: ConnectionService, private location: Location) {
     this.connectionService.monitor().subscribe(isConnected => {  
       this.isConnected = isConnected;  
       if (this.isConnected) {  
@@ -45,6 +44,7 @@ export class MyDivesPage implements OnInit {
         this.router.navigate(['no-internet']);
       }  
     });
+   
   }
   
   ngOnInit() {
@@ -56,7 +56,9 @@ export class MyDivesPage implements OnInit {
       this.loginLabel = "Login";
     }else{
       this.loginLabel = "Log Out";
+      this.accountType = this._globalService.accountRole; 
     }
+    
 
     console.log("Do a Private search:");
     
@@ -65,8 +67,8 @@ export class MyDivesPage implements OnInit {
       {
         this._diveService.getPrivateDive().subscribe( res =>{
             
-            if( res.Items){
-              this.diveLst = res.Items;
+            if( res.PrivateDiveLogs){
+              this.diveLst = res.PrivateDiveLogs;
             }else{
               this.diveLst = [];
             }
@@ -99,8 +101,12 @@ export class MyDivesPage implements OnInit {
       this.loginLabel = "Login";
     }else{
       this.loginLabel = "Log Out";
+      this.accountType = this._globalService.accountRole; 
     }
-
+    
+    if(localStorage.getItem("DiveID") !== undefined){
+      localStorage.removeItem("DiveID");
+    }
     console.log("Do a Private search:");
     
       //get private dives
@@ -108,8 +114,8 @@ export class MyDivesPage implements OnInit {
       {
         this._diveService.getPrivateDive().subscribe( res =>{
             
-            if( res.Items){
-              this.diveLst = res.Items;
+            if( res.PrivateDiveLogs){
+              this.diveLst = res.PrivateDiveLogs;
             }else{
               this.diveLst = [];
             }
@@ -119,9 +125,14 @@ export class MyDivesPage implements OnInit {
             this.showLoading= false;
 
         }, err =>{
+          if(err.error == "Invalid Access Token"){
+            localStorage.removeItem("accessToken");
+            this.router.navigate(['login']);
+          }
+
           this.showLoading= false;
           this.showDiveList = false;
-          console.log(err.error)
+          console.log(err.error);
         });
          
       }else{
@@ -136,6 +147,7 @@ export class MyDivesPage implements OnInit {
     if(localStorage.getItem("accessToken"))
     {
       localStorage.removeItem("accessToken");
+      this.accountType = "*Diver";
       this.router.navigate(['home']);
     }else{
       this.router.navigate(['login']);

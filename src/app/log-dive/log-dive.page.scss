@@ -6,7 +6,27 @@ $yellow : #E9C46A ;
 $inputBackgroundColor: #181e21;
 $darkRed: #d66853;
 
+@media (max-width: 767px) {
+  .LogDiveDiv{
+    width: 96% !important;
+  }
 
+  .step1{
+    margin-left: 10px !important;
+  }
+  
+  .step2{
+    margin-left: 10px !important;
+  }
+  
+  .step3{
+    margin-left: 10px !important;
+  }
+  
+  .step4{
+    margin-left: 10px !important;
+  }
+}
 
 
 ion-content.background{
@@ -288,4 +308,13 @@ ion-content.background{
     padding-top: 1%;
   }
 
+  #rating {
+    --padding-top: 0;
+    --padding-bottom: 0;
+    --padding-start: 4px;
+    --padding-end: 4px;
+    --box-shadow: none;
+    height: 20px;
+    font-size: 10px;
+  }
 }

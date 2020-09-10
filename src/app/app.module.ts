@@ -23,12 +23,19 @@ import {ConnectionServiceModule} from 'ng-connection-service';
 import { accountService } from './service/account.service';
 import { diveService } from './service/dive.service';
 import { weatherService } from './service/weather.service';
+import { chartService } from './service/chart.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+
+//Global
+import { GlobalService } from './global.service';
+
 
 //validators
 import { AgeValidator } from './validators/age';
 
 import {HttpModule} from '@angular/http';
+//rating 
+import { IonicRatingModule  } from 'ionic4-rating';
 
 @NgModule({
   declarations: [
@@ -36,6 +43,7 @@ import {HttpModule} from '@angular/http';
     FlashCardComponent],
   entryComponents: [],
   imports: [HttpModule,
+            IonicRatingModule ,
             BrowserModule,
             IonicModule.forRoot(), 
             AppRoutingModule,
@@ -49,7 +57,9 @@ import {HttpModule} from '@angular/http';
     accountService,
     diveService,
     weatherService,
+    chartService,
     AgeValidator,
+    GlobalService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     Geolocation
   ],

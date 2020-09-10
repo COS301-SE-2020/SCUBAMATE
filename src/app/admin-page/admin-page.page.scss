@@ -12,6 +12,7 @@ ion-content.background{
 }
 
 
+
 #profileSurroundDiv{
   width:230px;
   height:230px;
@@ -246,3 +247,31 @@ ion-content.background{
     }
   
   }
+
+  .chartHeader{
+    font-size:  20px ;
+    font-weight: bold;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+  }
+
+  .infoHeader{
+    font-size:  15px ;
+    font-weight: bold;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    color: gray;
+  }
+
+//Graphs
+
+#diveSiteGraphsDiv{
+  @include divContainer;
+  width: 90%;
+
+  #diveGraphSearch{
+    width: 100%;
+  }
+
+  canvas{
+    min-height: 270px;
+  }
+}

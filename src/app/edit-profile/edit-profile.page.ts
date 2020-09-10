@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { accountService } from '../service/account.service';
 import {ConnectionService} from 'ng-connection-service';
 import { Location } from '@angular/common';
+import { GlobalService } from "../global.service";
 
 //forms
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -49,6 +50,7 @@ export class EditProfilePage implements OnInit {
   //Viewable Content
   showData : Boolean = false;
   showLoading: Boolean = false;
+  accountType : string;
 
   showUserAccount : Boolean = true ;
   showChangePassWord: Boolean = false ; 
@@ -68,7 +70,7 @@ export class EditProfilePage implements OnInit {
   isConnected = true;  
   noInternetConnection: boolean;
 
-  constructor(private _accountService : accountService, private router: Router, public formBuilder: FormBuilder, public alertController : AlertController, private connectionService: ConnectionService, private location: Location) {
+  constructor(public _globalService: GlobalService, private _accountService : accountService, private router: Router, public formBuilder: FormBuilder, public alertController : AlertController, private connectionService: ConnectionService, private location: Location) {
 
     this.showLoading = true;
     this._accountService.getUser().subscribe(res => {
@@ -139,14 +141,17 @@ export class EditProfilePage implements OnInit {
     }else{
       
       this.loginLabel = "Log Out";
+      this.accountType = this._globalService.accountRole; 
       
     }
+    
   }
 
   loginClick(){
     if(localStorage.getItem("accessToken"))
     {
       localStorage.removeItem("accessToken");
+      this.accountType = "*Diver";
       this.router.navigate(['home']);
     }else{
       this.router.navigate(['login']);

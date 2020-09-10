@@ -1,9 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { diveService } from '../service/dive.service';
 import { accountService } from '../service/account.service';
+import { chartService } from '../service/chart.service';
 import { AlertController } from '@ionic/angular';
 import { ThrowStmt } from '@angular/compiler';
+import { GlobalService } from "../global.service";
+
+import { Chart } from 'chart.js';
+import {mergeMap, groupBy, map, reduce } from 'rxjs/operators';
 
 export interface UC{
   AccessToken: string;
@@ -54,7 +59,8 @@ export interface newSite{
   Name: string ;
   Coords: string ;
   Description: string ;
-  LogoPhoto: string ; 
+  LogoPhoto: string ;  
+  TypeOfDives: string;
 }
 
 @Component({
@@ -118,14 +124,32 @@ export class AdminPagePage implements OnInit {
 
   currentDiveCenter: DC ;
 
-  //Forms
+  //Charts
+  @ViewChild("lineCanvasDivesAtSite") lineCanvasDivesAtSite: ElementRef;
+  private lineChartDivesAtSite: Chart;
+  totalNumberOfDivesYear : string = "0";
+  dateSearch : string = "2020"; 
+  timeSearch : string = "All Day";
 
+  
+  @ViewChild("pieCanvasDivesAtSiteRating") pieCanvasDivesAtSiteRating: ElementRef;
+  private pieChartDivesAtSiteRating: Chart;
+
+  @ViewChild("lineCanvasChartPeekDivesAtSite") lineCanvasChartPeekDivesAtSite: ElementRef;
+  private lineChartPeekDivesAtSite: Chart;
+
+  @ViewChild("lineCanvasChartAgeGroup") lineCanvasChartAgeGroup: ElementRef;
+  private lineChartAgeGroup: Chart;
+
+  //Date
+  currentDate = new Date();
+  
 
 
 
   /********************************************/
 
-  constructor( public alertController : AlertController , private _diveService: diveService,private router: Router,private _accountService: accountService) {
+  constructor(private _chartService: chartService, public _globalService: GlobalService, public alertController : AlertController , private _diveService: diveService,private router: Router,private _accountService: accountService) {
     this.UserToCenterObj ={
       AccessToken : localStorage.getItem("accessToken"),
       Email : "",
@@ -156,23 +180,8 @@ export class AdminPagePage implements OnInit {
       Name: "",
       Coords: "",
       LogoPhoto: "",
-      Description: "" 
-    }
-
-    if(localStorage.getItem("accessToken")){
-         //Setup User Role
-         if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-          this.accountType = "Instructor";
-        }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-          this.accountType = "Diver";
-        }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-          this.accountType = "Admin";
-          this.getUnverifiedInstructors();
-        }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-          this.accountType = "SuperAdmin";
-        }else{
-          this.accountType = "*Diver";
-        }
+      Description: "" ,
+      TypeOfDives: "" 
     }
 
   }
@@ -202,6 +211,9 @@ export class AdminPagePage implements OnInit {
     this.verifiedInstructors = new Array();
     this.unverifiedInstructors = new Array();
     
+    this.verifiedInstructors  = [] ;
+    this.unverifiedInstructors = [] ;
+
 
     //Setup Dive Centre Object
     this.currentDiveCenter ={
@@ -214,6 +226,8 @@ export class AdminPagePage implements OnInit {
       Instructors: [],
     }
 
+    this.hideAllViews();
+
     //Setup Login Label
     this.loginLabel ="Login";
     if(!localStorage.getItem("accessToken"))
@@ -222,26 +236,125 @@ export class AdminPagePage implements OnInit {
     }else{
       this.loginLabel = "Log Out";
 
-        //Setup User Role
-        if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-          this.accountType = "Instructor";
-        }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-          this.accountType = "Diver";
-        }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-          this.accountType = "Admin";
-          this.getUnverifiedInstructors();
-          this.getDiveCentreInformation();
-        }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-          this.accountType = "SuperAdmin";
-        }else{
-          this.accountType = "*Diver";
-        }
+      this._globalService.activeLabel =  "Log Out";
+      this._globalService.accountRole = localStorage.getItem("accessToken").substring(36, 38) ;
+      this.accountType = this._globalService.accountRole;
+
+      console.log("AT: " + this.accountType);
+      //get initial chart data
+      if(this.accountType == "11"){
+        var numDivesBody ={
+          "AccessToken" : localStorage.getItem("accessToken") ,
+          "DiveSite" : "*",
+          "YearOfSearch" : this.currentDate.getFullYear().toString()
+        };
+
+        this.dateSearch =  this.currentDate.getFullYear().toString() ;
+
+        console.log(numDivesBody);
+
+        this.showLoading = true ;
+          this._chartService.numberDivesAtSiteChartData(numDivesBody).subscribe( data =>{
+              this.showLoading = false;
+              this.totalNumberOfDivesYear = data.TotalNumberOfDives.toString();
+              console.log(data);
+              this.drawNumDivesAtSiteChart(data, "All Dive Sites");
+
+          },err =>{
+            this.showLoading = false;
+            
+            if(err.error){
+              this.generalAlert("Number Of Dives Chart Error", err.error);
+            }else{
+              console.log("Could not access number Dives At Site Chart Data");
+            }
+            
+          });
+
+
+          var rateDivesBody ={
+            "AccessToken" : localStorage.getItem("accessToken") ,
+            "DiveSite" : "*"
+          };
+
+          this.showLoading = true ;
+          this._chartService.ratingAtDiveSiteChartData(rateDivesBody).subscribe( data =>{
+              this.showLoading = false;
+              
+              console.log(data);
+      
+                this.drawRatingDivesAtSiteChart(data, "Rating of All Dive Sites");
+            
+        
+          },err =>{
+            this.showLoading = false;
+            
+            if(err.error){
+              this.generalAlert("Rating Of Dives Chart Error", err.error);
+            }else{
+              console.log("Could not access rating of  Dives At Site Chart Data");
+            }
+            
+          });
+
+          var peekDivesBody ={
+            "AccessToken" : localStorage.getItem("accessToken") ,
+            "DiveSite" : "*",
+            "YearOfSearch" : this.currentDate.getFullYear().toString()
+          };
+
+          this.showLoading = true ;
+          this._chartService.peakTimesDivesAtSiteChartData(peekDivesBody).subscribe( data =>{
+              this.showLoading = false;
+              this.drawPeekDivesAtSiteChart(data, "All Dive Sites");
+              console.log(data);
+              //this.drawNumDivesAtSiteChart(data, "All Sites");
+
+          },err =>{
+            this.showLoading = false;
+            
+            if(err.error){
+              this.generalAlert("Number Of Dives Chart Error", err.error);
+            }else{
+              console.log("Could not access number Dives At Site Chart Data");
+            }
+            
+          });
+
+          var ageGroupBody ={
+            "AccessToken" : localStorage.getItem("accessToken") 
+          };
+
+          this.showLoading = true ;
+          this._chartService.ageGroupChartData(ageGroupBody).subscribe( data =>{
+              this.showLoading = false;
+              console.log(data);
+              this.drawAgeGroupChart(data, "Age Groups of Users");
+             
+
+          },err =>{
+            this.showLoading = false;
+            
+            if(err.error){
+              this.generalAlert("Age Groups Chart Error", err.error);
+            }else{
+              console.log("Could not access number Age Groups Chart Data");
+            }
+            
+          });
+
+
+
+      
+
+      }
     }
 
     
   }
 
   ionViewWillEnter(){
+    this.hideAllViews();
      //Setup page load variables
      this.showRegisterUserToCenter = false; 
      this.showRegisterNewCenter = false ;
@@ -261,9 +374,9 @@ export class AdminPagePage implements OnInit {
  
      this.siteUserInput = new Array();
  
-     this.allInstructors = new Array();
-     this.verifiedInstructors = new Array();
-     this.unverifiedInstructors = new Array();
+     //this.allInstructors = new Array();
+     //this.verifiedInstructors = new Array();
+     //this.unverifiedInstructors = new Array();
  
      //Setup Dive Centre Object
      this.currentDiveCenter ={
@@ -285,19 +398,9 @@ export class AdminPagePage implements OnInit {
        this.loginLabel = "Log Out";
  
          //Setup User Role
-         if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-           this.accountType = "Instructor";
-         }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-           this.accountType = "Diver";
-         }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-           this.accountType = "Admin";
-           this.getUnverifiedInstructors();
-           this.getDiveCentreInformation();
-         }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-           this.accountType = "SuperAdmin";
-         }else{
-           this.accountType = "*Diver";
-         }
+         this._globalService.activeLabel =  "Log Out";
+         this.accountType = this._globalService.accountRole;
+         console.log(this.accountType);
      }
   }
 
@@ -328,9 +431,6 @@ export class AdminPagePage implements OnInit {
       }else if(me.showAddSite){
         me.NewSiteObj.LogoPhoto = me.base64textString ;
       }
-      
-     
-      
     };
     reader.onerror = function (error) {
       console.log('Error: ', error);
@@ -794,17 +894,26 @@ getUnverifiedInstructors(){
   this._accountService.getUnverifiedInstructors().subscribe(res=>{
 
     this.allInstructors = res.UnverifiedInstructors ; 
-
+    console.log("Instructors \n ===============");
+    console.log( res.UnverifiedInstructors );
 
     for(var x = 0 ; x < this.allInstructors.length ; x++){
 
       if(this.allInstructors[x].AccountVerified == false){
-        this.unverifiedInstructors.push(this.allInstructors[x]);
+        if(this.unverifiedInstructors.indexOf(this.allInstructors[x]) == -1){
+          this.unverifiedInstructors.push(this.allInstructors[x]);
+        }
+        
       }else{
+        if(this.verifiedInstructors.indexOf(this.allInstructors[x]) == -1){
         this.verifiedInstructors.push(this.allInstructors[x]);
+        }
       }
 
     }
+
+    console.log("Unverified");
+    console.log(this.unverifiedInstructors);
 
     this.showLoading = false ;
   }, err =>{
@@ -851,10 +960,10 @@ getDiveCentreInformation(){
         var index2 = this.UserToCenterObj.Email.length;
         this.UserToCenterObj.Email = this.UserToCenterObj.Email.substr( index1,index2 ) ;
   
-        var index3 = this.UserToCenterObj.Email.length -1 ; 
+        var index3 = this.UserToCenterObj.Email.length ; 
         this.UserToCenterObj.Email = this.UserToCenterObj.Email.substr( 0,index3 ) ;
       }
-     
+      this.UserToCenterObj.Email.trim();
       this.showLoading = true ;
       this._accountService.addUsertoDiveCenter(this.UserToCenterObj).subscribe(res=>{
           this.showLoading = false;
@@ -868,8 +977,6 @@ getDiveCentreInformation(){
         this.showLoading = false;
         this.presentUserToCenterFailAlert();
       });
-
-      
     }
 
  }
@@ -1055,6 +1162,8 @@ getDiveCentreInformation(){
 
     this.hideAllViews();
 
+
+
   }, err=>{
     this.showLoading = false ;
     if(err.error){
@@ -1065,7 +1174,6 @@ getDiveCentreInformation(){
     
   });
 
-  
 
  }
 
@@ -1109,6 +1217,15 @@ getDiveCentreInformation(){
 
     this.hideAllViews();
 
+    this.NewCourseObj={
+      Name: "",
+      CourseType: "",
+      MinAgeRequired: 10,
+      SurveyAnswer: "", 
+      RequiredCourses: [],
+      QualificationType: ""
+    }
+
   }, err=>{
 
     this.showLoading = false ;
@@ -1130,7 +1247,8 @@ getDiveCentreInformation(){
       "AccessToken" : localStorage.getItem("accessToken") ,
       "Name" : this.NewSiteObj.Name ,
       "Coords" : this.NewSiteObj.Coords,
-      "Description" : this.NewSiteObj.Description
+      "Description" : this.NewSiteObj.Description,
+      "TypeOfDives" : this.NewSiteObj.TypeOfDives
     }
 
     console.log(body); 
@@ -1141,6 +1259,14 @@ getDiveCentreInformation(){
       this.generalAlert("Success", "Dive Site Created");
   
       this.hideAllViews();
+
+      this.NewSiteObj ={
+        Name: "",
+        Coords: "",
+        LogoPhoto: "",
+        Description: "",
+        TypeOfDives : "" 
+      }
   
     }, err=>{
   
@@ -1187,6 +1313,444 @@ getDiveCentreInformation(){
     });
 
     await alert.present();
+  }
+
+
+
+  ///Functions for drawing charts
+  searchAllDiveSitesCharts( YS ){
+    this.DoSiteYearChartSearch(YS) ;
+    this.DoSiteRatingChartSearch() ;
+    this.DoPeekSiteYearChartSearch(YS);
+  }
+
+  random_rgba(){
+    var o = Math.round, r= Math.random, s=255 ;
+    return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ', 0.7)' ;
+  }
+
+  updateNumDivesAtSiteChart(returnedData, msg){
+
+
+    this.lineChartDivesAtSite.destroy();
+    this.drawNumDivesAtSiteChart(returnedData, msg);
+
+
+  }
+
+  drawNumDivesAtSiteChart(returnedData, msg){
+
+
+    let keys = returnedData["ReturnedList"].map(d => d.Month);
+    let values = returnedData["ReturnedList"].map(d => d.AmountOfDives);
+
+
+    this.lineChartDivesAtSite = new Chart(this.lineCanvasDivesAtSite.nativeElement,{
+  type: "line",
+  data: {
+    labels: keys,
+    datasets: [
+      {
+        label: msg,
+        fill: false,
+        lineTension: 0.1,
+        backgroundColor: "rgba(244, 162, 97,0.4)",
+        borderColor: "rgba(244, 162, 97,1)",
+        borderCapStyle: "butt",
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: "miter",
+        pointBorderColor: "rgba(244, 162, 97,1)",
+        pointBackgroundColor: "#fff",
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: "rgba(231, 111, 81,1)",
+        pointHoverBorderColor: "rgba(220,220,220,1)",
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        data: values,
+        spanGaps: false
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      xAxes: [ {
+        display: true,
+        scaleLabel: {
+          display: true,
+          labelString: 'Month'
+        },
+        ticks: {
+          major: {
+            fontStyle: 'bold',
+            fontColor: '#FF0000'
+          }
+        }
+      } ],
+      yAxes: [ {
+        display: true,
+        scaleLabel: {
+          display: true,
+          labelString: 'Total Dives'
+        }
+      } ]
+    }
+  }
+});
+  }
+
+  updateRatingDivesAtSiteChart(returnedData, msg){
+
+
+    this.pieChartDivesAtSiteRating.destroy();
+    this.drawRatingDivesAtSiteChart(returnedData, msg);
+
+
+  }
+
+  drawRatingDivesAtSiteChart(returnedData, msg){
+
+
+    let keys = returnedData["Ratings"][0].map(d => d.Rating);
+    let values = returnedData["Ratings"][0].map(d => d.Amount);
+
+
+    this.pieChartDivesAtSiteRating = new Chart(this.pieCanvasDivesAtSiteRating.nativeElement,{
+      type: 'doughnut',
+      data: {
+        labels: keys,
+        datasets: [{
+          label: "Rating of Dive Site",
+          backgroundColor: ["#c45850","#ed576b","#F4A261","#2A9D8F","#2dd36f"],
+          data: values
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        title: {
+          display: true,
+          text: msg
+        }
+      }
+      });
+  }
+
+
+  drawPeekDivesAtSiteChart(returnedData, msg){
+
+
+    let keys = returnedData["ReturnedList"].map(d => d.Hour);
+    let values = returnedData["ReturnedList"].map(d => d.AmountOfDives);
+
+    
+    this.lineChartPeekDivesAtSite = new Chart(this.lineCanvasChartPeekDivesAtSite.nativeElement,{
+      type: "line",
+      data: {
+        labels: keys,
+        datasets: [
+          {
+            label: msg,
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: "rgba(244, 162, 97,0.4)",
+            borderColor: "rgba(244, 162, 97,1)",
+            borderCapStyle: "butt",
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: "miter",
+            pointBorderColor: "rgba(244, 162, 97,1)",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "rgba(231, 111, 81,1)",
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data: values,
+            spanGaps: false
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          xAxes: [ {
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Time'
+            },
+            ticks: {
+              major: {
+                fontStyle: 'bold',
+                fontColor: '#FF0000'
+              }
+            }
+          } ],
+          yAxes: [ {
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Total Dives'
+            }
+          } ]
+        }
+      }
+    });
+
+
+  }
+
+  updatePeekDivesAtSiteChart(returnedData, msg){
+
+
+    this.lineChartPeekDivesAtSite.destroy();
+    this.drawPeekDivesAtSiteChart(returnedData, msg);
+
+
+  }
+
+  drawAgeGroupChart(returnedData, msg){
+
+
+    let keys = returnedData["ReturnedList"].map(d => d.AgeGroup);
+    let values = returnedData["ReturnedList"].map(d => d.AmountOfUsers);
+
+    
+    this.lineChartAgeGroup = new Chart(this.lineCanvasChartAgeGroup.nativeElement,{
+      type: "line",
+      data: {
+        labels: keys,
+        datasets: [
+          {
+            label: msg,
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: "rgba(42, 157, 143)",
+            borderColor: "rgba(42, 157, 143)",
+            borderCapStyle: "butt",
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: "miter",
+            pointBorderColor: "rgba(244, 162, 97,1)",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "rgba(32, 117, 107)",
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data: values,
+            spanGaps: false
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          xAxes: [ {
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Age Groups'
+            },
+            ticks: {
+              major: {
+                fontStyle: 'bold',
+                fontColor: '#FF0000'
+              }
+            }
+          } ],
+          yAxes: [ {
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Total Users'
+            }
+          } ]
+        }
+      }
+    });
+
+
+  }
+
+  updateAgeGroupChart(returnedData, msg){
+
+
+    this.lineChartPeekDivesAtSite.destroy();
+    this.drawAgeGroupChart(returnedData, msg);
+
+
+  }
+
+  //Functions for Chart Searches
+
+  DoSiteYearChartSearch(yearSearch){
+
+    if(this.siteInput == "")
+    {
+      this.siteInput = "*";
+    }
+
+    if(yearSearch == 0){
+      yearSearch = this.currentDate.getFullYear();
+    }
+
+    this.dateSearch = yearSearch.toString();
+
+    if(this.dateSearch.length < 4 ){
+      for(let x = this.dateSearch.length ; x < 4; x++){
+        this.dateSearch += "0";
+      }
+    }else if(this.dateSearch.length > 4 ){
+      this.dateSearch = this.dateSearch.substring(0,4);
+    }
+
+    var numDivesBody ={
+      "AccessToken" : localStorage.getItem("accessToken") ,
+      "DiveSite" : this.siteInput,
+      "YearOfSearch" :this.dateSearch
+    };
+
+
+    console.log(numDivesBody);
+
+    this.showLoading = true ;
+          this._chartService.numberDivesAtSiteChartData(numDivesBody).subscribe( data =>{
+              this.showLoading = false;
+              this.totalNumberOfDivesYear = data.TotalNumberOfDives.toString();
+              console.log(data);
+
+              if(this.siteInput=="*")
+              { 
+                this.updateNumDivesAtSiteChart(data, "All Dive Sites");
+              }else{
+                this.updateNumDivesAtSiteChart(data, this.siteInput);
+              }
+              
+
+          },err =>{
+            this.showLoading = false;
+            
+            if(err.error){
+              this.generalAlert("Number Of Dives Chart Error", err.error);
+            }else{
+              console.log("Could not access number Dives At Site Chart Data");
+            }
+            
+          });
+
+
+  }
+
+  DoPeekSiteYearChartSearch(yearSearch){
+
+    if(this.siteInput == "")
+    {
+      this.siteInput = "*";
+    }
+
+    if(yearSearch == 0){
+      yearSearch = this.currentDate.getFullYear();
+    }
+
+    this.dateSearch = yearSearch.toString();
+
+    if(this.dateSearch.length < 4 ){
+      for(let x = this.dateSearch.length ; x < 4; x++){
+        this.dateSearch += "0";
+      }
+    }else if(this.dateSearch.length > 4 ){
+      this.dateSearch = this.dateSearch.substring(0,4);
+    }
+
+    var numDivesBody ={
+      "AccessToken" : localStorage.getItem("accessToken") ,
+      "DiveSite" : this.siteInput,
+      "YearOfSearch" :this.dateSearch
+    };
+
+    console.log("Peek Search");
+    console.log(numDivesBody);
+
+
+    this.showLoading = true ;
+          this._chartService.peakTimesDivesAtSiteChartData(numDivesBody).subscribe( data =>{
+              this.showLoading = false;
+              console.log(data);
+
+              if(this.siteInput=="*")
+              { 
+                this.updatePeekDivesAtSiteChart(data, "All Dive Sites");
+              }else{
+                this.updatePeekDivesAtSiteChart(data, this.siteInput);
+              }
+              
+
+          },err =>{
+            this.showLoading = false;
+            
+            if(err.error){
+              this.generalAlert("Peak Time Dives Chart Error", err.error);
+            }else{
+              console.log("Could not access peak times Dives At Site Chart Data");
+            }
+            
+          });
+
+
+  }
+
+  DoSiteRatingChartSearch(){
+    if(this.siteInput == "")
+    {
+      this.siteInput = "Shark Alley";
+    }
+
+    var rateDivesBody ={
+      "AccessToken" : localStorage.getItem("accessToken") ,
+      "DiveSite" : this.siteInput
+    };
+
+    this.showLoading = true ;
+    this._chartService.ratingAtDiveSiteChartData(rateDivesBody).subscribe( data =>{
+        this.showLoading = false;
+        
+        console.log(data);
+
+        if(this.siteInput=="*")
+        { 
+          this.updateRatingDivesAtSiteChart(data, "Overall Rating of All Sites");
+        }else{
+          this.updateRatingDivesAtSiteChart(data, "Rating of " +this.siteInput);
+        }
+          
+      
+  
+    },err =>{
+      this.showLoading = false;
+      
+      if(err.error){
+        this.generalAlert("Rating Of Dives Chart Error", err.error);
+      }else{
+        console.log("Could not access rating of  Dives At Site Chart Data");
+      }
+      
+    });
+
+
+
+
   }
 
 }

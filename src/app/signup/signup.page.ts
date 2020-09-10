@@ -41,9 +41,6 @@ export interface SignInstructor {
   CompletedCourses: string[];
 }
 
-
-
-
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.page.html',
@@ -99,6 +96,7 @@ export class SignupPage implements OnInit {
   //Internet Connectivity check
   isConnected = true;  
   noInternetConnection: boolean;
+  loginLabel:string = "Log In";
 
   /********************************************/
 
@@ -186,6 +184,12 @@ export class SignupPage implements OnInit {
     });
   } //End of Constructor
 
+  loginClick(){
+    
+      this.router.navigate(['login']);
+    
+  }
+
 
   ngOnInit() {
     this.showSpecialization = false;
@@ -226,9 +230,7 @@ export class SignupPage implements OnInit {
         me.instructorObj.ProfilePhoto = me.base64textString;
       }
       
-      console.log(me.diverObj.ProfilePhoto);
-     
-      
+      //console.log(me.diverObj.ProfilePhoto);s
     };
     reader.onerror = function (error) {
       console.log('Error: ', error);
@@ -236,7 +238,7 @@ export class SignupPage implements OnInit {
   }
 
   ShowRelatedForm(targetValue : string){
-  console.log(targetValue);
+  //console.log(targetValue);
 
   if(targetValue == "Diver"){
     this.signUpDiver = true;
@@ -288,8 +290,8 @@ CenterListFinder(eventValue: string){
     this.showLoading = true;
     this._diveService.getDiveCenters(eventValue).subscribe(
       data => {
-        console.log(eventValue);
-          console.log(data);
+        //console.log(eventValue);
+          //console.log(data);
           this.CenterLst = data.ReturnedList ; 
           this.showLoading = false;
       }
@@ -309,8 +311,8 @@ addSpecialisation(s : string){
    this.specialisationInputField = "";
  }
 
- console.log("Specialisation Added: ");
- console.log(this.userSpecialisation);
+ //console.log("Specialisation Added: ");
+ //console.log(this.userSpecialisation);
  
 }
 
@@ -368,10 +370,10 @@ DiverSubmit(){
     this.diverObj.CompletedCourses = this.userCourses ;
     
     this._accountService.insertUserDiver( this.diverObj ).subscribe( res =>{
-      console.log(res);
+      //console.log(res);
       localStorage.setItem("accessToken", res.AccessToken) ; 
-
-      console.log("Sending Diver Email");
+      
+      //console.log("Sending Diver Email");
       
       
     /**   this._accountService.sendValidationEmail(this.diverObj.Email).subscribe( res => {
@@ -385,8 +387,6 @@ DiverSubmit(){
       }); */
       this.sendEmail(this.diverObj.Email);
     },  err => this.presentAlertEmail()); 
-
-
   }
 
 
@@ -463,9 +463,6 @@ nextPage(){
       this.InstructorThirdPageVisible = false;
       this.InstructorFourthPageVisible = true;
     }
-    
-
-
 
   }
     

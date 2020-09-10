@@ -75,7 +75,7 @@ exports.handler = async (event, context) => {
     if(statusCode==0){
         var diveParams = {
             TableName: "Dives",
-            ProjectionExpression: "DiveID, AccountGuid, DiveTypeLink, DiveSite, DiveDate, Weather, TimeIn , TimeOut",
+            ProjectionExpression: "DiveID, AccountGuid,Buddy, DiveTypeLink, DiveSite, DiveDate, Weather, TimeIn , TimeOut",
             FilterExpression: "#acc = :acc",
             ExpressionAttributeNames:{
                 "#acc" : "AccountGuid"
@@ -87,18 +87,68 @@ exports.handler = async (event, context) => {
         
         try{
             /*search for all the dive logs */
-            responseBody = await documentClient.scan(diveParams).promise();
-            if((typeof responseBody.Items !== 'undefined') && responseBody.Items.length >0)
+            const dives = await documentClient.scan(diveParams).promise();
+            
+            if((typeof dives.Items !== 'undefined') && dives.Items.length >0)
             {
-                responseBody = responseBody;
-                statusCode = 201;
+                let sortedByDate = [];
+                const resultLength = dives.Items.length;
+
+                /*Sort according to dates */
+                responseBody = '{ "PrivateDiveLogs" : [';
+                for(var i=0; i<resultLength; i++)
+                {
+                    let earliestDate= new Date(dives.Items[i].DiveDate);
+                    let index = i;
+                    for(var j=i; j<resultLength; j++)
+                    {
+                        let check = new Date(dives.Items[j].DiveDate);
+                        if(compareDates(check,earliestDate))
+                        {
+                            earliestDate = check;
+                            index = j;
+                        }
+                    }
+                    let temp = dives.Items[index];
+                    dives.Items[index] = dives.Items[i];
+                    dives.Items[i] = temp;
+
+                    responseBody += '{ "DiveID" : "' +  dives.Items[i].DiveID + '",' +
+                                        '"DiveSite" : "' +  dives.Items[i].DiveSite + '",' +
+                                        '"DiveDate" : "' + dives.Items[i].DiveDate + '",' +
+                                        '"DiveType" : "' + dives.Items[i].DiveTypeLink + '",' +
+                                        '"TimeIn" : "' + dives.Items[i].TimeIn + '",' +
+                                        '"TimeOut" : "' + dives.Items[i].TimeOut + '",' +
+                                        '"Buddy" : "' + dives.Items[i].Buddy + '",' +
+                                        '"Weather" : [';
+                                                
+                    for(var j=0; j<dives.Items[i].Weather.length; j++){
+                        if(j == 0){
+                            responseBody += '"' + dives.Items[i].Weather[j] + '"';
+                        }
+                        else{
+                            responseBody += ',"' + dives.Items[i].Weather[j] + '"';
+                        }
+                    }
+                    responseBody += ']}';
+                    if(i != resultLength-1)
+                    {
+                        responseBody += ',';
+                    }
+                }
+                responseBody += ']}';    
+
+                /*Constuct JSON object */
+                responseBody = JSON.parse(responseBody);
+                statusCode = 201; 
+
             }
             else{
                 responseBody = "No diver logs found";
                 statusCode = 404;
             }
         }catch(err){
-            responseBody = "No diver logs found " + err;
+            responseBody = "No diver logs found " + err + "   ====>" + check;
             statusCode = 404;
         } 
     }
@@ -119,4 +169,3 @@ exports.handler = async (event, context) => {
     return response;
 
 };
-
