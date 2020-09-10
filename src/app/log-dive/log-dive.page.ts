@@ -197,23 +197,23 @@ export class LogDivePage implements OnInit {
     this.diveForm = formBuilder.group({
       DiveID: ['', Validators.required],
       AccessToken: ['', Validators.required],
-      DiveDate: [Validators.required],
-      TimeIn: [ Validators.required],
-      TimeOut: [ Validators.required],
+      DiveDate: ['',Validators.required],
+      TimeIn: ['', Validators.required],
+      TimeOut: ['', Validators.required],
       Visibility:[ Validators.required],
       Depth: [ Validators.required],
       Buddy: ['', Validators.required],
       DiveTypeLink: ['', Validators.required],
-      AirTemp: [Validators.required],
-      SurfaceTemp: [ Validators.required],
-      BottomTemp: [ Validators.required],
+      AirTemp: ['',Validators.required],
+      SurfaceTemp: ['', Validators.required],
+      BottomTemp: ['', Validators.required],
       DiveSite: ['', Validators.required],
       Description: ['', Validators.required],
-      InstructorLink: [] ,
-      Weather: [] ,
-      DivePublicStatus: [],
-      Rating : [],
-      WaterType: []
+      InstructorLink: [''] ,
+      Weather: [''] ,
+      DivePublicStatus: [''],
+      Rating : [''],
+      WaterType: ['']
     });
 
     router.events.pipe(
@@ -442,38 +442,47 @@ export class LogDivePage implements OnInit {
 
   DiveLogSubmit(){
 
+
     //setup weather final 
     this.diveObj.AirTemp = Number(this.diveObj.AirTemp );
     this.diveObj.SurfaceTemp = Number(this.diveObj.SurfaceTemp );
     this.diveObj.BottomTemp = Number(this.diveObj.BottomTemp );
-    this.diveObj.Visibility = this.diveObj.Visibility ;
-    this.diveObj.Depth = this.diveObj.Depth;
-    this.diveObj.Rating = this.RateGiven;
-    this.diveObj.WaterType = this.diveObj.WaterType;
+    this.diveObj.Rating = this.RateGiven ; 
     //link Instructor Array
     this.diveObj.InstructorLink = this.instructorUserInput ; 
     this.diveObj.isCourse = this.showCourseInput ;
 
-
     console.log(this.diveObj);
-   this.showLoading = true;
-   if(localStorage.getItem("Backup")){
-    localStorage.removeItem("Backup");
-  }
-    this._diveService.logDive(this.diveObj).subscribe( res =>{
-                
-      //console.log(res);
-      this.showLoading = false;
-      this.presentSuccessAlert();
-      this.router.navigate(['my-dives']);
-    }, err =>{
-      if(err.error)
-      {
-        alert( err.error);
-      }else{
-        alert("Something went wrong..");
+
+   
+
+    if(this.diveForm.valid)
+    {
+      if(localStorage.getItem("Backup")){
+        localStorage.removeItem("Backup");
       }
-    });
+  
+      this.showLoading = true;
+      this._diveService.logDive(this.diveObj).subscribe( res =>{
+                  
+        //console.log(res);
+        this.showLoading = false;
+        this.presentSuccessAlert();
+        this.router.navigate(['my-dives']);
+      }, err =>{
+        if(err.error)
+        {
+          alert( err.error);
+          this.presentGeneralAlert("Unable to Log Dive", err.error);
+        }else{
+          this.presentGeneralAlert("Unable to Log Dive", "Something went wrong.. please try again");
+        }
+      });
+    }else{
+      this.presentGeneralAlert("Invalid Dive Log", "Please provide all the information neccessary to log a dive");
+    }
+    
+    
   }
 
   saveTempLog(){
