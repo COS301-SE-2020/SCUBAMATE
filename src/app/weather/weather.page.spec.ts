@@ -9,6 +9,7 @@ import {HttpModule} from '@angular/http';
 import { HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
 import { FormBuilder} from '@angular/forms';
+import { map } from 'rxjs/operators';
 
 var accessToken = "d1d7391d-c035-28ab-0193-68a7d263d4be11ac76afb3c161…0702085a1c423b0ed53f38b9a0e6e0ad8bfe8cd3712f14be7";
 
@@ -46,12 +47,14 @@ describe('WeatherPage', () => {
       Longitude: "28.245230"
     };
 
-    weatService.getLocationKey(Coordinates).subscribe((resp : any) => {
-      console.log(resp);
-    });
-
-    expect(Coordinates.Latitude).toBe("-25.840380");
-    expect(Coordinates.Longitude).toBe("28.245230");
+    let weathearSpy = spyOn(weatService, 'getLocationKey').and.callThrough();
+    expect(weathearSpy).toBeDefined();
+    let response = weatService.getLocationKey(Coordinates).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(weathearSpy).toBeDefined();
+    expect(weatService.getLocationKey).toHaveBeenCalledWith(Coordinates);
   });
 
   it('getLogWeather() test', () => {
@@ -62,13 +65,14 @@ describe('WeatherPage', () => {
       province: null
     };
 
-    weatService.getLogWeather(Key).subscribe((resp : any) => {
-      console.log(resp);
-    });
-
-    expect(Key.key).toBeNull();
-    expect(Key.city).toBeNull();
-    expect(Key.province).toBeNull();
+    let weathearSpy = spyOn(weatService, 'getLocationKey').and.callThrough();
+    expect(weathearSpy).toBeDefined();
+    let response = weatService.getLocationKey(Key).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(weathearSpy).toBeDefined();
+    expect(weatService.getLocationKey).toHaveBeenCalledWith(Key);
   });
 
   it('Testing Weather Components', () => {
