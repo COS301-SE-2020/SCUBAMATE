@@ -37,6 +37,7 @@ describe('PlanningPage', () => {
     router = TestBed.get(Router);
     httpMock = TestBed.get(HttpTestingController);
     http = TestBed.get(HttpClient);
+    localStorage.setItem("accessToken", accessToken);
   }));
 
   it('should create', () => {
@@ -101,5 +102,110 @@ describe('PlanningPage', () => {
     });
 
     expect(eventValue).toBe("");
+  });
+
+  it('Testing Planning Components', () => {
+    expect(component.DiveTypeLst).toBeUndefined();
+    expect(component.OptionalReceived).toBeUndefined();
+    expect(component.EquipmentReceived).toBeUndefined();
+    expect(component.EquipmentList).toBeDefined();
+    expect(component.OptionalList).toBeDefined();
+    expect(component.viewChecklist).toBeFalse();
+    expect(component.showLoading).toBeFalse();
+    expect(component.SearchDiveCheckList).toBe('');
+    expect(component.viewAddInput).toBeFalse();
+    expect(component.viewPersonalAdded).toBeFalse();
+    expect(component.PersonalList).toBeDefined();
+    expect(component.itemToAdd).toBeDefined();
+    expect(component.suggestedCourseFullList).toBeDefined();
+    expect(component.suggestedCourseThreeList).toBeDefined();
+    expect(component.showCourses).toBeFalse();
+    expect(component.loginLabel).toBe("Log Out");
+  });
+
+  it('Testing ngOnInit()', () => {
+    component.ngOnInit();
+    expect(component.showCourses).toBeFalse();
+    expect(component.showLoading).toBeFalse();
+    expect(component.loginLabel).toBe("Log Out");
+    let divSpy = spyOn(divService, 'getSuggestedCourses').and.callThrough();
+    expect(divSpy).toBeDefined();
+    expect(component.suggestedCourseFullList).toBeDefined();
+    let accountSpy = spyOn(accService, 'getCustomChecklist').and.callThrough();
+    expect(accountSpy).toBeDefined();
+    expect(component.EquipmentList).toBeDefined();
+    expect(component.OptionalList).toBeDefined();
+    expect(component.viewPersonalAdded).toBeFalse();
+    expect(component.viewChecklist).toBeFalse();
+    let navigateSpy = spyOn(router, 'navigate');
+    expect(navigateSpy).toBeDefined();
+  });
+
+  it('Testing ionViewWillEnter()', () => {
+    component.ionViewWillEnter();
+    expect(component.itemToAdd).toBeDefined();
+    expect(component.SearchDiveCheckList).toBeDefined();
+    expect(component.showLoading).toBeFalse();
+    expect(component.loginLabel).toBe("Log Out");
+    let divSpy = spyOn(divService, 'getSuggestedCourses').and.callThrough();
+    expect(divSpy).toBeDefined();
+    expect(component.suggestedCourseFullList).toBeDefined();
+  });
+
+  it('Testing onChooseDive()', () => {
+    event: Event;
+    component.onChooseDive("Ice Dive", event);
+    expect(component.showLoading).toBeTrue();
+    let divSpy = spyOn(divService, 'getCheckList').and.callThrough();
+    expect(divSpy).toBeDefined();
+    expect(component.viewChecklist).toBeFalse();
+    expect(component.OptionalReceived).toBeUndefined();
+    expect(component.EquipmentReceived).toBeUndefined();
+  });
+
+  it('Testing diveTypeListFinder()', () => {
+    component.divetypeListFinder();
+    expect(component.showLoading).toBeFalse();
+    let divSpy = spyOn(divService, 'getDiveTypes').and.callThrough();
+    expect(divSpy).toBeDefined();
+    expect(component.DiveTypeLst).toBeUndefined();
+  });
+
+  it('Testing toggleCheckList()', () => {
+    component.toggleCheckList();
+    expect(component.viewChecklist).toBe(component.viewChecklist);
+  });
+
+  it('Testing showAddInput()', () => {
+    component.showAddInput();
+    expect(component.viewAddInput).toBe(component.viewAddInput);
+  });
+
+  it('Testing addItem()', () => {
+    component.addItem();
+    expect(component.showLoading).toBeFalse();
+    expect(component.viewPersonalAdded).toBeFalse();
+    expect(component.viewAddInput).toBeFalse();
+    expect(component.itemToAdd).toBeDefined();
+    expect(component.viewChecklist).toBeFalse();
+  });
+
+  it('Testing saveCheckList()', () => {
+    component.saveChecklist();
+    let accountSpy = spyOn(accService, 'storeCustomChecklist').and.callThrough();
+    expect(accountSpy).toBeDefined();
+  });
+
+  it('Testing Planning Functionality', () => {
+    expect(component.ngOnInit).toBeTruthy();
+    expect(component.ionViewWillEnter).toBeTruthy();
+    expect(component.loginClick).toBeTruthy();
+    expect(component.onChooseDive).toBeTruthy();
+    expect(component.divetypeListFinder).toBeTruthy();
+    expect(component.toggleCheckList).toBeTruthy();
+    expect(component.showAddInput).toBeTruthy();
+    expect(component.addItem).toBeTruthy();
+    expect(component.getRandomThreeCourses).toBeTruthy();
+    expect(component.saveChecklist).toBeTruthy();
   });
 });
