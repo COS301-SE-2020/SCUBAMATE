@@ -80,7 +80,7 @@ describe('LoginPage', () => {
     expect(component.loginLabel).toBe("Sign Out");
   });
 
-  fit('Testing loginClick()', () => {
+  it('Testing loginClick()', () => {
     component.loginClick();
     expect(localStorage.getItem("accessToken")).toBeDefined();
   });
