@@ -9,6 +9,7 @@ import {HttpModule} from '@angular/http';
 import { HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
 import { FormBuilder} from '@angular/forms';
+import { map } from 'rxjs/operators';
 
 var reqBody = {
   AccessToken : "d1d7391d-c035-28ab-0193-68a7d263d4be11018bb4bb890ede82397fea8e38e8cb3b5646f4053ff8c04aec7048b8c3d4376e",
@@ -48,56 +49,52 @@ describe('EditDivePage', () => {
   });
 
   it('updateDive() test', () => {
-    var reqBody = {
-      DiveID: "",
-      AccessToken: "",
-      Buddy: "bud",
+    var req = {
+      DiveID: reqBody.DiveID,
+      AccessToken: reqBody.AccessToken,
+      Buddy: "John Cena",
       InstructorLink: "-",
-      Description: "desc",
-      DivePublicStatus: "pub"
+      Description: "Mellow Drifting Dive",
+      DivePublicStatus: true
     };
 
-    divService.updateDive(reqBody).subscribe((resp : any) => {
-      console.log(resp);
-    });
-
-    expect(reqBody).toBeDefined();
+    let editDiveSpy = spyOn(divService, 'updateDive').and.callThrough();
+    expect(editDiveSpy).toBeDefined();
+    let response = divService.updateDive(req).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(editDiveSpy).toBeDefined();
+    expect(divService.updateDive).toHaveBeenCalledWith(req);
   });
 
   it('lookAheadBuddy() test', () => {
-    var eventValue = "";
+    var eventValue = "John";
 
-    accService.lookAheadBuddy(eventValue).subscribe((resp : any) => {
-      console.log(resp);
-    });
-
-    expect(eventValue).toBe("");
+    let accountSpy = spyOn(accService, 'lookAheadBuddy').and.callThrough();
+    expect(accountSpy).toBeDefined();
+    let response = accService.lookAheadBuddy(eventValue).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(accountSpy).toBeDefined();
+    expect(accService.lookAheadBuddy).toHaveBeenCalledWith(eventValue);
   });
 
   it('getIndividualDive() test', () => {
-    var reqBody = {
-      AccessToken: "",
-      DiveID: ""
+    var req = {
+      AccessToken: reqBody.AccessToken,
+      DiveID: reqBody.DiveID
     }
 
-    divService.getIndividualDive(reqBody).subscribe((resp : any) => {
-      console.log(resp);
-    });
-
-    expect(reqBody).toBeDefined();
-  });
-
-  it('updateDive() test', () => {
-    var diveObj = {
-      AccessToken: "",
-      DiveID: ""
-    }
-
-    divService.updateDive(diveObj).subscribe((resp : any) => {
-      console.log(resp);
-    });
-
-    expect(diveObj).toBeDefined();
+    let editDiveSpy = spyOn(divService, 'getIndividualDive').and.callThrough();
+    expect(editDiveSpy).toBeDefined();
+    let response = divService.getIndividualDive(req).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(editDiveSpy).toBeDefined();
+    expect(divService.getIndividualDive).toHaveBeenCalledWith(req);
   });
 
   it('Testing Edit-Dive Component', () => {
@@ -119,8 +116,6 @@ describe('EditDivePage', () => {
   });
 
   it('Testing ionViewWillEnter()', () => {
-    localStorage.setItem("accessToken", reqBody.AccessToken);
-    localStorage.setItem("DiveID", reqBody.DiveID);
     component.ionViewWillEnter();
     expect(component.loginLabel).toBe("Log Out");
   });
@@ -135,21 +130,15 @@ describe('EditDivePage', () => {
     let navigateSpy = spyOn(router, 'navigate');
     component.UpdateDiveSubmit();
     expect(component.showLoading).toBeTrue();
-    let editDiveSpy = spyOn(divService, 'updateDive').and.callThrough();
-    expect(editDiveSpy).toBeDefined();
   });
 
   it('Testing buddyListFinder()', () => {
     component.buddyListFinder("John");
     expect(component.showLoading).toBeTrue();
-    let editDiveSpy = spyOn(accService, 'lookAheadBuddy').and.callThrough();
-    expect(editDiveSpy).toBeDefined();
   });
 
   it('Testing getDiveInfo()', () => {
     component.getDiveInfo();
-    let editDiveSpy = spyOn(divService, 'getIndividualDive').and.callThrough();
-    expect(editDiveSpy).toBeDefined();
   });
 
   it('Testing Edit-Dive Functionality', () => {
