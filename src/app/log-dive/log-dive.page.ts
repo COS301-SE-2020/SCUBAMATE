@@ -589,6 +589,10 @@ export class LogDivePage implements OnInit {
     //this.showDiveTypeInput = !this.showDiveTypeInput; 
   }
 
+  setWaterType(wDive: string){
+    this.diveObj.WaterType = wDive ; 
+  }
+
 
   DiveTypeListFinder(){
 

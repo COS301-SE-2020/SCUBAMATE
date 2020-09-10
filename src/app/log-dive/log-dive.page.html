@@ -81,11 +81,6 @@
           <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
             <label class="divSubHead">Dive Location</label>
                 <ion-row>
-                 <!-- <ion-item color="dark"  (click)="viewCourse()" style="--border-radius:27px;text-align: center;" >
-                    <ion-label>Course</ion-label>
-                    <ion-checkbox color="dark" [(ngModel)]="diveObj.isCourse"></ion-checkbox>
-                  </ion-item>
-                  -->
                   <ion-radio-group value="{{currentDiveTypeSelected}}" (ionChange)="viewCourse($event.target.value)" style="width:100%;">
                     <ion-item color="dark">
                       <ion-label>Course</ion-label>
@@ -103,7 +98,6 @@
           </ion-col>
           <!-- Dive Location Pane -->
           <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane" style="padding-top:7%;">
-                <!-- <ion-row  *ngIf="showCourseInput"  >-->
                   <ion-row  *ngIf="diveObj.isCourse"  >
                   <div class="searchableSelect" color="dark">
                     <ion-label class="searchableSelectLabel">Course</ion-label>
@@ -113,7 +107,6 @@
                     </datalist>
                   </div>
                 </ion-row>
-                <!-- <ion-row *ngIf="!showCourseInput"> -->
                   <ion-row *ngIf="!diveObj.isCourse"> 
                   <div class="searchableSelect" color="dark">
                     <ion-label class="searchableSelectLabel">Dive Type</ion-label>
@@ -249,8 +242,27 @@
 
               </ion-col>
               <!-- Dive Location Pane -->
-              <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane" style="padding-top:10%;">
-                    <ion-row >
+              <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane" style="padding-top:5%;">
+                <ion-row >
+                  <ion-col>
+                  <ion-radio-group  value="{{diveObj.WaterType}}" style="width: 100%;" (ionChange)="setWaterType($event.target.value)">
+                      <ion-list-header color="dark" style="text-align:left;width:90%;margin:auto;">
+                        <ion-label>
+                          Water Type for Dive
+                        </ion-label>
+                      </ion-list-header>
+                      <ion-item color="dark">
+                        <ion-label>Freshwater</ion-label>
+                        <ion-radio value="Freshwater" ></ion-radio>
+                      </ion-item>
+                      <ion-item color="dark">
+                        <ion-label>Saltwater</ion-label>
+                        <ion-radio value="Saltwater"></ion-radio>
+                      </ion-item>
+                  </ion-radio-group>
+                </ion-col>
+                </ion-row>
+                 <ion-row >
                         <ion-item color="dark">
                           <ion-label position="floating">Air Temperature (°C)</ion-label>
                           <ion-input type="number" #aTemp placeholder={{MaxTempAPI}}  formControlName="AirTemp"  [(ngModel)]="diveObj.AirTemp"  [class.invalid]="!diveForm.controls.AirTemp.valid && (diveForm.controls.AirTemp.dirty )"></ion-input>
@@ -267,25 +279,6 @@
                         <ion-label position="floating">Bottom Temperature (°C)</ion-label>
                         <ion-input type="number" #bTemp placeholder={{MinTempAPI}} formControlName="BottomTemp"  [(ngModel)]="diveObj.BottomTemp"  [class.invalid]="!diveForm.controls.BottomTemp.valid && (diveForm.controls.BottomTemp.dirty )"></ion-input>
                       </ion-item>
-                    </ion-row>
-                    <ion-row size="12" size-sm="12" size-md="4" size-lg="4">
-                      <ion-radio-group [(ngModel)]="diveObj.WaterType"  value="Freshwater">
-                        <ion-list-header color="dark" style="text-align:left;">
-                          <ion-label>
-                            Water Type for Dive
-                          </ion-label>
-                        </ion-list-header>
-        
-                          <ion-item color="dark">
-                            <ion-label>Freshwater</ion-label>
-                            <ion-radio value="Freshwater" (ionSelect)="radioChecked('value')"></ion-radio>
-                          </ion-item>
-                      
-                          <ion-item color="dark">
-                            <ion-label>Saltwater</ion-label>
-                            <ion-radio value="Saltwater" (ionSelect)="radioChecked('value')"></ion-radio>
-                          </ion-item>
-                      </ion-radio-group>
                     </ion-row>
                </ion-col>
              </ion-row>
