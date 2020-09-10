@@ -226,14 +226,14 @@ export class LogDivePage implements OnInit {
       }
       else if(event.url == '/log-dive'){
         console.log("Calling checkComplete");
-        if(this.checkCompleteLog() == false){
-          console.log("Not complete form");
-          //this.restoreDive();
-        }
-        else{
-          console.log("Form complete, can automatically submit");
-          this.presentConfirm();
-        }
+        // if(this.checkCompleteLog() == false){
+        //   console.log("Not complete form");
+        //   //this.restoreDive();
+        // }
+        // else{
+        //   console.log("Form complete, can automatically submit");
+        //   this.presentConfirm();
+        // }
       }
     });
 
