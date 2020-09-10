@@ -57,7 +57,6 @@ exports.handler = async (event, context) => {
         }
         return returnBool;
     }
-
     //Verify AccessToken 
     const params = {
         TableName: "Scubamate",
@@ -152,22 +151,47 @@ exports.handler = async (event, context) => {
                 };
                 try{
                     const Divedata = await documentClient.put(params).promise();
-                    const currProgress = data.Item.GoalProgress+1;
+                    let currProgress = (data.Item.GoalProgress)+1;
                     let goal = data.Item.Goal;
                     let achievements = [];
                     let completed = false;
+                    
+                    if(typeof data.Item.Achievements !=="undefined"){
+                        achievements = data.Item.Achievements;
+                    }
                     if(currProgress==goal){
                         completed = true;
-                        if(typeof data.Item.Achievements !=="undefined"){
-                            achievements = data.Item.Achievements;
+                        
+                        switch(goal) {
+                          case 1:
+                            goal = 5; //Goes to 5
+                            achievements.push("Completed First Dive!");
+                            break;
+                          case 5:
+                            goal = 10; //Goes to 10
+                            achievements.push("Completed Five Dives!");
+                            break;
+                          case 10:
+                            goal = 25; //Goes to 25
+                            achievements.push("Completed Ten Dives!");
+                            break;
+                          case 25:
+                            goal = 50; //Goes to 50
+                            achievements.push("Completed Twenty Five Dives!");
+                            break;
+                          case 50:
+                            goal = 100; //Goes to 100
+                            achievements.push("Completed Fifty Dives!");
+                            break;
+                          case 100:
+                                achievements.push("Completed A Hundred Dives!");
+                            break; 
+                          
                         }
-                        achievements.push("Completed "+currProgress+" Dives!");
-                        if(goal==1){
-                            goal+=4; //Goes to 5
-                        }
-                        else{
-                            //at 5, 10 etc so add another 5 to goal
-                            goal+=5;
+                    }
+                    else{
+                        if(goal===100){ //Keep goal full
+                            currProgress =100;
                         }
                     }
                     const paramsUpdate = {
@@ -187,12 +211,11 @@ exports.handler = async (event, context) => {
                     try{
                         const updateStatement = await documentClient.update(paramsUpdate).promise();
                         if(completed){
-                            responseBody = "Dive successfully logged! Goal Reached! ";
+                            responseBody = "Dive successfully logged! Goal Reached! New Goal: "+goal+" Dives";
                         }
                         else{
-                            responseBody = "Dive successfully logged! ";
+                            responseBody = "Dive successfully logged!";
                         }
-                        
                         statusCode = 201;
                     }catch(err){
                         statusCode = 404;
