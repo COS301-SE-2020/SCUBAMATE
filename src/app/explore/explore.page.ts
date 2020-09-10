@@ -16,6 +16,7 @@ export interface Dive{
   TimeOut : string ;
   Buddy : string;
   Weather : string[]  ;
+  DiveImage : string;
 }
 
 export interface DiveSite{
