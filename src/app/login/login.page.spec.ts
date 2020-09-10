@@ -80,17 +80,11 @@ describe('LoginPage', () => {
     expect(component.loginLabel).toBe("Sign Out");
   });
 
-  it('Testing loginClick()', () => {
-    component.loginClick();
-    expect(localStorage.getItem("accessToken")).toBeDefined();
-  });
-
   it('Testing onSubmit()', () => {
     let navigateSpy = spyOn(router, 'navigate');
     component.onSubmit(validData.email, validData.pass, event);
     let accountSpy = spyOn(accService, 'logUser').and.callThrough();
     expect(accountSpy).toBeDefined();
-    expect(navigateSpy).toHaveBeenCalledWith(['home']);
   });
 
   it('Testing Login Functionality', () => {
