@@ -454,10 +454,6 @@ export class LogDivePage implements OnInit {
 
     console.log(this.diveObj);
 
-   
-
-    if(this.diveForm.valid)
-    {
       if(localStorage.getItem("Backup")){
         localStorage.removeItem("Backup");
       }
@@ -478,9 +474,7 @@ export class LogDivePage implements OnInit {
           this.presentGeneralAlert("Unable to Log Dive", "Something went wrong.. please try again");
         }
       });
-    }else{
-      this.presentGeneralAlert("Invalid Dive Log", "Please provide all the information neccessary to log a dive");
-    }
+
     
     
   }

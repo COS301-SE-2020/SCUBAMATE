@@ -411,7 +411,11 @@
       <div id="formNavControlDiv">
         <button id="prev" *ngIf="!firstPageVisible" (click)="previousPage()">Previous</button>
         <button id="next" *ngIf="!fourthPageVisible" (click)="nextPage()">Next</button>
-        <button id="subBtn"  *ngIf="fourthPageVisible" (click)="DiveLogSubmit()">Submit</button>
+        <button id="subBtn" *ngIf="fourthPageVisible && diveForm.controls.Description.valid && diveForm.controls.Depth.valid && diveForm.controls.Visibility.valid && diveForm.controls.Buddy.valid && diveForm.controls.DivePublicStatus.valid && diveForm.controls.AirTemp.valid && diveForm.controls.SurfaceTemp.valid && diveForm.controls.BottomTemp.valid && diveForm.controls.TimeOut.valid && diveForm.controls.TimeIn.valid && diveForm.controls.DiveDate.valid && diveForm.controls.DiveTypeLink.valid && diveForm.controls.DiveSite.valid "  (click)="DiveLogSubmit()">Submit</button>
+        <button id="subBtn" *ngIf="fourthPageVisible && !(diveForm.controls.Description.valid && diveForm.controls.Depth.valid && diveForm.controls.Visibility.valid && diveForm.controls.Buddy.valid && diveForm.controls.DivePublicStatus.valid && diveForm.controls.AirTemp.valid && diveForm.controls.SurfaceTemp.valid && diveForm.controls.BottomTemp.valid && diveForm.controls.TimeOut.valid && diveForm.controls.TimeIn.valid && diveForm.controls.DiveDate.valid && diveForm.controls.DiveTypeLink.valid && diveForm.controls.DiveSite.valid )" (click)='this.presentGeneralAlert("Invalid Dive Log", "Please provide all the information neccessary to log a dive")'>Submit</button>
+        
+            
+
       </div>
   </div>
 
