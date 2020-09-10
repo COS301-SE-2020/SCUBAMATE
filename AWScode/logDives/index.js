@@ -57,15 +57,6 @@ exports.handler = async (event, context) => {
         }
         return returnBool;
     }
-    function contains(arr,search){
-        let returnBool = false;
-        arr.forEach(function(item) {
-            if(item==search){
-                returnBool=true;
-            }
-        });
-        return returnBool;
-    }
     //Verify AccessToken 
     const params = {
         TableName: "Scubamate",
@@ -193,9 +184,7 @@ exports.handler = async (event, context) => {
                             achievements.push("Completed Fifty Dives!");
                             break;
                           case 100:
-                            if(!contains(achievements, "Completed A Hundred Dives!")){
-                                achievements.push("Completed A Hundred Dives!");   
-                            }
+                                achievements.push("Completed A Hundred Dives!");
                             break; 
                           
                         }
