@@ -11,11 +11,13 @@ import { weatherService } from '../service/weather.service';
 import { HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { map } from 'rxjs/operators';
 
 var validData = {
   pub: false,
   desc: "Saw Sharks",
   site: "Shark Alley",
+  qualification: "Advanced Open Water Diver",
   date: "2018-01-04",
   timeIn: "12:00",
   timeOut: "13:00",
@@ -69,12 +71,14 @@ describe('LogDivePage', () => {
       Longitude: "28.245230"
     };
 
-    weatService.getLocationKey(Coordinates).subscribe((resp : any) => {
-      console.log(resp);
-    });
-
-    expect(Coordinates.Latitude).toBe("-25.840380");
-    expect(Coordinates.Longitude).toBe("28.245230");
+    let weathearSpy = spyOn(weatService, 'getLocationKey').and.callThrough();
+    expect(weathearSpy).toBeDefined();
+    let response = weatService.getLocationKey(Coordinates).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(weathearSpy).toBeDefined();
+    expect(weatService.getLocationKey).toHaveBeenCalledWith(Coordinates);
   });
 
   it('getLogWeather() test', () => {
@@ -85,75 +89,106 @@ describe('LogDivePage', () => {
       province: null
     };
 
-    weatService.getLogWeather(Key).subscribe((resp : any) => {
-      console.log(resp);
-    });
-
-    expect(Key.key).toBeNull();
-    expect(Key.city).toBeNull();
-    expect(Key.province).toBeNull();
+    let weathearSpy = spyOn(weatService, 'getLocationKey').and.callThrough();
+    expect(weathearSpy).toBeDefined();
+    let response = weatService.getLocationKey(Key).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(weathearSpy).toBeDefined();
+    expect(weatService.getLocationKey).toHaveBeenCalledWith(Key);
   });
 
   it('lookAheadBuddy() test', () => {
-    var eventValue = "";
+    var eventValue = "John";
 
-    accService.lookAheadBuddy(eventValue).subscribe((resp : any) => {
-      console.log(resp);
-    });
-
-    expect(eventValue).toBe("");
+    let accountSpy = spyOn(accService, 'lookAheadBuddy').and.callThrough();
+    expect(accountSpy).toBeDefined();
+    let response = accService.lookAheadBuddy(eventValue).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(accountSpy).toBeDefined();
+    expect(accService.lookAheadBuddy).toHaveBeenCalledWith(eventValue);
   });
 
   it('logDive() test', () => {
-    var eventValue = {
+    var log = {
+      DiveID: "D"+ "",
+      AccessToken : validData.accessToken,
+      Approved: false,
+      DiveDate: validData.date ,
+      TimeIn: validData.timeIn ,
+      TimeOut: validData.timeOut ,
+      Visibility: validData.vis + "m",
+      Depth: validData.dep + "m",
+      Buddy: validData.buddy ,
+      DiveTypeLink: validData.diveType   ,
+      AirTemp: Number(validData.aT) ,
+      SurfaceTemp: Number(validData.surfaceT) ,
+      BottomTemp: Number(validData.bottomT) ,
+      DiveSite: validData.site,
+      Description: validData.desc ,
+      InstructorLink: [] ,
+      Weather: ["", "", ""],
+      DivePublicStatus: validData.pub,
+      isCourse: "" 
+    }
 
-    };
-
-    divService.logDive(eventValue).subscribe((resp : any) => {
-      console.log(resp);
-    });
-
-    expect(eventValue).toBeDefined();
+    let diveSpy = spyOn(divService, 'logDive').and.callThrough();
+    expect(diveSpy).toBeDefined();
+    let response = divService.logDive(log).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(diveSpy).toBeDefined();
+    expect(divService.logDive).toHaveBeenCalledWith(log);
   });
 
   it('getDiveTypes() test', () => {
-    var eventValue = "";
-
-    divService.getDiveTypes(eventValue).subscribe((resp : any) => {
-      console.log(resp);
-    });
-
-    expect(eventValue).toBe("");
+    let diveSpy = spyOn(divService, 'getDiveTypes').and.callThrough();
+    expect(diveSpy).toBeDefined();
+    let response = divService.getDiveTypes(validData.diveType).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(diveSpy).toBeDefined();
+    expect(divService.getDiveTypes).toHaveBeenCalledWith(validData.diveType);
   });
 
   it('getDiveSites() test', () => {
-    var eventValue = "";
-
-    divService.getDiveSites(eventValue).subscribe((resp : any) => {
-      console.log(resp);
-    });
-
-    expect(eventValue).toBe("");
+    let diveSpy = spyOn(divService, 'getDiveSites').and.callThrough();
+    expect(diveSpy).toBeDefined();
+    let response = divService.getDiveSites(validData.site).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(diveSpy).toBeDefined();
+    expect(divService.getDiveSites).toHaveBeenCalledWith(validData.site);
   });
 
   it('lookAheadInstructor() test', () => {
-    var eventValue = "";
+    var eventValue = "John";
 
-    accService.lookAheadInstructor(eventValue).subscribe((resp : any) => {
-      console.log(resp);
-    });
-
-    expect(eventValue).toBe("");
+    let accountSpy = spyOn(accService, 'lookAheadInstructor').and.callThrough();
+    expect(accountSpy).toBeDefined();
+    let response = accService.lookAheadInstructor(eventValue).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(accountSpy).toBeDefined();
+    expect(accService.lookAheadInstructor).toHaveBeenCalledWith(eventValue);
   });
 
   it('getDiveCourses() test', () => {
-    var eventValue = "";
-
-    divService.getDiveCourses(eventValue).subscribe((resp : any) => {
-      console.log(resp);
-    });
-
-    expect(eventValue).toBe("");
+    let diveSpy = spyOn(divService, 'getDiveCourses').and.callThrough();
+    expect(diveSpy).toBeDefined();
+    let response = divService.getDiveCourses(validData.qualification).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(diveSpy).toBeDefined();
+    expect(divService.getDiveCourses).toHaveBeenCalledWith(validData.qualification);
   });
 
   it('Testing Log-Dive Components', () => {
