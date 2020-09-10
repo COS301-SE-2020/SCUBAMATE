@@ -221,7 +221,7 @@ export class diveService
    
     }
 
-    getPublicDives(): Observable<any>{
+    getPublicDives(pageNumber: number): Observable<any>{
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json'
@@ -229,9 +229,9 @@ export class diveService
       };
     
       var PostData = {
-        "AccessToken" : localStorage.getItem("accessToken")
+        "AccessToken" : localStorage.getItem("accessToken"),
+        "PageNum" : pageNumber
       }
-      
       return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/getpublicdives', PostData , options); 
 
     }

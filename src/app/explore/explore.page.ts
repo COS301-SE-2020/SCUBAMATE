@@ -12,7 +12,7 @@ export interface Dive{
   DiveSite : string ;
   DiveType : string;
   DiveDate : string ;
-  TimeIn : string ;
+  TimeIn : string ; 
   TimeOut : string ;
   Buddy : string;
   Weather : string[]  ;
@@ -48,6 +48,7 @@ export class ExplorePage implements OnInit {
   showCenters : boolean ;
   showFeed  : boolean = true;
   showLoading : boolean;
+  showMoreFeed : boolean = true ;
   showMoreCenters : boolean = true ;
   showMoreSites: boolean = true ;
   pubLst: Dive[] = []; 
@@ -98,24 +99,9 @@ export class ExplorePage implements OnInit {
     }else{
       this.loginLabel = "Log Out";
       this.accountType = this._globalService.accountRole;
-
-      this.showLoading = true ; 
-      this._diveService.getPublicDives().subscribe(res =>{
-        this.pubLst = res;
-        this.showFeedLoaded = true;
-        this.showLoading = false ;
-      }, err=>{
-        if(err.error == "Invalid Access Token"){
-          localStorage.removeItem("accessToken");
-          this.router.navigate(['login']);
-        }
-      });
-
+      //this.displayFeed();
+      
     }
-    
-    
-    
-
   }
 
   ionViewWillEnter(){
@@ -131,31 +117,11 @@ export class ExplorePage implements OnInit {
     }else{
       this.loginLabel = "Log Out";
     }
-   
-   
     if(localStorage.getItem("accessToken")){
-    /**  if(localStorage.getItem("accessToken").substring(36, 38) == "01"){
-        this.accountType = "Instructor"
-      }else if (localStorage.getItem("accessToken").substring(36, 38) == "00"){
-        this.accountType = "Diver"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "10"){
-        this.accountType = "Admin"
-      }else if(localStorage.getItem("accessToken").substring(36, 38) == "11"){
-        this.accountType = "SuperAdmin"
-      }else{
-        this.accountType = "*Diver"
-      }*/
-
       this._globalService.activeLabel =  "Log Out";
       this.accountType = this._globalService.accountRole;
-
-      this.showLoading = true ; 
-      this._diveService.getPublicDives().subscribe(res =>{
-        //console.log(res);
-        this.pubLst = res.PublicDiveLogs;
-        this.showFeedLoaded = true;
-        this.showLoading = false ;
-      });
+      
+      this.displayFeed();
     }
    
   }
@@ -170,8 +136,6 @@ export class ExplorePage implements OnInit {
       this.router.navigate(['login']);
     }
   }
-
-
   checkURL(name): boolean{ 
       //console.log(num)
       let url = "../../assets/images/Weather/"+name.toLowerCase()+".png";
@@ -187,7 +151,6 @@ export class ExplorePage implements OnInit {
       }
     
  }
-  
   /// code to edit what gets displayed
   displayDiveSites(){
     this.showLoading = true;
@@ -207,12 +170,36 @@ export class ExplorePage implements OnInit {
     this.showFeedLoaded = false;
     this.loadCenters();
   }
-
   displayFeed(){
     this.showFeed =  true;
     this.showSites = false;
     this.showCenters = false;
     this.showFeedLoaded = true;
+    this.loadFeed();
+  }
+  loadFeed(){
+    this.showLoading = true;
+    this._diveService.getPublicDives(this.FeedPage).subscribe(res =>{
+      res.forEach(element => {
+        if(JSON.stringify(this.pubLst).indexOf(JSON.stringify(element)) === -1){
+          this.pubLst.push(element)
+        }
+        
+      });
+      this.FeedPage++;
+      this.showFeedLoaded = true;
+      this.showLoading = false ;
+    }, err=>{
+      if(err.error){
+        this.showLoading = false;
+
+        if(err.error == "No more dives found")
+        {
+          this.showMoreFeed = false;
+          this.FeedPage = 1;
+        }
+      }
+    });
   }
 
   loadCenters(){
@@ -227,8 +214,6 @@ export class ExplorePage implements OnInit {
             //console.log( this.centerLst);
 
           this.CentersPage++ ;
-
-
           for(var y=0; y < this.centerLst.length ; y++ ){
             if( this.centerLst[y].Description.length > 300  ){
               this.centerLst[y].Description = this.centerLst[y].Description.substr(0, 300) + " ...";
@@ -249,7 +234,7 @@ export class ExplorePage implements OnInit {
     ); //end ExtendedDiveCenters req
 
   }
-
+  
   ViewMoreDiveCenter( DC : string){
     localStorage.setItem("ViewDiveCenter", DC) ;
     this.router.navigate(['dive-center-information']);
