@@ -28,6 +28,7 @@ describe('HomePage', () => {
     fixture.detectChanges();
     accService = new accountService(http, router);
     router = TestBed.get(Router);
+    localStorage.setItem("accessToken", accessToken);
   }));
 
   it('Successfully Created Home Page', () => {
@@ -40,26 +41,18 @@ describe('HomePage', () => {
   });
 
   it('Testing ngOnInit()', () => {
-    localStorage.setItem("accessToken", accessToken);
     component.ngOnInit();
     expect(component.loginLabel).toBe("Log Out");
   });
 
   it('Testing ionViewWillEnter()', () => {
-    localStorage.setItem("accessToken", accessToken);
     component.ionViewWillEnter();
     expect(component.loginLabel).toBe("Log Out");
-  });
-
-  it('Testing loginClick()', () => {
-    component.loginClick();
-    expect(localStorage.getItem("accessToken")).toBeDefined();
   });
 
   it('Testing Home Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.ionViewWillEnter).toBeTruthy();
     expect(component.loginClick).toBeTruthy();
-    expect(component.sendEmail).toBeTruthy();
   });
 });

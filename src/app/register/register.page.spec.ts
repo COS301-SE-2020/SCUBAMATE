@@ -1,13 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
-import { accountService } from '../service/account.service';
-import { diveService } from '../service/dive.service';
+import { RegisterPage } from './register.page';
 import { weatherService } from '../service/weather.service';
+import { diveService } from '../service/dive.service';
+import { accountService } from '../service/account.service';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
+import {HttpModule} from '@angular/http';
 import { HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
-import { RegisterPage } from './register.page';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AppModule } from '../app.module';
+import { FormBuilder} from '@angular/forms';
+import { map } from 'rxjs/operators';
 
 var validData = {
   event: "",
@@ -27,8 +30,9 @@ var validData = {
 describe('RegisterPage', () => {
   let component: RegisterPage;
   let fixture: ComponentFixture<RegisterPage>;
-  let accService: accountService;
   let divService: diveService;
+  let accService: accountService;
+  let httpMock: HttpTestingController;
   let weatService: weatherService;
   let http: HttpClient;
   let router; Router;
@@ -36,25 +40,125 @@ describe('RegisterPage', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ RegisterPage ],
-      imports: [IonicModule.forRoot(), RouterTestingModule.withRoutes([]), AppModule],
-      providers: [accountService, diveService, weatherService]
+      imports: [IonicModule.forRoot(), RouterTestingModule.withRoutes([]), HttpClientTestingModule, HttpModule],
+      providers: [diveService, HttpModule, accountService, weatherService, FormBuilder]
     }).compileComponents();
 
     fixture = TestBed.createComponent(RegisterPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    accService = new accountService(http, router);
-    divService = new diveService(http, router);
-    weatService = new weatherService(http, router);
+    divService = TestBed.get(diveService);
+    accService = TestBed.get(accountService);
+    weatService = TestBed.get(weatherService);
     router = TestBed.get(Router);
+    httpMock = TestBed.get(HttpTestingController);
+    http = TestBed.get(HttpClient);
   }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('Testing Register components', () => {
-    expect(component.uuidValue).toBeDefined();
+  it('getSpecializations() test', () => {
+    let accountSpy = spyOn(accService, 'getSpecializations').and.callThrough();
+    expect(accountSpy).toBeDefined();
+    let response = accService.getSpecializations(validData.specialization).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(accountSpy).toBeDefined();
+    expect(accService.getSpecializations).toHaveBeenCalledWith(validData.specialization);
+  });
+
+  it('getQualifications() test', () => {
+    let accountSpy = spyOn(accService, 'getQualifications').and.callThrough();
+    expect(accountSpy).toBeDefined();
+    let response = accService.getQualifications(validData.qualification).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(accountSpy).toBeDefined();
+    expect(accService.getQualifications).toHaveBeenCalledWith(validData.qualification);
+  });
+
+  it('centerListFinder() test', () => {
+    let diveSpy = spyOn(divService, 'getDiveCenters').and.callThrough();
+    expect(diveSpy).toBeDefined();
+    let response = divService.getDiveCenters(validData.center).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(diveSpy).toBeDefined();
+    expect(divService.getDiveCenters).toHaveBeenCalledWith(validData.center);
+  });
+
+  it('insertUserDiver() test', () => {
+
+    var user = {
+      AccountGuid: validData.iNum, 
+      DateOfBirth : validData.bday,
+      Email: validData.email,
+      FirstName: validData.firstN,
+      LastName: validData.lastN,
+      Password: validData.pass,
+      ProfilePhoto: "",
+      PublicStatus: false ,
+      Courses: []
+    };
+
+    let accountSpy = spyOn(accService, 'insertUserDiver').and.callThrough();
+    expect(accountSpy).toBeDefined();
+    let response = accService.insertUserDiver(user).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(accountSpy).toBeDefined();
+    expect(accService.insertUserDiver).toHaveBeenCalledWith(user);
+  });
+
+  it('sendValidationEmail() test', () => {
+    let accountSpy = spyOn(accService, 'sendValidationEmail').and.callThrough();
+    expect(accountSpy).toBeDefined();
+    let response = accService.sendValidationEmail(validData.email).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(accountSpy).toBeDefined();
+    expect(accService.sendValidationEmail).toHaveBeenCalledWith(validData.email);
+  });
+
+  it('insertUserInstructor() test', () => {
+    var user = {
+      AccountGuid: validData.iNum, 
+      DateOfBirth : validData.bday,
+      Email: validData.email,
+      FirstName: validData.firstN,
+      LastName: validData.lastN,
+      Password: validData.pass,
+      ProfilePhoto: "",
+      PublicStatus: false ,
+      Courses: []
+    };
+
+    let accountSpy = spyOn(accService, 'insertUserInstructor').and.callThrough();
+    expect(accountSpy).toBeDefined();
+    let response = accService.insertUserInstructor(user).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(accountSpy).toBeDefined();
+    expect(accService.insertUserInstructor).toHaveBeenCalledWith(user);
+  });
+
+  it('getDiveCourses() test', () => {
+    let diveSpy = spyOn(divService, 'getDiveCourses').and.callThrough();
+    expect(diveSpy).toBeDefined();
+    let response = divService.getDiveCourses(validData.qualification).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(diveSpy).toBeDefined();
+    expect(divService.getDiveCourses).toHaveBeenCalledWith(validData.qualification);
   });
 
   it('Testing ngOnInit()', () => {
@@ -85,24 +189,18 @@ describe('RegisterPage', () => {
 
   it('Testing SpecializationListFinder()', () => {
     component.SpecializationListFinder();
-    let accountSpy = spyOn(accService, 'getSpecializations').and.callThrough();
-    expect(accountSpy).toBeDefined();
     expect(component.showLoading).toBeFalse();
     expect(component.SpecializationLst).toBeUndefined();
   });
 
   it('Testing QualificationListFinder()', () => {
     component.QualificationListFinder(validData.qualification);
-    let accountSpy = spyOn(accService, 'getQualifications').and.callThrough();
-    expect(accountSpy).toBeDefined();
     expect(component.showLoading).toBeTrue();
     expect(component.QualificationLst).toBeUndefined();
   });
 
   it('Testing CenterListFinder()', () => {
     component.CenterListFinder(validData.center);
-    let diveSpy = spyOn(divService, 'getDiveCenters').and.callThrough();
-    expect(diveSpy).toBeDefined();
     expect(component.showLoading).toBeTrue();
     expect(component.CenterLst).toBeUndefined();
   });
@@ -119,27 +217,15 @@ describe('RegisterPage', () => {
   });
 
   it('Testing DiverSubmit()', () => {
-    //let navigateSpy = spyOn(router, 'navigate');
     component.DiverSubmit();
     expect(component.showLoading).toBeFalse();
     expect(component.diverObj.Courses).toBeDefined();
-    let accountSpy = spyOn(accService, 'insertUserDiver').and.callThrough();
-    expect(accountSpy).toBeDefined();
-    accountSpy = spyOn(accService, 'sendValidationEmail').and.callThrough();
-    expect(accountSpy).toBeDefined();
-    //expect(navigateSpy).toHaveBeenCalledWith(['login']);
   });
 
   it('Testing InstructorSubmit()', () => {
-    //let navigateSpy = spyOn(router, 'navigate');
     component.InstructorSubmit();
     expect(component.showLoading).toBeFalse();
     expect(component.instructorObj.Courses).toBeDefined();
-    let accountSpy = spyOn(accService, 'insertUserInstructor').and.callThrough();
-    expect(accountSpy).toBeDefined();
-    accountSpy = spyOn(accService, 'sendValidationEmail').and.callThrough();
-    expect(accountSpy).toBeDefined();
-    //expect(navigateSpy).toHaveBeenCalledWith(['login']);
   });
 
   it('Testing nextPage()', () => {
@@ -180,8 +266,6 @@ describe('RegisterPage', () => {
 
   it('Testing CourseListFinder()', () => {
     component.CourseListFinder();
-    let diveSpy = spyOn(divService, 'getDiveCourses').and.callThrough();
-    expect(diveSpy).toBeDefined();
     expect(component.showLoading).toBeFalse();
     expect(component.CourseLst).toBeUndefined();
   });

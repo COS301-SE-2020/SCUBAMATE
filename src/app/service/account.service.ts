@@ -16,6 +16,7 @@ export class accountService
       const options = {
             headers: new HttpHeaders({
               'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*'
             })
           };
 
@@ -36,6 +37,7 @@ export class accountService
       const options = {
             headers: new HttpHeaders({
               'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*'
             })
           };
 
@@ -53,6 +55,7 @@ export class accountService
    const options = {
           headers: new HttpHeaders({
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
           }) 
         };
       
@@ -65,6 +68,7 @@ export class accountService
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         }) 
       };
 
@@ -81,6 +85,7 @@ export class accountService
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         }) 
       };
 
@@ -94,6 +99,7 @@ export class accountService
       const options = {
           headers: new HttpHeaders({
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
           })
         };
 
@@ -111,6 +117,7 @@ export class accountService
       const options = {
           headers: new HttpHeaders({
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
           })
         };
 
@@ -127,6 +134,7 @@ export class accountService
       const options = {
           headers: new HttpHeaders({
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
           })
         };
 
@@ -145,6 +153,7 @@ export class accountService
       const options = {
           headers: new HttpHeaders({
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
           })
         };
 
@@ -162,6 +171,7 @@ export class accountService
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         })
       };
 
@@ -179,6 +189,7 @@ export class accountService
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         })
       };
 
@@ -196,6 +207,7 @@ export class accountService
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         })
       };
 
@@ -210,6 +222,7 @@ export class accountService
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         }) 
       };
 
@@ -224,6 +237,7 @@ export class accountService
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         }) 
       };
 
@@ -237,6 +251,7 @@ export class accountService
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         }) 
       };
 
@@ -249,6 +264,7 @@ export class accountService
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         }) 
       };
 
@@ -261,6 +277,7 @@ export class accountService
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         }) 
       };
       return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/DiveCentre/updatedivecentre', PostData, options );
@@ -271,6 +288,7 @@ export class accountService
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         }) 
       };
 
@@ -286,6 +304,7 @@ export class accountService
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         }) 
       };
 
@@ -299,6 +318,7 @@ export class accountService
       const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         }) 
       };
 

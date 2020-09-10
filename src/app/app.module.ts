@@ -33,6 +33,7 @@ import { GlobalService } from './global.service';
 //validators
 import { AgeValidator } from './validators/age';
 
+import {HttpModule} from '@angular/http';
 //rating 
 import { IonicRatingModule  } from 'ionic4-rating';
 
@@ -41,7 +42,7 @@ import { IonicRatingModule  } from 'ionic4-rating';
     AppComponent,
     FlashCardComponent],
   entryComponents: [],
-  imports: [
+  imports: [HttpModule,
             IonicRatingModule ,
             BrowserModule,
             IonicModule.forRoot(), 
