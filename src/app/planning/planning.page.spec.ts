@@ -9,6 +9,7 @@ import {HttpModule} from '@angular/http';
 import { HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
 import { FormBuilder} from '@angular/forms';
+import { map } from 'rxjs/operators';
 
 var accessToken = "d1d7391d-c035-28ab-0193-68a7d263d4be11bf1decf78d036abdad2f76f0e68ffeb1651b146d3eb2314ef2401a989bd190ce";
 
@@ -45,63 +46,88 @@ describe('PlanningPage', () => {
   });
 
   it('getSuggestedCourses() test', () => {
-    var eventValue = "";
-
-    divService.getSuggestedCourses().subscribe((resp : any) => {
-      console.log(resp);
-    });
-
-    expect(eventValue).toBe("");
+    let divSpy = spyOn(divService, 'getSuggestedCourses').and.callThrough();
+    expect(divSpy).toBeDefined();
+    let response = divService.getSuggestedCourses().pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(divSpy).toBeDefined();
+    expect(divService.getSuggestedCourses).toHaveBeenCalled();
   });
 
   it('getCustomCheckList() test', () => {
-    var eventValue = "";
-
-    accService.getCustomChecklist().subscribe((resp : any) => {
-      console.log(resp);
-    });
-
-    expect(eventValue).toBe("");
+    let accountSpy = spyOn(accService, 'getCustomChecklist').and.callThrough();
+    expect(accountSpy).toBeDefined();
+    let response = accService.getCustomChecklist().pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(accountSpy).toBeDefined();
+    expect(accService.getCustomChecklist).toHaveBeenCalled();
   });
 
   it('getCheckList() test', () => {
-    var eventValue = "";
-
-    divService.getCheckList(eventValue).subscribe((resp : any) => {
-      console.log(resp);
-    });
-
-    expect(eventValue).toBe("");
+    var data = {
+      DiveType: "Night Dive"
+    };
+    let divSpy = spyOn(divService, 'getCheckList').and.callThrough();
+    expect(divSpy).toBeDefined();
+    let response = divService.getCheckList(data).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(divSpy).toBeDefined();
+    expect(divService.getCheckList).toHaveBeenCalledWith(data);
   });
 
   it('getDiveTypes() test', () => {
-    var eventValue = "";
-
-    divService.getDiveTypes(eventValue).subscribe((resp : any) => {
-      console.log(resp);
-    });
-
-    expect(eventValue).toBe("");
+    let divSpy = spyOn(divService, 'getDiveTypes').and.callThrough();
+    expect(divSpy).toBeDefined();
+    let response = divService.getDiveTypes("Night").pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(divSpy).toBeDefined();
+    expect(divService.getDiveTypes).toHaveBeenCalledWith("Night");
   });
 
   it('storeCustomChecklist() test', () => {
-    var eventValue = "";
+    var customList = {
+      "AccessToken": accessToken,
+      "Equipment": "" ,
+      "Optional": "" , 
+      "Custom" : ""
+    };
 
-    accService.storeCustomChecklist(eventValue).subscribe((resp : any) => {
-      console.log(resp);
-    });
-
-    expect(eventValue).toBe("");
+    let accountSpy = spyOn(accService, 'storeCustomChecklist').and.callThrough();
+    expect(accountSpy).toBeDefined();
+    let response = accService.storeCustomChecklist(customList).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(accountSpy).toBeDefined();
+    expect(accService.storeCustomChecklist).toHaveBeenCalledWith(customList);
   });
 
   it('sendCourseSurveyAnswers() test', () => {
-    var eventValue = "";
+    var answers ={
+      "AccessToken": accessToken,
+      "Q1" : "Answer1",
+      "Q2" : "Answer2",
+      "Q3" : "Answer3",
+      "Q4" : "Answer4",
+      "Q5" : "Answer5"
+    };
 
-    divService.sendCourseSurveyAnswers(eventValue).subscribe((resp : any) => {
-      console.log(resp);
-    });
-
-    expect(eventValue).toBe("");
+    let divSpy = spyOn(divService, 'sendCourseSurveyAnswers').and.callThrough();
+    expect(divSpy).toBeDefined();
+    let response = divService.sendCourseSurveyAnswers(answers).pipe(
+      map( res => res.body)
+    );
+    console.log(response.operator);
+    expect(divSpy).toBeDefined();
+    expect(divService.sendCourseSurveyAnswers).toHaveBeenCalledWith(answers);
   });
 
   it('Testing Planning Components', () => {
@@ -128,11 +154,7 @@ describe('PlanningPage', () => {
     expect(component.showCourses).toBeFalse();
     expect(component.showLoading).toBeFalse();
     expect(component.loginLabel).toBe("Log Out");
-    let divSpy = spyOn(divService, 'getSuggestedCourses').and.callThrough();
-    expect(divSpy).toBeDefined();
     expect(component.suggestedCourseFullList).toBeDefined();
-    let accountSpy = spyOn(accService, 'getCustomChecklist').and.callThrough();
-    expect(accountSpy).toBeDefined();
     expect(component.EquipmentList).toBeDefined();
     expect(component.OptionalList).toBeDefined();
     expect(component.viewPersonalAdded).toBeFalse();
@@ -147,8 +169,6 @@ describe('PlanningPage', () => {
     expect(component.SearchDiveCheckList).toBeDefined();
     expect(component.showLoading).toBeFalse();
     expect(component.loginLabel).toBe("Log Out");
-    let divSpy = spyOn(divService, 'getSuggestedCourses').and.callThrough();
-    expect(divSpy).toBeDefined();
     expect(component.suggestedCourseFullList).toBeDefined();
   });
 
@@ -156,8 +176,6 @@ describe('PlanningPage', () => {
     event: Event;
     component.onChooseDive("Ice Dive", event);
     expect(component.showLoading).toBeTrue();
-    let divSpy = spyOn(divService, 'getCheckList').and.callThrough();
-    expect(divSpy).toBeDefined();
     expect(component.viewChecklist).toBeFalse();
     expect(component.OptionalReceived).toBeUndefined();
     expect(component.EquipmentReceived).toBeUndefined();
@@ -166,8 +184,6 @@ describe('PlanningPage', () => {
   it('Testing diveTypeListFinder()', () => {
     component.divetypeListFinder();
     expect(component.showLoading).toBeFalse();
-    let divSpy = spyOn(divService, 'getDiveTypes').and.callThrough();
-    expect(divSpy).toBeDefined();
     expect(component.DiveTypeLst).toBeUndefined();
   });
 
@@ -192,8 +208,6 @@ describe('PlanningPage', () => {
 
   it('Testing saveCheckList()', () => {
     component.saveChecklist();
-    let accountSpy = spyOn(accService, 'storeCustomChecklist').and.callThrough();
-    expect(accountSpy).toBeDefined();
   });
 
   it('Testing Planning Functionality', () => {
