@@ -60,19 +60,19 @@ describe('WeatherPage', () => {
   it('getLogWeather() test', () => {
     
     var Key = {
-      key: null,
-      city: null,
-      province: null
+      key: "uF3LU0UljaHxJrAP3QkEthAD3Pdjwh3g",
+      city: "Pretoria",
+      province: "Gauteng"
     };
 
-    let weathearSpy = spyOn(weatService, 'getLocationKey').and.callThrough();
+    let weathearSpy = spyOn(weatService, 'getLogWeather').and.callThrough();
     expect(weathearSpy).toBeDefined();
-    let response = weatService.getLocationKey(Key).pipe(
+    let response = weatService.getLogWeather(Key).pipe(
       map( res => res.body)
     );
     console.log(response.operator);
     expect(weathearSpy).toBeDefined();
-    expect(weatService.getLocationKey).toHaveBeenCalledWith(Key);
+    expect(weatService.getLogWeather).toHaveBeenCalledWith(Key);
   });
 
   it('Testing Weather Components', () => {
