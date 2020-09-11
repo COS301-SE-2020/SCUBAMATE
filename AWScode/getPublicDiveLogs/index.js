@@ -93,7 +93,6 @@ exports.handler = async (event, context) => {
 
         try {
             const dives = await documentClient.scan(diveParams).promise();
-            
             if(dives.Items.length==0){
                 responseBody = "No public dives found :(";
                 statusCode = 404;
@@ -121,19 +120,18 @@ exports.handler = async (event, context) => {
                         }
                         else{
                             //Email not verified for account, so remove the item
-                            dives.Items.splice(i, 1);
+                            delete dives.Items[i];
                         }
                         
                     }catch(err){
                         //Cannot find account, so remove the item
-                        dives.Items.splice(i, 1);
+                         delete dives.Items[i];
                     }
                  }
-                    
                 /*sort the dives by date*/
                 const sortedDives = dives.Items.sort((a, b) => new Date(b.DiveDate) - new Date(a.DiveDate));
                 
-                const numOfItems = 6;
+                const numOfItems = 9;
                 const start = (PageNum-1)*numOfItems ;
                 let toReturn =[];
                 /*Show next n items for current page */
@@ -167,8 +165,15 @@ exports.handler = async (event, context) => {
                         toReturn.push(sortedDives[i]);
                     }
                 }
-                responseBody = toReturn;
-                statusCode = 200;
+                if(toReturn.length == 0){
+                    responseBody = "No more dives found";
+                    statusCode = 404;
+                }
+                else{
+                    responseBody = toReturn;
+                    statusCode = 200;
+                }
+                
              }
         } 
         catch(err){
