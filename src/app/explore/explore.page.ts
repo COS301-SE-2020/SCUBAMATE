@@ -10,7 +10,7 @@ export interface Dive{
   FirstName : string ;
   LastName : string ;
   DiveSite : string ;
-  DiveType : string;
+  DiveTypeLink : string;
   DiveDate : string ;
   TimeIn : string ; 
   TimeOut : string ;
@@ -181,6 +181,7 @@ export class ExplorePage implements OnInit {
   loadFeed(){
     this.showLoading = true;
     this._diveService.getPublicDives(this.FeedPage).subscribe(res =>{
+      console.log(res);
       res.forEach(element => {
         if(JSON.stringify(this.pubLst).indexOf(JSON.stringify(element)) === -1){
           this.pubLst.push(element)
