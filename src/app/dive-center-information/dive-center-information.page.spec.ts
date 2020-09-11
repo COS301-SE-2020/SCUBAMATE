@@ -39,6 +39,7 @@ describe('DiveCenterInformationPage', () => {
     router = TestBed.get(Router);
     httpMock = TestBed.get(HttpTestingController);
     http = TestBed.get(HttpClient);
+    localStorage.setItem("accessToken", validData.accessToken);
   }));
 
   it('should create', () => {
@@ -75,21 +76,73 @@ describe('DiveCenterInformationPage', () => {
   });
 
   it('getLogWeather() test', () => {
-    
     var Key = {
-      key: null,
-      city: null,
-      province: null
+      key: "uF3LU0UljaHxJrAP3QkEthAD3Pdjwh3g",
+      city: "Pretoria",
+      province: "Gauteng"
     };
 
-    let weathearSpy = spyOn(weatService, 'getLocationKey').and.callThrough();
+    let weathearSpy = spyOn(weatService, 'getLogWeather').and.callThrough();
     expect(weathearSpy).toBeDefined();
-    let response = weatService.getLocationKey(Key).pipe(
+    let response = weatService.getLogWeather(Key).pipe(
       map( res => res.body)
     );
     console.log(response.operator);
     expect(weathearSpy).toBeDefined();
-    expect(weatService.getLocationKey).toHaveBeenCalledWith(Key);
+    expect(weatService.getLogWeather).toHaveBeenCalledWith(Key);
   });
   
+  it('Testing Dive-Center Info Components', () => {
+    expect(component.Key).toBeDefined();
+    expect(component.Coordinates).toBeDefined();
+    expect(component.Weather).toBeDefined();
+    expect(component.tempDate).toBeUndefined();
+    expect(component.weatherDate).toBeUndefined();
+    expect(component.Key).toBeDefined();
+    expect(component.showLoading).toBeTrue();
+    expect(component.loginLabel).toBe("Log Out");
+    expect(component.accountType).toBeUndefined();
+    expect(component.currentDiveCenter).toBeUndefined();
+    expect(component.showDiveCenter).toBeDefined();
+    expect(component.showWeather).toBeFalse();
+  });
+
+  it('Testing ngOnInit()', () => {
+    component.ngOnInit();
+    expect(component.Key).toBeDefined();
+    expect(component.Coordinates).toBeDefined();
+    expect(component.Weather).toBeDefined();
+    expect(component.tempDate).toBeUndefined();
+    expect(component.weatherDate).toBeUndefined();
+    expect(component.Key).toBeDefined();
+    expect(component.showLoading).toBeTrue();
+    expect(component.loginLabel).toBe("Log Out");
+    expect(component.accountType).toBeUndefined();
+    expect(component.currentDiveCenter).toBeUndefined();
+    expect(component.showDiveCenter).toBeDefined();
+    expect(component.showWeather).toBeFalse();
+  });
+
+  it('Testing ionViewWillEnter()', () => {
+    component.ionViewWillEnter();
+    expect(component.Key).toBeDefined();
+    expect(component.Coordinates).toBeDefined();
+    expect(component.Weather).toBeDefined();
+    expect(component.tempDate).toBeUndefined();
+    expect(component.weatherDate).toBeUndefined();
+    expect(component.Key).toBeDefined();
+    expect(component.showLoading).toBeTrue();
+    expect(component.loginLabel).toBe("Log Out");
+    expect(component.accountType).toBeUndefined();
+    expect(component.currentDiveCenter).toBeUndefined();
+    expect(component.showDiveCenter).toBeDefined();
+    expect(component.showWeather).toBeFalse();
+  });
+
+  it('Testing Dive-Center Info Functionality', () => {
+    expect(component.ngOnInit).toBeTruthy();
+    expect(component.ionViewWillEnter).toBeTruthy();
+    expect(component.loginClick).toBeTruthy();
+    expect(component.checkURL).toBeTruthy();
+  });
 });
