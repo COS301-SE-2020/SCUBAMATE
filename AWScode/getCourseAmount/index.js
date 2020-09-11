@@ -6,7 +6,6 @@ const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
 exports.handler = async (event, context) => {
     let body = JSON.parse(event.body);
     const AccessToken = body.AccessToken;
-    const Course = body.Course;
 
     const GuidSize = 36;
     const AccountGuid = AccessToken.substring(0,GuidSize);
@@ -67,12 +66,27 @@ exports.handler = async (event, context) => {
         /*Only proceed if access token is valid*/
         else if(statusCode == undef)
         {
+            /*Retrieve all the courses*/
+            var courseParams = {
+                TableName: "DiveInfo",
+                ProjectionExpression: "#Name",
+                FilterExpression: "begins_with(#ItemType, :sitePrefix)",
+                ExpressionAttributeNames:{
+                    "#ItemType" : "ItemType",
+                    "#Name" : "Name"
+                },
+                ExpressionAttributeValues:{
+                    ":sitePrefix" : "C"
+                }
+            };
+
             var accountParams = {
                 TableName: "Scubamate",
                 ProjectionExpression: "CompletedCourses"  
             };
 
             try {
+                const courses = await documentClient.scan(courseParams).promise();
                 const accounts = await documentClient.scan(accountParams).promise();
                 
                 if(accounts.Items.length==0){
@@ -80,26 +94,31 @@ exports.handler = async (event, context) => {
                     statusCode = 404;
                 }
                 else{
-                    /*Count amount of ratings per rating type (1,2,3,4,5) */
-                    let total = 0;
-                    accounts.Items.forEach(function(account) {
-                        if(account.CompletedCourses != undefined && account.CompletedCourses.length > 0)
-                        {
-                            for(var j=0; j<account.CompletedCourses.length; j++){
-                                if(account.CompletedCourses[j].localeCompare(Course)==0){
-                                    total++;
-                                    break;
+                    responseBody = '{ "CompletedCourseDivers" : [';
+                    courses.Items.forEach(function(course) {
+                        let total = 0;
+                        accounts.Items.forEach(function(account) {
+                            if(account.CompletedCourses != undefined && account.CompletedCourses.length > 0)
+                            {
+                                for(var j=0; j<account.CompletedCourses.length; j++){
+                                    if(account.CompletedCourses[j].localeCompare(course.Name)==0){
+                                        total++;
+                                        break;
+                                    }
                                 }
                             }
-                        }
+                        });
+                        responseBody += '{"Course" : "'+ course.Name +'" ,"Total" : "' + total + '"},';
                     });
-                    responseBody = '{ "CompletedCourseDivers" : { "Total" : "' + total + '"}}';
+                    responseBody = responseBody.slice(0, -1);
+                    responseBody += ']}'
+                    
                     responseBody = JSON.parse(responseBody);
                     statusCode = 200;      
                  }
             } 
             catch(err){
-                responseBody = "Scan error " + err ;
+                responseBody = "Scan error " + err + " " + responseBody ;
                 statusCode = 404;
             }
         }
