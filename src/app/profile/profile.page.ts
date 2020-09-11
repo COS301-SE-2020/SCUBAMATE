@@ -104,8 +104,8 @@ export class ProfilePage implements OnInit {
       this.accountType = this._globalService.accountRole; 
 
         this._accountService.getUser().subscribe(res => {
-          //console.log("res");
-          //console.log(res);
+
+          console.log(res);
           this.AD = res;
           if (res.PublicStatus == true){
             this.AD.PublicStatus = "Public";
