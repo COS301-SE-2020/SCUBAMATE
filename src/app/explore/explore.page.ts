@@ -137,21 +137,6 @@ export class ExplorePage implements OnInit {
       this.router.navigate(['login']);
     }
   }
-  checkURL(name): boolean{ 
-      //console.log(num)
-      let url = "../../assets/images/Weather/"+name.toLowerCase()+".png";
-      let img = new Image();
-      img.src = url;
-      if(img.width == 0){
-        //console.log("not found "+url)
-        return false;
-      }
-      else{
-        //console.log(" found "+url)
-        return true;
-      }
-    
- }
   /// code to edit what gets displayed
   displayDiveSites(){
     this.showLoading = true;
@@ -184,7 +169,7 @@ export class ExplorePage implements OnInit {
       console.log(res);
       res.forEach(element => {
         if(JSON.stringify(this.pubLst).indexOf(JSON.stringify(element)) === -1){
-          this.pubLst.push(element)
+          this.pubLst.push(element);
         }
         
       });

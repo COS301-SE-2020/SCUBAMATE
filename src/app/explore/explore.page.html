@@ -159,12 +159,7 @@
                           {{d.DiveDate}}
                         </ion-col>
                         <div *ngIf='showFeedLoaded'>
-                          <ion-col *ngIf="checkURL((pubLst[i].Weather[2]))" >
-                            <img class="weatherIMG" src= "../../assets/images/Weather/{{pubLst[i].Weather[2].toLowerCase()}}.png" />
-                          </ion-col> 
-                          <ion-col *ngIf="!checkURL(pubLst[i].Weather[2])" >
-                            <img class="weatherIMG" src='../../assets/images/Weather/default.png' />
-                          </ion-col>
+                          <img class="weatherIMG" src= "assets/images/Weather/{{pubLst[i].Weather[2]}}.png">
                         </div>
                       </ion-row>
                     </ion-grid>
@@ -182,12 +177,7 @@
                     </ion-item-divider>
                     <ion-item-divider color="light">
                       <b class="WeatherDescriptionCard" >{{d.Weather[2].toUpperCase()}} </b> 
-                        <ion-col *ngIf="checkURL((pubLst[i].Weather[2]))" >
-                          <img class="weatherIMG" src= "../../assets/images/Weather/{{pubLst[i].Weather[2].toLowerCase()}}.png" />
-                        </ion-col>
-                        <ion-col *ngIf="!checkURL(pubLst[i].Weather[2])" >
-                          <img class="weatherIMG" src='../../assets/images/Weather/default.png' />
-                        </ion-col>
+                      <img class="weatherIMG" src= "assets/images/Weather/{{pubLst[i].Weather[2]}}.png"/>
                     </ion-item-divider>
                     <p style="padding-left: 20px;">
                       Wind:                         {{d.Weather[0]}} <br>
