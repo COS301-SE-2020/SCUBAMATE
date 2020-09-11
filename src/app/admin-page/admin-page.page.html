@@ -666,92 +666,7 @@
       </ion-row>
   </ion-grid>
 
- <!-- <ion-grid>
-    <ion-row *ngIf="accountType=='11'">
-      <ion-col size="12" size-sm="12" size-md="6" size-lg="4">
-        <ion-card color="dark"> 
-          <ion-card-header>
-            <ion-item-divider color="dark">
-              <ion-row style="width:100%;">
-                <ion-col size="12" size-sm="12" size-md="9" size-lg="9">
-                  <label class="chartHeader">
-                    Number of Dives at Dive Site 
-                  </label>
-                </ion-col>
-                <ion-col size="12" size-sm="12" size-md="3" size-lg="3">
-                  <label class="infoHeader" >
-                    Year: {{dateSearch}} <br>
-                    Total: {{totalNumberOfDivesYear}}  
-                  </label>
-                </ion-col>
-              </ion-row>
-            </ion-item-divider>
-          </ion-card-header>
-          <ion-card-content>
-                <ion-row>
-                  <ion-col>
-                    <canvas #lineCanvasDivesAtSite></canvas>
-                  </ion-col>
-                </ion-row>
-                <ion-row >
-                  <ion-col size="12" size-sm="12" size-md="12" size-lg="12">
-                    <ion-label class="searchableSelectLabel" >Search Dive Site</ion-label>
-                    <input list="diveI"  placeholder="Add Dive Site"  [(ngModel)]="siteInput"  #Spec (input)="DiveSiteListFinder()" class="searchableSelectInput" >
-                      <datalist id="diveI">
-                          <option *ngFor='let i of DiveSiteLst' value={{i}}></option>
-                      </datalist>
-                  </ion-col>
-                  <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
-                    <ion-item color="dark">
-                        <ion-label floating>Year</ion-label>
-                        <ion-input type="number" value={{dateSearch}} #YearSearch></ion-input>
-                    </ion-item>
-                  </ion-col>
-                  <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
-                    <ion-button  color='primary' (click)="DoSiteYearChartSearch(YearSearch.value)" style="width:90%;margin-top:7%;"  >Search</ion-button>
-                  </ion-col>
-                </ion-row>
 
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-      <ion-col size="12" size-sm="12" size-md="6" size-lg="4">
-        <ion-card color="dark"> 
-          <ion-card-header>
-            <ion-item-divider color="dark">
-              <ion-row style="width:100%;">
-                <ion-col size="12" size-sm="12" size-md="12" size-lg="12">
-                  <label class="chartHeader">
-                    Rating of Dives at Dive Site 
-                  </label>
-                </ion-col>
-              </ion-row>
-            </ion-item-divider>
-          </ion-card-header>
-          <ion-card-content>
-                <ion-row>
-                  <ion-col>
-                    <canvas #pieCanvasDivesAtSiteRating></canvas>
-                  </ion-col>
-                </ion-row>
-                <ion-row >
-                  <ion-col size="12" size-sm="12" size-md="12" size-lg="12">
-                    <ion-label class="searchableSelectLabel" >Search Dive Site</ion-label>
-                    <input list="diveI"  placeholder="Add Dive Site"  [(ngModel)]="siteInput"  #Spec (input)="DiveSiteListFinder()" class="searchableSelectInput" >
-                      <datalist id="diveI">
-                          <option *ngFor='let i of DiveSiteLst' value={{i}}></option>
-                      </datalist>
-                  </ion-col>
-                  <ion-col size="12" size-sm="12" size-md="12" size-lg="12">
-                    <ion-button  color='primary' (click)="DoSiteRatingChartSearch()" style="width:90%;margin-top:7%;"  >Search</ion-button>
-                  </ion-col>
-                </ion-row>
-
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid> -->
 
   <ion-grid id="diveSiteGraphsDiv" *ngIf="accountType=='11'">
     <ion-row>
@@ -876,7 +791,27 @@
           </ion-card-content>
         </ion-card>
       </ion-col>
+      <ion-col size="12" size-sm="12" size-md="6" size-lg="4">
+        <ion-card color="dark"> 
+          <ion-card-header>
+            <ion-item-divider color="dark">
+              <ion-row style="width:100%;">
+                <ion-col size="12">
+                  <label class="chartHeader">
+                    User Role Groups 
+                  </label>
+                </ion-col>
+              </ion-row>
+            </ion-item-divider>
+          </ion-card-header>
+          <ion-card-content>
+              <canvas #barCanvasChartRoles></canvas>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
     </ion-row>
+
+
 
   </ion-grid>
 
