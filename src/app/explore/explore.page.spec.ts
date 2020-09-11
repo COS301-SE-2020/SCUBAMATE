@@ -46,6 +46,7 @@ describe('ExplorePage', () => {
 
   it('getPublicDives() test', () => {
     var temp: number;
+    temp = 2;
     let editDiveSpy = spyOn(divService, 'getPublicDives').and.callThrough();
     expect(editDiveSpy).toBeDefined();
     let response = divService.getPublicDives(temp).pipe(
