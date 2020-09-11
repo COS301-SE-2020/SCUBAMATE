@@ -95,9 +95,9 @@ describe('PlanningPage', () => {
   it('storeCustomChecklist() test', () => {
     var customList = {
       "AccessToken": accessToken,
-      "Equipment": "" ,
-      "Optional": "" , 
-      "Custom" : ""
+      "Equipment": "Goggles",
+      "Optional": "", 
+      "Custom" : "Gloves"
     };
 
     let accountSpy = spyOn(accService, 'storeCustomChecklist').and.callThrough();
