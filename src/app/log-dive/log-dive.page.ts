@@ -739,7 +739,7 @@ export class LogDivePage implements OnInit {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Manual Weather Input',
-      subHeader: 'Failed to aquire weather data',
+      subHeader: 'Failed to acquire weather data',
       message:  'Please Manually Select Moon Phase (scroll for more)' ,
       inputs: [
         {
@@ -812,7 +812,7 @@ export class LogDivePage implements OnInit {
       const alert = await this.alertController.create({
         cssClass: 'my-custom-class',
         header: 'Manual Weather Input',
-        subHeader: 'Failed to aquire weather data',
+        subHeader: 'Failed to acquire weather data',
         message:  'Please manually Enter Wind Speed in km/h' ,
         inputs: [
           {
@@ -854,7 +854,7 @@ export class LogDivePage implements OnInit {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Manual Weather Input',
-      subHeader: 'Failed to aquire weather data',
+      subHeader: 'Failed to acquire weather data',
       message:  'Please manually Enter Weather' ,
       inputs: [
         {

@@ -237,7 +237,7 @@
                 <label class="infoLabel" style="text-align: left; margin-bottom:10px;">
                   Moon Phase: {{MoonPhase}} <br>
                   Wind Speed: {{WindSpeed}} <br>
-                  Temperature: {{MinTempAPI}}°C - {{MaxTempAPI}}°C <br>
+                 <div *ngIf="!manualWeatherActive"> Temperature: {{MinTempAPI}}°C - {{MaxTempAPI}}°C </div><br>
                 </label>
 
               </ion-col>
