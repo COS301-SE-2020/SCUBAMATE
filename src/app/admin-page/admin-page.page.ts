@@ -141,6 +141,9 @@ export class AdminPagePage implements OnInit {
   @ViewChild("lineCanvasChartAgeGroup") lineCanvasChartAgeGroup: ElementRef;
   private lineChartAgeGroup: Chart;
 
+  @ViewChild("barCanvasChartRoles") barCanvasChartRoles: ElementRef;
+  private barChartChartRoles: Chart;
+
   //Date
   currentDate = new Date();
   
@@ -240,7 +243,7 @@ export class AdminPagePage implements OnInit {
       this._globalService.accountRole = localStorage.getItem("accessToken").substring(36, 38) ;
       this.accountType = this._globalService.accountRole;
 
-      console.log("AT: " + this.accountType);
+
       //get initial chart data
       if(this.accountType == "11"){
         var numDivesBody ={
@@ -257,7 +260,7 @@ export class AdminPagePage implements OnInit {
           this._chartService.numberDivesAtSiteChartData(numDivesBody).subscribe( data =>{
               this.showLoading = false;
               this.totalNumberOfDivesYear = data.TotalNumberOfDives.toString();
-              console.log(data);
+ 
               this.drawNumDivesAtSiteChart(data, "All Dive Sites");
 
           },err =>{
@@ -280,10 +283,7 @@ export class AdminPagePage implements OnInit {
           this.showLoading = true ;
           this._chartService.ratingAtDiveSiteChartData(rateDivesBody).subscribe( data =>{
               this.showLoading = false;
-              
-              console.log(data);
-      
-                this.drawRatingDivesAtSiteChart(data, "Rating of All Dive Sites");
+               this.drawRatingDivesAtSiteChart(data, "Rating of All Dive Sites");
             
         
           },err =>{
@@ -307,9 +307,6 @@ export class AdminPagePage implements OnInit {
           this._chartService.peakTimesDivesAtSiteChartData(peekDivesBody).subscribe( data =>{
               this.showLoading = false;
               this.drawPeekDivesAtSiteChart(data, "All Dive Sites");
-              console.log(data);
-              //this.drawNumDivesAtSiteChart(data, "All Sites");
-
           },err =>{
             this.showLoading = false;
             
@@ -328,8 +325,7 @@ export class AdminPagePage implements OnInit {
           this.showLoading = true ;
           this._chartService.ageGroupChartData(ageGroupBody).subscribe( data =>{
               this.showLoading = false;
-              console.log(data);
-              this.drawAgeGroupChart(data, "Age Groups of Users");
+              this.drawAgeGroupChart(data, "Total Users in Age Group");
              
 
           },err =>{
@@ -343,7 +339,24 @@ export class AdminPagePage implements OnInit {
             
           });
 
+          this.showLoading = true ;
+          this._chartService.numberUsersInRoles(ageGroupBody).subscribe( data =>{
+              this.showLoading = false;
+              console.log(data);
+             
+              this.drawRolesChart(data, "Total Users in Role Groups");
+             
 
+          },err =>{
+            this.showLoading = false;
+            
+            if(err.error){
+              this.generalAlert("User Role Chart Error", err.error);
+            }else{
+              console.log("Could not access user role Chart Data");
+            }
+            
+          });
 
       
 
@@ -1525,7 +1538,7 @@ getDiveCentreInformation(){
 
     
     this.lineChartAgeGroup = new Chart(this.lineCanvasChartAgeGroup.nativeElement,{
-      type: "line",
+      type: "bar",
       data: {
         labels: keys,
         datasets: [
@@ -1589,6 +1602,83 @@ getDiveCentreInformation(){
 
     this.lineChartPeekDivesAtSite.destroy();
     this.drawAgeGroupChart(returnedData, msg);
+
+
+  }
+
+
+  drawRolesChart(returnedData, msg){
+
+
+    let keys = returnedData["ReturnedList"].map(d => d.Role);
+    let values = returnedData["ReturnedList"].map(d => d.AmountOfUsers);
+
+    
+    this.barChartChartRoles = new Chart(this.barCanvasChartRoles.nativeElement,{
+      type: "bar",
+      data: {
+        labels: keys,
+        datasets: [
+          {
+            label: msg,
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: "rgba(244, 162, 97,1)",
+            borderColor: "rgba(244, 162, 97,1)",
+            borderCapStyle: "butt",
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: "miter",
+            pointBorderColor: "rgba(244, 162, 97,1)",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "rgba(231, 111, 81,1)",
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data: values,
+            spanGaps: false
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          xAxes: [ {
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'User Roles'
+            },
+            ticks: {
+              major: {
+                fontStyle: 'bold',
+                fontColor: '#FF0000'
+              }
+            }
+          } ],
+          yAxes: [ {
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Total Users'
+            }
+          } ]
+        }
+      }
+    });
+
+
+  }
+
+  updateRolesChart(returnedData, msg){
+
+
+    this.barChartChartRoles.destroy();
+    this.drawRolesChart(returnedData, msg);
 
 
   }
