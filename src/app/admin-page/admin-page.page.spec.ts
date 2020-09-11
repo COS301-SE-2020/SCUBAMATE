@@ -161,7 +161,9 @@ describe('AdminPagePage', () => {
 
   it('addUserToDiveCenter() test', () => {
     var eventValue = {
-
+      AccessToken: validData.accessToken,
+      Email: "teamav301@gmail.com",
+      Name: "Test Man"
     };
     let accountSpy = spyOn(accService, 'addUsertoDiveCenter').and.callThrough();
     expect(accountSpy).toBeDefined();
@@ -175,7 +177,14 @@ describe('AdminPagePage', () => {
 
   it('addDiveCenter() test', () => {
     var eventValue = {
-
+      AccessToken: validData.accessToken,
+      Email : "teamav301@gmail.com",
+      LogoPhoto: "",
+      Coords : "-25.840380, 28.245230",
+      Description : "Home to the World largest Sharks.",
+      Name : "Megladive",
+      Courses : [validData.qualification],
+      DiveSites: [validData.site],
     };
     let accountSpy = spyOn(accService, 'addDiveCenter').and.callThrough();
     expect(accountSpy).toBeDefined();
@@ -206,9 +215,9 @@ describe('AdminPagePage', () => {
   it('updateDiveCenterSubmit() test', () => {
     var body ={
       "AccessToken" : validData.accessToken,
-      "Name" : "" ,
-      "Coords": "" , 
-      "Description": "",
+      "Name" : "Megladive Better" ,
+      "Coords": "-25.840380, 28.245230" , 
+      "Description": "Home to the World largest Sharks.",
       "LogoPhoto" :  ""
     };
     let diveSpy = spyOn(divService, 'editBasicDiveCentre').and.callThrough();
@@ -224,8 +233,8 @@ describe('AdminPagePage', () => {
   it('addCoursesToDiveCenter() test', () => {
     var body ={
       "AccessToken" : validData.accessToken,
-      "Name" : "" ,
-      "Courses": ""
+      "Name" : "Megladive" ,
+      "Courses": "Monster Shark Dive"
     }
     let diveSpy = spyOn(divService, 'addCoursesToDiveCentre').and.callThrough();
     expect(diveSpy).toBeDefined();
@@ -240,8 +249,8 @@ describe('AdminPagePage', () => {
   it('addDiveSitesToCentre() test', () => {
     var body ={
       "AccessToken" : validData.accessToken,
-      "Name" : "" ,
-      "DiveSites": ""
+      "Name" : "Megladive",
+      "DiveSites": validData.site
     }
     let diveSpy = spyOn(divService, 'addDiveSitesToCentre').and.callThrough();
     expect(diveSpy).toBeDefined();
@@ -256,12 +265,12 @@ describe('AdminPagePage', () => {
   it('createNewCourse() test', () => {
     var body = {
       "AccessToken" : validData.accessToken,
-      "Name": "" , 
-      "CourseType": "" ,
-      "MinAgeRequired": "" ,
-      "SurveyAnswer": "" ,
-      "RequiredCourses": "" ,
-      "QualificationType": ""
+      "Name": "Megladive", 
+      "CourseType": "Diver",
+      "MinAgeRequired": "21",
+      "SurveyAnswer": "",
+      "RequiredCourses": "Deep Water Dive",
+      "QualificationType": validData.qualification
     }
     let diveSpy = spyOn(divService, 'createNewCourse').and.callThrough();
     expect(diveSpy).toBeDefined();
@@ -276,9 +285,9 @@ describe('AdminPagePage', () => {
   it('createNewSite() test', () => {
     var body = {
       "AccessToken" : validData.accessToken,
-      "Name" : "" ,
-      "Coords" : "",
-      "Description" : ""
+      "Name" : "Gigantasquid",
+      "Coords" : "-25.840380, 28.245230",
+      "Description" : "Home of the largest squids."
     }
     let diveSpy = spyOn(divService, 'createNewSite').and.callThrough();
     expect(diveSpy).toBeDefined();
