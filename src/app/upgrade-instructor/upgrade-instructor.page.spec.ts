@@ -70,7 +70,11 @@ describe('UpgradeInstructorPage', () => {
   });
 
   it('upgradeToInstructor() test', () => {
-    var eventValue = "";
+    var eventValue = {
+      AccessToken: accessToken,
+      InstructorNumber: "Di167-uwe",
+      DiveCentre: validData.center
+    };
 
     let accSpy = spyOn(accService, 'upgradeToInstructor').and.callThrough();
     expect(accSpy).toBeDefined();
