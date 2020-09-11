@@ -8,28 +8,35 @@ $inputBackgroundColor: #181e21;
 @media (max-width: 767px) {
   .contentContainer{
     margin: auto !important;
-    margin-left: 10%;
+    margin-left: 10% !important;
     margin-top: 7px !important;
 
     ion-col{
-      margin-left: 10% !important;
+      margin-left: 0% !important;
     }
   }
 
+  .contentContainer{
+    margin-right:0% !important;
+    margin-left: -2% !important;
+    margin-top: 40px !important;
+  }
+
+  .theback{
+    margin-left: 3.5% !important;
+  }
+
   .thecard{
-   // width: 290px;
-    width: 100%;
-    height: 360px;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: all 0.5s ease;
-    word-wrap: break-word;
-    cursor: pointer;
+    width: 100vw !important;
+    height: 70vh !important;
+    margin: auto !important;
   }
   .thecardDC{
-    width: 290px;
+    width: 98vw !important;
     height: 400px;
   }
+
+
 
   ion-radio-group{
     top: -21px !important;

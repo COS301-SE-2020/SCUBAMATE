@@ -72,6 +72,9 @@ export class ProfilePage implements OnInit {
   isConnected = true;  
   noInternetConnection: boolean;
 
+  viewBadges : boolean = false; 
+  goalPercentage : number  ; 
+
   /********************************************/
   constructor(public _globalService: GlobalService,  public alertController : AlertController , private router: Router, private _accountService: accountService,  private _diveService: diveService, private connectionService: ConnectionService, private location: Location) {
     this.connectionService.monitor().subscribe(isConnected => {  
@@ -104,8 +107,10 @@ export class ProfilePage implements OnInit {
       this.accountType = this._globalService.accountRole; 
 
         this._accountService.getUser().subscribe(res => {
-          //console.log("res");
-          //console.log(res);
+
+          this.goalPercentage = res.GoalProgress / res.Goal ; 
+         
+
           this.AD = res;
           if (res.PublicStatus == true){
             this.AD.PublicStatus = "Public";
@@ -368,6 +373,10 @@ export class ProfilePage implements OnInit {
 
   toggleUnverified(){
     this.viewUnverified = !this.viewUnverified ;
+  }
+
+  toggleBadgeView(){
+    this.viewBadges = !this.viewBadges;
   }
 
 

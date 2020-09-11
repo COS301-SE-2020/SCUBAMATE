@@ -384,3 +384,53 @@ table{
   }
 
 }
+
+
+#achievmentProgressLabel{
+  font-size:  17px ;
+  font-weight: bold;
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  color: white;
+  border-bottom: solid white 0.5px;
+  border-top: solid white 0.5px;
+  text-align: center ; 
+  width: 50% ;
+  margin: auto ;
+}
+
+
+.badgeSurroundDiv{
+  width:160px;
+  height:160px;
+  padding:0;
+  margin: auto;
+  border-radius: 100% !important;
+  overflow: hidden;
+  background-color:  rgba(231, 111, 81, 0.2) ;
+  text-align: center;
+}
+
+
+.badgeSurroundDiv:hover{
+  background-color: rgba(231, 111, 81, 0.4);
+}
+
+
+.earnBadge{
+  width: 140px;
+  height: 140px;
+  margin: auto;
+  margin-top: 6%;
+  margin-bottom: 6%;
+  border-radius: 100% !important;
+  overflow: hidden;
+}
+
+
+.leftPaneBadges{
+    background-color: rgba(38, 70, 83, 0.9);
+    height: inherit  ;
+    margin:0;
+    text-align: center;
+    padding-bottom: 1%;
+}
