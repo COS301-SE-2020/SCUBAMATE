@@ -21,7 +21,7 @@ exports.handler = async (event, context) => {
     const TimeIn = body.TimeIn;
     const TimeOut = body.TimeOut;
     const Visibility = body.Visibility;
-    const Weather = body.Weather;
+    let Weather = body.Weather;
     const DivePublicStatus = body.DivePublicStatus;
     const isCourse = body.isCourse;
     const Rating = body.Rating;
@@ -55,6 +55,16 @@ exports.handler = async (event, context) => {
         else{
             returnBool = true;
         }
+        return returnBool;
+    }
+    
+    function contains(arr,search){
+        let returnBool = false;
+        arr.forEach(function(item) {
+            if(item==search){
+                returnBool=true;
+            }
+        });
         return returnBool;
     }
     //Verify AccessToken 
@@ -121,6 +131,10 @@ exports.handler = async (event, context) => {
                     Approved = false;
                 }
                 Weather[2] = Weather[2].toLowerCase();
+                const optionalWeather = ["cloudy","deary","fog","hazy sunshine","intermittent clouds","mostly cloudy w showers","mostly cloudy","mostly sunny","overcast","partly sunny w showers","partly sunny w t-storms","partly sunny","plenty of sunshine","rain","showers","sunny","t-storms","windy"];
+                if(!contains(optionalWeather, Weather[2])){
+                    Weather[2] ="uncertain";
+                }
                 const params = {
                     TableName: "Dives",
                     Item: {
