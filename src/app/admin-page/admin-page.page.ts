@@ -144,6 +144,9 @@ export class AdminPagePage implements OnInit {
   @ViewChild("barCanvasChartRoles") barCanvasChartRoles: ElementRef;
   private barChartChartRoles: Chart;
 
+  @ViewChild("lineCanvasChartCourses") lineCanvasChartCourses: ElementRef;
+  private lineChartCourses: Chart;
+
   //Date
   currentDate = new Date();
   
@@ -342,7 +345,7 @@ export class AdminPagePage implements OnInit {
           this.showLoading = true ;
           this._chartService.numberUsersInRoles(ageGroupBody).subscribe( data =>{
               this.showLoading = false;
-              console.log(data);
+
              
               this.drawRolesChart(data, "Total Users in Role Groups");
              
@@ -354,6 +357,24 @@ export class AdminPagePage implements OnInit {
               this.generalAlert("User Role Chart Error", err.error);
             }else{
               console.log("Could not access user role Chart Data");
+            }
+            
+          });
+
+          this.showLoading = true ;
+          this._chartService.numberUsersDoneCourse(ageGroupBody).subscribe( data =>{
+              this.showLoading = false;
+             
+              this.drawCourseChart(data, "Total Users Completed Course");
+             
+
+          },err =>{
+            this.showLoading = false;
+            
+            if(err.error){
+              this.generalAlert("Total Completed Course Chart Error", err.error);
+            }else{
+              console.log("Could not access Total Completed Course");
             }
             
           });
@@ -1597,14 +1618,6 @@ getDiveCentreInformation(){
 
   }
 
-  updateAgeGroupChart(returnedData, msg){
-
-
-    this.lineChartPeekDivesAtSite.destroy();
-    this.drawAgeGroupChart(returnedData, msg);
-
-
-  }
 
 
   drawRolesChart(returnedData, msg){
@@ -1674,11 +1687,69 @@ getDiveCentreInformation(){
 
   }
 
-  updateRolesChart(returnedData, msg){
+  drawCourseChart(returnedData, msg){
 
 
-    this.barChartChartRoles.destroy();
-    this.drawRolesChart(returnedData, msg);
+    let keys = returnedData["CompletedCourseDivers"].map(d => d.Course);
+    let values = returnedData["CompletedCourseDivers"].map(d => d.Total);
+
+    
+    this.lineChartCourses = new Chart(this.lineCanvasChartCourses.nativeElement,{
+      type: "bar",
+      data: {
+        labels: keys,
+        datasets: [
+          {
+            label: msg,
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: "rgba(42, 157, 143)",
+            borderColor: "rgba(42, 157, 143)",
+            borderCapStyle: "butt",
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: "miter",
+            pointBorderColor: "rgba(244, 162, 97,1)",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "rgba(32, 117, 107)",
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data: values,
+            spanGaps: false
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          xAxes: [ {
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Courses'
+            },
+            ticks: {
+              major: {
+                fontStyle: 'bold',
+                fontColor: '#FF0000'
+              }
+            }
+          } ],
+          yAxes: [ {
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Total Divers Completed'
+            }
+          } ]
+        }
+      }
+    });
 
 
   }
