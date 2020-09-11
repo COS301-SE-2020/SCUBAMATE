@@ -7,10 +7,14 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import {HttpModule} from '@angular/http';
 import { HttpClient} from '@angular/common/http';
+import {chartService } from '../service/chart.service'
 import { Router } from '@angular/router';
 import { FormBuilder} from '@angular/forms';
 import { stringify } from 'querystring';
 import { map } from 'rxjs/operators';
+import { GlobalService } from "../global.service";
+import { Chart } from 'chart.js';
+import {mergeMap, groupBy, reduce } from 'rxjs/operators';
 
 var reqBody = {
   AccessToken : "d1d7391d-c035-28ab-0193-68a7d263d4be11018bb4bb890ede82397fea8e38e8cb3b5646f4053ff8c04aec7048b8c3d4376e",
@@ -48,7 +52,7 @@ describe('AdminPagePage', () => {
     TestBed.configureTestingModule({
       declarations: [ AdminPagePage ],
       imports: [ RouterTestingModule.withRoutes([]), HttpClientTestingModule, HttpModule],
-      providers: [diveService, HttpModule, accountService, FormBuilder]
+      providers: [diveService, HttpModule, accountService, FormBuilder, chartService]
     }).compileComponents();
 
     fixture = TestBed.createComponent(AdminPagePage);
@@ -287,24 +291,24 @@ describe('AdminPagePage', () => {
   });
 
   it('Testing Log-Dive Components', () => {
-    expect(component.showLoading).toBeFalse();
+    expect(component.showLoading).toBeTrue();
     expect(component.DiveSiteLst).toBeUndefined();
     expect(component.BuddyLst).toBeUndefined();
     expect(component.loginLabel).toBe("Log Out");
-    expect(component.accountType).toBe("SuperAdmin");
+    expect(component.accountType).toBeDefined();
     expect(component.base64textString).toBeUndefined();
     expect(component.CenterLst).toBeUndefined();
     expect(component.CourseLst).toBeUndefined();
     expect(component.showCourses).toBeFalse();
     expect(component.userCourses).toBeDefined();
     expect(component.courseInputField).toBeDefined();
-    expect(component.siteInput).toBeUndefined();
+    expect(component.siteInput).toBeDefined();
     expect(component.siteUserInput).toBeDefined();
     expect(component.showSites).toBeDefined();
     expect(component.showRegisterUserToCenter).toBeFalse();
     expect(component.showRegisterNewCenter).toBeFalse();
-    expect(component.showUnverifiedInstructors).toBeUndefined();
-    expect(component.showVerifiedInstructors).toBeUndefined();
+    expect(component.showUnverifiedInstructors).toBeFalse();
+    expect(component.showVerifiedInstructors).toBeFalse();
     expect(component.showEditBasicDiveCentre).toBeFalse();
     expect(component.showAddCourse).toBeFalse();
     expect(component.showAddSite).toBeFalse();
@@ -326,24 +330,24 @@ describe('AdminPagePage', () => {
 
   it('Testing ngOnInit()', () => {
     component.ngOnInit();
-    expect(component.showLoading).toBeFalse();
+    expect(component.showLoading).toBeTrue();
     expect(component.DiveSiteLst).toBeUndefined();
     expect(component.BuddyLst).toBeUndefined();
     expect(component.loginLabel).toBe("Log Out");
-    expect(component.accountType).toBe("SuperAdmin");
+    expect(component.accountType).toBeDefined();
     expect(component.base64textString).toBeUndefined();
     expect(component.CenterLst).toBeUndefined();
     expect(component.CourseLst).toBeUndefined();
     expect(component.showCourses).toBeFalse();
     expect(component.userCourses).toBeDefined();
     expect(component.courseInputField).toBeDefined();
-    expect(component.siteInput).toBeUndefined();
+    expect(component.siteInput).toBeDefined();
     expect(component.siteUserInput).toBeDefined();
     expect(component.showSites).toBeDefined();
     expect(component.showRegisterUserToCenter).toBeFalse();
     expect(component.showRegisterNewCenter).toBeFalse();
-    expect(component.showUnverifiedInstructors).toBeUndefined();
-    expect(component.showVerifiedInstructors).toBeUndefined();
+    expect(component.showUnverifiedInstructors).toBeFalse();
+    expect(component.showVerifiedInstructors).toBeFalse();
     expect(component.showEditBasicDiveCentre).toBeFalse();
     expect(component.showAddCourse).toBeFalse();
     expect(component.showAddSite).toBeFalse();
@@ -369,20 +373,20 @@ describe('AdminPagePage', () => {
     expect(component.DiveSiteLst).toBeUndefined();
     expect(component.BuddyLst).toBeUndefined();
     expect(component.loginLabel).toBe("Log Out");
-    expect(component.accountType).toBe("SuperAdmin");
+    expect(component.accountType).toBeDefined();
     expect(component.base64textString).toBeUndefined();
     expect(component.CenterLst).toBeUndefined();
     expect(component.CourseLst).toBeUndefined();
     expect(component.showCourses).toBeFalse();
     expect(component.userCourses).toBeDefined();
     expect(component.courseInputField).toBeDefined();
-    expect(component.siteInput).toBeUndefined();
+    expect(component.siteInput).toBeDefined();
     expect(component.siteUserInput).toBeDefined();
     expect(component.showSites).toBeDefined();
     expect(component.showRegisterUserToCenter).toBeFalse();
     expect(component.showRegisterNewCenter).toBeFalse();
-    expect(component.showUnverifiedInstructors).toBeUndefined();
-    expect(component.showVerifiedInstructors).toBeUndefined();
+    expect(component.showUnverifiedInstructors).toBeFalse();
+    expect(component.showVerifiedInstructors).toBeFalse();
     expect(component.showEditBasicDiveCentre).toBeFalse();
     expect(component.showAddCourse).toBeFalse();
     expect(component.showAddSite).toBeFalse();
