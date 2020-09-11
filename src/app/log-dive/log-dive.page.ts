@@ -94,6 +94,7 @@ export class LogDivePage implements OnInit {
     currentDiveTypeSelected : string = "Normal";
     //showDiveTypeInput : boolean; 
     allLoaded: boolean ;
+    manualWeatherActive: boolean = false; 
     
 
   /********************************************/
@@ -139,10 +140,8 @@ export class LogDivePage implements OnInit {
 
     //Get coordinates and return current weather
     this.geolocation.getCurrentPosition().then((resp) => {
-      // console.log("Getting Coordinates");
       this.Coordinates.Latitude = resp.coords.latitude;
       this.Coordinates.Longitude = resp.coords.longitude;
-      // console.log(this.Coordinates);
 
       this._weatherService.getLocationKey(this.Coordinates).subscribe(res => {
         // console.log("Getting location key");
@@ -187,11 +186,23 @@ export class LogDivePage implements OnInit {
         this.diveObj.Weather =  [this.WindSpeed, this.MoonPhase, this.WeatherDescription] ; 
         this.showLoading = false;
         this.allLoaded = true;
+      },err =>{
+        this.showLoading = false; 
+        this.manualWeatherActive = true;
+       
+
       });
+      }, err =>{
+        this.showLoading = false; 
+        this.manualWeatherActive= true ; 
+
+
       });
 
-     }).catch((error) => {
-       console.log('Error getting location', error);
+     }, err =>{
+      console.log('Error getting location', err.error);
+      this.showLoading = false; 
+      this.manualWeatherActive= true ;
      });
     
     this.diveForm = formBuilder.group({
@@ -285,6 +296,36 @@ export class LogDivePage implements OnInit {
       this.loginLabel = "Log Out";
       this.accountType = this._globalService.accountRole;
     }
+
+    if(this.manualWeatherActive == true || this.diveObj == undefined){
+      //Diver Form
+      this.diveObj ={
+        DiveID :  "D"+ this.uuidValue,
+        AccessToken: localStorage.getItem("accessToken"),
+        DiveDate: this.currentDate,
+        TimeIn: "",
+        TimeOut: "",
+        Visibility:"",
+        Depth: "",
+        Buddy: "",
+        DiveTypeLink: "",
+        AirTemp: 0  ,
+        SurfaceTemp: 0 ,
+        BottomTemp: 0 ,
+        DiveSite: "",
+        Description: "",
+        InstructorLink: [] ,
+        Weather: [] ,
+        DivePublicStatus: false,
+        isCourse: false,
+        Rating: 0, 
+        WaterType: "Saltwater"
+      }
+
+      this.presentManualWeatherInput();
+    }
+
+    
     
   }
 
@@ -691,4 +732,219 @@ export class LogDivePage implements OnInit {
     //console.log('Your rate:', event);
     this.RateGiven = Number(event);
   }
+
+  //Weather Manual Input
+  
+  async presentManualWeatherInput() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Manual Weather Input',
+      subHeader: 'Failed to aquire weather data',
+      message:  'Please Manually Select Moon Phase (scroll for more)' ,
+      inputs: [
+        {
+          name: 'Q1A',
+          type: 'radio',
+          label: 'Waxing crescent',
+          value: 'Waxing crescent' ,
+          checked: true
+        },
+        {
+          name: 'Q1B',
+          type: 'radio',
+          label: 'First quarter',
+          value: 'First quarter'
+        },
+        {
+          name: 'Q1C',
+          type: 'radio',
+          label: 'Waxing gibbous',
+          value: 'Waxing gibbous'
+        },
+        {
+          name: 'Q1C',
+          type: 'radio',
+          label: 'Full moon',
+          value: 'Full moon'
+        },
+        {
+          name: 'Q1C',
+          type: 'radio',
+          label: 'Waning gibbous',
+          value: 'Waning gibbous'
+        },
+        {
+          name: 'Q1C',
+          type: 'radio',
+          label: 'Last quarter',
+          value: 'Last quarter'
+        },
+        {
+          name: 'Q1C',
+          type: 'radio',
+          label: 'Waning crescent',
+          value: 'Waning crescent'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            this.router.navigate(['my-dives']);
+          }
+        }, {
+          text: 'Next',
+          handler: data => {
+
+            this.MoonPhase = data ; 
+            this.presentManualWeather2Input();
+
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+    async presentManualWeather2Input() {
+      const alert = await this.alertController.create({
+        cssClass: 'my-custom-class',
+        header: 'Manual Weather Input',
+        subHeader: 'Failed to aquire weather data',
+        message:  'Please manually Enter Wind Speed in km/h' ,
+        inputs: [
+          {
+            name: 'windSpeed',
+            type: 'number',
+            value: 10 , 
+            label: 'Speed in km/h',
+            placeholder: '10'
+          }
+        ],
+        buttons: [
+          {
+            text: 'Next',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: () => {
+              this.router.navigate(['my-dives']);
+            }
+          }, {
+            text: 'Next',
+            handler: data => {
+  
+              if( data['windSpeed'] == "" ){
+                data['windSpeed'] = "10";
+              }
+
+              this.WindSpeed = data['windSpeed'] + " km/h"   ; 
+              this.presentManualWeather3Input();
+  
+            }
+          }
+        ]
+      });
+
+    await alert.present();
+  }
+
+  async presentManualWeather3Input() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Manual Weather Input',
+      subHeader: 'Failed to aquire weather data',
+      message:  'Please manually Enter Weather' ,
+      inputs: [
+        {
+          name: 'Q1A',
+          type: 'radio',
+          label: 'Sunny',
+          value: 'Sunny' ,
+          checked: true
+        },
+        {
+          name: 'Q1B',
+          type: 'radio',
+          label: 'Hazy Sunshine',
+          value: 'Hazy Sunshine'
+        },
+        {
+          name: 'Q1C',
+          type: 'radio',
+          label: 'Intermittent Clouds',
+          value: 'Intermittent Clouds'
+        },
+        {
+          name: 'Q1C',
+          type: 'radio',
+          label: 'Mostly Sunny',
+          value: 'Mostly Sunny'
+        },
+        {
+          name: 'Q1C',
+          type: 'radio',
+          label: 'Partly Sunny w Showers',
+          value: 'Partly Sunny w Showers'
+        },
+        {
+          name: 'Q1C',
+          type: 'radio',
+          label: 'Windy',
+          value: 'Windy'
+        },
+        {
+          name: 'Q1C',
+          type: 'radio',
+          label: 'Rain',
+          value: 'Rain'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            this.router.navigate(['my-dives']);
+          }
+        }, {
+          text: 'Done',
+          handler: data => {
+            this.WeatherDescription = data;
+
+            this.diveObj ={
+              DiveID :  "D"+ this.uuidValue,
+              AccessToken: localStorage.getItem("accessToken"),
+              DiveDate: this.currentDate,
+              TimeIn: "",
+              TimeOut: "",
+              Visibility:"",
+              Depth: "",
+              Buddy: "",
+              DiveTypeLink: "",
+              AirTemp: this.MinTempAPI  ,
+              SurfaceTemp: this.MinTempAPI  ,
+              BottomTemp: this.MinTempAPI ,
+              DiveSite: "",
+              Description: "",
+              InstructorLink: [] ,
+              Weather: [this.WindSpeed, this.MoonPhase, this.WeatherDescription] ,
+              DivePublicStatus: false,
+              isCourse: false,
+              Rating: 0, 
+              WaterType: "Saltwater"
+            }
+
+            console.log(this.diveObj);
+            this.allLoaded = true;
+
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
 }
