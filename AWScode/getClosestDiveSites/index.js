@@ -81,7 +81,7 @@ exports.handler = async (event, context) => {
             /*Retrieve all the Dive Sites */
             var siteParams = {
                 TableName: "DiveInfo",
-                ProjectionExpression: "#Name,Coords",
+                ProjectionExpression: "#Name,Coords,Description",
                 FilterExpression: "begins_with(#ItemType, :sitePrefix)",
                 ExpressionAttributeNames:{
                     "#ItemType" : "ItemType",
@@ -108,7 +108,7 @@ exports.handler = async (event, context) => {
                         let lat2= site.Coords.substring(0,pos);
                         let lon2= site.Coords.substring(pos+1,site.Coords.length);
                         site.Distance = distanceCalc(lat1,lon1,lat2,lon2);
-                        delete site.Coords;
+                        // delete site.Coords;
                     });
                     
                     /*Sorts the data according to the distances */
