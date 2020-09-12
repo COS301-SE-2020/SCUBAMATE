@@ -344,4 +344,26 @@ export class diveService
 
     }
 
+    getPredictiveWeather(PostData):Observable<any>{
+
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        })
+      };
+      return this.httpClient.post('https://t20n28s0ck.execute-api.af-south-1.amazonaws.com/AI/predictvisibility', PostData , options); 
+
+    }
+
+    getClosestDiveSites(PostData):Observable<any>{
+
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        })
+      };
+      return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/getclosestdivesites', PostData , options); 
+
+    }
+
 }

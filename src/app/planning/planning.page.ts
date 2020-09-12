@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { accountService } from '../service/account.service';
 import { diveService } from '../service/dive.service';
 import { AlertController } from '@ionic/angular';
+import { weatherService } from '../service/weather.service';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 import { GlobalService } from "../global.service";
 
@@ -17,6 +19,13 @@ export interface CourseObj {
   CourseType: string,
   QualificationType: string,
   Name: string,
+}
+
+
+export interface SitesNearYouObj {
+  Name : string ;
+  Rating: string ;
+  Description: string ; 
 }
 
 @Component({
@@ -53,11 +62,16 @@ export class PlanningPage implements OnInit {
   //SurveyAnswers
   surveyAnswers : string[] = new Array();
 
-  ////
+  //Dive Sites near you
+  showSitesNearYou : boolean = false; 
+  SitesNearYouLst: SitesNearYouObj[] = new Array(); 
+  viewMoreNearYou : boolean = true ;
+
+  ///
 
   loginLabel:string ;
 
-  constructor(public _globalService: GlobalService, public alertController : AlertController ,private router: Router, private _accountService: accountService,  private _diveService: diveService) { }
+  constructor(private _weatherService: weatherService, private geolocation: Geolocation, public _globalService: GlobalService, public alertController : AlertController ,private router: Router, private _accountService: accountService,  private _diveService: diveService) { }
 
   ngOnInit() {
   this.showCourses = false ;
@@ -128,6 +142,36 @@ export class PlanningPage implements OnInit {
     });
   
     
+    this.showLoading = true ; 
+  
+    this.geolocation.getCurrentPosition().then((resp) => {
+
+      var reqBod = {
+        "AccessToken": localStorage.getItem("accessToken"),
+        "Location"  : resp.coords.latitude.toString() + "," + resp.coords.longitude.toString() 
+      }
+
+
+      this._diveService.getClosestDiveSites(reqBod).subscribe(res =>{
+        this.showLoading = false ; 
+        this.SitesNearYouLst = res.Items ;
+        console.log(res);
+
+        this.showSitesNearYou = true ; 
+
+      }, err => {
+        this.showLoading = false ; 
+      });
+
+
+    }, err => {
+      this.showLoading = false ; 
+    });
+
+
+
+
+
 
   }
 
@@ -692,6 +736,8 @@ export class PlanningPage implements OnInit {
 
   }
 
-  
+  toggleViewMoreSitesNearYou(){
+    this.viewMoreNearYou = !this.viewMoreNearYou ; 
+  }
 
 }

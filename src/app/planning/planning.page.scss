@@ -30,6 +30,14 @@ $inputBackgroundColor: #181e21;
     }
   }
 
+  .SitesNearName{
+    margin-top: 0 !important ;
+  }
+
+  .SitesNearRating{
+    margin-top: 0 !important ;
+  }
+
 }
 
 
@@ -264,3 +272,50 @@ ion-content.background{
   font-size: 13px;
   color: $lightBlue;
 }
+
+.SitesNearRow{
+  border-bottom: solid white 1px;
+  width: 100% ;
+  text-align: center ;
+  background-color: rgba(38, 70, 83, 0.6) ;  
+
+  .SitesNearName{
+    font-size:  17px ;
+    font-weight: bold;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    color: white;
+    margin-top: 10% ;
+  }
+
+  .SitesNearRating{
+    font-size:  15px ;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    color: white;
+    margin-top: 10% ;
+  }
+
+  .SitesNearDesc{
+    font-size:  14px ;
+    color: white;
+    word-wrap: break-word ;
+    margin:10px;
+    text-align: left;
+    font-weight: lighter;
+  }
+
+  .SitesNearLeftCol{
+    background-color: $inputBackgroundColor;
+  }
+}
+
+.SitesNearRow:hover{
+  background-color: rgba(38, 70, 83, 0.8) ; 
+
+  .SitesNearRating{
+    font-size:  17px ;
+    font-weight: bold;
+  }
+  .SitesNearName{
+    font-size:  21px ;
+  }
+} 
