@@ -112,8 +112,8 @@
 </ion-row>
 </ion-radio-group> 
 
-
-<ion-radio-group color="dark" slot="fixed"  value="feed" class="hidden-sm-up">
+<!-- value="feed"  -->
+<ion-radio-group color="dark" slot="fixed" value={{_globalService.activeExploreFeed}}  class="hidden-sm-up">
   <ion-row>
     <ion-col size="4">
       <ion-item color="dark" (click)="displayFeed()" style="display:inline;" >

@@ -107,10 +107,10 @@ export class ExplorePage implements OnInit {
 
   ionViewWillEnter(){
     //setup what gets displayed
-   /**  this.showFeed = true;
-    this.showSites = false;
-    this.showCenters = false; */
+     
     this.showFeedLoaded = false;
+
+    
 
     if(!localStorage.getItem("accessToken"))
     {
@@ -122,7 +122,28 @@ export class ExplorePage implements OnInit {
       this._globalService.activeLabel =  "Log Out";
       this.accountType = this._globalService.accountRole;
       
-      this.displayFeed();
+      //this.displayFeed();
+      if(this._globalService.activeExploreFeed == "sites"){
+        this.showFeed = false;
+        this.showSites = true;
+        this.showCenters = false;
+        this.displayDiveSites();
+
+      }else if(this._globalService.activeExploreFeed == "feed"){
+        this.showFeed = true;
+        this.showSites = false;
+        this.showCenters = false;
+        this.displayFeed();
+
+      }else{
+        this.showFeed = false;
+        this.showSites = false;
+        this.showCenters = true;
+        this.displayDiveCenters();
+
+      }
+
+
     }
    
   }

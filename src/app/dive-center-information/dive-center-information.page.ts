@@ -68,6 +68,7 @@ export class DiveCenterInformationPage implements OnInit {
 
     this.showDiveCenter = false; 
     this.showLoading = true;
+    this._globalService.activeExploreFeed = "centers";
 
     this.loginLabel ="Login";
       if(!localStorage.getItem("accessToken"))
