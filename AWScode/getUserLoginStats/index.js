@@ -85,7 +85,7 @@ exports.handler = async (event, context) => {
             }
             else{
                 /*How many days ago did users log in?*/
-                let days = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+                let days = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
                 let total = 0;
                 let diff = 0;
                 var date_diff_indays = function(date1, date2) {
@@ -100,22 +100,24 @@ exports.handler = async (event, context) => {
                     if(diff > 0){
                         days[diff] += 1;                       
                     }else{
-                        days[14] += 1;
+                        days[15] += 1;
                     }
                     total++;
                 })
                 responseBody = '{ "DaysPassed" : [[';
-                for(var i=1; i<16; i++)
+                for(var i=0; i<16; i++)
                 {
-                    
-                    if(i<15){
+                    if(i==0){
+                        responseBody += '{ "Day" : "Today",' +
+                                    '"Amount" : "' + days[i] + '"},';
+                    } else if(i<15){
                         responseBody += '{ "Day" : "' +  i + ' days ago",' +
-                                    '"Amount" : "' + days[i-1] + '"},';
+                                    '"Amount" : "' + days[i] + '"},';
                     }
                     else
                     {
                         responseBody += '{ "Day" : "More than 14 days ago",' +
-                                    '"Amount" : "' + days[i-1] + '"}';
+                                    '"Amount" : "' + days[i] + '"}';
                     }
                 } 
                 responseBody += '],{ "Total" : "' + total + '"}]}';
