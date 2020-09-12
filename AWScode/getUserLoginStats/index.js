@@ -85,7 +85,7 @@ exports.handler = async (event, context) => {
             }
             else{
                 /*How many days ago did users log in?*/
-                let days = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+                let days = [0,0,0,0,0,0,0,0,0];
                 let total = 0;
                 let diff = 0;
                 var date_diff_indays = function(date1, date2) {
@@ -96,27 +96,26 @@ exports.handler = async (event, context) => {
 
                 accounts.Items.forEach(function(account) {
                     
-                    diff = date_diff_indays(new Date(), account.Expires)
-                    if(diff > 0){
-                        days[diff] += 1;                       
+                    diff = date_diff_indays(new Date(), account.Expires);
+                    let daysAgo = 7-diff;
+                    if(daysAgo >= 0 && diff >0){
+                        days[daysAgo] += 1;                       
                     }else{
-                        days[15] += 1;
+                        days[8] += 1;
                     }
                     total++;
                 })
                 responseBody = '{ "DaysPassed" : [[';
-                for(var i=0; i<16; i++)
+                for(var i=0; i<9; i++)
                 {
                     if(i==0){
                         responseBody += '{ "Day" : "Today",' +
                                     '"Amount" : "' + days[i] + '"},';
-                    } else if(i<15){
+                    } else if(i<8) {
                         responseBody += '{ "Day" : "' +  i + ' days ago",' +
                                     '"Amount" : "' + days[i] + '"},';
-                    }
-                    else
-                    {
-                        responseBody += '{ "Day" : "More than 14 days ago",' +
+                    }else {
+                        responseBody += '{ "Day" : "More than 7 days ago",' +
                                     '"Amount" : "' + days[i] + '"}';
                     }
                 } 
