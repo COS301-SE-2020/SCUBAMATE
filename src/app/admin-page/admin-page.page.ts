@@ -249,7 +249,10 @@ export class AdminPagePage implements OnInit {
       this._globalService.accountRole = localStorage.getItem("accessToken").substring(36, 38) ;
       this.accountType = this._globalService.accountRole;
 
-
+      if(this.accountType == "10"){
+        
+        this.getDiveCentreInformation();
+      }
       //get initial chart data
       if(this.accountType == "11"){
         var numDivesBody ={
@@ -402,6 +405,7 @@ export class AdminPagePage implements OnInit {
       
 
       }
+      
     }
 
     
@@ -456,6 +460,10 @@ export class AdminPagePage implements OnInit {
          this.accountType = this._globalService.accountRole;
          console.log(this.accountType);
      }
+     if(this.accountType == "10"){
+        
+      this.getDiveCentreInformation();
+    }
   }
 
   loginClick(){
@@ -988,7 +996,6 @@ getDiveCentreInformation(){
     
     this.currentDiveCenter = data.Item;
     this.showLoading = false ;
-    console.log(this.currentDiveCenter);
 
   }, err =>{
 
