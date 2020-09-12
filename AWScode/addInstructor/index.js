@@ -84,14 +84,18 @@ exports.handler = async (event, context, callback) => {
             let qualified = false;
             if(typeof CompletedCourses == "undefined"){
                 responseBody = "Invalid Request Body."
-                statusCode = 400;
+                statusCode = 500;
             }
             else{
+                let tmp = [];
+                dataQ.Items.forEach(function(item){
+                    tmp.push(item.Name);
+                });
                 CompletedCourses.forEach(function(item) {
                     /*For each completed course
                     Check if it is in the courses retrieved
                     */
-                    if(contains(dataQ.Items, item.Name)){
+                    if(contains(tmp, item)){
                         qualified = true;
                     }
                 });
@@ -129,10 +133,23 @@ exports.handler = async (event, context, callback) => {
                         }
                     });
                     
+                    /* Create Accesstoken */
+                    const typeNum = "00";
+                    let nownow = "" + Date.now();
+                    const token = crypto.createHash('sha256').update(nownow).digest('hex');
+                    const accessToken = "" + AccountGuid + typeNum + token ;
+            
+                    /* Create Expiry Date  */
+                    let today = new Date();
+                    let nextWeek = new Date(today.getFullYear(), today.getMonth(),today.getDate()+7);
+                    const expiryDate = nextWeek + "";
+                    
                     const params = {
                         TableName: "Scubamate",
                         Item: {
                             AccountGuid : AccountGuid,
+                            AccessToken : accessToken,
+                            Expires: expiryDate,
                             AccountType: AccountType, 
                             FirstName: FirstName,
                             InstructorNumber : InstructorNumber,
@@ -145,13 +162,15 @@ exports.handler = async (event, context, callback) => {
                             PublicStatus: PublicStatus,
                             EmailVerified: false,
                             AccountVerified: false,
-                            CompletedCourses: CompletedCourses
+                            CompletedCourses: CompletedCourses,
+                            Goal: 1,
+                            GoalProgress: 0
                         }
                     };
                 
                     try{
                         const data = await documentClient.put(params).promise();
-                        responseBody = "Successfully added account!";
+                        responseBody={AccessToken:accessToken};
                         statusCode = 201;
                     }catch(err){
                         responseBody = "Unable to create account";
@@ -160,7 +179,7 @@ exports.handler = async (event, context, callback) => {
                 }
                 else{
                     responseBody = "Incorrect qualification to be an instructor.";
-                    statusCode = 404;
+                    statusCode = 403;
                 }
             }
             
@@ -184,5 +203,3 @@ exports.handler = async (event, context, callback) => {
     return response;
     
 };
-
-
