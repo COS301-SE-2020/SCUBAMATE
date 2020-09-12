@@ -81,7 +81,7 @@ exports.handler = async (event, context) => {
             /*Retrieve all the Dive Sites */
             var siteParams = {
                 TableName: "DiveInfo",
-                ProjectionExpression: "#Name,Coords,Description",
+                ProjectionExpression: "#Name,Coords,Description,LogoPhoto",
                 FilterExpression: "begins_with(#ItemType, :sitePrefix)",
                 ExpressionAttributeNames:{
                     "#ItemType" : "ItemType",
