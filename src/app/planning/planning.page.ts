@@ -28,6 +28,11 @@ export interface SitesNearYouObj {
   Description: string ; 
 }
 
+export interface predictObject{
+  DiveSite : string ;
+  Date : string ; 
+}
+
 @Component({
   selector: 'app-planning',
   templateUrl: './planning.page.html',
@@ -37,6 +42,7 @@ export class PlanningPage implements OnInit {
 
   // Global Variables
   DiveTypeLst: []; 
+  DiveSiteLst: []; 
   OptionalReceived : String[];
   EquipmentReceived : String[];
 
@@ -67,11 +73,25 @@ export class PlanningPage implements OnInit {
   SitesNearYouLst: SitesNearYouObj[] = new Array(); 
   viewMoreNearYou : boolean = true ;
 
+  //predict weather
+  //Date
+  currentDate  = new Date().toLocaleDateString();
+  predictObj : predictObject  ;
+  predictedVisibility : string ; 
+  showPrediction : boolean = false; 
   ///
 
   loginLabel:string ;
 
-  constructor(private _weatherService: weatherService, private geolocation: Geolocation, public _globalService: GlobalService, public alertController : AlertController ,private router: Router, private _accountService: accountService,  private _diveService: diveService) { }
+  constructor(private _weatherService: weatherService, private geolocation: Geolocation, public _globalService: GlobalService, public alertController : AlertController ,private router: Router, private _accountService: accountService,  private _diveService: diveService) {
+
+    this.predictObj ={
+      "DiveSite" : "",
+      "Date" : this.currentDate
+    };
+
+
+   }
 
   ngOnInit() {
   this.showCourses = false ;
@@ -168,8 +188,17 @@ export class PlanningPage implements OnInit {
       this.showLoading = false ; 
     });
 
-
-
+      this.showLoading = true;
+      this._diveService.getDiveSites("*").subscribe(data => {
+            console.log(data);
+            this.DiveSiteLst = data.ReturnedList ; 
+            this.showLoading = false;
+  
+        },err=>{
+          this.showLoading = false;
+        }
+      );
+    
 
 
 
@@ -738,6 +767,44 @@ export class PlanningPage implements OnInit {
 
   toggleViewMoreSitesNearYou(){
     this.viewMoreNearYou = !this.viewMoreNearYou ; 
+  }
+
+  getPrediction(){
+    //console.log(this.predictObj) ; 
+    if(this.predictObj.DiveSite != "" && this.predictObj.Date != ""){
+      this.showLoading= true ; 
+        this._diveService.getPredictiveWeather(this.predictObj).subscribe( res =>{
+
+          this.predictedVisibility = res ;
+          console.log(res);
+          console.log( this.predictedVisibility);
+          this.showLoading= false ;
+          this.showPrediction = true ; 
+
+        }, err=> {
+
+            this.showLoading= false ;
+            this.presentGeneralAlert("Failed to predict Visibility", err.error) ; 
+
+        }); 
+    }else{
+      this.presentGeneralAlert("Could not complete request" ,"Provide all necessary information") ;
+    }
+
+
+    
+  }
+
+
+  async presentGeneralAlert(hd, msg) {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: hd,
+      message: msg,
+      buttons: ['OK']
+    });
+  
+    await alert.present();
   }
 
 }

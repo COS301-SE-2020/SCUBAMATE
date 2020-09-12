@@ -319,3 +319,19 @@ ion-content.background{
     font-size:  21px ;
   }
 } 
+
+.showPredictionRow{
+  background-color: rgba(38, 70, 83, 0.7) ;
+  border-bottom: solid white 1px;
+  border-top: solid white 1px; 
+  text-align: center ; 
+
+  .predictedInfo{
+    font-size:  18px ;
+    font-weight: bold;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    color: white;
+    margin-top: 7% ;
+    margin-bottom: 7% ;
+  }
+}
