@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { accountService } from '../service/account.service';
 import { diveService } from '../service/dive.service';
 import { AlertController } from '@ionic/angular';
+import { weatherService } from '../service/weather.service';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 import { GlobalService } from "../global.service";
 
@@ -17,6 +19,20 @@ export interface CourseObj {
   CourseType: string,
   QualificationType: string,
   Name: string,
+  Description : string ; 
+}
+
+
+export interface SitesNearYouObj {
+  Name : string ;
+  Rating: string ;
+  Description: string ; 
+  LogoPhoto : string ; 
+}
+
+export interface predictObject{
+  DiveSite : string ;
+  Date : string ; 
 }
 
 @Component({
@@ -28,6 +44,7 @@ export class PlanningPage implements OnInit {
 
   // Global Variables
   DiveTypeLst: []; 
+  DiveSiteLst: []; 
   OptionalReceived : String[];
   EquipmentReceived : String[];
 
@@ -48,18 +65,39 @@ export class PlanningPage implements OnInit {
   suggestedCourseThreeList: CourseObj[] = new Array(); 
 
   showCourses : boolean ;
+  viewCourses : boolean = false ; 
   accountType : string;
 
   //SurveyAnswers
   surveyAnswers : string[] = new Array();
 
-  ////
+  //Dive Sites near you
+  showSitesNearYou : boolean = false; 
+  SitesNearYouLst: SitesNearYouObj[] = new Array(); 
+  viewMoreNearYou : boolean = true ;
+
+  //predict weather
+  //Date
+  currentDate  = new Date().toLocaleDateString();
+  predictObj : predictObject  ;
+  predictedVisibility : string ; 
+  showPrediction : boolean = false; 
+  ///
 
   loginLabel:string ;
 
-  constructor(public _globalService: GlobalService, public alertController : AlertController ,private router: Router, private _accountService: accountService,  private _diveService: diveService) { }
+  constructor(private _weatherService: weatherService, private geolocation: Geolocation, public _globalService: GlobalService, public alertController : AlertController ,private router: Router, private _accountService: accountService,  private _diveService: diveService) {
+
+    this.predictObj ={
+      "DiveSite" : "",
+      "Date" : this.currentDate
+    };
+
+
+   }
 
   ngOnInit() {
+    this.viewMoreNearYou = true;
   this.showCourses = false ;
   this.itemToAdd = "";
   this.SearchDiveCheckList = "" ;
@@ -76,10 +114,12 @@ export class PlanningPage implements OnInit {
 
     //get Suggested Courses
     this._diveService.getSuggestedCourses().subscribe(res =>{
-      console.log("Suggestions Received")
+     // console.log("Suggestions Received")
+     console.log(res);
       this.suggestedCourseFullList = res.Courses;
-
-      this.getRandomThreeCourses();
+      this.showCourses = true;
+      this.viewCourses = true ; 
+      //this.getRandomThreeCourses();
       
     }, err=>{
       if(err.error == "Invalid Access Token"){
@@ -92,11 +132,10 @@ export class PlanningPage implements OnInit {
     //get Custom CheckList If it exists
     this._accountService.getCustomChecklist().subscribe(res =>{
       
-      console.log(res);
+
       
       if(res.Equipment){
-        console.log("Custom List Received");
-
+        
 
         this.EquipmentList = res.Equipment ; 
         this.OptionalList = res.Optional ;
@@ -128,6 +167,45 @@ export class PlanningPage implements OnInit {
     });
   
     
+    this.showLoading = true ; 
+  
+    this.geolocation.getCurrentPosition().then((resp) => {
+
+      var reqBod = {
+        "AccessToken": localStorage.getItem("accessToken"),
+        "Location"  : resp.coords.latitude.toString() + "," + resp.coords.longitude.toString() 
+      }
+
+
+      this._diveService.getClosestDiveSites(reqBod).subscribe(res =>{
+        this.showLoading = false ; 
+        this.SitesNearYouLst = res.Items ;
+        console.log(res);
+
+        this.showSitesNearYou = true ; 
+
+      }, err => {
+        this.showLoading = false ; 
+      });
+
+
+    }, err => {
+      this.showLoading = false ; 
+    });
+
+      this.showLoading = true;
+      this._diveService.getDiveSites("*").subscribe(data => {
+            console.log(data);
+            this.DiveSiteLst = data.ReturnedList ; 
+            this.showLoading = false;
+  
+        },err=>{
+          this.showLoading = false;
+        }
+      );
+    
+
+
 
   }
 
@@ -143,11 +221,6 @@ export class PlanningPage implements OnInit {
       this.accountType = this._globalService.accountRole; 
     }
     
-    //get Suggested Courses
-    this._diveService.getSuggestedCourses().subscribe(res =>{
-      console.log("Suggestions Received")
-      this.suggestedCourseFullList = res;
-    });
 
   }
 
@@ -692,6 +765,50 @@ export class PlanningPage implements OnInit {
 
   }
 
+  toggleViewMoreSitesNearYou(){
+    this.viewMoreNearYou = !this.viewMoreNearYou ; 
+  }
+
+  toggleViewMoreCourses(){
+    this.viewCourses = !this.viewCourses ; 
+  }
+
+  getPrediction(){
+    //console.log(this.predictObj) ; 
+    if(this.predictObj.DiveSite != "" && this.predictObj.Date != ""){
+      this.showLoading= true ; 
+        this._diveService.getPredictiveWeather(this.predictObj).subscribe( res =>{
+
+          this.predictedVisibility = res.Visibility ;
+          console.log(res);
+          console.log( this.predictedVisibility);
+          this.showLoading= false ;
+          this.showPrediction = true ; 
+
+        }, err=> {
+
+            this.showLoading= false ;
+            this.presentGeneralAlert("Failed to predict Visibility", err.error) ; 
+
+        }); 
+    }else{
+      this.presentGeneralAlert("Could not complete request" ,"Provide all necessary information") ;
+    }
+
+
+    
+  }
+
+
+  async presentGeneralAlert(hd, msg) {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: hd,
+      message: msg,
+      buttons: ['OK']
+    });
   
+    await alert.present();
+  }
 
 }

@@ -44,12 +44,164 @@
 
 <ion-content fullscreen class="background" no-scroll padding >
 
-  <div id="checkListDiv">
+  <div id="SuggestedCoursesDiv" >
+    <div class="divHeadSection">
+       <ion-grid>
+         <ion-row>
+           <ion-col size="12" size-sm="12" size-md="12" size-lg="12">
+             <ion-label class="divHead">View Predicted Visibility At Dive Site </ion-label>
+           </ion-col>
+         </ion-row>
+       </ion-grid>
+    </div>
+    <div class="divBodySection" style="margin:0;">
+     <ion-grid>
+       <ion-row>
+          <ion-label color='success' > Please provide a Dive Site and a date within 4 days from now </ion-label>
+       </ion-row>
+       <ion-row>
+         <ion-col size="12" size-sm="12" size-md="5" size-lg="5" style="margin:0;padding:0;">
+          <ion-item color="dark">
+            <ion-label>Dive Site</ion-label>
+            <ion-select value="Hotspot" okText="Okay" cancelText="Dismiss" (ionChange)="showPrediction=false" [(ngModel)]="predictObj.DiveSite">
+              <ion-select-option *ngFor='let s of DiveSiteLst' value="{{s}}">{{s}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+         </ion-col>
+         <ion-col size="12" size-sm="12" size-md="5" size-lg="5" style="margin:0;padding:0;">
+          <ion-item color="dark">
+            <ion-input type='date' (ionChange)="showPrediction=false" [(ngModel)]="predictObj.Date" value={{currentDate}} placeholder={{currentDate}}>
+              Date &nbsp;&nbsp;
+            </ion-input>
+          </ion-item>
+         </ion-col>
+         <ion-col size="12" size-sm="12" size-md="2" size-lg="2" style="margin:0;padding:0;">
+            <ion-button (click)="getPrediction()" style="font-size: 14px;margin:0;--border-radius:0 !important;width:100%;">
+              Predict <br>  Visibility
+            </ion-button>
+         </ion-col>
+       </ion-row>
+       <ion-row *ngIf="showPrediction" class="showPredictionRow">
+          <ion-col size="12" size-sm="12" size-md="4" size-lg='4'>
+              <label class="predictedInfo"> {{predictObj.DiveSite}} </label>
+          </ion-col>
+          <ion-col size="12" size-sm="12" size-md="4" size-lg='4'>
+            <label class="predictedInfo"> {{predictObj.Date}} </label>
+          </ion-col>
+          <ion-col size="12" size-sm="12" size-md="4" size-lg='4'>
+            <label class="predictedInfo" *ngIf='predictedVisibility == "Poor"' style="color: #eb445a;"> {{predictedVisibility}} </label>
+            <label class="predictedInfo" *ngIf='predictedVisibility == "Average"' style="color: #E76F51;"> {{predictedVisibility}} </label>
+            <label class="predictedInfo" *ngIf='predictedVisibility == "Good"' style="color: #36abe0;"> {{predictedVisibility}} </label>
+            <label class="predictedInfo" *ngIf='predictedVisibility == "Excellent"' style="color: #2dd36f;"> {{predictedVisibility}} </label>
+          </ion-col>
+       </ion-row>
+     </ion-grid>
+    </div>
+   </div>
+
+
+
+
+  <div id="SuggestedCoursesDiv" *ngIf="showCourses">
+   <div class="divHeadSection">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12" size-sm="12" size-md="9" size-lg="9">
+            <ion-label class="divHead">Suggested Courses for You</ion-label>
+          </ion-col>
+          <ion-col size="12" size-sm="12" size-md="3" size-lg="3">
+            <ion-button (click)="toggleViewMoreCourses()" style="--border-radius:5px;width:90%;font-size:x-small;padding: 5px;float:right;" *ngIf="showCourses && viewCourses">
+              <ion-icon name="caret-up" color="light"></ion-icon>
+              &nbsp; View Less
+            </ion-button>
+            <ion-button (click)="toggleViewMoreCourses()" style="--border-radius:5px;width:90%;font-size:x-small;padding: 5px;float:right;" *ngIf="showCourses && !viewCourses">
+              <ion-icon name="caret-down" color="light"></ion-icon>
+              &nbsp; View More
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+   </div>
+   <div class="divBodySection" style="padding:0;margin:0;" *ngIf="viewCourses">
+    <ion-grid style="padding-bottom:0;padding-top:0;">
+      <ion-row>
+        <ion-col size="12" size-sm="12" size-md="12" size-lg="12">
+          <ion-button (click)="presentSurveyQ1()" style="margin:auto;--border-radius:5px;width:100%;padding: 5px;">
+            <ion-icon name="document-outline"></ion-icon>
+            &nbsp; Complete Survey for more Suggestion
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngFor="let sc of suggestedCourseFullList ; let i = index" class="SitesNearRow">
+           <ion-col size="12" size-sm="12" size-md="2" *ngIf="i%2 == 0" style="padding:0;margin:0;">
+            <img class="cardFeedIMG" src="../../assets/images/diving-2.png" style="height:100%;width:100%;" />
+           </ion-col>
+           <ion-col size="12" size-sm="12" size-md="2" *ngIf="i%2 != 0" style="padding:0;margin:0;">
+            <img class="cardFeedIMG" src="../../assets/images/diving-1.png" style="height:100%;width:100%;" />
+           </ion-col>
+          <ion-col  size="12" size-sm="12" size-md="2"  style="padding:0;margin:0;"> 
+            <label class="CourseName">{{sc.Name}}</label>
+          </ion-col>
+          <ion-col  size="12" size-sm="12" size-md="2" style="padding:0;margin:0;"> 
+            <label class="CourseRating"> 
+              {{sc.CourseType}} 
+            </label>
+        </ion-col>
+        <ion-col  size="12" size-sm="12" size-md="6" style="padding:0;margin:0;">
+          <label class="SitesNearDesc"> {{sc.Description}} </label>
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+   </div>
+  </div>
+
+  <div id="SuggestedCoursesDiv" *ngIf="showSitesNearYou" style="padding-bottom: 0px;">
+    <div class="divHeadSection">
+       <ion-grid>
+         <ion-row>
+           <ion-col size="12" size-sm="12" size-md="9" size-lg="9">
+             <ion-label class="divHead">Suggested Dive Sites Near You</ion-label>
+           </ion-col>
+           <ion-col size="12" size-sm="12" size-md="3" size-lg="3">
+            <ion-button (click)="toggleViewMoreSitesNearYou()" style="--border-radius:5px;width:90%;font-size:x-small;padding: 5px;" *ngIf="viewMoreNearYou">
+              <ion-icon name="caret-up" color="light"></ion-icon>
+              &nbsp; View Less
+            </ion-button>
+            <ion-button (click)="toggleViewMoreSitesNearYou()" style="--border-radius:5px;width:90%;font-size:x-small;padding: 5px;" *ngIf="!viewMoreNearYou">
+              <ion-icon name="caret-down" color="light"></ion-icon>
+              &nbsp; View More
+            </ion-button>
+          </ion-col>
+         </ion-row>
+       </ion-grid>
+    </div>
+    <div class="divBodySection" style="padding: 0;margin-left: 0; margin-right: 0;" *ngIf="viewMoreNearYou">
+     <ion-grid style="padding: 0;">
+       <ion-row *ngFor='let snr of SitesNearYouLst' class="SitesNearRow">
+           <!-- <ion-col size="12" size-sm="12" size-md="2" size-lg="2" >
+              <img class="cardFeedIMG" src={{snr.LogoPhoto}} style="height:100%;width:100%;" />
+            </ion-col>-->
+            <ion-col size="12" size-sm="12" size-md="3" size-lg="3" class="SitesNearLeftCol">
+              <label class="SitesNearName"> {{snr.Name}} </label>
+          </ion-col>
+         <ion-col size="12" size-sm="12" size-md="2" size-lg="2">
+            <label class="SitesNearRating">Rating: &nbsp; {{snr.Rating}}  </label>
+       </ion-col> 
+       <ion-col size="12" size-sm="12" size-md="7" size-lg="7">
+         <label class="SitesNearDesc"> {{snr.Description}}  </label>
+     </ion-col> 
+       </ion-row>
+     </ion-grid>
+    </div>
+   </div>
+
+   <div id="checkListDiv">
     <div class="divHeadSection">
       <ion-grid>
         <ion-row>
           <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
-            <ion-label class="divHead">Manage Your Checklist </ion-label>
+            <ion-label class="divHead">Manage Your Dive Checklist </ion-label>
           </ion-col>
           <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
             <ion-button (click)="saveChecklist()">
@@ -75,8 +227,8 @@
       <ion-grid id="CheckListsInfo" >
         <ion-row>
           <div class="searchableSelect">
-            <ion-label class="searchableSelectLabel">Dive Type</ion-label>
-            <input list="diveTypes" [(ngModel)]="SearchDiveCheckList" class="searchableSelectInput" (keypress)="divetypeListFinder()" placeholder="Search by a Dive Type" #diveType>
+            <ion-label class="searchableSelectLabel">Search for a checklist by Dive Type</ion-label>
+            <input list="diveTypes" [(ngModel)]="SearchDiveCheckList" class="searchableSelectInput" (keypress)="divetypeListFinder()" placeholder="Boat Dive" #diveType>
             <datalist id="diveTypes" >
                 <option *ngFor='let t of DiveTypeLst' value={{t}}></option>
             </datalist>
@@ -86,8 +238,8 @@
           <ion-col size="12" size-md="11" size-lg="11">
             
             <ion-item color="dark">
-              <ion-label position="floating">Item to Add</ion-label>
-              <ion-input type="text" placeholder="Input additional item"  [(ngModel)]="itemToAdd" ></ion-input>
+              <ion-label position="floating">Custom Item to Add</ion-label>
+              <ion-input type="text" placeholder="Custom Item to Add to Checklist"  [(ngModel)]="itemToAdd" ></ion-input>
             </ion-item>
             
           </ion-col>
@@ -97,7 +249,7 @@
             </ion-button>
           </ion-col>
         </ion-row>
-          <ion-row *ngIf='viewChecklist'><label class="checkListHead">Equipment</label></ion-row>
+          <ion-row *ngIf='viewChecklist'><label class="checkListHead">Necessary - Equipment</label></ion-row>
           <ion-row *ngIf='viewChecklist' class="checkListTableRow">
             <ion-col *ngFor='let e of EquipmentList' size="12" size-md="6" size-lg="6">
               
@@ -106,7 +258,7 @@
             </ion-col>
           </ion-row>
 
-          <ion-row *ngIf='viewChecklist'><label class="checkListHead">Optional</label></ion-row>
+          <ion-row *ngIf='viewChecklist'><label class="checkListHead">Optional - Equipment</label></ion-row>
           <ion-row *ngIf='viewChecklist' class="checkListTableRow">
             <ion-col *ngFor='let o of OptionalList' size="12" size-md="6" size-lg="6">
               
@@ -115,7 +267,7 @@
             </ion-col>
           </ion-row>
 
-          <ion-row *ngIf='viewChecklist && viewPersonalAdded'><label class="checkListHead">Custom</label></ion-row>
+          <ion-row *ngIf='viewChecklist && viewPersonalAdded'><label class="checkListHead">Custom - Equipment</label></ion-row>
           <ion-row *ngIf='viewChecklist && viewPersonalAdded' class="checkListTableRow">
             <ion-col *ngFor='let p of PersonalList' size="12" size-md="6" size-lg="6">
               
@@ -129,89 +281,6 @@
 
   </div>
   </div>
-
-
-  <div id="SuggestedCoursesDiv" *ngIf="showCourses">
-   <div class="divHeadSection">
-      <ion-grid>
-        <ion-row>
-          <ion-col size="12" size-sm="12" size-md="7" size-lg="7">
-            <ion-label class="divHead">Suggested Courses</ion-label>
-          </ion-col>
-          <ion-col size="12" size-sm="12" size-md="5" size-lg="5">
-            <ion-button (click)="presentSurveyQ1()" style="--border-radius:5px;width:90%;font-size:x-small;padding: 5px;">
-              <ion-icon name="document-outline"></ion-icon>
-              &nbsp; Complete Survey for more
-            </ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-   </div>
-   <div class="divBodySection">
-    <ion-grid>
-      <ion-row>
-        <ion-col size="12" size-sm="6" size-md="4" size-lg="4">
-          <ion-card color = 'light'>
-            <img class="cardFeedIMG" src="../../assets/images/diving-2.png" style="height:40%;width:100%;" />
-              <ion-card-content>
-              <ion-card-title color = 'dark'>
-                   {{suggestedCourseThreeList[0].Name}}
-                </ion-card-title>
-              <p>
-                <ion-grid>
-                  <ion-row>
-                    <ion-col color = 'dark'>
-                      <label class="courseTypeLabel">{{suggestedCourseThreeList[0].CourseType}}</label>
-                    </ion-col>
-                  </ion-row>
-                </ion-grid>
-              </p>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-        <ion-col size="12" size-sm="6" size-md="4" size-lg="4">
-          <ion-card color = 'light' >
-               <ion-card-content>
-              <ion-card-title color = 'dark'>
-                {{suggestedCourseThreeList[1].Name}}
-                </ion-card-title>
-              <p>
-                <ion-grid>
-                  <ion-row>
-                    <ion-col color = 'dark'>
-                      <label class="courseTypeLabel">{{suggestedCourseThreeList[1].CourseType}}</label>
-                    </ion-col>
-                  </ion-row>
-                </ion-grid>
-              </p>
-            </ion-card-content>
-            <img class="cardFeedIMG" src="../../assets/images/diving-1.png" style="height:40%;width:100%;" />
-          </ion-card>
-        </ion-col>
-        <ion-col size="12" size-sm="6" size-md="4" size-lg="4">
-          <ion-card color = 'light' >
-            <img class="cardFeedIMG" src="../../assets/images/diving-2.png" style="height:40%;width:100%;" />
-              <ion-card-content>
-              <ion-card-title color = 'dark'>
-                {{suggestedCourseThreeList[2].Name}}
-                </ion-card-title>
-              <p>
-                <ion-grid>
-                  <ion-row>
-                    <ion-col color = 'dark'>
-                      <label class="courseTypeLabel">{{suggestedCourseThreeList[2].CourseType}}</label>
-                    </ion-col>
-                  </ion-row>
-                </ion-grid>
-              </p>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-   </div>
-  </div>
-
-
+   
 
 </ion-content>
