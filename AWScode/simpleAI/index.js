@@ -22,7 +22,7 @@ exports.handler = function(event,context,callback) {
     
     let statusCode = 200;
     //let responseBody = result[0];
-    let responseBody = "";
+    var responseBody;
     var rounded =-1;
     var data;
     var locKey = 0;
@@ -31,9 +31,10 @@ exports.handler = function(event,context,callback) {
     var maxTemp = 0;
     var hoursOfSun = 0.0;
     var moonAge = 0;
-    //var windSpeed = 0.0;
+    var windSpeed = 0.0;
     var probPrec = 0;
     var cloudCover = 0;
+    var response;
     
     
     var forecastInfo;
@@ -47,14 +48,36 @@ exports.handler = function(event,context,callback) {
     };
     
     
-    const DiveSite = event.DiveSite;
-    const date = event.Date;
+    //const DiveSite = event.DiveSite;
+    //const date = event.Date;
+    const anatomy = JSON.parse(event.body);
+    const date = anatomy.Date;
+    const DiveSite = anatomy.DiveSite;
+    
     
     var thenDate = new Date(date);
     var nowDate = new Date();
     
     var diff = thenDate.getTime()-nowDate.getTime();
     var difday = Math.ceil( diff / (1000 * 3600 * 24));
+    console.log("difday" + difday);
+    
+    if (difday >4 || difday<0)
+    {
+      responseBody = "Cannot predict more than 4 days in the future, or in the past";
+      response = {
+                  statusCode: 403,
+                  headers: {
+                      "Access-Control-Allow-Origin" : "*",
+                      "Access-Control-Allow-Methods" : "OPTIONS,POST,GET",
+                      "Access-Control-Allow-Credentials" : true,
+                      "Content-Type" : "application/json"
+                  },
+                  body: JSON.stringify(responseBody),
+              };
+              
+              callback(null, response);
+    }
     
     console.log("Difference between the two days: " + difday);
     
@@ -113,7 +136,7 @@ exports.handler = function(event,context,callback) {
         //locKey = data.Key;
         
         });
-        responseBody = data;
+        //responseBody = data;
       
         // The whole response has been received. Print out the result.
         resp.on('end', () => {
@@ -168,6 +191,72 @@ exports.handler = function(event,context,callback) {
                 console.log("cloudCover: " + cloudCover);
                 //console.log(forecastInfo);
                 
+                                                                                  documentClient.get(params, function(err, data5) {
+                                                                      if (err) {
+                                                                        console.log("Error", err);
+                                                                      } else {
+                                                                        //console.log("Success", data.Item);
+                                                                        let brody = JSON.parse(data5.Item.AI);
+                                                                        
+                                                                        
+                                                                        const testNetwork = synaptic.Network.fromJSON(brody);
+                                                                        
+                                                                        
+                                                                        
+                                                                        let result = testNetwork.activate([minTemp,maxTemp,hoursOfSun,moonAge,probPrec,cloudCover]);
+                                                                        console.log("Result: " + result[0]);
+                                                                        
+                                                                        rounded = Math.round(result[0]);
+                                                                        
+                                                                        var vis;
+                                                                        switch (rounded)
+                                                                        {
+                                                                            case 0:
+                                                                              vis = "Poor";
+                                                                              break;
+                                                                            case 1:
+                                                                              vis = "Average";
+                                                                              break;
+                                                                            case 2:
+                                                                              vis = "Good";
+                                                                              break;
+                                                                            case 3:
+                                                                              vis = "Excellent";
+                                                                              break;
+                                                                            default:
+                                                                              vis = "Average";
+                                                                        }
+                                                                        console.log("Visibility: "+  vis);
+                                                                        responseBody = {"Visibility: " : vis};
+                                                                        
+                                                                        
+                                                                        
+                                                                      }
+                                                                      
+                                                                      
+                                                                      response = {
+                                                                      statusCode: statusCode,
+                                                                      headers: {
+                                                                          "Access-Control-Allow-Origin" : "*",
+                                                                          "Access-Control-Allow-Methods" : "OPTIONS,POST,GET",
+                                                                          "Access-Control-Allow-Credentials" : true,
+                                                                          "Content-Type" : "application/json"
+                                                                      },
+                                                                      body: JSON.stringify(responseBody),
+                                                                  };
+                                                                  
+                                                                  callback(null, response);
+                                                                      
+                                                                    });
+                                                                    
+                                                                    
+                                                                  
+                                                                    
+                                                                    
+                
+                
+                
+                
               });
             
             }).on("error", (err) => {
@@ -213,8 +302,8 @@ exports.handler = function(event,context,callback) {
                 console.log("cloudCover: " + cloudCover);
      
      
-     
-     var response = {
+    /* 
+    response = {
         statusCode: statusCode,
         headers: {
             "Access-Control-Allow-Origin" : "*",
@@ -223,9 +312,9 @@ exports.handler = function(event,context,callback) {
             "Content-Type" : "application/json"
         },
         body: JSON.stringify(responseBody),
-    };
+    };*/
     
-    callback(null, response);
+    
       
       
     }
