@@ -39,7 +39,19 @@ exports.handler = async (event, context) => {
         }
         return returnBool;
     }
-
+    function distanceCalc(lat1, lon1, lat2, lon2){
+        const R = 6371e3; // earths radius
+        const theta1 = lat1 * Math.PI/180; //for latitude
+        const theta2 = lat2 * Math.PI/180; //for latitude
+        const thetaDiff = (lat2-lat1) * Math.PI/180; //for latitude
+        const longDiff = (lon2-lon1) * Math.PI/180; //for longitude
+        
+        const a = Math.sin(thetaDiff/2) * Math.sin(thetaDiff/2) + Math.cos(theta1) * Math.cos(theta2) * Math.sin(longDiff/2) * Math.sin(longDiff/2);
+        
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        const d = R * c; 
+        return d;
+    }
     /* Verify AccessToken  */
     const params = {
         TableName: "Scubamate",
@@ -87,21 +99,74 @@ exports.handler = async (event, context) => {
                     statusCode = 404;
                 }
                 else{
-                    let result;
-                    var distance = require('google-distance');
-                    distance.get(
-                    {
-                        origin: Location,
-                        destination: sites.Items[0].Coords
-                    },
-                    function(err, data) {
-                    if (err) return console.log(err);
-                        result = data;
+                    /*Calculate the distance between the user location and the dive site */
+                    let comma = Location.indexOf(',');
+                    const lat1 = Location.substring(0,comma);
+                    const lon1 = Location.substring(comma+1,Location.length);
+                    sites.Items.forEach(function(site) {
+                        let pos = site.Coords.indexOf(",");
+                        let lat2= site.Coords.substring(0,pos);
+                        let lon2= site.Coords.substring(pos+1,site.Coords.length);
+                        site.Distance = distanceCalc(lat1,lon1,lat2,lon2);
+                        delete site.Coords;
                     });
+                    
+                    /*Sorts the data according to the distances */
+                    for(var i=0; i<sites.Items.length; i++)
+                    {
+                        let closest = sites.Items[i].Distance;
+                        let index = i;
+                        for(var j=i; j<sites.Items.length; j++)
+                        {
+                            if(closest > sites.Items[j].Distance){
+                                closest = sites.Items[j].Distance;
+                                index = j;
+                            }
+                        }
+                        let temp = sites.Items[index];
+                        sites.Items[index] = sites.Items[i];
+                        sites.Items[i] = temp;
+                    }
+                    sites.Items.splice(3,sites.Items.length);
 
-                    sites.Distance = result;
+                    for(var i=0; i<3; i++)
+                    {
+
+                    }
+
+
                     responseBody = sites;
                     statusCode = 200;
+
+                    // var distance = require('google-distance');
+                    // await distance.get(
+                    // {
+                    //     origin: [Location],
+                    //     destination: [sites.Items[0].Coords]
+                    // }, function(err, data) {
+                    //     if (err) return responseBody= err;
+                    //      responseBody= data;
+                    //     // if (err) {
+                        //     responseBody = "google distance error: " + err;
+                        //     statusCode = 403;
+                        // }else{
+                        //     responseBody = "got data";
+                        //     if(data.length > 0){
+                        //         sites.Items.Distance= data;
+                        //     }else{
+                        //         sites.Items.Distance = "undefined";
+                        //     }
+                        //     //responseBody = sites;
+                        //     statusCode = 200;
+                        // }
+                    //});
+                    // if(statusCode == undef)
+                    // {
+                    //     responseBody = sites;
+                    //     statusCode = 200;
+                    // }
+                    
+                        
                 }
             }
             catch(err){
@@ -114,7 +179,11 @@ exports.handler = async (event, context) => {
         statusCode = 403;
         responseBody = "Invalid Access Token " + err;
     }
-
+    if(statusCode == undef)
+                    {
+                        responseBody = "hi";
+                        statusCode = 200;
+                    }
 
     /*Final response to be sent back*/
     const response = {
@@ -135,7 +204,7 @@ exports.handler = async (event, context) => {
 
 /*
 {
-    "AccessToken":"d1d7391d-c035-28ab-0193-68a7d263d4be11a059eef3ab46c125b821c21aaf1922341cd373344282760998feb744ea8368d9",
+    "AccessToken":"f8251ce7-1e21-2f9b-967c-f5040bc9220900a7634d811893c31123e03d4e4fc6fdfd8050df6af1f2a8834c73d3134b26e8e1",
     "Locaton": "-25.921800, 28.161300"
 }
 */
