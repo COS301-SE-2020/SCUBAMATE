@@ -76,12 +76,8 @@
         <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
           <div id="ProfileSurroundDiv">
             
-            <ion-col *ngIf="checkURL((Weather.Day.toLowerCase()))" >
-              <img class="weatherIMG" src= "../../assets/images/Weather/{{Weather.Day.toLowerCase()}}.png" />
-            </ion-col>
-            <ion-col *ngIf="!checkURL((Weather.Day.toLowerCase()))" >
-              <img class="weatherIMG" src='../assets/images/Weather/default.png' />
-            </ion-col>
+            <img class="weatherIMG" src= "../../assets/images/Weather/{{Weather.Day}}.png" />
+            
          </div>
         </ion-col>
         <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane" style="padding-top: 20px;">

@@ -43,6 +43,7 @@ Weather = {
 };
 tempDate: Date;
 weatherDate: string;
+optionalWeather : string[];
 
 loginLabel:string ;
 currentDiveSite: DS ;
@@ -59,7 +60,8 @@ showDiveSite : Boolean ;
    }
 
   ngOnInit() {
-
+    this.optionalWeather = ["cloudy","deary","fog","hazy sunshine","intermittent clouds","mostly cloudy w showers","mostly cloudy","mostly sunny","overcast","partly sunny w showers","partly sunny w t-storms","partly sunny","plenty of sunshine","rain","showers","sunny","t-storms","windy"];
+    ;
     
     this.showDiveSite = false; 
     this.showLoading = true;
@@ -98,7 +100,10 @@ showDiveSite : Boolean ;
               this.Weather.Date = res.DailyForecasts[0].Date;
               this.Weather.Min = res.DailyForecasts[0].Temperature.Minimum.Value + " " +res.DailyForecasts[0].Temperature.Minimum.Unit;
               this.Weather.Max = res.DailyForecasts[0].Temperature.Maximum.Value + " " + res.DailyForecasts[0].Temperature.Maximum.Unit;
-              this.Weather.Day = (res.DailyForecasts[0].Day.IconPhrase).replace('/','');
+              this.Weather.Day = ((res.DailyForecasts[0].Day.IconPhrase).replace('/','')).toLowerCase();
+              if(!this.contains(this.optionalWeather, this.Weather.Day)){
+                this.Weather.Day ="uncertain";
+              }
               this.Weather.Night = res.DailyForecasts[0].Night.IconPhrase;
               this.Weather.Desc = res.Headline.Text;
               this.Weather.Wind = res.DailyForecasts[0].Day.Wind.Speed.Value + " " + res.DailyForecasts[0].Day.Wind.Speed.Unit ;
@@ -120,15 +125,13 @@ showDiveSite : Boolean ;
     }
   }
 
-  checkURL(name): boolean { 
-    let url = "../assets/images/Weather/"+name.toLowerCase()+".png";
-    let img = new Image();
-    img.src = url;
-    if(img.width == 0){
-      return false;
-    }
-    else{
-      return true;
-    }
+  contains(arr,search): boolean{
+      let returnBool = false;
+      arr.forEach(function(item) {
+          if(item==search){
+              returnBool=true;
+          }
+      });
+      return returnBool;
   }
 }

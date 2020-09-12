@@ -71,17 +71,14 @@
       
     </div>
     <div class="divBodySection">
-     
     
-
-   
-      
- 
       <ion-grid id="CheckListsInfo" >
         <ion-row>
           <div class="searchableSelect">
-            <ion-label class="searchableSelectLabel">Dive Type</ion-label>
-            <input list="diveTypes" [(ngModel)]="SearchDiveCheckList" class="searchableSelectInput" (keypress)="divetypeListFinder()" placeholder="Search by a Dive Type" #diveType>
+            <ion-label class="searchableSelectLabel">What Type Of Dive Are You Planning?</ion-label>
+            <div id="infotxt">For an extensive list click the info button.</div>
+            <input list="diveTypes" [(ngModel)]="SearchDiveCheckList" class="searchableSelectInput" (keypress)="divetypeListFinder()" placeholder="Describe your dive!" #diveType>
+            
             <datalist id="diveTypes" >
                 <option *ngFor='let t of DiveTypeLst' value={{t}}></option>
             </datalist>

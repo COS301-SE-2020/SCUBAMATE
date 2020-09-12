@@ -72,7 +72,7 @@ export class diveService
           "Name" : name ,
         } ;
 
-        console.log(body);
+       // console.log(body);
 
         return this.httpClient.post('https://ek9bagk0i6.execute-api.af-south-1.amazonaws.com/LatestAPI/getsingledivecentreorsite',body, options);
     }
@@ -155,7 +155,7 @@ export class diveService
 
 
     logDive(PostData): Observable<any>{
-      	console.log("in req");
+      	//console.log("in req");
         const options = {
             headers: new HttpHeaders({
               'Content-Type': 'application/json',
@@ -179,7 +179,7 @@ export class diveService
         "AccessToken" : lS
       }
 
-      console.log(PostData);
+      //console.log(PostData);
         //https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/FixedDiveHistory/getpersonaldivelogs
         //
      return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/getpersonaldivelogs', PostData , options); 
@@ -187,7 +187,7 @@ export class diveService
     }
 
     getCheckList(PostData): Observable<any>{
-      console.log("in req");
+      //console.log("in req");
       const options = {
           headers: new HttpHeaders({
             'Content-Type': 'application/json', 
