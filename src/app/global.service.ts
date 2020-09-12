@@ -10,6 +10,7 @@ export class GlobalService {
 
   public accountRole : string;
   public activeLabel : string ;
+  public activeExploreFeed : string  = "feed" ; 
 
   loginClick(){
     if(localStorage.getItem("accessToken"))
@@ -22,5 +23,9 @@ export class GlobalService {
       this.router.navigate(['login']);
     }
   } 
+
+  changeExploreView( feedType : string ){
+    this.activeExploreFeed = feedType ; 
+  }
 
 }

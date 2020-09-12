@@ -65,6 +65,7 @@ showDiveSite : Boolean ;
     
     this.showDiveSite = false; 
     this.showLoading = true;
+    this._globalService.activeExploreFeed = "sites";
 
     this.loginLabel ="Login";
       if(!localStorage.getItem("accessToken"))

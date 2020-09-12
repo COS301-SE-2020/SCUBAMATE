@@ -80,7 +80,12 @@
          <label class="divSubHead"> Courses </label> 
         </ion-col>
       </ion-row>
-      <ion-row style="padding-left:7%;">
+      <ion-row style="padding-left:7%;" *ngIf='currentDiveCenter.Courses == undefined'>
+        <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
+          <ion-icon name="play-outline"></ion-icon> No Courses to display yet
+        </ion-col>
+      </ion-row>
+      <ion-row style="padding-left:7%;" *ngIf='currentDiveCenter.Courses != undefined && currentDiveCenter.Courses.length>0'>
         <ion-col size="12" size-sm="12" size-md="6" size-lg="6" *ngFor="let c of currentDiveCenter.Courses">
           <ion-icon name="play-outline"></ion-icon> {{c}}
         </ion-col>

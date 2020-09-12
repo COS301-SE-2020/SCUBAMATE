@@ -112,8 +112,8 @@
 </ion-row>
 </ion-radio-group> 
 
-
-<ion-radio-group color="dark" slot="fixed"  value="feed" class="hidden-sm-up">
+<!-- value="feed"  -->
+<ion-radio-group color="dark" slot="fixed" value={{_globalService.activeExploreFeed}}  class="hidden-sm-up">
   <ion-row>
     <ion-col size="4">
       <ion-item color="dark" (click)="displayFeed()" style="display:inline;" >
@@ -187,7 +187,9 @@
                       <b class="WeatherDescriptionCard">Type:</b> {{d.DiveTypeLink}} <br>
                       <b class="WeatherDescriptionCard">Date:</b> {{d.DiveDate}} <br>
                       <b class="WeatherDescriptionCard">Duration:</b> {{d.TimeIn}} - {{d.TimeOut}} <br>
-                      <b class="WeatherDescriptionCard">Buddy:</b> {{d.Buddy.substring(0, d.Buddy.indexOf("(") -1 )}}
+                      <b class="WeatherDescriptionCard" *ngIf="d.Buddy != '' ">Buddy:</b> 
+                                  <label *ngIf='d.Buddy.indexOf("(") != -1'>&nbsp; {{d.Buddy.substring(0, d.Buddy.indexOf("(") -1 )}} </label>
+                                  <label *ngIf='d.Buddy.indexOf("(") == -1'>&nbsp; {{d.Buddy}} </label>
                     </p>
                   
                 </ion-card-content>
@@ -254,16 +256,16 @@
 <ion-grid class="contentContainer" *ngIf='showSites'>
   <ion-row>
     <ion-col *ngFor='let ds of siteLst' style="margin:0;" >
-      <div class="thecard" >
+      <div class="thecardDC" >
         <div class="thefront">
           <ion-card color="light" >
             <img class="cardFeedIMG" src={{ds.LogoPhoto}} />
               <ion-card-content>
-              <ion-card-title>
-                 <label class="DiveCenterName"> {{ds.Name}} </label> 
-                 <label class="ViewDiveCenterLink"><a (click)="ViewMoreDiveSite(ds.Name)">View More</a> </label>
-              </ion-card-title>
-                 </ion-card-content>
+                <ion-card-title fixed>
+                  <label class="DiveCenterName" fixed> {{ds.Name}} </label> 
+                  <label class="ViewDiveCenterLink" fixed><a (click)="ViewMoreDiveSite(ds.Name)">View More</a> </label>
+                </ion-card-title>
+              </ion-card-content>
           </ion-card>
         </div>
         <div class="theback">

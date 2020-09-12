@@ -47,7 +47,7 @@ export class ExplorePage implements OnInit {
   centerLst: DiveCenter[] = new Array() ;
   showSites : boolean ;
   showCenters : boolean ;
-  showFeed  : boolean = true;
+  showFeed  : boolean ;
   showLoading : boolean;
   showMoreFeed : boolean = true ;
   showMoreCenters : boolean = true ;
@@ -86,12 +86,15 @@ export class ExplorePage implements OnInit {
  
   ngOnInit() {
     //setup what gets displayed
-    this.showFeed = true;
+   /* this.showFeed = true;
     this.showSites = false;
     this.showCenters = false;
     this.centerLst = [];
     this.siteLst = [] ;
-    this.showFeedLoaded = false;
+    this.showFeedLoaded = false;*/
+
+    this.centerLst = [];
+    this.siteLst = [] ;
 
     this.loginLabel ="Login";
     if(!localStorage.getItem("accessToken"))
@@ -107,10 +110,10 @@ export class ExplorePage implements OnInit {
 
   ionViewWillEnter(){
     //setup what gets displayed
-   /**  this.showFeed = true;
-    this.showSites = false;
-    this.showCenters = false; */
+     
     this.showFeedLoaded = false;
+
+    
 
     if(!localStorage.getItem("accessToken"))
     {
@@ -122,7 +125,28 @@ export class ExplorePage implements OnInit {
       this._globalService.activeLabel =  "Log Out";
       this.accountType = this._globalService.accountRole;
       
-      this.displayFeed();
+      //this.displayFeed();
+      if(this._globalService.activeExploreFeed == "sites"){
+        this.showFeed = false;
+        this.showSites = true;
+        this.showCenters = false;
+        this.displayDiveSites();
+
+      }else if(this._globalService.activeExploreFeed == "feed"){
+        this.showFeed = true;
+        this.showSites = false;
+        this.showCenters = false;
+        this.displayFeed();
+
+      }else{
+        this.showFeed = false;
+        this.showSites = false;
+        this.showCenters = true;
+        this.displayDiveCenters();
+
+      }
+
+
     }
    
   }
@@ -145,6 +169,7 @@ export class ExplorePage implements OnInit {
     this.showSites = true;
     this.showCenters = false;
     this.showFeedLoaded = false;
+    this._globalService.activeExploreFeed = "sites";
     this.loadSites();
     
   }
@@ -154,6 +179,7 @@ export class ExplorePage implements OnInit {
     this.showSites = false;
     this.showCenters= true;
     this.showFeedLoaded = false;
+    this._globalService.activeExploreFeed = "centers";
     this.loadCenters();
   }
   displayFeed(){
@@ -161,6 +187,7 @@ export class ExplorePage implements OnInit {
     this.showSites = false;
     this.showCenters = false;
     this.showFeedLoaded = true;
+    this._globalService.activeExploreFeed = "feed";
     this.loadFeed();
   }
   loadFeed(){

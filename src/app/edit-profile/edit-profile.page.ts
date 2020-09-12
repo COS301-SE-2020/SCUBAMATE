@@ -170,7 +170,7 @@ export class EditProfilePage implements OnInit {
 
       console.log(me.userObj.ProfilePhoto);
       me.userObj.ProfilePhoto = me.base64textString;
-      console.log(me.userObj.ProfilePhoto);
+      //console.log(me.userObj.ProfilePhoto);
      
       
     };
@@ -195,7 +195,8 @@ export class EditProfilePage implements OnInit {
     const alert = await this.alertController.create({
       cssClass: 'successAlert',
       header: 'Update Successful',
-      message: 'All changes have been successfully applied',
+      subHeader: 'All changes have been successfully applied',
+      message: 'Changes to Profile Image may take a few seconds to display',
       buttons: ['OK']
     });
   
@@ -208,7 +209,7 @@ export class EditProfilePage implements OnInit {
     }else{
       console.log(this.userObj);
       this.showLoading = true;
-      console.log(this.userObj.ProfilePhoto);
+      //console.log(this.userObj.ProfilePhoto);
       this._accountService.editUser( this.userObj ).subscribe( res =>{
         
         this.showLoading = false;

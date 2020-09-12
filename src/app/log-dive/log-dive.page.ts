@@ -94,7 +94,7 @@ export class LogDivePage implements OnInit {
     currentDiveTypeSelected : string = "Normal";
     //showDiveTypeInput : boolean; 
     allLoaded: boolean ;
-    manualWeatherActive: boolean = false; 
+    manualWeatherActive: boolean ; 
     
 
   /********************************************/
@@ -112,7 +112,7 @@ export class LogDivePage implements OnInit {
   loginLabel:string ;
 
   constructor(public _globalService: GlobalService,  private _accountService : accountService, private router: Router, private _diveService: diveService, private _weatherService: weatherService,private geolocation: Geolocation, public formBuilder: FormBuilder, public alertController : AlertController, private connectionService: ConnectionService) {
-    
+    this.manualWeatherActive= false ;
     
     
     this.connectionService.monitor().subscribe(isConnected => {  
@@ -144,12 +144,18 @@ export class LogDivePage implements OnInit {
       this.Coordinates.Longitude = resp.coords.longitude;
 
       this._weatherService.getLocationKey(this.Coordinates).subscribe(res => {
+        this.manualWeatherActive= false ;
+
         // console.log("Getting location key");
         this.Key.key = res.Key;
         // console.log("getLocationKey returned: " + this.Key);
   
         this._weatherService.getLogWeather(this.Key).subscribe(res => {
-        console.log(res.DailyForecasts[0]);
+        //console.log(res.DailyForecasts[0]);
+
+        //No need for manual Weather logging
+        this.manualWeatherActive= false ;
+
         //setup variables
         this.MinTempAPI = res.DailyForecasts[0].Temperature.Minimum.Value;
         this.MaxTempAPI = res.DailyForecasts[0].Temperature.Maximum.Value;
@@ -297,33 +303,40 @@ export class LogDivePage implements OnInit {
       this.accountType = this._globalService.accountRole;
     }
 
-    if(this.manualWeatherActive == true || this.diveObj == undefined){
-      //Diver Form
-      this.diveObj ={
-        DiveID :  "D"+ this.uuidValue,
-        AccessToken: localStorage.getItem("accessToken"),
-        DiveDate: this.currentDate,
-        TimeIn: "",
-        TimeOut: "",
-        Visibility:"",
-        Depth: "",
-        Buddy: "",
-        DiveTypeLink: "",
-        AirTemp: 0  ,
-        SurfaceTemp: 0 ,
-        BottomTemp: 0 ,
-        DiveSite: "",
-        Description: "",
-        InstructorLink: [] ,
-        Weather: [] ,
-        DivePublicStatus: false,
-        isCourse: false,
-        Rating: 0, 
-        WaterType: "Saltwater"
-      }
+    setTimeout(() => 
+      {
+        if(this.manualWeatherActive == true ){
+          //Diver Form
+          this.diveObj ={
+            DiveID :  "D"+ this.uuidValue,
+            AccessToken: localStorage.getItem("accessToken"),
+            DiveDate: this.currentDate,
+            TimeIn: "",
+            TimeOut: "",
+            Visibility:"",
+            Depth: "",
+            Buddy: "",
+            DiveTypeLink: "",
+            AirTemp: 0  ,
+            SurfaceTemp: 0 ,
+            BottomTemp: 0 ,
+            DiveSite: "",
+            Description: "",
+            InstructorLink: [] ,
+            Weather: [] ,
+            DivePublicStatus: false,
+            isCourse: false,
+            Rating: 0, 
+            WaterType: "Saltwater"
+          }
+    
+          this.presentManualWeatherInput();
+        }
+        
+      },
+      4000);
 
-      this.presentManualWeatherInput();
-    }
+   
 
     
     
