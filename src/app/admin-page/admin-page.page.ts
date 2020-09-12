@@ -147,6 +147,9 @@ export class AdminPagePage implements OnInit {
   @ViewChild("lineCanvasChartCourses") lineCanvasChartCourses: ElementRef;
   private lineChartCourses: Chart;
 
+  @ViewChild("lineCanvasChartFrequencyLogin") lineCanvasChartFrequencyLogin: ElementRef;
+  private lineChartFrequencyLogin: Chart;
+
   //Date
   currentDate = new Date();
   
@@ -257,7 +260,6 @@ export class AdminPagePage implements OnInit {
 
         this.dateSearch =  this.currentDate.getFullYear().toString() ;
 
-        console.log(numDivesBody);
 
         this.showLoading = true ;
           this._chartService.numberDivesAtSiteChartData(numDivesBody).subscribe( data =>{
@@ -375,6 +377,24 @@ export class AdminPagePage implements OnInit {
               this.generalAlert("Total Completed Course Chart Error", err.error);
             }else{
               console.log("Could not access Total Completed Course");
+            }
+            
+          });
+
+          this.showLoading = true ;
+          this._chartService.frequencyLoginChart(ageGroupBody).subscribe( data =>{
+              this.showLoading = false;
+              console.log(data);
+              this.drawFrequencyLoginChart(data, "Number Users Active");
+             
+
+          },err =>{
+            this.showLoading = false;
+            
+            if(err.error){
+              this.generalAlert("Frequency of User Access to App Chart Error", err.error);
+            }else{
+              console.log("Could not access Frequency of User Access to App");
             }
             
           });
@@ -1636,6 +1656,73 @@ getDiveCentreInformation(){
             label: msg,
             fill: false,
             lineTension: 0.1,
+            backgroundColor: "rgba(42, 157, 143)",
+            borderColor: "rgba(42, 157, 143)",
+            borderCapStyle: "butt",
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: "miter",
+            pointBorderColor: "rgba(244, 162, 97,1)",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "rgba(32, 117, 107)",
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data: values,
+            spanGaps: false
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          xAxes: [ {
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'User Roles'
+            },
+            ticks: {
+              major: {
+                fontStyle: 'bold',
+                fontColor: '#FF0000'
+              }
+            }
+          } ],
+          yAxes: [ {
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Total Users'
+            }
+          } ]
+        }
+      }
+    });
+
+
+  }
+
+  drawFrequencyLoginChart(returnedData, msg){
+
+
+    let keys = returnedData["DaysPassed"][0].map(d => d.Day);
+    let values = returnedData["DaysPassed"][0].map(d => d.Amount);
+
+    
+    this.lineChartFrequencyLogin = new Chart(this.lineCanvasChartFrequencyLogin.nativeElement,{
+      type: "line",
+      data: {
+        labels: keys,
+        datasets: [
+          {
+            label: msg,
+            fill: false,
+            lineTension: 0.1,
             backgroundColor: "rgba(244, 162, 97,1)",
             borderColor: "rgba(244, 162, 97,1)",
             borderCapStyle: "butt",
@@ -1664,7 +1751,7 @@ getDiveCentreInformation(){
             display: true,
             scaleLabel: {
               display: true,
-              labelString: 'User Roles'
+              labelString: 'Frequency of Access'
             },
             ticks: {
               major: {
