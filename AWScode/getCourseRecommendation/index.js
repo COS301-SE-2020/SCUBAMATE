@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 const AWS = require('aws-sdk');
 AWS.config.update({region: "af-south-1"});
 
@@ -131,11 +131,11 @@ exports.handler = async (event, context) => {
                     ':qType': courseType
                 }
             }
-            
+
             /* Get List Of Courses */
             const paramsCourse = {
                 TableName: 'DiveInfo',
-                ProjectionExpression: "#name,MinAgeRequired, RequiredCourses, CourseType, QualificationType", 
+                ProjectionExpression: "#name,MinAgeRequired, RequiredCourses, CourseType, Description", 
                 FilterExpression: filter,
                 ExpressionAttributeNames: {
                     '#itemT': 'ItemType',
@@ -189,7 +189,7 @@ exports.handler = async (event, context) => {
 
     } catch (err) {
         statusCode = 403;
-        responseBody = "Invalid Access Token"+err;
+        responseBody = "Invalid Access Token";
     }
     
 
