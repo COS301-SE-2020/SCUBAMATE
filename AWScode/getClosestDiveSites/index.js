@@ -126,46 +126,48 @@ exports.handler = async (event, context) => {
                         let temp = sites.Items[index];
                         sites.Items[index] = sites.Items[i];
                         sites.Items[i] = temp;
+                        
                     }
+                    /*Refine array to return the top 3 elements in the array */
                     sites.Items.splice(3,sites.Items.length);
 
+                    /*Calculate the average rating of the dive sites */
                     for(var i=0; i<3; i++)
                     {
-
+                        delete sites.Items[i].Distance;
+                        let DiveSite = sites.Items[i].Name;
+                        const diveParams = {
+                            TableName: "Dives",
+                            ProjectionExpression: "Rating",
+                            FilterExpression: "#site = :site AND #app = :app", 
+                            ExpressionAttributeNames:{
+                                "#site" : "DiveSite",
+                                "#app" : "Approved"
+                            },
+                            ExpressionAttributeValues:{
+                                ':site': DiveSite,
+                                ":app" : true
+                            }
+                        };
+                        const dives = await documentClient.scan(diveParams).promise();
+                        if(dives.Items.length>0){
+                            let total = dives.Items.length;
+                            let ratings = 0;
+                            dives.Items.forEach(function(dive) {
+                                if(dive.Rating != undefined)
+                                {
+                                    ratings += dive.Rating;
+                                }
+                            });
+                            let average = ratings/total;
+                            sites.Items[i].Rating = average;
+                        }
+                        else{
+                            sites.Items[i].Rating = "N/A";
+                        }             
                     }
-
-
                     responseBody = sites;
-                    statusCode = 200;
-
-                    // var distance = require('google-distance');
-                    // await distance.get(
-                    // {
-                    //     origin: [Location],
-                    //     destination: [sites.Items[0].Coords]
-                    // }, function(err, data) {
-                    //     if (err) return responseBody= err;
-                    //      responseBody= data;
-                    //     // if (err) {
-                        //     responseBody = "google distance error: " + err;
-                        //     statusCode = 403;
-                        // }else{
-                        //     responseBody = "got data";
-                        //     if(data.length > 0){
-                        //         sites.Items.Distance= data;
-                        //     }else{
-                        //         sites.Items.Distance = "undefined";
-                        //     }
-                        //     //responseBody = sites;
-                        //     statusCode = 200;
-                        // }
-                    //});
-                    // if(statusCode == undef)
-                    // {
-                    //     responseBody = sites;
-                    //     statusCode = 200;
-                    // }
-                    
+                    statusCode = 200;              
                         
                 }
             }
@@ -205,6 +207,6 @@ exports.handler = async (event, context) => {
 /*
 {
     "AccessToken":"f8251ce7-1e21-2f9b-967c-f5040bc9220900a7634d811893c31123e03d4e4fc6fdfd8050df6af1f2a8834c73d3134b26e8e1",
-    "Locaton": "-25.921800, 28.161300"
+    "Location": "-25.921800, 28.161300"
 }
 */
