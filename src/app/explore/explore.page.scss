@@ -169,14 +169,12 @@ table{
 ///////////// Flash-Card 
 .maincontainer{
   position: relative;
-  width: 250px;
+  width: 70vw; //250px;
   height: 320px;
 }
 
 .thecard{
-  //width: 250px;
-  //height: 320px;
-  width: 270px;
+  width: 20vw;//270px;
   height: 340px;
   position: relative;
   transform-style: preserve-3d;
@@ -185,7 +183,7 @@ table{
   cursor: pointer;
 }
 .thecardDC{
-  width: 270px;
+  width: 20vw;//270px;
   height: 380px;
   position: relative;
   transform-style: preserve-3d;

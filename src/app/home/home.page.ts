@@ -82,7 +82,6 @@ export class HomePage implements OnInit {
       this._globalService.accountRole = localStorage.getItem("accessToken").substring(36, 38) ;
       this._globalService.activeLabel =  "Log Out";
       this.accountType = this._globalService.accountRole; 
-      this._globalService.activeExploreFeed = "feed";
 
 
      
