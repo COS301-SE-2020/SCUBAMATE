@@ -19,6 +19,7 @@ export interface CourseObj {
   CourseType: string,
   QualificationType: string,
   Name: string,
+  Description : string ; 
 }
 
 
@@ -26,6 +27,7 @@ export interface SitesNearYouObj {
   Name : string ;
   Rating: string ;
   Description: string ; 
+  LogoPhoto : string ; 
 }
 
 export interface predictObject{
@@ -63,6 +65,7 @@ export class PlanningPage implements OnInit {
   suggestedCourseThreeList: CourseObj[] = new Array(); 
 
   showCourses : boolean ;
+  viewCourses : boolean = false ; 
   accountType : string;
 
   //SurveyAnswers
@@ -94,6 +97,7 @@ export class PlanningPage implements OnInit {
    }
 
   ngOnInit() {
+    this.viewMoreNearYou = true;
   this.showCourses = false ;
   this.itemToAdd = "";
   this.SearchDiveCheckList = "" ;
@@ -110,10 +114,12 @@ export class PlanningPage implements OnInit {
 
     //get Suggested Courses
     this._diveService.getSuggestedCourses().subscribe(res =>{
-      console.log("Suggestions Received")
+     // console.log("Suggestions Received")
+     console.log(res);
       this.suggestedCourseFullList = res.Courses;
-
-      this.getRandomThreeCourses();
+      this.showCourses = true;
+      this.viewCourses = true ; 
+      //this.getRandomThreeCourses();
       
     }, err=>{
       if(err.error == "Invalid Access Token"){
@@ -126,11 +132,10 @@ export class PlanningPage implements OnInit {
     //get Custom CheckList If it exists
     this._accountService.getCustomChecklist().subscribe(res =>{
       
-      console.log(res);
+
       
       if(res.Equipment){
-        console.log("Custom List Received");
-
+        
 
         this.EquipmentList = res.Equipment ; 
         this.OptionalList = res.Optional ;
@@ -216,11 +221,6 @@ export class PlanningPage implements OnInit {
       this.accountType = this._globalService.accountRole; 
     }
     
-    //get Suggested Courses
-    this._diveService.getSuggestedCourses().subscribe(res =>{
-      console.log("Suggestions Received")
-      this.suggestedCourseFullList = res;
-    });
 
   }
 
@@ -769,13 +769,17 @@ export class PlanningPage implements OnInit {
     this.viewMoreNearYou = !this.viewMoreNearYou ; 
   }
 
+  toggleViewMoreCourses(){
+    this.viewCourses = !this.viewCourses ; 
+  }
+
   getPrediction(){
     //console.log(this.predictObj) ; 
     if(this.predictObj.DiveSite != "" && this.predictObj.Date != ""){
       this.showLoading= true ; 
         this._diveService.getPredictiveWeather(this.predictObj).subscribe( res =>{
 
-          this.predictedVisibility = res ;
+          this.predictedVisibility = res.Visibility ;
           console.log(res);
           console.log( this.predictedVisibility);
           this.showLoading= false ;
