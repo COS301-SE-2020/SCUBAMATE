@@ -133,7 +133,7 @@ export class SignupPage implements OnInit {
     this.diverForm = formBuilder.group({
       firstName: ['', Validators.compose([Validators.minLength(2), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
       lastName: ['', Validators.compose([Validators.minLength(2), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
-      email: ['', Validators.compose([Validators.email , Validators.pattern('[A-Za-z0-9._%+-]{2,}@[a-zA-Z-_.]{2,}[.]{1}[a-zA-Z]{2,}'), Validators.required])],
+      email: ['', Validators.compose([Validators.email , Validators.pattern('[A-Za-z0-9._%+-]{2,}@[0-9a-zA-Z-_.]{2,}[.]{1}[a-zA-Z]{2,}'), Validators.required])],
       password: ['', Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(12), Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,12}$')])],
       confirmPassword: ['', Validators.required],
       birthday: ['', Validators.required],
@@ -161,7 +161,7 @@ export class SignupPage implements OnInit {
     this.instructorForm = formBuilder.group({
       firstName: ['', Validators.compose([Validators.minLength(2), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
       lastName: ['', Validators.compose([Validators.minLength(2), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
-      email: ['', Validators.compose([Validators.email , Validators.pattern('[A-Za-z0-9._%+-]{2,}@[a-zA-Z-_.]{2,}[.]{1}[a-zA-Z]{2,}'), Validators.required])],
+      email: ['', Validators.compose([Validators.email , Validators.pattern('[A-Za-z0-9._%+-]{2,}@[0-9a-zA-Z-_.]{2,}[.]{1}[a-zA-Z]{2,}'), Validators.required])],
       password: ['', Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(12), Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,12}$')])],
       confirmPassword: ['', Validators.required],
       birthday: ['', Validators.required],
@@ -379,6 +379,10 @@ DiverSubmit(){
   }else{
     this.showLoading = true;
     this.diverObj.CompletedCourses = this.userCourses ;
+
+    if(this.diverObj.ProfilePhoto == "../assets/images/STDuser.jpg"){
+      this.diverObj.ProfilePhoto = "";
+    }
     
     this._accountService.insertUserDiver( this.diverObj ).subscribe( res =>{
       //console.log(res);
@@ -412,6 +416,10 @@ InstructorSubmit(){
   }else{
     this.instructorObj.CompletedCourses = this.userCourses ;
     console.log(this.instructorObj);
+
+    if(this.instructorObj.ProfilePhoto == "../assets/images/STDuser.jpg"){
+      this.instructorObj.ProfilePhoto = "";
+    }
     
     this._accountService.insertUserInstructor( this.instructorObj ).subscribe( res =>{
       console.log(res);
