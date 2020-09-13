@@ -10,6 +10,7 @@
  * <a href="https://www.overleaf.com/read/shbywrwqfcvw">Coding Standards: Overleaf - LaTex</a>
  * <a href="https://www.overleaf.com/read/wrrjwwdgfgfn">User Manual: Overleaf - LaTex</a>
  * <a href="https://www.overleaf.com/read/fzpxngrydqsg">Technical Installation Guide: Overleaf - LaTex</a>
+ * <a href="https://www.overleaf.com/read/pfxwhzpsjcyb">Testing Policy: Overleaf - LaTex</a>
 
 ## Project Management Tools
 * <a href="https://team-anti-virus.slack.com">Slack</a>
