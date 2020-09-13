@@ -359,6 +359,17 @@ async presentAlertEmailSent( userEmail ) {
   await alert.present();
 }
 
+async presentGeneralAlert(hd, msg) {
+  const alert = await this.alertController.create({
+    cssClass: 'errorAlert',
+    header: hd,
+    message: msg ,
+    buttons: ['OK']
+  });
+
+  await alert.present();
+}
+
 
 DiverSubmit(){
   console.log(this.diverObj);
@@ -374,19 +385,20 @@ DiverSubmit(){
       localStorage.setItem("accessToken", res.AccessToken) ; 
       
       //console.log("Sending Diver Email");
-      
-      
-    /**   this._accountService.sendValidationEmail(this.diverObj.Email).subscribe( res => {
 
-        localStorage.setItem("otp", res.OTP) ; 
-        console.log("Sending Diver Email");
-       this.presentAlertEmailSent(this.diverObj.Email);
-        this.showLoading = false;
-        this.router.navigate(['home']);
-
-      }); */
       this.sendEmail(this.diverObj.Email);
-    },  err => this.presentAlertEmail()); 
+
+    },  err =>{
+
+      //this.presentAlertEmail() ;
+      if(err.error){
+        this.presentGeneralAlert("Failed Signup", err.error);
+      }else{
+        this.presentGeneralAlert("Failed Signup", "Signup request failed. Please try again later.");
+      }
+      this.showLoading = false;
+
+    } ); 
   }
 
 
@@ -417,7 +429,15 @@ InstructorSubmit(){
 
       });*/
       this.sendEmail(this.instructorObj.Email);
-    },  err => this.presentAlertEmail()); 
+    },  err => {
+      //this.presentAlertEmail();
+      this.showLoading = false;
+      if(err.error){
+        this.presentGeneralAlert("Failed Signup", err.error);
+      }else{
+        this.presentGeneralAlert("Failed Signup", "Signup request failed. Please try again later.");
+      }
+    }); 
 
 
   }
@@ -569,6 +589,14 @@ sendEmail( e : string){
       localStorage.setItem("otp", res.OTP);
       this.showLoading = false;
       this.presentOTPPrompt(e);
+    }, err =>{
+      if(err.error){
+        this.presentGeneralAlert("Failed to send OTP", err.error);
+      }else{
+        this.presentGeneralAlert("Failed to send OTP", "Could not send Email. Please retry validation on your profile page");
+      }
+      this.showLoading = false;
+      this.router.navigate(['home']);
     });
 }
 
@@ -642,7 +670,7 @@ async presentOTPPrompt(e : string) {
     ],
     buttons: [
       {
-        text: 'Cancel',
+        text: 'Remind me Later',
         role: 'cancel',
         cssClass: 'secondary',
         handler: () => {

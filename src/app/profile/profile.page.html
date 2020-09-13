@@ -212,7 +212,7 @@
             <ion-label class="divHead" >Achievements</ion-label>
           </ion-col>
           <ion-col size="12" size-sm="12" size-md="4" size-lg="2">
-            <ion-button  *ngIf="AD.Achievements.length > 0" (click)="toggleBadgeView()" color='dark' style="width:100%;--border-radius:0;">
+            <ion-button  *ngIf="AD.Achievements != undefined  && AD.Achievements.length > 0" (click)="toggleBadgeView()" color='dark' style="width:100%;--border-radius:0;">
               <label *ngIf='!viewBadges' >
                 View <br> My Badges
               </label>
@@ -243,7 +243,7 @@
           </ion-col>
         </ion-item>
       </ion-row>
-      <ion-row *ngIf="viewBadges && AD.Achievements.length > 0"> 
+      <ion-row *ngIf="AD.Achievements != undefined && viewBadges && AD.Achievements.length > 0"> 
         <ion-col size="12" size-sm="12" size-md="3" size-lg="4" class="leftPaneBadges" style="padding-top:5%;text-align:center;">
           <ion-label class="subLabel" >Earned Badges</ion-label>
         </ion-col>
