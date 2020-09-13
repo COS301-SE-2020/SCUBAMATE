@@ -143,6 +143,5 @@ describe('DiveCenterInformationPage', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.ionViewWillEnter).toBeTruthy();
     expect(component.loginClick).toBeTruthy();
-    expect(component.checkURL).toBeTruthy();
   });
 });

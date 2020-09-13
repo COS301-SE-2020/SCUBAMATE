@@ -124,6 +124,5 @@ describe('DiveSiteInformationPage', () => {
   it('Testing Dive-Site Info Functionality', () => {
     expect(component.ngOnInit).toBeTruthy();
     expect(component.loginClick).toBeTruthy();
-    expect(component.checkURL).toBeTruthy();
   });
 });
