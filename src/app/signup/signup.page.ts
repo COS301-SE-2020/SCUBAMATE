@@ -133,7 +133,7 @@ export class SignupPage implements OnInit {
     this.diverForm = formBuilder.group({
       firstName: ['', Validators.compose([Validators.minLength(2), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
       lastName: ['', Validators.compose([Validators.minLength(2), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
-      email: ['', Validators.compose([Validators.email , Validators.pattern('[A-Za-z0-9._%+-]{2,}@[a-zA-Z-_.]{2,}[.]{1}[a-zA-Z]{2,}'), Validators.required])],
+      email: ['', Validators.compose([Validators.email , Validators.pattern('[A-Za-z0-9._%+-]{2,}@[0-9a-zA-Z-_.]{2,}[.]{1}[a-zA-Z]{2,}'), Validators.required])],
       password: ['', Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(12), Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,12}$')])],
       confirmPassword: ['', Validators.required],
       birthday: ['', Validators.required],
@@ -161,7 +161,7 @@ export class SignupPage implements OnInit {
     this.instructorForm = formBuilder.group({
       firstName: ['', Validators.compose([Validators.minLength(2), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
       lastName: ['', Validators.compose([Validators.minLength(2), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
-      email: ['', Validators.compose([Validators.email , Validators.pattern('[A-Za-z0-9._%+-]{2,}@[a-zA-Z-_.]{2,}[.]{1}[a-zA-Z]{2,}'), Validators.required])],
+      email: ['', Validators.compose([Validators.email , Validators.pattern('[A-Za-z0-9._%+-]{2,}@[0-9a-zA-Z-_.]{2,}[.]{1}[a-zA-Z]{2,}'), Validators.required])],
       password: ['', Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(12), Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,12}$')])],
       confirmPassword: ['', Validators.required],
       birthday: ['', Validators.required],
@@ -359,6 +359,17 @@ async presentAlertEmailSent( userEmail ) {
   await alert.present();
 }
 
+async presentGeneralAlert(hd, msg) {
+  const alert = await this.alertController.create({
+    cssClass: 'errorAlert',
+    header: hd,
+    message: msg ,
+    buttons: ['OK']
+  });
+
+  await alert.present();
+}
+
 
 DiverSubmit(){
   console.log(this.diverObj);
@@ -368,25 +379,30 @@ DiverSubmit(){
   }else{
     this.showLoading = true;
     this.diverObj.CompletedCourses = this.userCourses ;
+
+    if(this.diverObj.ProfilePhoto == "../assets/images/STDuser.jpg"){
+      this.diverObj.ProfilePhoto = "";
+    }
     
     this._accountService.insertUserDiver( this.diverObj ).subscribe( res =>{
       //console.log(res);
       localStorage.setItem("accessToken", res.AccessToken) ; 
       
       //console.log("Sending Diver Email");
-      
-      
-    /**   this._accountService.sendValidationEmail(this.diverObj.Email).subscribe( res => {
 
-        localStorage.setItem("otp", res.OTP) ; 
-        console.log("Sending Diver Email");
-       this.presentAlertEmailSent(this.diverObj.Email);
-        this.showLoading = false;
-        this.router.navigate(['home']);
-
-      }); */
       this.sendEmail(this.diverObj.Email);
-    },  err => this.presentAlertEmail()); 
+
+    },  err =>{
+
+      //this.presentAlertEmail() ;
+      if(err.error){
+        this.presentGeneralAlert("Failed Signup", err.error);
+      }else{
+        this.presentGeneralAlert("Failed Signup", "Signup request failed. Please try again later.");
+      }
+      this.showLoading = false;
+
+    } ); 
   }
 
 
@@ -400,6 +416,10 @@ InstructorSubmit(){
   }else{
     this.instructorObj.CompletedCourses = this.userCourses ;
     console.log(this.instructorObj);
+
+    if(this.instructorObj.ProfilePhoto == "../assets/images/STDuser.jpg"){
+      this.instructorObj.ProfilePhoto = "";
+    }
     
     this._accountService.insertUserInstructor( this.instructorObj ).subscribe( res =>{
       console.log(res);
@@ -417,7 +437,15 @@ InstructorSubmit(){
 
       });*/
       this.sendEmail(this.instructorObj.Email);
-    },  err => this.presentAlertEmail()); 
+    },  err => {
+      //this.presentAlertEmail();
+      this.showLoading = false;
+      if(err.error){
+        this.presentGeneralAlert("Failed Signup", err.error);
+      }else{
+        this.presentGeneralAlert("Failed Signup", "Signup request failed. Please try again later.");
+      }
+    }); 
 
 
   }
@@ -569,6 +597,14 @@ sendEmail( e : string){
       localStorage.setItem("otp", res.OTP);
       this.showLoading = false;
       this.presentOTPPrompt(e);
+    }, err =>{
+      if(err.error){
+        this.presentGeneralAlert("Failed to send OTP", err.error);
+      }else{
+        this.presentGeneralAlert("Failed to send OTP", "Could not send Email. Please retry validation on your profile page");
+      }
+      this.showLoading = false;
+      this.router.navigate(['home']);
     });
 }
 
@@ -642,7 +678,7 @@ async presentOTPPrompt(e : string) {
     ],
     buttons: [
       {
-        text: 'Cancel',
+        text: 'Remind me Later',
         role: 'cancel',
         cssClass: 'secondary',
         handler: () => {

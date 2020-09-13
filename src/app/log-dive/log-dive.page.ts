@@ -838,7 +838,7 @@ export class LogDivePage implements OnInit {
         ],
         buttons: [
           {
-            text: 'Next',
+            text: 'Cancel',
             role: 'cancel',
             cssClass: 'secondary',
             handler: () => {
