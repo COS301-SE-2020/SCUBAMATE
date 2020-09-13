@@ -7,10 +7,14 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import {HttpModule} from '@angular/http';
 import { HttpClient} from '@angular/common/http';
+import {chartService } from '../service/chart.service'
 import { Router } from '@angular/router';
 import { FormBuilder} from '@angular/forms';
 import { stringify } from 'querystring';
 import { map } from 'rxjs/operators';
+import { GlobalService } from "../global.service";
+import { Chart } from 'chart.js';
+import {mergeMap, groupBy, reduce } from 'rxjs/operators';
 
 var reqBody = {
   AccessToken : "d1d7391d-c035-28ab-0193-68a7d263d4be11018bb4bb890ede82397fea8e38e8cb3b5646f4053ff8c04aec7048b8c3d4376e",
@@ -48,7 +52,7 @@ describe('AdminPagePage', () => {
     TestBed.configureTestingModule({
       declarations: [ AdminPagePage ],
       imports: [ RouterTestingModule.withRoutes([]), HttpClientTestingModule, HttpModule],
-      providers: [diveService, HttpModule, accountService, FormBuilder]
+      providers: [diveService, HttpModule, accountService, FormBuilder, chartService]
     }).compileComponents();
 
     fixture = TestBed.createComponent(AdminPagePage);
@@ -157,7 +161,9 @@ describe('AdminPagePage', () => {
 
   it('addUserToDiveCenter() test', () => {
     var eventValue = {
-
+      AccessToken: validData.accessToken,
+      Email: "teamav301@gmail.com",
+      Name: "Test Man"
     };
     let accountSpy = spyOn(accService, 'addUsertoDiveCenter').and.callThrough();
     expect(accountSpy).toBeDefined();
@@ -171,7 +177,14 @@ describe('AdminPagePage', () => {
 
   it('addDiveCenter() test', () => {
     var eventValue = {
-
+      AccessToken: validData.accessToken,
+      Email : "teamav301@gmail.com",
+      LogoPhoto: "",
+      Coords : "-25.840380, 28.245230",
+      Description : "Home to the World largest Sharks.",
+      Name : "Megladive",
+      Courses : [validData.qualification],
+      DiveSites: [validData.site],
     };
     let accountSpy = spyOn(accService, 'addDiveCenter').and.callThrough();
     expect(accountSpy).toBeDefined();
@@ -202,9 +215,9 @@ describe('AdminPagePage', () => {
   it('updateDiveCenterSubmit() test', () => {
     var body ={
       "AccessToken" : validData.accessToken,
-      "Name" : "" ,
-      "Coords": "" , 
-      "Description": "",
+      "Name" : "Megladive Better" ,
+      "Coords": "-25.840380, 28.245230" , 
+      "Description": "Home to the World largest Sharks.",
       "LogoPhoto" :  ""
     };
     let diveSpy = spyOn(divService, 'editBasicDiveCentre').and.callThrough();
@@ -220,8 +233,8 @@ describe('AdminPagePage', () => {
   it('addCoursesToDiveCenter() test', () => {
     var body ={
       "AccessToken" : validData.accessToken,
-      "Name" : "" ,
-      "Courses": ""
+      "Name" : "Megladive" ,
+      "Courses": "Monster Shark Dive"
     }
     let diveSpy = spyOn(divService, 'addCoursesToDiveCentre').and.callThrough();
     expect(diveSpy).toBeDefined();
@@ -236,8 +249,8 @@ describe('AdminPagePage', () => {
   it('addDiveSitesToCentre() test', () => {
     var body ={
       "AccessToken" : validData.accessToken,
-      "Name" : "" ,
-      "DiveSites": ""
+      "Name" : "Megladive",
+      "DiveSites": validData.site
     }
     let diveSpy = spyOn(divService, 'addDiveSitesToCentre').and.callThrough();
     expect(diveSpy).toBeDefined();
@@ -252,12 +265,12 @@ describe('AdminPagePage', () => {
   it('createNewCourse() test', () => {
     var body = {
       "AccessToken" : validData.accessToken,
-      "Name": "" , 
-      "CourseType": "" ,
-      "MinAgeRequired": "" ,
-      "SurveyAnswer": "" ,
-      "RequiredCourses": "" ,
-      "QualificationType": ""
+      "Name": "Megladive", 
+      "CourseType": "Diver",
+      "MinAgeRequired": "21",
+      "SurveyAnswer": "",
+      "RequiredCourses": "Deep Water Dive",
+      "QualificationType": validData.qualification
     }
     let diveSpy = spyOn(divService, 'createNewCourse').and.callThrough();
     expect(diveSpy).toBeDefined();
@@ -272,9 +285,9 @@ describe('AdminPagePage', () => {
   it('createNewSite() test', () => {
     var body = {
       "AccessToken" : validData.accessToken,
-      "Name" : "" ,
-      "Coords" : "",
-      "Description" : ""
+      "Name" : "Gigantasquid",
+      "Coords" : "-25.840380, 28.245230",
+      "Description" : "Home of the largest squids."
     }
     let diveSpy = spyOn(divService, 'createNewSite').and.callThrough();
     expect(diveSpy).toBeDefined();
@@ -287,24 +300,24 @@ describe('AdminPagePage', () => {
   });
 
   it('Testing Log-Dive Components', () => {
-    expect(component.showLoading).toBeFalse();
+    expect(component.showLoading).toBeTrue();
     expect(component.DiveSiteLst).toBeUndefined();
     expect(component.BuddyLst).toBeUndefined();
     expect(component.loginLabel).toBe("Log Out");
-    expect(component.accountType).toBe("SuperAdmin");
+    expect(component.accountType).toBeDefined();
     expect(component.base64textString).toBeUndefined();
     expect(component.CenterLst).toBeUndefined();
     expect(component.CourseLst).toBeUndefined();
     expect(component.showCourses).toBeFalse();
     expect(component.userCourses).toBeDefined();
     expect(component.courseInputField).toBeDefined();
-    expect(component.siteInput).toBeUndefined();
+    expect(component.siteInput).toBeDefined();
     expect(component.siteUserInput).toBeDefined();
     expect(component.showSites).toBeDefined();
     expect(component.showRegisterUserToCenter).toBeFalse();
     expect(component.showRegisterNewCenter).toBeFalse();
-    expect(component.showUnverifiedInstructors).toBeUndefined();
-    expect(component.showVerifiedInstructors).toBeUndefined();
+    expect(component.showUnverifiedInstructors).toBeFalse();
+    expect(component.showVerifiedInstructors).toBeFalse();
     expect(component.showEditBasicDiveCentre).toBeFalse();
     expect(component.showAddCourse).toBeFalse();
     expect(component.showAddSite).toBeFalse();
@@ -326,24 +339,24 @@ describe('AdminPagePage', () => {
 
   it('Testing ngOnInit()', () => {
     component.ngOnInit();
-    expect(component.showLoading).toBeFalse();
+    expect(component.showLoading).toBeTrue();
     expect(component.DiveSiteLst).toBeUndefined();
     expect(component.BuddyLst).toBeUndefined();
     expect(component.loginLabel).toBe("Log Out");
-    expect(component.accountType).toBe("SuperAdmin");
+    expect(component.accountType).toBeDefined();
     expect(component.base64textString).toBeUndefined();
     expect(component.CenterLst).toBeUndefined();
     expect(component.CourseLst).toBeUndefined();
     expect(component.showCourses).toBeFalse();
     expect(component.userCourses).toBeDefined();
     expect(component.courseInputField).toBeDefined();
-    expect(component.siteInput).toBeUndefined();
+    expect(component.siteInput).toBeDefined();
     expect(component.siteUserInput).toBeDefined();
     expect(component.showSites).toBeDefined();
     expect(component.showRegisterUserToCenter).toBeFalse();
     expect(component.showRegisterNewCenter).toBeFalse();
-    expect(component.showUnverifiedInstructors).toBeUndefined();
-    expect(component.showVerifiedInstructors).toBeUndefined();
+    expect(component.showUnverifiedInstructors).toBeFalse();
+    expect(component.showVerifiedInstructors).toBeFalse();
     expect(component.showEditBasicDiveCentre).toBeFalse();
     expect(component.showAddCourse).toBeFalse();
     expect(component.showAddSite).toBeFalse();
@@ -369,20 +382,20 @@ describe('AdminPagePage', () => {
     expect(component.DiveSiteLst).toBeUndefined();
     expect(component.BuddyLst).toBeUndefined();
     expect(component.loginLabel).toBe("Log Out");
-    expect(component.accountType).toBe("SuperAdmin");
+    expect(component.accountType).toBeDefined();
     expect(component.base64textString).toBeUndefined();
     expect(component.CenterLst).toBeUndefined();
     expect(component.CourseLst).toBeUndefined();
     expect(component.showCourses).toBeFalse();
     expect(component.userCourses).toBeDefined();
     expect(component.courseInputField).toBeDefined();
-    expect(component.siteInput).toBeUndefined();
+    expect(component.siteInput).toBeDefined();
     expect(component.siteUserInput).toBeDefined();
     expect(component.showSites).toBeDefined();
     expect(component.showRegisterUserToCenter).toBeFalse();
     expect(component.showRegisterNewCenter).toBeFalse();
-    expect(component.showUnverifiedInstructors).toBeUndefined();
-    expect(component.showVerifiedInstructors).toBeUndefined();
+    expect(component.showUnverifiedInstructors).toBeFalse();
+    expect(component.showVerifiedInstructors).toBeFalse();
     expect(component.showEditBasicDiveCentre).toBeFalse();
     expect(component.showAddCourse).toBeFalse();
     expect(component.showAddSite).toBeFalse();
