@@ -236,6 +236,19 @@ export class PlanningPage implements OnInit {
 
   }
 
+  ionViewWillLeave(){
+
+    if(this.EquipmentList.length > 0){
+      this.saveChecklist(); 
+    }
+
+    this.sideViewPredict  = true ;
+      this.sideViewSuggestCourse  = true; 
+      this.sideViewSitesNear  = true; 
+      this.sideViewCheckList = true ; 
+
+  }
+
   loginClick(){
     if(localStorage.getItem("accessToken"))
     {
