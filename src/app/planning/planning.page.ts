@@ -229,7 +229,8 @@ export class PlanningPage implements OnInit {
     {
       localStorage.removeItem("accessToken");
       this.accountType = "*Diver";
-      location.reload();
+      //location.reload();
+      this.router.navigate(['login']);
     }else{
       this.router.navigate(['login']);
     }

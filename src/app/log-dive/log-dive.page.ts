@@ -347,7 +347,7 @@ export class LogDivePage implements OnInit {
     {
       localStorage.removeItem("accessToken");
       this.accountType = "*Diver";
-      this.router.navigate(['home']);
+      this.router.navigate(['login']);
     }else{
       this.router.navigate(['login']);
     }

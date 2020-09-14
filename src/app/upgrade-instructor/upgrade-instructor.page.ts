@@ -65,7 +65,8 @@ export class UpgradeInstructorPage implements OnInit {
     if(localStorage.getItem("accessToken"))
     {
       localStorage.removeItem("accessToken");
-      this.router.navigate(['login']);
+      this.accountType = "*Diver";
+      this.router.navigate(['home']);
     }else{
       this.router.navigate(['login']);
     }
