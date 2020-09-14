@@ -81,8 +81,14 @@
         <br>
         - Course Suggestion and Survey Lambda functions
         <br>
-        - Lambda functions for displaying Dive Sites and Dive Centres.
-  
+        - Lambda functions for displaying Dive Sites and Dive Centres
+        <br>
+        - Architectural Design Document: Architectural Design Diagram
+        <br>
+        - Gamification 
+        <br>
+        - Bug Fixes Front-end
+    
     </details>
 
 
