@@ -13,7 +13,7 @@
     </ion-buttons>
     <ion-title > 
      <ion-buttons >
-      <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo" style="height:80%;width:12%;padding-bottom:3px;padding-top:3px;margin-right:10px;"/>
+      <img src="../assets/images/full logo wit.png" routerLink="/home" alt="Scubamate" id="navLogo" style="height:80%;width:12%;padding-bottom:3px;padding-top:3px;margin-right:10px;"/>
       
         <ion-button routerLink="/home" class="hidden-sm-down">
           <ion-icon name="home" ></ion-icon><label style="padding-top:7px;">&nbsp; Home</label> 
@@ -142,7 +142,7 @@
 
               <ion-col size="12" size-sm="12" size-md="12" size-lg="6" *ngFor="let cc of AD.CompletedCourses">
                 <ion-label class="infoLabel" >
-                  <ion-icon name="play-outline"></ion-icon> {{cc}}
+                  <ion-icon name="remove-outline"></ion-icon> {{cc}}
                 </ion-label><br>
               </ion-col>
             </ion-col>
