@@ -130,7 +130,7 @@ export class LoginPage implements OnInit {
   }
 
   onSubmit(iEmail: any , iPass: any , event : Event) {
-     var attemptLogin = {Email: iEmail, Password: iPass} as LoginClass; 
+     var attemptLogin = {Email: iEmail.trim(), Password: iPass} as LoginClass; 
      
 
      //request
