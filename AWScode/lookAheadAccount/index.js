@@ -31,7 +31,7 @@ exports.handler = async (event, context) => {
         }
         splitStr.join(' ');
         let sentenceUE = splitStr.toString().trim();
-        let filter = '#public = :public AND #email = :email AND (contains(#em , :em) OR contains(#fn , :fn) OR contains(#ln , :ln)) OR contains(#fn , :fnu) OR contains(#ln , :lnu))';
+        let filter = '#public = :public AND #email = :email AND (contains(#em , :em) OR contains(#fn , :fn) OR contains(#ln , :ln) OR contains(#fn , :fnu) OR contains(#ln , :lnu)) ';
         let exp = {
             '#em': 'Email',
             '#fn': 'FirstName',
@@ -50,7 +50,7 @@ exports.handler = async (event, context) => {
         };
         if(ItemType.trim() ==="I-"){
             const Instructor = "Instructor";
-            filter = '#accT = :accT AND #public = :public AND #email = :email AND #av = :av AND (contains(#em , :em) OR contains(#fn , :fn) OR contains(#ln , :ln))';
+            filter = '#accT = :accT AND #public = :public AND #email = :email AND #av = :av AND (contains(#em , :em) OR contains(#fn , :fn) OR contains(#ln , :ln) OR contains(#fn , :fnu) OR contains(#ln , :lnu)) ';
             exp = {
                 '#em': 'Email',
                 '#fn': 'FirstName',
@@ -63,8 +63,10 @@ exports.handler = async (event, context) => {
             expVals = {
                 ':accT': Instructor,
                 ':em': UserEntry,
-                ':fn': UserEntry,
-                ':ln': UserEntry,
+                ':fn': sentenceUE,
+                ':ln': sentenceUE,
+                ':fnu': UserEntry,
+                ':lnu': UserEntry,
                 ':public': true,
                 ':av': true,
                 ':email':true
