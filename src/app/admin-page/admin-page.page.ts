@@ -256,7 +256,7 @@ export class AdminPagePage implements OnInit {
           "AccessToken" : localStorage.getItem("accessToken") ,
           "DiveSite" : "*",
           "YearOfSearch" : this.currentDate.getFullYear().toString()
-        };
+        }
 
         this.dateSearch =  this.currentDate.getFullYear().toString() ;
 
@@ -402,6 +402,9 @@ export class AdminPagePage implements OnInit {
       
 
       }
+      else if(this.accountType =="10"){
+        this.getDiveCentreInformation();
+      }
     }
 
     
@@ -456,6 +459,10 @@ export class AdminPagePage implements OnInit {
          this.accountType = this._globalService.accountRole;
          console.log(this.accountType);
      }
+
+     if(this.accountType =="10"){
+      this.getDiveCentreInformation();
+    }
   }
 
   loginClick(){
