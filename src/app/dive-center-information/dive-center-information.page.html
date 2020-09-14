@@ -49,17 +49,18 @@
     <ion-grid>
       <ion-row>
         <ion-col size="12" class="divHeadSection">
-          <label class="divHead"> {{currentDiveCenter.Name}} </label>
+          <label class="divHead"> {{currentDiveCenter.Name}} </label> <br>
         </ion-col>  
       </ion-row>
       <ion-row>
         <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
-          <ion-icon name="location-outline"></ion-icon>
             <label class="infoLabel"> City: &nbsp;&nbsp; </label>
-            <label class="infoLabel">{{Key.city}} </label>
+            <label class="infoLabel">{{Key.city}} </label> <br>
           <div id="ProfileSurroundDiv">
             <img id="Profile" src={{currentDiveCenter.LogoPhoto}}>
          </div>
+         <a href="https://maps.google.com/?q={{currentDiveCenter.Coords}}" style="font-size:medium;text-decoration: none;"><ion-icon name="location" style="font-size:larger;"></ion-icon> View On Map</a>
+       
         </ion-col>
         <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane">
             
