@@ -827,7 +827,15 @@ addCourseToDiveCentre(){
   
   if(this.courseInputField.length >= 2)
   {
-   const index: number = this.currentDiveCenter.Courses.indexOf(this.courseInputField);
+    let index: number;
+    if(typeof this.currentDiveCenter.Courses == "undefined"){
+      index = -1;
+      this.currentDiveCenter.Courses =[];
+    }
+    else{
+      index = this.currentDiveCenter.Courses.indexOf(this.courseInputField);
+    }
+   
    if (index == -1) {
     this.currentDiveCenter.Courses.push(this.courseInputField);
      this.showCourses = true;
@@ -880,7 +888,15 @@ removeCourseFromCourse(s : string){
 addSiteToDiveCentre(){
   if(this.siteInput.length >= 2)
   {
-   const index: number = this.currentDiveCenter.DiveSites.indexOf(this.siteInput);
+    let index :number;
+    if(typeof this.currentDiveCenter.DiveSites == "undefined"){
+      index = -1;
+      this.currentDiveCenter.DiveSites =[];
+    }
+    else{
+      index = this.currentDiveCenter.DiveSites.indexOf(this.siteInput);
+    }
+   
    if (index == -1) {
     this.currentDiveCenter.DiveSites.push(this.siteInput);
      this.showSites = true;
