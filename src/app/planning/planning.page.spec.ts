@@ -157,7 +157,7 @@ describe('PlanningPage', () => {
   it('Testing ngOnInit()', () => {
     component.ngOnInit();
     expect(component.showCourses).toBeFalse();
-    expect(component.showLoading).toBeFalse();
+    expect(component.showLoading).toBeTrue();
     expect(component.loginLabel).toBe("Log Out");
     expect(component.suggestedCourseFullList).toBeDefined();
     expect(component.EquipmentList).toBeDefined();
