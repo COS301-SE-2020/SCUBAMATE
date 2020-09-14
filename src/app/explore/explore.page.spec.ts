@@ -74,9 +74,9 @@ describe('ExplorePage', () => {
   it('Testing Explore Components', () => {
     expect(component.siteLst).toBeDefined();
     expect(component.centerLst).toBeDefined();
-    expect(component.showSites).toBeFalse();
-    expect(component.showCenters).toBeFalse();
-    expect(component.showFeed).toBeTrue();
+    expect(component.showSites).toBeUndefined();
+    expect(component.showCenters).toBeUndefined();
+    expect(component.showFeed).toBeUndefined();
     expect(component.showLoading).toBeUndefined();
     expect(component.pubLst).toBeDefined();
     expect(component.loginLabel).toBe("Log Out");
@@ -93,9 +93,9 @@ describe('ExplorePage', () => {
 
   it('Testing ngOnInit()', () => {
     component.ngOnInit();
-    expect(component.showFeed).toBeTrue();
-    expect(component.showSites).toBeFalse();
-    expect(component.showCenters).toBeFalse();
+    expect(component.showFeed).toBeUndefined();
+    expect(component.showSites).toBeUndefined();
+    expect(component.showCenters).toBeUndefined();
     expect(component.loginLabel).toBe("Log Out");
     expect(component.pubLst).toBeDefined();
     expect(component.showLoading).toBeUndefined();
@@ -105,9 +105,9 @@ describe('ExplorePage', () => {
 
   it('Testing ionViewWillEnter', () => {
     component.ngOnInit();
-    expect(component.showFeed).toBeTrue();
-    expect(component.showSites).toBeFalse();
-    expect(component.showCenters).toBeFalse();
+    expect(component.showFeed).toBeUndefined();
+    expect(component.showSites).toBeUndefined();
+    expect(component.showCenters).toBeUndefined();
     expect(component.loginLabel).toBe("Log Out");
     expect(component.pubLst).toBeDefined();
     expect(component.showLoading).toBeUndefined();

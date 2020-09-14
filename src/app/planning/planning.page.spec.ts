@@ -3,6 +3,7 @@ import { IonicModule } from '@ionic/angular';
 import { PlanningPage } from './planning.page';
 import { diveService } from '../service/dive.service';
 import { accountService } from '../service/account.service';
+import { weatherService } from '../service/weather.service'
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import {HttpModule} from '@angular/http';
@@ -21,13 +22,14 @@ describe('PlanningPage', () => {
   let http: HttpClient;
   let router; Router;
   let httpMock: HttpTestingController;
+  let weatService: weatherService;
   
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ PlanningPage ],
       imports: [IonicModule.forRoot(), RouterTestingModule.withRoutes([]), HttpClientTestingModule, HttpModule],
-      providers: [diveService, HttpModule, accountService, FormBuilder]
+      providers: [diveService, HttpModule, accountService, FormBuilder, weatherService]
     }).compileComponents();
 
     fixture = TestBed.createComponent(PlanningPage);
@@ -35,6 +37,7 @@ describe('PlanningPage', () => {
     fixture.detectChanges();
     divService = TestBed.get(diveService);
     accService = TestBed.get(accountService);
+    weatService = TestBed.get(weatherService);
     router = TestBed.get(Router);
     httpMock = TestBed.get(HttpTestingController);
     http = TestBed.get(HttpClient);

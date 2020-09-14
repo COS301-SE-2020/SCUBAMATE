@@ -192,7 +192,7 @@ describe('LogDivePage', () => {
 
   it('Testing Log-Dive Components', () => {
     expect(component.uuidValue).toBeDefined();
-    expect(component.showLoading).toBeTrue();
+    expect(component.showLoading).toBeFalse();
     expect(component.DiveTypeLst).toBeUndefined();
     expect(component.DiveSiteLst).toBeUndefined();
     expect(component.BuddyLst).toBeUndefined();
@@ -249,14 +249,14 @@ describe('LogDivePage', () => {
     let accountSpy = spyOn(accService, 'lookAheadBuddy').and.callThrough();
     expect(accountSpy).toBeDefined();
     expect(component.BuddyLst).toBeUndefined();
-    expect(component.showLoading).toBeTrue();
+    expect(component.showLoading).toBeFalse();
   });
 
   it('Testing DiveLogSubmit()', () => {
     let navigateSpy = spyOn(router, 'navigate');
     let diveSpy = spyOn(divService, 'logDive').and.callThrough();
     expect(diveSpy).toBeDefined();
-    expect(component.showLoading).toBeTrue();
+    expect(component.showLoading).toBeFalse();
   }); 
 
   it('Testing Log-Dive Functionality', () => {
