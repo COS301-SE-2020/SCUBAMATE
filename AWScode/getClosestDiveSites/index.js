@@ -6,7 +6,19 @@ const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
 exports.handler = async (event, context) => {
     let body = JSON.parse(event.body);
     const AccessToken = body.AccessToken;
+    const ItemType = body.ItemType+"-";
     const Location = body.Location;
+
+    const validItemTypes = ["DS-","DC-"];
+    function contains(arr,search){
+        let returnBool = false;
+        arr.forEach(function(item) {
+            if(item==search){
+                returnBool=true;
+            }
+        });
+        return returnBool;
+    }
 
     const GuidSize = 36;
     const AccountGuid = AccessToken.substring(0,GuidSize);
@@ -75,27 +87,34 @@ exports.handler = async (event, context) => {
             responseBody = "Access Token Expired!";
             statusCode = 403;
     
+        }else if(!contains(validItemTypes, ItemType)){
+            responseBody = "Invalid item type : Can only be DS or DC";
+            statusCode = 403;
         }
         /*Only proceed if access token is valid*/
         else if (statusCode == undef){
             /*Retrieve all the Dive Sites */
+            let projection = "#Name, Description, Coords, LogoPhoto"
+            if(ItemType == "DC-"){
+                projection =  "#Name, Description, Coords, LogoPhoto, Courses, Instructors, DiveSites"
+            }
             var siteParams = {
                 TableName: "DiveInfo",
-                ProjectionExpression: "#Name,Coords,Description,LogoPhoto",
+                ProjectionExpression: projection,
                 FilterExpression: "begins_with(#ItemType, :sitePrefix)",
                 ExpressionAttributeNames:{
                     "#ItemType" : "ItemType",
                     "#Name" : "Name"
                 },
                 ExpressionAttributeValues:{
-                    ":sitePrefix" : "DS"
+                    ":sitePrefix" : ItemType
                 }
             };
 
             try{
                 const sites = await documentClient.scan(siteParams).promise();
                 if(sites.Items.length==0){
-                    responseBody = "No dive sites found";
+                    responseBody = "No dive sites/centres found";
                     statusCode = 404;
                 }
                 else{
@@ -108,7 +127,6 @@ exports.handler = async (event, context) => {
                         let lat2= site.Coords.substring(0,pos);
                         let lon2= site.Coords.substring(pos+1,site.Coords.length);
                         site.Distance = distanceCalc(lat1,lon1,lat2,lon2);
-                        // delete site.Coords;
                     });
                     
                     /*Sorts the data according to the distances */
@@ -131,44 +149,71 @@ exports.handler = async (event, context) => {
                     /*Refine array to return the top 3 elements in the array */
                     sites.Items.splice(3,sites.Items.length);
 
-                    /*Calculate the average rating of the dive sites */
                     for(var i=0; i<3; i++)
                     {
-                        delete sites.Items[i].Distance;
-                        let DiveSite = sites.Items[i].Name;
-                        const diveParams = {
-                            TableName: "Dives",
-                            ProjectionExpression: "Rating",
-                            FilterExpression: "#site = :site AND #app = :app", 
-                            ExpressionAttributeNames:{
-                                "#site" : "DiveSite",
-                                "#app" : "Approved"
-                            },
-                            ExpressionAttributeValues:{
-                                ':site': DiveSite,
-                                ":app" : true
-                            }
-                        };
-                        const dives = await documentClient.scan(diveParams).promise();
-                        if(dives.Items.length>0){
-                            let total = dives.Items.length;
-                            let ratings = 0;
-                            dives.Items.forEach(function(dive) {
-                                if(dive.Rating != undefined)
-                                {
-                                    ratings += dive.Rating;
+                        /*Calculate the average rating of the dive sites */
+                        if(ItemType.localeCompare("DS-") == 0){
+                            delete sites.Items[i].Distance;
+                            let DiveSite = sites.Items[i].Name;
+                            const diveParams = {
+                                TableName: "Dives",
+                                ProjectionExpression: "Rating",
+                                FilterExpression: "#site = :site AND #app = :app", 
+                                ExpressionAttributeNames:{
+                                    "#site" : "DiveSite",
+                                    "#app" : "Approved"
+                                },
+                                ExpressionAttributeValues:{
+                                    ':site': DiveSite,
+                                    ":app" : true
                                 }
-                            });
-                            let average = ratings/total;
-                            sites.Items[i].Rating = average;
+                            };
+                            const dives = await documentClient.scan(diveParams).promise();
+                            if(dives.Items.length>0){
+                                let total = dives.Items.length;
+                                let ratings = 0;
+                                dives.Items.forEach(function(dive) {
+                                    if(dive.Rating != undefined)
+                                    {
+                                        ratings += dive.Rating;
+                                    }
+                                });
+                                let average = ratings/total;
+                                average = average.toFixed(2);
+                                sites.Items[i].Rating = average;
+                            }
+                            else{
+                                sites.Items[i].Rating = "N/A";
+                            } 
+                        }            
+                        /*Add image to each dive site or centre*/
+                        //Get Image of dive and add it 
+                        let imageToGet = "https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/defaultlogo.png";
+                        if(typeof sites.Items[i].LogoPhoto !=="undefined"){
+                            imageToGet = sites.Items[i].LogoPhoto;
                         }
-                        else{
-                            sites.Items[i].Rating = "N/A";
-                        }             
+                        const startIndex = (imageToGet).lastIndexOf("/")+1;
+                        let filePath = (imageToGet).substring(startIndex, (imageToGet).length);
+            
+                        let paramsImg = {"Bucket": "imagedatabase-scubamate", "Key": filePath };
+                        let returnImg;
+            
+                        const s3 = new AWS.S3({httpOptions: { timeout: 2000 }});
+                        try{
+                            const binaryFile = await s3.getObject(paramsImg).promise();
+                            const startIndexContentType = (imageToGet).lastIndexOf(".")+1;
+                            const contentType = imageToGet.substring(startIndexContentType, imageToGet.length);
+                            let base64Image = "data:image/"+contentType+";base64," +binaryFile.Body.toString('base64'); 
+                            returnImg = base64Image;
+                        }
+                        catch(err){
+                            returnImg = "N/A";
+                        }
+                        sites.Items[i].LogoPhoto = returnImg;
                     }
                     responseBody = sites;
                     statusCode = 200;              
-                        
+
                 }
             }
             catch(err){
@@ -181,11 +226,6 @@ exports.handler = async (event, context) => {
         statusCode = 403;
         responseBody = "Invalid Access Token " + err;
     }
-    if(statusCode == undef)
-                    {
-                        responseBody = "hi";
-                        statusCode = 200;
-                    }
 
     /*Final response to be sent back*/
     const response = {
@@ -207,6 +247,7 @@ exports.handler = async (event, context) => {
 /*
 {
     "AccessToken":"f8251ce7-1e21-2f9b-967c-f5040bc9220900a7634d811893c31123e03d4e4fc6fdfd8050df6af1f2a8834c73d3134b26e8e1",
+    "ItemType":"DC",
     "Location": "-25.921800, 28.161300"
 }
 */
