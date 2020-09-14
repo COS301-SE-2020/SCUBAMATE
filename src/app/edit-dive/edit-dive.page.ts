@@ -30,6 +30,7 @@ export interface DiveLog{
   InstructorLink: "Aaf485cf3-7e5c-4f3e-9c24-1694983820f2" ;
   Weather: [] ;
   DivePublicStatus: boolean;
+  DiveImage: string;
 }
 
 export interface EditDiveLog{
