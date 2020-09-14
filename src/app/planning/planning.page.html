@@ -44,243 +44,372 @@
 
 <ion-content fullscreen class="background" no-scroll padding >
 
-  <div id="SuggestedCoursesDiv" >
-    <div class="divHeadSection">
-       <ion-grid>
-         <ion-row>
-           <ion-col size="12" size-sm="12" size-md="12" size-lg="12">
-             <ion-label class="divHead">View Predicted Visibility At Dive Site </ion-label>
-           </ion-col>
-         </ion-row>
-       </ion-grid>
-    </div>
-    <div class="divBodySection" style="margin:0;">
-     <ion-grid>
-       <ion-row>
-          <ion-label color='success' > Please provide a Dive Site and a date within 4 days from now </ion-label>
-       </ion-row>
-       <ion-row>
-         <ion-col size="12" size-sm="12" size-md="5" size-lg="5" style="margin:0;padding:0;">
-          <ion-item color="dark">
-            <ion-label>Dive Site</ion-label>
-            <ion-select value="Hotspot" okText="Okay" cancelText="Dismiss" (ionChange)="showPrediction=false" [(ngModel)]="predictObj.DiveSite">
-              <ion-select-option *ngFor='let s of DiveSiteLst' value="{{s}}">{{s}}</ion-select-option>
-            </ion-select>
-          </ion-item>
-         </ion-col>
-         <ion-col size="12" size-sm="12" size-md="5" size-lg="5" style="margin:0;padding:0;">
-          <ion-item color="dark">
-            <ion-input type='date' (ionChange)="showPrediction=false" [(ngModel)]="predictObj.Date" value={{currentDate}} placeholder={{currentDate}}>
-              Date &nbsp;&nbsp;
-            </ion-input>
-          </ion-item>
-         </ion-col>
-         <ion-col size="12" size-sm="12" size-md="2" size-lg="2" style="margin:0;padding:0;">
-            <ion-button (click)="getPrediction()" style="font-size: 14px;margin:0;--border-radius:0 !important;width:100%;">
-              Predict <br>  Visibility
-            </ion-button>
-         </ion-col>
-       </ion-row>
-       <ion-row *ngIf="showPrediction" class="showPredictionRow">
-          <ion-col size="12" size-sm="12" size-md="4" size-lg='4'>
-              <label class="predictedInfo"> {{predictObj.DiveSite}} </label>
-          </ion-col>
-          <ion-col size="12" size-sm="12" size-md="4" size-lg='4'>
-            <label class="predictedInfo"> {{predictObj.Date}} </label>
-          </ion-col>
-          <ion-col size="12" size-sm="12" size-md="4" size-lg='4'>
-            <label class="predictedInfo" *ngIf='predictedVisibility == "Poor"' style="color: #eb445a;"> {{predictedVisibility}} </label>
-            <label class="predictedInfo" *ngIf='predictedVisibility == "Average"' style="color: #E76F51;"> {{predictedVisibility}} </label>
-            <label class="predictedInfo" *ngIf='predictedVisibility == "Good"' style="color: #36abe0;"> {{predictedVisibility}} </label>
-            <label class="predictedInfo" *ngIf='predictedVisibility == "Excellent"' style="color: #2dd36f;"> {{predictedVisibility}} </label>
-          </ion-col>
-       </ion-row>
-     </ion-grid>
-    </div>
-   </div>
-
-
-
-
-  <div id="SuggestedCoursesDiv" *ngIf="showCourses">
-   <div class="divHeadSection">
-      <ion-grid>
-        <ion-row>
-          <ion-col size="12" size-sm="12" size-md="9" size-lg="9">
-            <ion-label class="divHead">Suggested Courses for You</ion-label>
-          </ion-col>
-          <ion-col size="12" size-sm="12" size-md="3" size-lg="3">
-            <ion-button (click)="toggleViewMoreCourses()" style="--border-radius:5px;width:90%;font-size:x-small;padding: 5px;float:right;" *ngIf="showCourses && viewCourses">
-              <ion-icon name="caret-up" color="light"></ion-icon>
-              &nbsp; View Less
-            </ion-button>
-            <ion-button (click)="toggleViewMoreCourses()" style="--border-radius:5px;width:90%;font-size:x-small;padding: 5px;float:right;" *ngIf="showCourses && !viewCourses">
-              <ion-icon name="caret-down" color="light"></ion-icon>
-              &nbsp; View More
-            </ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-   </div>
-   <div class="divBodySection" style="padding:0;margin:0;" *ngIf="viewCourses">
-    <ion-grid style="padding-bottom:0;padding-top:0;">
-      <ion-row>
-        <ion-col size="12" size-sm="12" size-md="12" size-lg="12">
-          <ion-button (click)="presentSurveyQ1()" style="margin:auto;--border-radius:5px;width:100%;padding: 5px;">
-            <ion-icon name="document-outline"></ion-icon>
-            &nbsp; Complete Survey for more Suggestion
-          </ion-button>
-        </ion-col>
-      </ion-row>
-      <ion-row *ngFor="let sc of suggestedCourseFullList ; let i = index" class="SitesNearRow">
-           <ion-col size="12" size-sm="12" size-md="2" *ngIf="i%2 == 0" style="padding:0;margin:0;">
-            <img class="cardFeedIMG" src="../../assets/images/diving-2.png" style="height:100%;width:100%;" />
-           </ion-col>
-           <ion-col size="12" size-sm="12" size-md="2" *ngIf="i%2 != 0" style="padding:0;margin:0;">
-            <img class="cardFeedIMG" src="../../assets/images/diving-1.png" style="height:100%;width:100%;" />
-           </ion-col>
-          <ion-col  size="12" size-sm="12" size-md="2"  style="padding:0;margin:0;"> 
-            <label class="CourseName">{{sc.Name}}</label>
-          </ion-col>
-          <ion-col  size="12" size-sm="12" size-md="2" style="padding:0;margin:0;"> 
-            <label class="CourseRating"> 
-              {{sc.CourseType}} 
-            </label>
-        </ion-col>
-        <ion-col  size="12" size-sm="12" size-md="6" style="padding:0;margin:0;">
-          <label class="SitesNearDesc"> {{sc.Description}} </label>
-        </ion-col>
-      </ion-row>
-
-    </ion-grid>
-   </div>
-  </div>
-
-  <div id="SuggestedCoursesDiv" *ngIf="showSitesNearYou" style="padding-bottom: 0px;">
-    <div class="divHeadSection">
-       <ion-grid>
-         <ion-row>
-           <ion-col size="12" size-sm="12" size-md="9" size-lg="9">
-             <ion-label class="divHead">Suggested Dive Sites Near You</ion-label>
-           </ion-col>
-           <ion-col size="12" size-sm="12" size-md="3" size-lg="3">
-            <ion-button (click)="toggleViewMoreSitesNearYou()" style="--border-radius:5px;width:90%;font-size:x-small;padding: 5px;" *ngIf="viewMoreNearYou">
-              <ion-icon name="caret-up" color="light"></ion-icon>
-              &nbsp; View Less
-            </ion-button>
-            <ion-button (click)="toggleViewMoreSitesNearYou()" style="--border-radius:5px;width:90%;font-size:x-small;padding: 5px;" *ngIf="!viewMoreNearYou">
-              <ion-icon name="caret-down" color="light"></ion-icon>
-              &nbsp; View More
-            </ion-button>
-          </ion-col>
-         </ion-row>
-       </ion-grid>
-    </div>
-    <div class="divBodySection" style="padding: 0;margin-left: 0; margin-right: 0;" *ngIf="viewMoreNearYou">
-     <ion-grid style="padding: 0;">
-       <ion-row *ngFor='let snr of SitesNearYouLst' class="SitesNearRow">
-           <!-- <ion-col size="12" size-sm="12" size-md="2" size-lg="2" >
-              <img class="cardFeedIMG" src={{snr.LogoPhoto}} style="height:100%;width:100%;" />
-            </ion-col>-->
-            <ion-col size="12" size-sm="12" size-md="3" size-lg="3" class="SitesNearLeftCol">
-              <label class="SitesNearName"> {{snr.Name}} </label>
-          </ion-col>
-         <ion-col size="12" size-sm="12" size-md="2" size-lg="2">
-            <label class="SitesNearRating">Rating: &nbsp; {{snr.Rating}}  </label>
-       </ion-col> 
-       <ion-col size="12" size-sm="12" size-md="7" size-lg="7">
-         <label class="SitesNearDesc"> {{snr.Description}}  </label>
-     </ion-col> 
-       </ion-row>
-     </ion-grid>
-    </div>
-   </div>
-
-   <div id="checkListDiv">
-    <div class="divHeadSection">
-      <ion-grid>
-        <ion-row>
-          <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
-            <ion-label class="divHead">Manage Your Dive Checklist </ion-label>
-          </ion-col>
-          <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
-            <ion-button (click)="saveChecklist()">
-              <ion-icon name="save-outline" ></ion-icon>
-            </ion-button>
-            <ion-button (click)="showAddInput()">
-              <ion-icon name="add-outline"></ion-icon>
-            </ion-button>
-            <ion-button (click)="onChooseDive( diveType.value, $event)">
-              <ion-icon name="search"></ion-icon>
-            </ion-button>
-            <ion-button (click)="toggleCheckList()">
-              <ion-icon name="caret-down" *ngIf='!viewChecklist' color="dark"></ion-icon>
-              <ion-icon name="caret-up" *ngIf='viewChecklist' color="dark"></ion-icon>
-            </ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      
-    </div>
-    <div class="divBodySection">
-    
-      <ion-grid id="CheckListsInfo" >
-        <ion-row>
-          <div class="searchableSelect">
-            <ion-label class="searchableSelectLabel">Search for a checklist by Dive Type</ion-label>
-            <input list="diveTypes" [(ngModel)]="SearchDiveCheckList" class="searchableSelectInput" (keypress)="divetypeListFinder()" placeholder="Boat Dive" #diveType>
-            <datalist id="diveTypes" >
-                <option *ngFor='let t of DiveTypeLst' value={{t}}></option>
-            </datalist>
-          </div>
-        </ion-row>
-        <ion-row *ngIf="viewAddInput">
-          <ion-col size="12" size-md="11" size-lg="11">
-            
-            <ion-item color="dark">
-              <ion-label position="floating">Custom Item to Add</ion-label>
-              <ion-input type="text" placeholder="Custom Item to Add to Checklist"  [(ngModel)]="itemToAdd" ></ion-input>
+  <ion-grid  class="hidden-sm-down">
+    <ion-row>
+      <ion-col size-md="2" size-lg='2' class="leftPanelMenu" style="position: fixed;">
+          <ion-list color="dark" style="margin:0;padding: 0;">
+            <ion-item color="dark" (click)="toggleSideView('Predict')"> 
+              <ion-icon name="search"></ion-icon> &nbsp; &nbsp;
+              <ion-label class="leftPanelMenuItem">Visibility Prediction</ion-label>
             </ion-item>
-            
-          </ion-col>
-          <ion-col size="12" size-md="1" size-lg="1">
-            <ion-button (click)="addItem()" color="success" style="--border-radius:3%;width:100%;height:75%;">
-              <ion-icon name="checkmark"></ion-icon>
-            </ion-button>
-          </ion-col>
-        </ion-row>
-          <ion-row *ngIf='viewChecklist'><label class="checkListHead">Necessary - Equipment</label></ion-row>
-          <ion-row *ngIf='viewChecklist' class="checkListTableRow">
-            <ion-col *ngFor='let e of EquipmentList' size="12" size-md="6" size-lg="6">
-              
-              <ion-col size="6" > {{ e.Val }}</ion-col>
-              <ion-col size="6" > <ion-checkbox color="dark" [(ngModel)]="e.Checked"></ion-checkbox> </ion-col>
+            <ion-item color="dark" (click)="toggleSideView('SitesNear')" >
+              <ion-icon name="navigate"></ion-icon> &nbsp; &nbsp;
+              <ion-label class="leftPanelMenuItem">Dive Sites Near You</ion-label>
+            </ion-item>
+            <ion-item color="dark" (click)="toggleSideView('SuggestCourses')">
+              <ion-icon name="book"></ion-icon> &nbsp; &nbsp;
+              <ion-label class="leftPanelMenuItem">Suggested Courses</ion-label>
+            </ion-item>
+            <ion-item color="dark" (click)="toggleSideView('Checklist')">
+              <ion-icon name="clipboard"></ion-icon> &nbsp; &nbsp;
+              <ion-label class="leftPanelMenuItem">My Checklist</ion-label>
+            </ion-item>
+          </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+<ion-grid>
+  <ion-row>
+    <ion-col offset="2" size="10">
+
+      <div id="SuggestedCoursesDiv" *ngIf="sideViewPredict" >
+        <div class="divHeadSection">
+           <ion-grid>
+             <ion-row>
+               <ion-col size="12" size-sm="12" size-md="12" size-lg="12">
+                 <ion-label class="divHead">View Predicted Visibility At Dive Site </ion-label>
+               </ion-col>
+             </ion-row>
+           </ion-grid>
+        </div>
+        <div class="divBodySection" style="margin:0;">
+         <ion-grid>
+           <ion-row>
+              <ion-label color='success' > Please provide a Dive Site and a date within 4 days from now </ion-label>
+           </ion-row>
+           <ion-row>
+             <ion-col size="12" size-sm="12" size-md="5" size-lg="5" style="margin:0;padding:0;">
+              <ion-item color="dark">
+                <ion-label>Dive Site</ion-label>
+                <ion-select value="Hotspot" okText="Confirm" cancelText="Cancel" (ionChange)="showPrediction=false" [(ngModel)]="predictObj.DiveSite">
+                  <ion-select-option *ngFor='let s of DiveSiteLst' value="{{s}}">{{s}}</ion-select-option>
+                </ion-select>
+              </ion-item>
+             </ion-col>
+             <ion-col size="12" size-sm="12" size-md="5" size-lg="5" style="margin:0;padding:0;">
+              <ion-item color="dark">
+                <ion-label>Date</ion-label>
+                <ion-select placeholder="Select a Date" (ionChange)="showPrediction=false"  [(ngModel)]="predictObj.Date" value={{currentDate}}>
+                  <ion-select-option *ngFor="let d of lstNextFour" value={{d}}>{{d}}</ion-select-option>
+                </ion-select>
+              </ion-item>
+             </ion-col>
+             <ion-col size="12" size-sm="12" size-md="2" size-lg="2" style="margin:0;padding:0;">
+                <ion-button (click)="getPrediction()" style="font-size: 14px;margin:0;--border-radius:0 !important;width:100%;">
+                  Predict <br>  Visibility
+                </ion-button>
+             </ion-col>
+           </ion-row>
+           <ion-row *ngIf="showPrediction" class="showPredictionRow">
+              <ion-col size="12" size-sm="12" size-md="4" size-lg='4'>
+                  <label class="predictedInfo"> {{predictObj.DiveSite}} </label>
+              </ion-col>
+              <ion-col size="12" size-sm="12" size-md="4" size-lg='4'>
+                <label class="predictedInfo"> {{predictObj.Date}} </label>
+              </ion-col>
+              <ion-col size="12" size-sm="12" size-md="4" size-lg='4'>
+                <label class="predictedInfo" *ngIf='predictedVisibility == "Poor"' style="color: #eb445a;text-shadow: 2px 2px 4px #000000;font-weight: bolder; font-size:xx-large;"> {{predictedVisibility}} </label>
+                <label class="predictedInfo" *ngIf='predictedVisibility == "Average"' style="color: #E76F51;text-shadow: 2px 2px 4px #000000;font-weight: bolder; font-size:xx-large;"> {{predictedVisibility}} </label>
+                <label class="predictedInfo" *ngIf='predictedVisibility == "Good"' style="color: #36abe0;text-shadow: 2px 2px 4px #000000;font-weight: bolder; font-size:xx-large;"> {{predictedVisibility}} </label>
+                <label class="predictedInfo" *ngIf='predictedVisibility == "Excellent"' style="color: #2dd36f;text-shadow: 2px 2px 4px#000000;font-weight: bolder; font-size:xx-large;"> {{predictedVisibility}} </label>
+              </ion-col>
+           </ion-row>
+         </ion-grid>
+        </div>
+       </div>
+    
+       <div id="SuggestedCoursesDiv" *ngIf="sideViewSitesNear &&   showSitesNearYou" style="padding-bottom: 0px;">
+        <div class="divHeadSection">
+           <ion-grid>
+             <ion-row>
+               <ion-col size="12" size-sm="12" size-md="9" size-lg="9">
+                 <ion-label class="divHead">Dive Sites Near You</ion-label>
+               </ion-col>
+               <ion-col size="12" size-sm="12" size-md="3" size-lg="3">
+                <ion-button (click)="toggleViewMoreSitesNearYou()" style="--border-radius:5px;width:90%;font-size:x-small;padding: 5px;" *ngIf="viewMoreNearYou">
+                  <ion-icon name="caret-up" color="light"></ion-icon>
+                  &nbsp; View Less
+                </ion-button>
+                <ion-button (click)="toggleViewMoreSitesNearYou()" style="--border-radius:5px;width:90%;font-size:x-small;padding: 5px;" *ngIf="!viewMoreNearYou">
+                  <ion-icon name="caret-down" color="light"></ion-icon>
+                  &nbsp; View More
+                </ion-button>
+              </ion-col>
+             </ion-row>
+           </ion-grid>
+        </div>
+        <div class="divBodySection" style="padding: 0;margin-left: 0; margin-right: 0;" *ngIf="viewMoreNearYou">
+         <ion-grid style="padding: 0;">
+           <ion-row *ngFor='let snr of SitesNearYouLst' class="SitesNearRow">
+                <ion-col size="12" size-sm="12" size-md="2" size-lg="2" style="padding:0;margin:0;">
+                  <img class="cardFeedIMG" src={{snr.LogoPhoto}} style="height:100%;width:100%;" />
+                </ion-col>
+                <ion-col size="12" size-sm="12" size-md="2" size-lg="2" class="SitesNearLeftCol" style="padding:0;margin:0;">
+                  <label class="SitesNearName"> {{snr.Name}} </label> <br>
+                  <a href="https://maps.google.com/?q={{snr.Coords}}" style="font-size:small;text-decoration: none;"><ion-icon name="location" style="font-size:larger;"></ion-icon> View On Map</a>
+              </ion-col>
+             <ion-col size="12" size-sm="12" size-md="1" size-lg="1" style="padding:0;margin:0;">
+                <label class="SitesNearRating">Rating <br> {{snr.Rating}}  </label>
+           </ion-col> 
+           <ion-col size="12" size-sm="12" size-md="7" size-lg="7" style="padding:0;margin:0;">
+             <label class="SitesNearDesc"> {{snr.Description}}  </label>
+         </ion-col> 
+           </ion-row>
+         </ion-grid>
+        </div>
+       </div>
+    
+    
+      <div id="SuggestedCoursesDiv" *ngIf="sideViewSuggestCourse &&  showCourses">
+       <div class="divHeadSection">
+          <ion-grid>
+            <ion-row>
+              <ion-col size="12" size-sm="12" size-md="9" size-lg="9">
+                <ion-label class="divHead">Suggested Courses for You</ion-label>
+              </ion-col>
+              <ion-col size="12" size-sm="12" size-md="3" size-lg="3">
+                <ion-button (click)="toggleViewMoreCourses()" style="--border-radius:5px;width:90%;font-size:x-small;padding: 5px;float:right;" *ngIf="showCourses && viewCourses">
+                  <ion-icon name="caret-up" color="light"></ion-icon>
+                  &nbsp; View Less
+                </ion-button>
+                <ion-button (click)="toggleViewMoreCourses()" style="--border-radius:5px;width:90%;font-size:x-small;padding: 5px;float:right;" *ngIf="showCourses && !viewCourses">
+                  <ion-icon name="caret-down" color="light"></ion-icon>
+                  &nbsp; View More
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+       </div>
+       <div class="divBodySection" style="padding:0;margin:0;" *ngIf="viewCourses">
+        <ion-grid style="padding-bottom:0;padding-top:0;">
+          <ion-row>
+            <ion-col size="12" size-sm="12" size-md="12" size-lg="12">
+              <ion-button (click)="presentSurveyQ1()" style="margin:auto;--border-radius:5px;width:100%;padding: 5px;">
+                <ion-icon name="document-outline"></ion-icon>
+                &nbsp; Complete Survey for more Suggestion
+              </ion-button>
             </ion-col>
           </ion-row>
-
-          <ion-row *ngIf='viewChecklist'><label class="checkListHead">Optional - Equipment</label></ion-row>
-          <ion-row *ngIf='viewChecklist' class="checkListTableRow">
-            <ion-col *ngFor='let o of OptionalList' size="12" size-md="6" size-lg="6">
-              
-              <ion-col size="6"> {{ o.Val }}</ion-col>
-              <ion-col size="6" > <ion-checkbox color="dark" [(ngModel)]="o.Checked"></ion-checkbox> </ion-col>
+          <ion-row *ngFor="let sc of suggestedCourseFullList ; let i = index" class="SitesNearRow">
+               <ion-col size="12" size-sm="12" size-md="2" *ngIf="i%2 == 0" style="padding:0;margin:0;">
+                <img class="cardFeedIMG" src="../../assets/images/diving-2.png" style="height:100%;width:100%;" />
+               </ion-col>
+               <ion-col size="12" size-sm="12" size-md="2" *ngIf="i%2 != 0" style="padding:0;margin:0;">
+                <img class="cardFeedIMG" src="../../assets/images/diving-1.png" style="height:100%;width:100%;" />
+               </ion-col>
+              <ion-col  size="12" size-sm="12" size-md="2"  style="padding:0;margin:0;"> 
+                <label class="CourseName">{{sc.Name}}</label>
+              </ion-col>
+              <ion-col  size="12" size-sm="12" size-md="2" style="padding:0;margin:0;"> 
+                <label class="CourseRating"> 
+                  {{sc.CourseType}} 
+                </label>
+            </ion-col>
+            <ion-col  size="12" size-sm="12" size-md="6" style="padding:0;margin:0;">
+              <label class="SitesNearDesc"> {{sc.Description}} </label>
             </ion-col>
           </ion-row>
+    
+        </ion-grid>
+       </div>
+      </div>
+      
 
-          <ion-row *ngIf='viewChecklist && viewPersonalAdded'><label class="checkListHead">Custom - Equipment</label></ion-row>
-          <ion-row *ngIf='viewChecklist && viewPersonalAdded' class="checkListTableRow">
-            <ion-col *ngFor='let p of PersonalList' size="12" size-md="6" size-lg="6">
-              
-              <ion-col size="6"> {{ p.Val }}</ion-col>
-              <ion-col size="6" > <ion-checkbox color="dark" [(ngModel)]="p.Checked"></ion-checkbox> </ion-col>
-            </ion-col>
-          </ion-row>
+      <div id="checkListDiv" *ngIf="sideViewCheckList">
+        <div class="divHeadSection">
+          <ion-grid>
+            <ion-row>
+              <ion-col size="12" size-sm="12" size-md="11" size-lg="11">
+                <ion-label class="divHead">My Dive Planning Checklist </ion-label> <br>
+                <ion-label color='success' >Start Your Checklist By Searching For A Dive Type </ion-label>
+              </ion-col>
+              <ion-col size="12" size-sm="12" size-md="11" size-lg="1">
+                <ion-button  color='dark' (click)='presentGeneralAlert("Checklist", "Generic Checklists are provided on Dive Type Search. Users can add Custom items and store these checklists for later use.")'>
+                  <ion-icon name="information-circle"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>  
+        </div>
+        <div class="divBodySection">
+        
+          <ion-grid id="CheckListsInfo" >
+            <ion-row>
+              <ion-col size="12" size-sm="12" size-md="9" size-lg="10" style="margin:0;padding:0;">
+                <div class="searchableSelect">
+                  <ion-label class="searchableSelectLabel">Search for a checklist by Dive Type</ion-label>
+                  <input list="diveTypes" [(ngModel)]="SearchDiveCheckList" class="searchableSelectInput" (keypress)="divetypeListFinder()" placeholder="Boat Dive" #diveType>
+                  <datalist id="diveTypes" >
+                      <option *ngFor='let t of DiveTypeLst' value={{t}}></option>
+                  </datalist>
+                </div>
+              </ion-col>
+              <ion-col size="12" size-sm="12" size-md="3" size-lg="2" style="margin:0;padding:0;">
+                <ion-button  (click)="onChooseDive( diveType.value, $event)" style="--border-radius:0px;width:100%;height:100%;">
+                  <ion-icon name="search"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+            <ion-row *ngIf="!viewAddInput" style="margin-top: 15px; margin-bottom:10px;">
+              <ion-col size="12" >
+                <ion-button color="tan" (click)="showAddInput()" style="margin:auto;--border-radius:0px;width:100%;height:40px;background-color: #E76F51;">
+                  <ion-icon name="add-outline"></ion-icon> &nbsp; Add Your Own Custom Item
+                </ion-button>
+              </ion-col>
+            </ion-row>
+            <ion-row *ngIf="viewAddInput" style="margin-top: 15px; margin-bottom:10px;">
+              <ion-col size="12" size-md="11" size-lg="11" style="margin:0;padding:0;">
+                
+                <ion-item color="dark">
+                  <ion-label position="floating">Custom Item to Add</ion-label>
+                  <ion-input type="text" placeholder="Custom Item to Add to Checklist"  [(ngModel)]="itemToAdd" ></ion-input>
+                </ion-item>
+                
+              </ion-col>
+              <ion-col size="12" size-md="1" size-lg="1" style="margin:0;padding:0;">
+                <ion-button (click)="addItem()" color="success" style="--border-radius:3%;width:100%;height:100%;">
+                  <ion-icon name="checkmark"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+              <ion-row *ngIf='viewChecklist && EquipmentList.length>0'><label class="checkListHead">Necessary - Equipment</label></ion-row>
+              <ion-row *ngIf='viewChecklist && EquipmentList.length>0' class="checkListTableRow">
+                <ion-col *ngFor='let e of EquipmentList' size="12" size-md="6" size-lg="6">
+                  
+                  <ion-col size="6" > {{ e.Val }}</ion-col>
+                  <ion-col size="6" > <ion-checkbox color="dark" [(ngModel)]="e.Checked"></ion-checkbox> </ion-col>
+                </ion-col>
+              </ion-row>
+    
+              <ion-row *ngIf='viewChecklist && OptionalList.length>0'><label class="checkListHead">Optional - Equipment</label></ion-row>
+              <ion-row *ngIf='viewChecklist && OptionalList.length>0' class="checkListTableRow">
+                <ion-col *ngFor='let o of OptionalList' size="12" size-md="6" size-lg="6">
+                  
+                  <ion-col size="6"> {{ o.Val }}</ion-col>
+                  <ion-col size="6" > <ion-checkbox color="dark" [(ngModel)]="o.Checked"></ion-checkbox> </ion-col>
+                </ion-col>
+              </ion-row>
+    
+              <ion-row *ngIf='viewChecklist && viewPersonalAdded'><label class="checkListHead">Custom - Equipment</label></ion-row>
+              <ion-row *ngIf='viewChecklist && viewPersonalAdded' class="checkListTableRow">
+                <ion-col *ngFor='let p of PersonalList' size="12" size-md="6" size-lg="6">
+                  
+                  <ion-col size="6"> {{ p.Val }}</ion-col>
+                  <ion-col size="6" > <ion-checkbox color="dark" [(ngModel)]="p.Checked"></ion-checkbox> </ion-col>
+                </ion-col>
+              </ion-row>
+    
+    
+          </ion-grid>
+    
+      </div>
+      </div>
+    
+    
+   <!--  <div id="checkListDiv" *ngIf="sideViewCheckList">
+        <div class="divHeadSection">
+          <ion-grid>
+            <ion-row>
+              <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
+                <ion-label class="divHead">My Dive Planning Checklist </ion-label> <br>
+              </ion-col>
+              <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
+                <ion-button (click)="saveChecklist()">
+                  <ion-icon name="save-outline" ></ion-icon>
+                </ion-button>
+                <ion-button (click)="showAddInput()">
+                  <ion-icon name="add-outline"></ion-icon>
+                </ion-button>
+                <ion-button (click)="onChooseDive( diveType.value, $event)">
+                  <ion-icon name="search"></ion-icon>
+                </ion-button>
+                <ion-button (click)="toggleCheckList()">
+                  <ion-icon name="caret-down" *ngIf='!viewChecklist' color="dark"></ion-icon>
+                  <ion-icon name="caret-up" *ngIf='viewChecklist' color="dark"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          
+        </div>
+        <div class="divBodySection">
+        
+          <ion-grid id="CheckListsInfo" >
+            <ion-row>
+              <div class="searchableSelect">
+                <ion-label class="searchableSelectLabel">Search for a checklist by Dive Type</ion-label>
+                <input list="diveTypes" [(ngModel)]="SearchDiveCheckList" class="searchableSelectInput" (keypress)="divetypeListFinder()" placeholder="Boat Dive" #diveType>
+                <datalist id="diveTypes" >
+                    <option *ngFor='let t of DiveTypeLst' value={{t}}></option>
+                </datalist>
+              </div>
+            </ion-row>
+            <ion-row *ngIf="viewAddInput">
+              <ion-col size="12" size-md="11" size-lg="11">
+                
+                <ion-item color="dark">
+                  <ion-label position="floating">Custom Item to Add</ion-label>
+                  <ion-input type="text" placeholder="Custom Item to Add to Checklist"  [(ngModel)]="itemToAdd" ></ion-input>
+                </ion-item>
+                
+              </ion-col>
+              <ion-col size="12" size-md="1" size-lg="1">
+                <ion-button (click)="addItem()" color="success" style="--border-radius:3%;width:100%;height:75%;">
+                  <ion-icon name="checkmark"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+              <ion-row *ngIf='viewChecklist'><label class="checkListHead">Necessary - Equipment</label></ion-row>
+              <ion-row *ngIf='viewChecklist' class="checkListTableRow">
+                <ion-col *ngFor='let e of EquipmentList' size="12" size-md="6" size-lg="6">
+                  
+                  <ion-col size="6" > {{ e.Val }}</ion-col>
+                  <ion-col size="6" > <ion-checkbox color="dark" [(ngModel)]="e.Checked"></ion-checkbox> </ion-col>
+                </ion-col>
+              </ion-row>
+    
+              <ion-row *ngIf='viewChecklist'><label class="checkListHead">Optional - Equipment</label></ion-row>
+              <ion-row *ngIf='viewChecklist' class="checkListTableRow">
+                <ion-col *ngFor='let o of OptionalList' size="12" size-md="6" size-lg="6">
+                  
+                  <ion-col size="6"> {{ o.Val }}</ion-col>
+                  <ion-col size="6" > <ion-checkbox color="dark" [(ngModel)]="o.Checked"></ion-checkbox> </ion-col>
+                </ion-col>
+              </ion-row>
+    
+              <ion-row *ngIf='viewChecklist && viewPersonalAdded'><label class="checkListHead">Custom - Equipment</label></ion-row>
+              <ion-row *ngIf='viewChecklist && viewPersonalAdded' class="checkListTableRow">
+                <ion-col *ngFor='let p of PersonalList' size="12" size-md="6" size-lg="6">
+                  
+                  <ion-col size="6"> {{ p.Val }}</ion-col>
+                  <ion-col size="6" > <ion-checkbox color="dark" [(ngModel)]="p.Checked"></ion-checkbox> </ion-col>
+                </ion-col>
+              </ion-row>
+    
+    
+          </ion-grid>
+    
+      </div>
+      </div>-->  
 
 
-      </ion-grid>
+    </ion-col> 
+  </ion-row>
+</ion-grid>
 
-  </div>
-  </div>
+
+
    
-
+  
 </ion-content>

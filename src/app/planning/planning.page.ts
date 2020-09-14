@@ -28,6 +28,7 @@ export interface SitesNearYouObj {
   Rating: string ;
   Description: string ; 
   LogoPhoto : string ; 
+  Coords : string;
 }
 
 export interface predictObject{
@@ -82,7 +83,16 @@ export class PlanningPage implements OnInit {
   predictObj : predictObject  ;
   predictedVisibility : string ; 
   showPrediction : boolean = false; 
+
+  lstNextFour: string[] = new Array();
   ///
+
+  //sideMenu Nav
+  sideViewPredict : boolean = true ;
+  sideViewSuggestCourse : boolean = true; 
+  sideViewSitesNear : boolean = true; 
+  sideViewCheckList : boolean = true ;  
+
 
   loginLabel:string ;
 
@@ -97,6 +107,8 @@ export class PlanningPage implements OnInit {
    }
 
   ngOnInit() {
+    this.nextFour();
+
     this.viewMoreNearYou = true;
   this.showCourses = false ;
   this.itemToAdd = "";
@@ -811,5 +823,55 @@ export class PlanningPage implements OnInit {
   
     await alert.present();
   }
+
+  nextFour(){
+    var today = new Date();
+
+    this.lstNextFour.push(this.currentDate); 
+    for(var d=1; d<= 4; d++){
+      this.lstNextFour.push(new Date(today.getFullYear(), today.getMonth(), today.getDate()+d).toLocaleDateString() );
+    }
+
+    console.log(this.lstNextFour);
+   // var nextweek = new Date(today.getFullYear(), today.getMonth(), today.getDate()+4);
+    //return nextweek;
+ }
+
+ toggleSideView(selectedView : string){
+
+  
+    if(selectedView == "Predict"){
+
+      this.sideViewPredict  = true ;
+      this.sideViewSuggestCourse  = false; 
+      this.sideViewSitesNear  = false; 
+      this.sideViewCheckList = false ;  
+
+    }else if(selectedView == "SitesNear"){
+
+      this.sideViewPredict  = false ;
+      this.sideViewSuggestCourse  = false; 
+      this.sideViewSitesNear  = true; 
+      this.sideViewCheckList = false ;
+
+
+    }else if(selectedView == "SuggestCourses"){
+
+      this.sideViewPredict  = false ;
+      this.sideViewSuggestCourse  = true; 
+      this.sideViewSitesNear  = false; 
+      this.sideViewCheckList = false ;
+
+    }else{ //checklist
+      
+      this.sideViewPredict  = false ;
+      this.sideViewSuggestCourse  = false; 
+      this.sideViewSitesNear  = false; 
+      this.sideViewCheckList = true ;
+
+    }
+
+
+ }
 
 }

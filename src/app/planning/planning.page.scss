@@ -19,7 +19,8 @@ $inputBackgroundColor: #181e21;
   }
 
   #SuggestedCoursesDiv{
-    width:  95% !important;
+    width:  120% !important;//95% !important;
+    margin-left: -20% !important;
 
     ion-button{
       margin: auto;
@@ -111,7 +112,7 @@ ion-content.background{
     margin: auto;
     margin-bottom: 20px;
     margin-top: 15px; 
-    margin-left: 20px;
+    //margin-left: 20px;
   }
   
   .divSubHead{
@@ -210,9 +211,9 @@ ion-content.background{
     margin: auto;
     border-bottom: solid white 0.5px;
     border-top: solid white 0.5px;
-    width:  70% ;
+    width:  90%; //70% ;
     padding: 0;
-    margin-top: 30px;
+    margin-top: 10px; //30px;
     padding: 0px;
     padding-bottom: 10px;
     margin-bottom: 20px;
@@ -284,7 +285,7 @@ ion-content.background{
     font-weight: bold;
     font-family: 'Barlow Semi Condensed', sans-serif;
     color: white;
-    margin-top: 10% ;
+    margin-top: 15% ;
   }
 
   .CourseName{
@@ -306,7 +307,7 @@ ion-content.background{
     font-size:  15px ;
     font-family: 'Barlow Semi Condensed', sans-serif;
     color: white;
-    margin-top: 10% ;
+    margin-top: 15% ;
   }
 
   .SitesNearDesc{
@@ -349,4 +350,17 @@ ion-content.background{
     margin-top: 7% ;
     margin-bottom: 7% ;
   }
+}
+
+
+.leftPanelMenu{
+  background-color: $inputBackgroundColor;
+
+ 
+
+}
+
+.leftPanelMenuItem:hover{
+  color: $orange ; 
+  cursor: pointer;
 }
