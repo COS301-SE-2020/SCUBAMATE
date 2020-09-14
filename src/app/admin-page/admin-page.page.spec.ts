@@ -300,11 +300,11 @@ describe('AdminPagePage', () => {
   });
 
   it('Testing Log-Dive Components', () => {
-    expect(component.showLoading).toBeFalse();
+    expect(component.showLoading).toBeTrue();
     expect(component.DiveSiteLst).toBeUndefined();
     expect(component.BuddyLst).toBeUndefined();
-    expect(component.loginLabel).toBe("Login");
-    expect(component.accountType).toBeUndefined();
+    expect(component.loginLabel).toBe("Log Out");
+    expect(component.accountType).toBeDefined();
     expect(component.base64textString).toBeUndefined();
     expect(component.CenterLst).toBeUndefined();
     expect(component.CourseLst).toBeUndefined();
@@ -339,11 +339,11 @@ describe('AdminPagePage', () => {
 
   it('Testing ngOnInit()', () => {
     component.ngOnInit();
-    expect(component.showLoading).toBeFalse();
+    expect(component.showLoading).toBeTrue();
     expect(component.DiveSiteLst).toBeUndefined();
     expect(component.BuddyLst).toBeUndefined();
-    expect(component.loginLabel).toBe("Login");
-    expect(component.accountType).toBeUndefined();
+    expect(component.loginLabel).toBe("Log Out");
+    expect(component.accountType).toBeDefined();
     expect(component.base64textString).toBeUndefined();
     expect(component.CenterLst).toBeUndefined();
     expect(component.CourseLst).toBeUndefined();
@@ -381,8 +381,8 @@ describe('AdminPagePage', () => {
     expect(component.showLoading).toBeFalse();
     expect(component.DiveSiteLst).toBeUndefined();
     expect(component.BuddyLst).toBeUndefined();
-    expect(component.loginLabel).toBe("Login");
-    expect(component.accountType).toBeUndefined();
+    expect(component.loginLabel).toBe("Log Out");
+    expect(component.accountType).toBeDefined();
     expect(component.base64textString).toBeUndefined();
     expect(component.CenterLst).toBeUndefined();
     expect(component.CourseLst).toBeUndefined();

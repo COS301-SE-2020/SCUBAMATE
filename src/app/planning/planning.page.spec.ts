@@ -11,6 +11,7 @@ import { HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
 import { FormBuilder} from '@angular/forms';
 import { map } from 'rxjs/operators';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 var accessToken = "d1d7391d-c035-28ab-0193-68a7d263d4be11bf1decf78d036abdad2f76f0e68ffeb1651b146d3eb2314ef2401a989bd190ce";
 
@@ -23,13 +24,14 @@ describe('PlanningPage', () => {
   let router; Router;
   let httpMock: HttpTestingController;
   let weatService: weatherService;
+  let geo: Geolocation;
   
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ PlanningPage ],
       imports: [IonicModule.forRoot(), RouterTestingModule.withRoutes([]), HttpClientTestingModule, HttpModule],
-      providers: [diveService, HttpModule, accountService, FormBuilder, weatherService]
+      providers: [diveService, HttpModule, accountService, FormBuilder, weatherService, Geolocation]
     }).compileComponents();
 
     fixture = TestBed.createComponent(PlanningPage);
