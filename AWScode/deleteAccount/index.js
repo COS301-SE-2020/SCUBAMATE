@@ -56,39 +56,39 @@ exports.handler = async (event) => {
             }
         };
         try{
-        const divesData = await documentClient.scan(diveScanParams).promise();
-        if (divesData.Items.length==0)
-        {
-            responseBody = "Deletion Success! Note that this account had no dives attached to it";
-            statusCode = 200;
-        }
-        else
-        {
-            //TODO
-            var i = 0;
-           
-            for (var i = 0; i<divesData.Items.length;i++)
+            const divesData = await documentClient.scan(diveScanParams).promise();
+            if (typeof divesData == "undefined" || divesData.Items.length==0)
             {
-                var diveTing = divesData.Items[i].DiveID;
-                console.log("Dive ID: "+diveTing);
-                
-                 const deleteParams = {
-                    TableName: "Dives",
-                    Key : {
-                        DiveID: diveTing,
-                        AccountGuid : AccountGuid
-                    }
-                };
-                var deleteData = await documentClient.delete(deleteParams).promise();
-                 
-                 console.log("End of loop");
+                responseBody = "Deletion Success! Note that this account had no dives attached to it";
+                statusCode = 200;
             }
-            
-            
-            responseBody = "Account successfully deleted!";
-            statusCode = 200;
-        }
-        }catch(err){console.log("uh oh");};
+            else
+            {
+                //TODO
+                var i = 0;
+               
+                for (var i = 0; i<divesData.Items.length;i++)
+                {
+                    var diveTing = divesData.Items[i].DiveID;
+                    console.log("Dive ID: "+diveTing);
+                    
+                     const deleteParams = {
+                        TableName: "Dives",
+                        Key : {
+                            DiveID: diveTing,
+                            AccountGuid : AccountGuid
+                        }
+                    };
+                    var deleteData = await documentClient.delete(deleteParams).promise();
+                     
+                     console.log("End of loop");
+                }
+                
+                
+                responseBody = "Account successfully deleted!";
+                statusCode = 200;
+            }
+        }catch(err){console.log("uh oh");}
         
         
         const deleteParams2 = {
@@ -97,8 +97,9 @@ exports.handler = async (event) => {
                 AccountGuid: AccountGuid
             }
         };
-        var deleteData = await documentClient.delete(deleteParams2).promise();
-        
+        try{
+        let deleteData = await documentClient.delete(deleteParams2).promise();
+        }catch(err){console.log("uh oh");}
     }
     
     
