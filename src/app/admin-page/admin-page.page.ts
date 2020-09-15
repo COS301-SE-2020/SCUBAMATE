@@ -404,6 +404,7 @@ export class AdminPagePage implements OnInit {
       }
       else if(this.accountType =="10"){
         this.getDiveCentreInformation();
+        this.getUnverifiedInstructors();
       }
     }
 
@@ -462,6 +463,7 @@ export class AdminPagePage implements OnInit {
 
      if(this.accountType =="10"){
       this.getDiveCentreInformation();
+      this.getUnverifiedInstructors();
     }
   }
 
