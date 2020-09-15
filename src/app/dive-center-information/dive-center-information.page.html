@@ -54,11 +54,11 @@
       </ion-row>
       <ion-row>
         <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
-            <label class="infoLabel"> City: &nbsp;&nbsp; </label>
-            <label class="infoLabel">{{Key.city}} </label> <br>
+          
           <div id="ProfileSurroundDiv">
             <img id="Profile" src={{currentDiveCenter.LogoPhoto}}>
          </div>
+         <label class="infoLabel"> {{currentDiveCenter.Location}}</label> <br>
          <a href="https://maps.google.com/?q={{currentDiveCenter.Coords}}" style="font-size:medium;text-decoration: none;"><ion-icon name="location" style="font-size:larger;"></ion-icon> View On Map</a>
        
         </ion-col>
@@ -73,27 +73,6 @@
       </ion-row>
     </ion-grid>
   </div>
-
-  <div class="containerDiv" *ngIf="showDiveCenter">
-    <ion-grid>
-      <ion-row>
-        <ion-col size="12" class="divHeadSection">
-         <label class="divSubHead"> Courses </label> 
-        </ion-col>
-      </ion-row>
-      <ion-row style="padding-left:7%;" *ngIf='currentDiveCenter.Courses == undefined'>
-        <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
-          <ion-icon name="remove-outline"></ion-icon> No Courses to display yet
-        </ion-col>
-      </ion-row>
-      <ion-row style="padding-left:7%;" *ngIf='currentDiveCenter.Courses != undefined && currentDiveCenter.Courses.length>0'>
-        <ion-col size="12" size-sm="12" size-md="6" size-lg="6" *ngFor="let c of currentDiveCenter.Courses">
-          <ion-icon name="remove-outline"></ion-icon> {{c}}
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
-
 
   <div class="containerDiv" *ngIf="showWeather">
     <ion-grid>
@@ -148,6 +127,49 @@
       </ion-row>
     </ion-grid>
   </div>
+
+  <div class="containerDiv" *ngIf="showDiveCenter">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" class="divHeadSection">
+         <label class="divSubHead"> Courses </label> 
+        </ion-col>
+      </ion-row>
+      <ion-row style="padding-left:7%;" *ngIf='currentDiveCenter.Courses == undefined'>
+        <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
+          <ion-icon name="remove-outline"></ion-icon> No Courses to display yet
+        </ion-col>
+      </ion-row>
+      <ion-row style="padding-left:7%;" *ngIf='currentDiveCenter.Courses != undefined && currentDiveCenter.Courses.length>0'>
+        <ion-col size="12" size-sm="12" size-md="6" size-lg="6" *ngFor="let c of currentDiveCenter.Courses">
+          <ion-icon name="remove-outline"></ion-icon> {{c}}
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <div class="containerDiv" *ngIf="showDiveCenter">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" class="divHeadSection">
+         <label class="divSubHead"> Dive Sites </label> 
+        </ion-col>
+      </ion-row>
+      <ion-row style="padding-left:7%;" *ngIf='currentDiveCenter.DiveSites == undefined'>
+        <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
+          <ion-icon name="remove-outline"></ion-icon> No Related Dive Sites
+        </ion-col>
+      </ion-row>
+      <ion-row style="padding-left:7%;" *ngIf='currentDiveCenter.DiveSites != undefined && currentDiveCenter.DiveSites.length>0'>
+        <ion-col size="12" size-sm="12" size-md="6" size-lg="6" *ngFor="let s of currentDiveCenter.DiveSites">
+         <ion-icon name="remove-outline"></ion-icon> {{s}} 
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+
+ 
 
   <div class="containerDiv" *ngIf="showDiveCenter">
     <ion-grid *ngIf="currentDiveCenter.Instructors != undefined && currentDiveCenter.Instructors.length != 0">

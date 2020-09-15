@@ -25,6 +25,7 @@ export interface DiveSite{
   Description: string ;
   Coords: string;
   LogoPhoto: string ;
+  Location: string ; 
 }
 
 export interface DiveCenter{
@@ -32,6 +33,7 @@ export interface DiveCenter{
   Description: string ;
   Coords: string;
   LogoPhoto: string ;
+  Location: string ; 
 }
 
 @Component({
@@ -236,7 +238,7 @@ export class ExplorePage implements OnInit {
           
             //console.log("Loading for Page " + this.CentersPage );
             //console.log("Current List");
-            //console.log( this.centerLst);
+            console.log( this.centerLst);
 
           this.CentersPage++ ;
           for(var y=0; y < this.centerLst.length ; y++ ){

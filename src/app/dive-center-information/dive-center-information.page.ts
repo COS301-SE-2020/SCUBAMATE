@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 //import { Http} from '@angular/http';
 import { HttpClient} from '@angular/common/http';
 import { GlobalService } from "../global.service";
+import { AlertController } from '@ionic/angular';
 
 export interface DC {
   Description: string ;
@@ -14,6 +15,8 @@ export interface DC {
   LogoPhoto: string ;
   Name: string ;
   Instructors: string[] ;
+  Location: string;
+  DiveSites: string[];
 }
 
 @Component({
@@ -59,7 +62,7 @@ export class DiveCenterInformationPage implements OnInit {
 
   /********************************************/
 
-  constructor(public _globalService: GlobalService,  private _weatherService: weatherService , private router: Router, private _diveService: diveService, private geolocation: Geolocation, private http: HttpClient) { 
+  constructor(public alertController : AlertController ,public _globalService: GlobalService,  private _weatherService: weatherService , private router: Router, private _diveService: diveService, private geolocation: Geolocation, private http: HttpClient) { 
     
   }
 
@@ -82,6 +85,7 @@ export class DiveCenterInformationPage implements OnInit {
       
     this._diveService.getSingleDiveCenter(localStorage.getItem("ViewDiveCenter")).subscribe( data=>{
       this.currentDiveCenter = data;
+      //console.log(data);
       
       this.showDiveCenter = true ;
 
@@ -116,9 +120,19 @@ export class DiveCenterInformationPage implements OnInit {
              //console.log("Weather Pic: " +  this.Weather.Day );
 
              this.showLoading = false;
+          }, err=>{
+            this.showLoading = false;
+            this.presentGeneralAlert("Failed to load Weather", "Please try again later"); 
           });
+      }, err=>{
+        this.showLoading = false;
+        this.presentGeneralAlert("Failed to load Weather", "Please try again later"); 
       });
 
+    }, err=> {
+      this.showLoading = false;
+      this.presentGeneralAlert("Failed to load Dive Centre", "Please try again later"); 
+      this.router.navigate(['explore']);
     });
 
   }
@@ -152,6 +166,17 @@ export class DiveCenterInformationPage implements OnInit {
     }else{
       this.router.navigate(['login']);
     }
+  }
+
+  async presentGeneralAlert(hd, msg) {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: hd,
+      message: msg ,
+      buttons: ['OK']
+    });
+  
+    await alert.present();
   }
 
 

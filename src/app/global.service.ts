@@ -16,7 +16,7 @@ export class GlobalService {
     if(localStorage.getItem("accessToken"))
     {
       localStorage.removeItem("accessToken"); 
-      this.activeLabel = "Log Out";  
+      this.activeLabel = "Login";  
       this.accountRole = "*Diver";
       location.reload();
     }else{

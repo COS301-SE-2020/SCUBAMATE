@@ -9,13 +9,18 @@ $inputBackgroundColor: #181e21;
 @media (max-width: 767px) {
 
   #checkListDiv{
-      width: 95% !important;
+      width: 120% !important;
       margin-top: 0px !important;
       margin-bottom : 5px !important;
+      margin-left: -20% !important;
   }
 
   .divHead{
     margin-left: 3px !important;
+  }
+
+  .divHeadSection{
+    padding-left:0px !important;
   }
 
   #SuggestedCoursesDiv{
@@ -350,6 +355,15 @@ ion-content.background{
     margin-top: 7% ;
     margin-bottom: 7% ;
   }
+
+  .predictResult{
+    text-shadow: 2px 2px 4px #000000;
+    font-weight: bolder; 
+    font-size: x-large;
+    font-family: 'Righteous';
+    margin-top: 7% ;
+    margin-bottom: 7% ;
+  }
 }
 
 
@@ -363,4 +377,29 @@ ion-content.background{
 .leftPanelMenuItem:hover{
   color: $orange ; 
   cursor: pointer;
+  
+}
+
+.CentresNearMore{
+  font-family: 'Righteous';
+  color: $red ; 
+  cursor: pointer;
+  font-size:  15px ;
+  margin-top: 20%;
+  text-shadow: 2px 2px 4px #000000;
+}
+
+.CentresNearMore:hover{
+  font-size:  19px ;
+  text-shadow: 3px 3px 4px #000000;
+}
+
+.viewLocationLink{
+  font-size:small;
+  text-decoration: none;
+}
+
+.viewLocationLink:hover{
+  font-size:medium;
+  text-shadow: 3px 3px 4px #000000;
 }

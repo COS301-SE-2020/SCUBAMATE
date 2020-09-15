@@ -31,6 +31,16 @@ export interface SitesNearYouObj {
   Coords : string;
 }
 
+export interface CentreNearYouObj {
+  Name : string ;
+  Description: string ; 
+  LogoPhoto : string ; 
+  Coords : string;
+  Courses : string[];
+  Instructors : string[];
+  DiveSites : string[] ; 
+}
+
 export interface predictObject{
   DiveSite : string ;
   Date : string ; 
@@ -77,6 +87,9 @@ export class PlanningPage implements OnInit {
   SitesNearYouLst: SitesNearYouObj[] = new Array(); 
   viewMoreNearYou : boolean = true ;
 
+  showCentreNearYou : boolean = false;
+  CentreNearYouLst : CentreNearYouObj[] = new Array(); 
+
   //predict weather
   //Date
   currentDate  = new Date().toLocaleDateString();
@@ -92,6 +105,7 @@ export class PlanningPage implements OnInit {
   sideViewSuggestCourse : boolean = true; 
   sideViewSitesNear : boolean = true; 
   sideViewCheckList : boolean = true ;  
+  sideViewCentreNear : boolean = true ;
 
 
   loginLabel:string ;
@@ -165,6 +179,51 @@ export class PlanningPage implements OnInit {
       }else{
         console.log("No Custom List Yet");
         this.viewChecklist = false;
+
+        var RequestData = {
+          "DiveType" : ""
+        }
+    
+        console.log(RequestData);
+    
+        this.showLoading= true;
+        this._diveService.getCheckList(RequestData).subscribe( res =>{
+        console.log(res);
+          this.viewChecklist = false ; 
+          this.OptionalReceived= res.Optional;
+          this.EquipmentReceived = res.Equipment;
+          this.PersonalList = [];
+          this.viewPersonalAdded = false;
+    
+          //setup checklist object
+          this.OptionalList.length = this.OptionalReceived.length;
+          for( var x = 0 ; x < this.OptionalReceived.length ; x++){
+            this.OptionalList[x] = {
+              Val : this.OptionalReceived[x],
+              Checked : false
+            } as CkeckListItemObj ;
+          }
+    
+          this.EquipmentList.length = this.EquipmentReceived.length;
+          for( var x = 0 ; x < this.EquipmentList.length ; x++){
+            this.EquipmentList[x] = {
+              Val : this.EquipmentReceived[x],
+              Checked : false
+            } as CkeckListItemObj ;
+          }
+    
+          ///
+    
+    
+    
+          this.viewChecklist = true ; 
+          this.showLoading= false;
+        },err=>{
+          this.showLoading= false;
+        });
+    
+
+        
       }
       
 
@@ -185,20 +244,40 @@ export class PlanningPage implements OnInit {
 
       var reqBod = {
         "AccessToken": localStorage.getItem("accessToken"),
+        "ItemType": "DS",
         "Location"  : resp.coords.latitude.toString() + "," + resp.coords.longitude.toString() 
-      }
+      };
 
 
       this._diveService.getClosestDiveSites(reqBod).subscribe(res =>{
         this.showLoading = false ; 
         this.SitesNearYouLst = res.Items ;
-        console.log(res);
+        //console.log(res);
 
         this.showSitesNearYou = true ; 
 
       }, err => {
         this.showLoading = false ; 
       });
+
+
+      var reqBod2 = {
+        "AccessToken": localStorage.getItem("accessToken"),
+        "ItemType": "DC",
+        "Location"  : resp.coords.latitude.toString() + "," + resp.coords.longitude.toString() 
+      };
+
+      this._diveService.getClosestDiveSites(reqBod2).subscribe(res =>{
+        this.showLoading = false ; 
+        this.CentreNearYouLst = res.Items ;
+       // console.log(res);
+
+        this.showCentreNearYou = true ; 
+
+      }, err => {
+        this.showLoading = false ; 
+      });
+     
 
 
     }, err => {
@@ -301,6 +380,8 @@ export class PlanningPage implements OnInit {
 
 
       this.viewChecklist = true ; 
+      this.showLoading= false;
+    }, err=>{
       this.showLoading= false;
     });
 
@@ -431,12 +512,12 @@ export class PlanningPage implements OnInit {
       "Custom" : this.PersonalList
     } ;
 
-    console.log(customList);
+   // console.log(customList);
 
 
     this._accountService.storeCustomChecklist(customList).subscribe( res => {
         console.log(res);
-        this.presentAlertOk();
+        //this.presentAlertOk();
     }, err =>{
         this.presentAlertFail();
     });
@@ -858,7 +939,8 @@ export class PlanningPage implements OnInit {
       this.sideViewPredict  = true ;
       this.sideViewSuggestCourse  = false; 
       this.sideViewSitesNear  = false; 
-      this.sideViewCheckList = false ;  
+      this.sideViewCheckList = false ;
+      this.sideViewCentreNear = false ;  
 
     }else if(selectedView == "SitesNear"){
 
@@ -866,6 +948,7 @@ export class PlanningPage implements OnInit {
       this.sideViewSuggestCourse  = false; 
       this.sideViewSitesNear  = true; 
       this.sideViewCheckList = false ;
+      this.sideViewCentreNear = false ;
 
 
     }else if(selectedView == "SuggestCourses"){
@@ -874,17 +957,36 @@ export class PlanningPage implements OnInit {
       this.sideViewSuggestCourse  = true; 
       this.sideViewSitesNear  = false; 
       this.sideViewCheckList = false ;
+      this.sideViewCentreNear = false ;
 
-    }else{ //checklist
+    }else if(selectedView == "CentresNear"){
+      this.sideViewPredict  = false ;
+      this.sideViewSuggestCourse  = false; 
+      this.sideViewSitesNear  = false; 
+      this.sideViewCheckList = false ;
+      this.sideViewCentreNear = true ; 
+    }
+    else{ //checklist
       
       this.sideViewPredict  = false ;
       this.sideViewSuggestCourse  = false; 
       this.sideViewSitesNear  = false; 
       this.sideViewCheckList = true ;
+      this.sideViewCentreNear = false ; 
 
     }
 
 
  }
+
+ ViewMoreCentre( DC : string){
+  localStorage.setItem("ViewDiveCenter", DC) ;
+  this.router.navigate(['dive-center-information']);
+}
+
+viewDiveSite(DS : string){
+  localStorage.setItem("ViewDiveSite", DS) ;
+  this.router.navigate(['dive-site-information']);
+}
 
 }

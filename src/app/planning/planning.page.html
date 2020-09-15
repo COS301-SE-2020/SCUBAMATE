@@ -56,6 +56,10 @@
               <ion-icon name="navigate"></ion-icon> &nbsp; &nbsp;
               <ion-label class="leftPanelMenuItem">Dive Sites Near You</ion-label>
             </ion-item>
+            <ion-item color="dark" (click)="toggleSideView('CentresNear')" >
+              <ion-icon name="navigate"></ion-icon> &nbsp; &nbsp;
+              <ion-label class="leftPanelMenuItem">Dive Centres <br> Near You</ion-label>
+            </ion-item>
             <ion-item color="dark" (click)="toggleSideView('SuggestCourses')">
               <ion-icon name="book"></ion-icon> &nbsp; &nbsp;
               <ion-label class="leftPanelMenuItem">Suggested Courses</ion-label>
@@ -77,9 +81,14 @@
         <div class="divHeadSection">
            <ion-grid>
              <ion-row>
-               <ion-col size="12" size-sm="12" size-md="12" size-lg="12">
+               <ion-col size="12" size-sm="12" size-md="11" size-lg="11">
                  <ion-label class="divHead">View Predicted Visibility At Dive Site </ion-label>
                </ion-col>
+               <ion-col size="12" size-sm="12" size-md="1" size-lg="1">
+                <ion-button  color='dark' (click)='presentGeneralAlert("Visibility Prediction", "Poor: 0m - 3m<br> Average: 4m - 6m<br> Good: 7m - 9m<br> Excellent: 10m and greater")'>
+                  <ion-icon name="information-circle"></ion-icon>
+                </ion-button>
+              </ion-col>
              </ion-row>
            </ion-grid>
         </div>
@@ -119,10 +128,10 @@
                 <label class="predictedInfo"> {{predictObj.Date}} </label>
               </ion-col>
               <ion-col size="12" size-sm="12" size-md="4" size-lg='4'>
-                <label class="predictedInfo" *ngIf='predictedVisibility == "Poor"' style="color: #eb445a;text-shadow: 2px 2px 4px #000000;font-weight: bolder; font-size:xx-large;"> {{predictedVisibility}} </label>
-                <label class="predictedInfo" *ngIf='predictedVisibility == "Average"' style="color: #E76F51;text-shadow: 2px 2px 4px #000000;font-weight: bolder; font-size:xx-large;"> {{predictedVisibility}} </label>
-                <label class="predictedInfo" *ngIf='predictedVisibility == "Good"' style="color: #36abe0;text-shadow: 2px 2px 4px #000000;font-weight: bolder; font-size:xx-large;"> {{predictedVisibility}} </label>
-                <label class="predictedInfo" *ngIf='predictedVisibility == "Excellent"' style="color: #2dd36f;text-shadow: 2px 2px 4px#000000;font-weight: bolder; font-size:xx-large;"> {{predictedVisibility}} </label>
+                <label class="predictedInfo" *ngIf='predictedVisibility == "Poor"' class="predictResult" style="color: #eb445a;"> {{predictedVisibility}} </label>
+                <label class="predictedInfo" *ngIf='predictedVisibility == "Average"' class="predictResult" style="color: #E76F51;"> {{predictedVisibility}} </label>
+                <label class="predictedInfo" *ngIf='predictedVisibility == "Good"' class="predictResult" style="color: #36abe0;"> {{predictedVisibility}} </label>
+                <label class="predictedInfo" *ngIf='predictedVisibility == "Excellent"' class="predictResult" style="color: #2dd36f;"> {{predictedVisibility}} </label>
               </ion-col>
            </ion-row>
          </ion-grid>
@@ -133,15 +142,20 @@
         <div class="divHeadSection">
            <ion-grid>
              <ion-row>
-               <ion-col size="12" size-sm="12" size-md="9" size-lg="9">
+               <ion-col size="12" size-sm="12" size-md="11" size-lg="11">
                  <ion-label class="divHead">Dive Sites Near You</ion-label>
                </ion-col>
-               <ion-col size="12" size-sm="12" size-md="3" size-lg="3" >
-                <ion-button (click)="toggleViewMoreSitesNearYou()" style="--border-radius:5px;width:90%;font-size:x-small;padding: 5px;" *ngIf="viewMoreNearYou">
+               <ion-col size="12" size-sm="12" size-md="1" size-lg="1">
+                <ion-button  color='dark' (click)='presentGeneralAlert("Dive Sites Near You", "View a list of sites near you! To view more information on a site click on the name or image of the site.")'>
+                  <ion-icon name="information-circle"></ion-icon>
+                </ion-button>
+              </ion-col>
+               <ion-col size="12" size-sm="12" size-md="12" size-lg="12" >
+                <ion-button (click)="toggleViewMoreSitesNearYou()" style="--border-radius:5px;width:100%;font-size:x-small;padding: 5px;" *ngIf="viewMoreNearYou">
                   <ion-icon name="caret-up" color="light"></ion-icon>
                   &nbsp; View Less
                 </ion-button>
-                <ion-button (click)="toggleViewMoreSitesNearYou()" style="--border-radius:5px;width:90%;font-size:x-small;padding: 5px;" *ngIf="!viewMoreNearYou">
+                <ion-button (click)="toggleViewMoreSitesNearYou()" style="--border-radius:5px;width:100%;font-size:x-small;padding: 5px;" *ngIf="!viewMoreNearYou">
                   <ion-icon name="caret-down" color="light"></ion-icon>
                   &nbsp; View More
                 </ion-button>
@@ -153,17 +167,50 @@
          <ion-grid style="padding: 0;">
            <ion-row *ngFor='let snr of SitesNearYouLst' class="SitesNearRow">
                 <ion-col size="12" size-sm="12" size-md="2" size-lg="2" style="padding:0;margin:0;">
-                  <img class="cardFeedIMG" src={{snr.LogoPhoto}} style="height:100%;width:100%;" />
+                  <img class="cardFeedIMG" (click)="viewDiveSite(snr.Name)" src={{snr.LogoPhoto}} style="height:100%;width:100%;cursor:pointer;" />
                 </ion-col>
                 <ion-col size="12" size-sm="12" size-md="2" size-lg="2" class="SitesNearLeftCol" style="padding:0;margin:0;">
-                  <label class="SitesNearName"> {{snr.Name}} </label> <br>
-                  <a href="https://maps.google.com/?q={{snr.Coords}}" style="font-size:small;text-decoration: none;"><ion-icon name="location" style="font-size:larger;"></ion-icon> View On Map</a>
+                  <label class="SitesNearName" (click)="viewDiveSite(snr.Name)" style="cursor:pointer;"> {{snr.Name}} </label> <br>
+                  <a href="https://maps.google.com/?q={{snr.Coords}}" class="viewLocationLink"><ion-icon name="location" style="font-size:larger;"></ion-icon> View On Map</a>
               </ion-col>
              <ion-col size="12" size-sm="12" size-md="1" size-lg="1" style="padding:0;margin:0;">
                 <label class="SitesNearRating">Rating <br> {{snr.Rating}}  </label>
            </ion-col> 
            <ion-col size="12" size-sm="12" size-md="7" size-lg="7" style="padding:0;margin:0;">
              <label class="SitesNearDesc"> {{snr.Description}}  </label>
+         </ion-col> 
+           </ion-row>
+         </ion-grid>
+        </div>
+       </div>
+
+       <div id="SuggestedCoursesDiv" *ngIf="sideViewCentreNear &&   showCentreNearYou" style="padding-bottom: 0px;">
+        <div class="divHeadSection">
+           <ion-grid>
+             <ion-row>
+               <ion-col size="12" size-sm="12" size-md="11" size-lg="11">
+                 <ion-label class="divHead">Dive Centres Near You</ion-label>
+               </ion-col>
+               <ion-col size="12" size-sm="12" size-md="1" size-lg="1">
+                <ion-button  color='dark' (click)='presentGeneralAlert("Dive Centres Near You", "View a list of centres near you! To view more information on a centre click on the name or image of the centre.")'>
+                  <ion-icon name="information-circle"></ion-icon>
+                </ion-button>
+              </ion-col>
+             </ion-row>
+           </ion-grid>
+        </div>
+        <div class="divBodySection" style="padding: 0;margin-left: 0; margin-right: 0;">
+         <ion-grid style="padding: 0;">
+           <ion-row *ngFor='let cnr of CentreNearYouLst' class="SitesNearRow">
+                <ion-col size="12" size-sm="12" size-md="3" size-lg="3" style="padding:0;margin:0;">
+                  <img class="cardFeedIMG" (click)="ViewMoreCentre(cnr.Name)" src={{cnr.LogoPhoto}} style="height:100%;width:100%;background-color: white;cursor:pointer;" />
+                </ion-col>
+                <ion-col size="12" size-sm="12" size-md="2" size-lg="2" class="SitesNearLeftCol" style="padding:20px;margin:0;">
+                  <label class="SitesNearName" (click)="ViewMoreCentre(cnr.Name)" style="cursor:pointer;"> {{cnr.Name}} </label> <br>
+                  <a href="https://maps.google.com/?q={{cnr.Coords}}" class="viewLocationLink"><ion-icon name="location" style="font-size:larger;"></ion-icon> View On Map</a>
+              </ion-col>
+           <ion-col size="12" size-sm="12" size-md="7" size-lg="7" style="padding:20px;margin:0;">
+             <label class="SitesNearDesc"> {{cnr.Description}}  </label>
          </ion-col> 
            </ion-row>
          </ion-grid>
@@ -178,7 +225,7 @@
               <ion-col size="12" size-sm="12" size-md="9" size-lg="9">
                 <ion-label class="divHead">Suggested Courses for You</ion-label>
               </ion-col>
-              <ion-col size="12" size-sm="12" size-md="3" size-lg="3">
+              <ion-col size="12" size-sm="12" size-md="3" size-lg="3" *ngIf="suggestedCourseFullList.length != 0">
                 <ion-button (click)="toggleViewMoreCourses()" style="--border-radius:5px;width:90%;font-size:x-small;padding: 5px;float:right;" *ngIf="showCourses && viewCourses">
                   <ion-icon name="caret-up" color="light"></ion-icon>
                   &nbsp; View Less
@@ -194,7 +241,7 @@
        <div class="divBodySection" style="padding:0;margin:0;" *ngIf="viewCourses">
         <ion-grid style="padding-bottom:0;padding-top:0;">
           <ion-row>
-            <ion-col size="12" size-sm="12" size-md="12" size-lg="12">
+            <ion-col size="12" size-sm="12" size-md="12" size-lg="12" >
               <ion-button (click)="presentSurveyQ1()" style="margin:auto;--border-radius:5px;width:100%;padding: 5px;">
                 <ion-icon name="document-outline"></ion-icon>
                 &nbsp; Complete Survey for more Suggestion
@@ -220,7 +267,6 @@
               <label class="SitesNearDesc"> {{sc.Description}} </label>
             </ion-col>
           </ion-row>
-    
         </ion-grid>
        </div>
       </div>
@@ -234,8 +280,8 @@
                 <ion-label class="divHead">My Dive Planning Checklist </ion-label> <br>
                 <ion-label color='success' >Start Your Checklist By Searching For A Dive Type </ion-label>
               </ion-col>
-              <ion-col size="12" size-sm="12" size-md="11" size-lg="1">
-                <ion-button  color='dark' (click)='presentGeneralAlert("Checklist", "Generic Checklists are provided on Dive Type Search. Users can add Custom items and store these checklists for later use.")'>
+              <ion-col size="12" size-sm="12" size-md="1" size-lg="1">
+                <ion-button  color='dark' (click)='presentGeneralAlert("Checklist", "Generic Checklists are provided on Dive Type Search. Users can add Custom items. Checklists are automatically saved on page close.")'>
                   <ion-icon name="information-circle"></ion-icon>
                 </ion-button>
               </ion-col>

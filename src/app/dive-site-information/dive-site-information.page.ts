@@ -3,6 +3,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { diveService } from '../service/dive.service';
 import { weatherService } from '../service/weather.service';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 
 import { GlobalService } from "../global.service";
 
@@ -11,6 +12,7 @@ export interface DS {
   Coords: string ;
   Name: string ;
   LogoPhoto: string ; 
+  Location: string;
 }
 
 @Component({
@@ -55,7 +57,7 @@ showDiveSite : Boolean ;
 
 /********************************************/
 
-  constructor(public _globalService: GlobalService, private _weatherService: weatherService , private router: Router, private _diveService: diveService, private geolocation: Geolocation) {
+  constructor(public alertController : AlertController , public _globalService: GlobalService, private _weatherService: weatherService , private router: Router, private _diveService: diveService, private geolocation: Geolocation) {
     
    }
 
@@ -110,8 +112,18 @@ showDiveSite : Boolean ;
               this.Weather.Wind = res.DailyForecasts[0].Day.Wind.Speed.Value + " " + res.DailyForecasts[0].Day.Wind.Speed.Unit ;
 
 
+          }, err=> {
+            this.showLoading = false;
+            this.presentGeneralAlert("Failed to load Weather", "Please try again later"); 
           });
+      }, err =>{
+        this.showLoading = false;
+        this.presentGeneralAlert("Failed to load Weather", "Please try again later"); 
       });
+    }, err=>{
+      this.showLoading = false;
+      this.presentGeneralAlert("Failed to load Dive Site", "Please try again later"); 
+      this.router.navigate(['explore']);
     });
   }
 
@@ -134,5 +146,16 @@ showDiveSite : Boolean ;
           }
       });
       return returnBool;
+  }
+
+  async presentGeneralAlert(hd, msg) {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: hd,
+      message: msg ,
+      buttons: ['OK']
+    });
+  
+    await alert.present();
   }
 }
