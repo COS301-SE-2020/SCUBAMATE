@@ -185,6 +185,7 @@ export class PlanningPage implements OnInit {
 
       var reqBod = {
         "AccessToken": localStorage.getItem("accessToken"),
+        "ItemType": "DS",
         "Location"  : resp.coords.latitude.toString() + "," + resp.coords.longitude.toString() 
       }
 

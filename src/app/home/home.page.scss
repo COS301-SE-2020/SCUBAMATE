@@ -27,7 +27,7 @@ $inputBackgroundColor: #181e21;
       }
   }
 
-  #footerIMG{
+ #footerIMG{
       width: 60% !important;
       height: 60% !important;
   }
@@ -207,3 +207,13 @@ table{
  }
 
 } 
+
+#slideArea{
+
+  width: 80%;
+  height: 10%;
+  background-color:   rgba(38, 70, 83, 0.6);
+  padding-top:10px;
+  padding-bottom: 10px;
+  margin-bottom: 40px;
+}
