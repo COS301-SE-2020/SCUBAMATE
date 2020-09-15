@@ -82,6 +82,7 @@ export class DiveCenterInformationPage implements OnInit {
       
     this._diveService.getSingleDiveCenter(localStorage.getItem("ViewDiveCenter")).subscribe( data=>{
       this.currentDiveCenter = data;
+      console.log(data);
       
       this.showDiveCenter = true ;
 
