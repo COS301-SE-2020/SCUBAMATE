@@ -12,6 +12,7 @@ import { HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { map } from 'rxjs/operators';
+import 'jasmine';
 
 var validData = {
   pub: false,
