@@ -5,6 +5,7 @@ import { diveService } from '../service/dive.service';
 import {ConnectionService} from 'ng-connection-service';
 import { Location } from '@angular/common';
 import { GlobalService } from "../global.service";
+import { AlertController } from '@ionic/angular';
 
 export interface Dive{
   FirstName : string ;
@@ -24,6 +25,7 @@ export interface DiveSite{
   Description: string ;
   Coords: string;
   LogoPhoto: string ;
+  Location: string ; 
 }
 
 export interface DiveCenter{
@@ -31,6 +33,7 @@ export interface DiveCenter{
   Description: string ;
   Coords: string;
   LogoPhoto: string ;
+  Location: string ; 
 }
 
 @Component({
@@ -66,11 +69,14 @@ export class ExplorePage implements OnInit {
   SitesPage: number = 1 ;
   FeedPage : number = 1; 
 
+  //infoViews
+  viewFeedInfo: boolean = false; 
+
 
   /*********************************************/
 
   
-  constructor(public _globalService: GlobalService, private router: Router, private _diveService: diveService, private connectionService: ConnectionService, private location: Location) { 
+  constructor(public alertController : AlertController , public _globalService: GlobalService, private router: Router, private _diveService: diveService, private connectionService: ConnectionService, private location: Location) { 
     this.connectionService.monitor().subscribe(isConnected => {  
       this.isConnected = isConnected;  
       if (this.isConnected) {  
@@ -169,6 +175,9 @@ export class ExplorePage implements OnInit {
     this.showSites = true;
     this.showCenters = false;
     this.showFeedLoaded = false;
+
+    this.viewFeedInfo = false; 
+
     this._globalService.activeExploreFeed = "sites";
     this.loadSites();
     
@@ -178,6 +187,8 @@ export class ExplorePage implements OnInit {
     this.showFeed =  false;
     this.showSites = false;
     this.showCenters= true;
+    this.viewFeedInfo = false; 
+    
     this.showFeedLoaded = false;
     this._globalService.activeExploreFeed = "centers";
     this.loadCenters();
@@ -186,6 +197,8 @@ export class ExplorePage implements OnInit {
     this.showFeed =  true;
     this.showSites = false;
     this.showCenters = false;
+    this.viewFeedInfo = false; 
+    
     this.showFeedLoaded = true;
     this._globalService.activeExploreFeed = "feed";
     this.loadFeed();
@@ -193,7 +206,7 @@ export class ExplorePage implements OnInit {
   loadFeed(){
     this.showLoading = true;
     this._diveService.getPublicDives(this.FeedPage).subscribe(res =>{
-      console.log(res);
+      //console.log(res);
       res.forEach(element => {
         if(JSON.stringify(this.pubLst).indexOf(JSON.stringify(element)) === -1){
           this.pubLst.push(element);
@@ -225,7 +238,7 @@ export class ExplorePage implements OnInit {
           
             //console.log("Loading for Page " + this.CentersPage );
             //console.log("Current List");
-            //console.log( this.centerLst);
+            console.log( this.centerLst);
 
           this.CentersPage++ ;
           for(var y=0; y < this.centerLst.length ; y++ ){
@@ -261,9 +274,9 @@ export class ExplorePage implements OnInit {
 
             this.siteLst.push(...data.ReturnedList);
           
-            console.log("Loading for Page " + this.SitesPage );
-            console.log("Current List");
-            console.log( this.siteLst);
+            //console.log("Loading for Page " + this.SitesPage );
+            //console.log("Current List");
+            //console.log( this.siteLst);
 
           this.SitesPage++ ;
 
@@ -298,7 +311,16 @@ export class ExplorePage implements OnInit {
   }
 
 
-
+  async presentGeneralAlert(hd, msg) {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: hd,
+      message: msg ,
+      buttons: ['OK']
+    });
+  
+    await alert.present();
+  }
 
 
 }

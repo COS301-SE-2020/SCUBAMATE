@@ -66,7 +66,7 @@
     </ion-buttons>
     <ion-title > 
      <ion-buttons >
-      <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo" style="height:80%;width:12%;padding-bottom:3px;padding-top:3px;margin-right:10px;"/>
+      <img src="../assets/images/full logo wit.png" routerLink="/home" alt="Scubamate" id="navLogo" style="height:80%;width:12%;padding-bottom:3px;padding-top:3px;margin-right:10px;"/>
       
         <ion-button routerLink="/home" class="hidden-sm-down">
           <ion-icon name="home" ></ion-icon><label style="padding-top:7px;">&nbsp; Home</label> 
@@ -95,7 +95,7 @@
 
 <ion-content fullscreen class="background" no-scroll padding >
 
-<ion-radio-group color="dark" slot="fixed" style="width:20%;margin-top:2%;margin-left:2%;" value="feed" class="hidden-sm-down">
+<ion-radio-group color="dark" *ngIf="!viewFeedInfo" slot="fixed" style="width:20%;margin-top:2%;margin-left:2%;" value="feed" class="hidden-sm-down">
   <ion-row>
     <ion-item color="dark" (click)="displayFeed()" style="width:100%;--border-radius:27px;" >
       <ion-label>Public Feed</ion-label>
@@ -136,10 +136,38 @@
   </ion-row>
 </ion-radio-group>
 
+<!-- <ion-grid *ngIf="viewFeedInfo">
+  <ion-row >
+    <div class="infoImg"></div>
+  </ion-row>
+</ion-grid>  -->
 
+<!-- <ion-content color='dark'  overflow-scroll="true" *ngIf="viewFeedInfo" style="width:100%;height:550px; padding: 10% !important;margin-left:25% !important;">
+  <video controls="controls" width="100%" preload="metadata" autoplay="autoplay" loop webkit-playsinline="webkit-playsinline" class="videoPlayer">
+   <source src="../assets/video/info-Feed.mp4" type="video/mp4" />
+  </video>
+</ion-content>  -->
 
 <ion-grid class="contentContainer" *ngIf='showFeed'>
   <ion-row>
+    <ion-col size="12" size-lg="3" offset-lg="9" class="hidden-sm-down">
+      <!--<ion-button color="dark" *ngIf="!viewFeedInfo" (click)="viewFeedInfo = !viewFeedInfo"  style="float:right;--border-radius:3%;width:100px;height:40px;">
+        <ion-icon name="information-circle" ></ion-icon>&nbsp; Help
+      </ion-button>
+       <ion-button color="success" *ngIf="viewFeedInfo" (click)="viewFeedInfo = !viewFeedInfo"  style="float:right;--border-radius:3%;width:100%;height:40px;">
+        <ion-icon name="checkmark-circle"></ion-icon>&nbsp; Return to feed 
+      </ion-button> -->
+      <ion-button color="dark"  (click)='presentGeneralAlert("See Community Dives Here!","Hover over the card to see more information")'  style="float:right;--border-radius:3%;width:100px;height:40px;">
+        <ion-icon name="information-circle" ></ion-icon>&nbsp; Help
+      </ion-button>
+    </ion-col>
+    <ion-col size="12" size-lg="3" offset-lg="9" class="hidden-sm-up" >
+      <ion-button color="dark"  (click)='presentGeneralAlert("See Community Dives Here!","Click on the card to see more information")'  style="float:right;--border-radius:3%;width:100px;height:40px;">
+        <ion-icon name="information-circle" ></ion-icon>&nbsp; Help
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="!viewFeedInfo">
     <ng-container *ngIf="pubLst.length>1"> 
       <ion-col *ngFor="let d of pubLst;  index as i; " style="margin:0;" >
           <div *ngIf="d!==undefined" class="thecard" >
@@ -199,8 +227,8 @@
       </ion-col>
     </ng-container>
 </ion-row>
-<ion-row style="margin-top:30px;margin-bottom: 40px;" *ngIf="showMoreFeed">
-  <ion-button id="loadMoreBtn" (click)="loadFeed()">
+<ion-row style="margin-top:30px;margin-bottom: 40px;" *ngIf="pubLst.length>1 && showMoreFeed && !viewFeedInfo">
+  <ion-button id="loadMoreBtn" (ionFocus)="loadFeed()" (click)="loadFeed()">
     <ion-icon name="code-download-outline"></ion-icon>
   </ion-button>
 </ion-row>
@@ -218,6 +246,7 @@
                 <ion-card-content fixed>
                     <ion-card-title fixed>
                        <label class="DiveCenterName" fixed> {{dc.Name}} </label> 
+                       <label class="DiveCenterLocation">{{dc.Location}} </label> <br>
                        <label class="ViewDiveCenterLink" fixed><a (click)="ViewMoreDiveCenter(dc.Name)">View More</a> </label>
                     </ion-card-title>
                 </ion-card-content>
@@ -244,7 +273,7 @@
           
         </ion-col>
     </ion-row>
-    <ion-row style="margin-top:30px;margin-bottom: 40px;" *ngIf="showMoreCenters">
+    <ion-row style="margin-top:30px;margin-bottom: 40px;" *ngIf="showMoreCenters && centerLst.length>0">
       <ion-button id="loadMoreBtn" (click)="loadCenters()">
         <ion-icon name="code-download-outline"></ion-icon>
       </ion-button>
@@ -263,6 +292,7 @@
               <ion-card-content>
                 <ion-card-title fixed>
                   <label class="DiveCenterName" fixed> {{ds.Name}} </label> 
+                  <label class="DiveCenterLocation">{{ds.Location}} </label><br>
                   <label class="ViewDiveCenterLink" fixed><a (click)="ViewMoreDiveSite(ds.Name)">View More</a> </label>
                 </ion-card-title>
               </ion-card-content>
@@ -287,7 +317,7 @@
       </div>
     </ion-col>
 </ion-row>
-<ion-row style="margin-top:30px;margin-bottom: 40px;" *ngIf="showMoreSites">
+<ion-row style="margin-top:30px;margin-bottom: 40px;" *ngIf="showMoreSites && siteLst.length>0">
   <ion-button id="loadMoreBtn" (click)="loadSites()">
     <ion-icon name="code-download-outline"></ion-icon>
   </ion-button>

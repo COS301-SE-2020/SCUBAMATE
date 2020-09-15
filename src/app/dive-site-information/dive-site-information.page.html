@@ -15,7 +15,7 @@
     </ion-buttons>
     <ion-title > 
      <ion-buttons >
-      <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo" style="height:80%;width:12%;padding-bottom:3px;padding-top:3px;margin-right:10px;"/>
+      <img src="../assets/images/full logo wit.png" routerLink="/home"  alt="Scubamate" id="navLogo" style="height:80%;width:12%;padding-bottom:3px;padding-top:3px;margin-right:10px;"/>
       
         <ion-button routerLink="/home" class="hidden-sm-down">
           <ion-icon name="home" ></ion-icon><label style="padding-top:7px;">&nbsp; Home</label> 
@@ -56,6 +56,9 @@
           <div id="ProfileSurroundDiv">
             <img id="Profile" src={{currentDiveSite.LogoPhoto}} >
          </div>
+         <label class="infoLabel">{{currentDiveSite.Location}} </label><br> 
+         <a href="https://maps.google.com/?q={{currentDiveSite.Coords}}" style="font-size:medium;text-decoration: none;"><ion-icon name="location" style="font-size:larger;"></ion-icon> View On Map</a>
+       
         </ion-col>
         <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane">
             {{currentDiveSite.Description}}

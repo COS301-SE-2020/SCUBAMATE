@@ -605,6 +605,7 @@ sendEmail( e : string){
       }
       this.showLoading = false;
       this.router.navigate(['home']);
+      location.reload();
     });
 }
 
@@ -616,6 +617,7 @@ sendVerifiedEmail(e : string ){
       console.log("Validated Email Sent");
       this.showLoading = false;
       this.router.navigate(['home']);
+      location.reload();
     });
 }
 
@@ -640,11 +642,13 @@ async presentAlertOtpWrong( e : string) {
     message: 'Invalid OTP provided' ,
     buttons: [
       {
-        text: 'Cancel',
+        text: 'Retry Later',
         role: 'cancel',
         cssClass: 'secondary',
         handler: () => {
           console.log('Confirm Cancel');
+          this.router.navigate(['home']);
+          location.reload();
         }
       }, {
         text: 'Retry',
@@ -684,6 +688,7 @@ async presentOTPPrompt(e : string) {
         handler: () => {
           console.log('Confirm Cancel');
           this.router.navigate(['home']);
+          location.reload();
         }
       }, {
         text: 'Confirm',

@@ -36,6 +36,12 @@ export class HomePage implements OnInit {
   buttonSignUpMarginLeft : string = "10px" ; 
   buttonLoginMarginLeft  : string = "10px" ; 
 
+  //slides
+  slideOpts = {
+    initialSlide: 0,
+    speed: 400
+  };
+
   constructor(public _globalService: GlobalService, private animationCtrl: AnimationController , private router: Router,private _accountService: accountService, private connectionService: ConnectionService, private location: Location) {
     this.connectionService.monitor().subscribe(isConnected => {  
       this.isConnected = isConnected;  

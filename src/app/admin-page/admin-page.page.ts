@@ -249,17 +249,14 @@ export class AdminPagePage implements OnInit {
       this._globalService.accountRole = localStorage.getItem("accessToken").substring(36, 38) ;
       this.accountType = this._globalService.accountRole;
 
-      if(this.accountType == "10"){
-        
-        this.getDiveCentreInformation();
-      }
+
       //get initial chart data
       if(this.accountType == "11"){
         var numDivesBody ={
           "AccessToken" : localStorage.getItem("accessToken") ,
           "DiveSite" : "*",
           "YearOfSearch" : this.currentDate.getFullYear().toString()
-        };
+        }
 
         this.dateSearch =  this.currentDate.getFullYear().toString() ;
 
@@ -405,7 +402,10 @@ export class AdminPagePage implements OnInit {
       
 
       }
-      
+      else if(this.accountType =="10"){
+        this.getDiveCentreInformation();
+        this.getUnverifiedInstructors();
+      }
     }
 
     
@@ -460,9 +460,10 @@ export class AdminPagePage implements OnInit {
          this.accountType = this._globalService.accountRole;
          console.log(this.accountType);
      }
-     if(this.accountType == "10"){
-        
+
+     if(this.accountType =="10"){
       this.getDiveCentreInformation();
+      this.getUnverifiedInstructors();
     }
   }
 
@@ -470,6 +471,7 @@ export class AdminPagePage implements OnInit {
     if(localStorage.getItem("accessToken"))
     {
       localStorage.removeItem("accessToken");
+      this.accountType = "*Diver";
       this.router.navigate(['login']);
     }else{
       this.router.navigate(['login']);
@@ -827,7 +829,15 @@ addCourseToDiveCentre(){
   
   if(this.courseInputField.length >= 2)
   {
-   const index: number = this.currentDiveCenter.Courses.indexOf(this.courseInputField);
+    let index: number;
+    if(typeof this.currentDiveCenter.Courses == "undefined"){
+      index = -1;
+      this.currentDiveCenter.Courses =[];
+    }
+    else{
+      index = this.currentDiveCenter.Courses.indexOf(this.courseInputField);
+    }
+   
    if (index == -1) {
     this.currentDiveCenter.Courses.push(this.courseInputField);
      this.showCourses = true;
@@ -880,7 +890,15 @@ removeCourseFromCourse(s : string){
 addSiteToDiveCentre(){
   if(this.siteInput.length >= 2)
   {
-   const index: number = this.currentDiveCenter.DiveSites.indexOf(this.siteInput);
+    let index :number;
+    if(typeof this.currentDiveCenter.DiveSites == "undefined"){
+      index = -1;
+      this.currentDiveCenter.DiveSites =[];
+    }
+    else{
+      index = this.currentDiveCenter.DiveSites.indexOf(this.siteInput);
+    }
+   
    if (index == -1) {
     this.currentDiveCenter.DiveSites.push(this.siteInput);
      this.showSites = true;
@@ -996,6 +1014,7 @@ getDiveCentreInformation(){
     
     this.currentDiveCenter = data.Item;
     this.showLoading = false ;
+    console.log(this.currentDiveCenter);
 
   }, err =>{
 

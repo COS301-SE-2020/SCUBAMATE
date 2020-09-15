@@ -168,7 +168,7 @@ export class EditProfilePage implements OnInit {
       let s = reader.result ; 
       me.base64textString = reader.result.toString() ;
 
-      console.log(me.userObj.ProfilePhoto);
+      //console.log(me.userObj.ProfilePhoto);
       me.userObj.ProfilePhoto = me.base64textString;
       //console.log(me.userObj.ProfilePhoto);
      

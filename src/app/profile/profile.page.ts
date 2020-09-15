@@ -198,7 +198,9 @@ export class ProfilePage implements OnInit {
     if(localStorage.getItem("accessToken"))
     {
       localStorage.removeItem("accessToken");
-      this.router.navigate(['home']);
+      this.accountType = "*Diver";
+      this.router.navigate(['login']);
+      location.reload();
     }else{
       this.router.navigate(['login']);
     }
