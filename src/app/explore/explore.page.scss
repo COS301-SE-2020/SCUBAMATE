@@ -273,13 +273,26 @@ table{
   bottom: 0;
 }
 
+.DiveCenterLocation{
+  width:100%;
+  font-family: 'Righteous';
+  text-align: center;
+  font-size:  14px ;
+  margin-bottom: 5px;
+}
+
 .ViewDiveCenterLink{
+  width:100%;
   font-size:  15px ;
   color: #2A9D8F ;
   background-color: #ddd;
   text-align: center;
   cursor: pointer;
   float: center;
+}
+
+.ViewDiveCenterLink:hover{
+  font-size:  17px ;
 }
 
 .DiveCenterDescription{
