@@ -11,6 +11,10 @@ import {HttpModule} from '@angular/http';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { map } from 'rxjs/operators';
 
+var validData = {
+  accessToken : "d1d7391d-c035-28ab-0193-68a7d263d4be11ac76afb3c161…0702085a1c423b0ed53f38b9a0e6e0ad8bfe8cd3712f14be7"
+};
+
 describe('DiveSiteInformationPage', () => {
   let component: DiveSiteInformationPage;
   let fixture: ComponentFixture<DiveSiteInformationPage>;
@@ -35,6 +39,7 @@ describe('DiveSiteInformationPage', () => {
     router = TestBed.get(Router);
     httpMock = TestBed.get(HttpTestingController);
     http = TestBed.get(HttpClient);
+    localStorage.setItem("accessToken", validData.accessToken);
   }));
 
   it('should create', () => {
@@ -71,20 +76,53 @@ describe('DiveSiteInformationPage', () => {
   });
 
   it('getLogWeather() test', () => {
-    
     var Key = {
-      key: null,
-      city: null,
-      province: null
+      key: "uF3LU0UljaHxJrAP3QkEthAD3Pdjwh3g",
+      city: "Pretoria",
+      province: "Gauteng"
     };
 
-    let weathearSpy = spyOn(weatService, 'getLocationKey').and.callThrough();
+    let weathearSpy = spyOn(weatService, 'getLogWeather').and.callThrough();
     expect(weathearSpy).toBeDefined();
-    let response = weatService.getLocationKey(Key).pipe(
+    let response = weatService.getLogWeather(Key).pipe(
       map( res => res.body)
     );
     console.log(response.operator);
     expect(weathearSpy).toBeDefined();
-    expect(weatService.getLocationKey).toHaveBeenCalledWith(Key);
+    expect(weatService.getLogWeather).toHaveBeenCalledWith(Key);
+  });
+
+  it('Testing Dive-Site Info Components', () => {
+    expect(component.Key).toBeDefined();
+    expect(component.Coordinates).toBeDefined();
+    expect(component.Weather).toBeDefined();
+    expect(component.tempDate).toBeUndefined();
+    expect(component.weatherDate).toBeUndefined();
+    expect(component.Key).toBeDefined();
+    expect(component.showLoading).toBeTrue();
+    expect(component.loginLabel).toBe("Log Out");
+    expect(component.accountType).toBeUndefined();
+    expect(component.currentDiveSite).toBeUndefined();
+    expect(component.showDiveSite).toBeDefined();
+  });
+
+  it('Testing ngOnInit()', () => {
+    component.ngOnInit();
+    expect(component.Key).toBeDefined();
+    expect(component.Coordinates).toBeDefined();
+    expect(component.Weather).toBeDefined();
+    expect(component.tempDate).toBeUndefined();
+    expect(component.weatherDate).toBeUndefined();
+    expect(component.Key).toBeDefined();
+    expect(component.showLoading).toBeTrue();
+    expect(component.loginLabel).toBe("Log Out");
+    expect(component.accountType).toBeUndefined();
+    expect(component.currentDiveSite).toBeUndefined();
+    expect(component.showDiveSite).toBeDefined();
+  });
+
+  it('Testing Dive-Site Info Functionality', () => {
+    expect(component.ngOnInit).toBeTruthy();
+    expect(component.loginClick).toBeTruthy();
   });
 });

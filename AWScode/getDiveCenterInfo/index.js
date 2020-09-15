@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 const AWS = require('aws-sdk');
 AWS.config.update({region: "af-south-1"});
 
@@ -41,11 +41,12 @@ exports.handler = async (event, context) => {
         
         const params = {
             TableName: 'DiveInfo',
-            ProjectionExpression: "#name, Description, LogoPhoto", 
+            ProjectionExpression: "#name, Description, LogoPhoto, #loc", 
             FilterExpression: filter,
             ExpressionAttributeNames: {
                 '#itemT': 'ItemType',
-                '#name' : 'Name'
+                '#name' : 'Name',
+                '#loc': 'Location'
             },
             ExpressionAttributeValues: expressVal,
         };

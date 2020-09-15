@@ -83,7 +83,7 @@ exports.handler = async (event, context, callback) => {
             const dataQ = await documentClient.scan(paramsCourse).promise();
             let qualified = false;
             if(typeof CompletedCourses == "undefined"){
-                responseBody = "Invalid Request Body."
+                responseBody = "Completed Courses are required.";
                 statusCode = 500;
             }
             else{
@@ -100,38 +100,41 @@ exports.handler = async (event, context, callback) => {
                     }
                 });
                 if(qualified){
-                    /* data:image/png;base64, is send at the front of ProfilePhoto thus find the first , */
-                    const startContentType = ProfilePhoto.indexOf(":")+1;
-                    const endContentType = ProfilePhoto.indexOf(";");
-                    const contentType = ProfilePhoto.substring(startContentType, endContentType);
+                    let profileLink = "https://profilephoto-imagedatabase-scubamate.s3.af-south-1.amazonaws.com/default.jpeg";
+                    if(ProfilePhoto !== ""){
+                        /* data:image/png;base64, is send at the front of ProfilePhoto thus find the first , */
+                        const startContentType = ProfilePhoto.indexOf(":")+1;
+                        const endContentType = ProfilePhoto.indexOf(";");
+                        const contentType = ProfilePhoto.substring(startContentType, endContentType);
+                        
+                        const startExt = contentType.indexOf("/")+1;
+                        const extension = contentType.substring(startExt, contentType.length);
+                        
+                        const startIndex = ProfilePhoto.indexOf(",")+1;
+                        
+                        const encodedImage = ProfilePhoto.substring(startIndex, ProfilePhoto.length);
+                        const decodedImage = Buffer.from(encodedImage.replace(/^data:image\/\w+;base64,/, ""),'base64');
+                      
+                        const filePath = "profilephoto" + AccountGuid + "."+extension;
+                        
+                        profileLink ="https://profilephoto-imagedatabase-scubamate.s3.af-south-1.amazonaws.com/"+filePath;
                     
-                    const startExt = contentType.indexOf("/")+1;
-                    const extension = contentType.substring(startExt, contentType.length);
-                    
-                    const startIndex = ProfilePhoto.indexOf(",")+1;
-                    
-                    const encodedImage = ProfilePhoto.substring(startIndex, ProfilePhoto.length);
-                    const decodedImage = Buffer.from(encodedImage.replace(/^data:image\/\w+;base64,/, ""),'base64');
-                  
-                    const filePath = "profilephoto" + AccountGuid + "."+extension;
-                    
-                    let profileLink ="https://profilephoto-imagedatabase-scubamate.s3.af-south-1.amazonaws.com/"+filePath;
-                
-                    const paramsImage = {
-                      "Body": decodedImage,
-                      "Bucket": "profilephoto-imagedatabase-scubamate",
-                      "Key": filePath,
-                      "ContentEncoding": 'base64',
-                      "ContentType" : contentType
-                    };
-                    
-                    const s3 = new AWS.S3({apiVersion: '2006-03-01'});
-                    s3.putObject(paramsImage, function(err, data){
-                        if(err) {
-                            /* Default image if image upload fails */
-                            profileLink ="https://profilephoto-imagedatabase-scubamate.s3.af-south-1.amazonaws.com/image2.jpg";
-                        }
-                    });
+                        const paramsImage = {
+                          "Body": decodedImage,
+                          "Bucket": "profilephoto-imagedatabase-scubamate",
+                          "Key": filePath,
+                          "ContentEncoding": 'base64',
+                          "ContentType" : contentType
+                        };
+                        
+                        const s3 = new AWS.S3({apiVersion: '2006-03-01'});
+                        s3.putObject(paramsImage, function(err, data){
+                            if(err) {
+                                /* Default image if image upload fails */
+                                profileLink ="https://profilephoto-imagedatabase-scubamate.s3.af-south-1.amazonaws.com/default.jpeg";
+                            }
+                        });
+                    }
                     
                     /* Create Accesstoken */
                     const typeNum = "00";
@@ -178,7 +181,7 @@ exports.handler = async (event, context, callback) => {
                     }
                 }
                 else{
-                    responseBody = "Incorrect qualification to be an instructor.";
+                    responseBody = "A PADI Instructor Course Is Required To Be An Instructor. Examples: IDC Staff Instructor, Open Water Instructor, Divemaster, Master Scuba Diver";
                     statusCode = 403;
                 }
             }
@@ -203,3 +206,5 @@ exports.handler = async (event, context, callback) => {
     return response;
     
 };
+
+

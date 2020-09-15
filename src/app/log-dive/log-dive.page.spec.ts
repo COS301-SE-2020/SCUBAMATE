@@ -82,21 +82,20 @@ describe('LogDivePage', () => {
   });
 
   it('getLogWeather() test', () => {
-    
     var Key = {
-      key: null,
-      city: null,
-      province: null
+      key: "uF3LU0UljaHxJrAP3QkEthAD3Pdjwh3g",
+      city: "Pretoria",
+      province: "Gauteng"
     };
 
-    let weathearSpy = spyOn(weatService, 'getLocationKey').and.callThrough();
+    let weathearSpy = spyOn(weatService, 'getLogWeather').and.callThrough();
     expect(weathearSpy).toBeDefined();
-    let response = weatService.getLocationKey(Key).pipe(
+    let response = weatService.getLogWeather(Key).pipe(
       map( res => res.body)
     );
     console.log(response.operator);
     expect(weathearSpy).toBeDefined();
-    expect(weatService.getLocationKey).toHaveBeenCalledWith(Key);
+    expect(weatService.getLogWeather).toHaveBeenCalledWith(Key);
   });
 
   it('lookAheadBuddy() test', () => {
@@ -193,7 +192,7 @@ describe('LogDivePage', () => {
 
   it('Testing Log-Dive Components', () => {
     expect(component.uuidValue).toBeDefined();
-    expect(component.showLoading).toBeTrue();
+    expect(component.showLoading).toBeFalse();
     expect(component.DiveTypeLst).toBeUndefined();
     expect(component.DiveSiteLst).toBeUndefined();
     expect(component.BuddyLst).toBeUndefined();
@@ -250,14 +249,14 @@ describe('LogDivePage', () => {
     let accountSpy = spyOn(accService, 'lookAheadBuddy').and.callThrough();
     expect(accountSpy).toBeDefined();
     expect(component.BuddyLst).toBeUndefined();
-    expect(component.showLoading).toBeTrue();
+    expect(component.showLoading).toBeFalse();
   });
 
   it('Testing DiveLogSubmit()', () => {
     let navigateSpy = spyOn(router, 'navigate');
     let diveSpy = spyOn(divService, 'logDive').and.callThrough();
     expect(diveSpy).toBeDefined();
-    expect(component.showLoading).toBeTrue();
+    expect(component.showLoading).toBeFalse();
   }); 
 
   it('Testing Log-Dive Functionality', () => {

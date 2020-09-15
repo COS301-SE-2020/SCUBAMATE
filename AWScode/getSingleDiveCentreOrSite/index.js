@@ -8,8 +8,7 @@ exports.handler = async (event, context) => {
     /* To distiguish search: DS- Dive Sites or DC- Dive Centre */
     const ItemType = body.ItemType+"-"; 
     /* Name of Dive Centre/Site */
-    const Name = (body.Name).toLowerCase(); 
-    
+    const Name = (body.Name).toLowerCase();
     const validItemTypes = ["DS-","DC-"];
     function contains(arr,search){
         let returnBool = false;
@@ -24,12 +23,16 @@ exports.handler = async (event, context) => {
     let statusCode;
     let responseBody;
     if(contains(validItemTypes, ItemType)){
-          
+        let projection = "#name, Description, Coords, LogoPhoto"
+        if(ItemType == "DC-"){
+           projection =  "#name, #loc, Description, Coords, LogoPhoto, Courses, Instructors, DiveSites"
+        }
         const params = {
             TableName: 'DiveInfo',
-            ProjectionExpression: "#name, Description, Coords, LogoPhoto, Courses, Instructors, DiveSites", 
+            ProjectionExpression: projection, 
             ExpressionAttributeNames: {
-                '#name' : 'Name'
+                '#name' : 'Name',
+                '#loc' : 'Location'
             },
             Key: {
                 'ItemType' : ItemType + Name.toLowerCase()

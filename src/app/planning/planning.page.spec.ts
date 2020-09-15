@@ -3,6 +3,7 @@ import { IonicModule } from '@ionic/angular';
 import { PlanningPage } from './planning.page';
 import { diveService } from '../service/dive.service';
 import { accountService } from '../service/account.service';
+import { weatherService } from '../service/weather.service'
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import {HttpModule} from '@angular/http';
@@ -10,6 +11,7 @@ import { HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
 import { FormBuilder} from '@angular/forms';
 import { map } from 'rxjs/operators';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 var accessToken = "d1d7391d-c035-28ab-0193-68a7d263d4be11bf1decf78d036abdad2f76f0e68ffeb1651b146d3eb2314ef2401a989bd190ce";
 
@@ -21,13 +23,15 @@ describe('PlanningPage', () => {
   let http: HttpClient;
   let router; Router;
   let httpMock: HttpTestingController;
+  let weatService: weatherService;
+  let geo: Geolocation;
   
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ PlanningPage ],
       imports: [IonicModule.forRoot(), RouterTestingModule.withRoutes([]), HttpClientTestingModule, HttpModule],
-      providers: [diveService, HttpModule, accountService, FormBuilder]
+      providers: [diveService, HttpModule, accountService, FormBuilder, weatherService, Geolocation]
     }).compileComponents();
 
     fixture = TestBed.createComponent(PlanningPage);
@@ -35,6 +39,7 @@ describe('PlanningPage', () => {
     fixture.detectChanges();
     divService = TestBed.get(diveService);
     accService = TestBed.get(accountService);
+    weatService = TestBed.get(weatherService);
     router = TestBed.get(Router);
     httpMock = TestBed.get(HttpTestingController);
     http = TestBed.get(HttpClient);
@@ -95,9 +100,9 @@ describe('PlanningPage', () => {
   it('storeCustomChecklist() test', () => {
     var customList = {
       "AccessToken": accessToken,
-      "Equipment": "" ,
-      "Optional": "" , 
-      "Custom" : ""
+      "Equipment": "Goggles",
+      "Optional": "", 
+      "Custom" : "Gloves"
     };
 
     let accountSpy = spyOn(accService, 'storeCustomChecklist').and.callThrough();
@@ -152,7 +157,7 @@ describe('PlanningPage', () => {
   it('Testing ngOnInit()', () => {
     component.ngOnInit();
     expect(component.showCourses).toBeFalse();
-    expect(component.showLoading).toBeFalse();
+    expect(component.showLoading).toBeTrue();
     expect(component.loginLabel).toBe("Log Out");
     expect(component.suggestedCourseFullList).toBeDefined();
     expect(component.EquipmentList).toBeDefined();
