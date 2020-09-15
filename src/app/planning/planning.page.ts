@@ -984,4 +984,9 @@ export class PlanningPage implements OnInit {
   this.router.navigate(['dive-center-information']);
 }
 
+viewDiveSite(DS : string){
+  localStorage.setItem("ViewDiveSite", DS) ;
+  this.router.navigate(['dive-site-information']);
+}
+
 }
