@@ -24,7 +24,7 @@ exports.handler = async (event) => {
     };
     
     const data = await documentClient.scan(scanParams).promise();
-    if (data.Items.length==0)
+    if (typeof data == "undefined" || data.Items.length==0)
     {
         responseBody = "Error! AccessToken does not exist";
         statusCode = 404;
