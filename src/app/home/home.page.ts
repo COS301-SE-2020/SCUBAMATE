@@ -42,6 +42,26 @@ export class HomePage implements OnInit {
     speed: 400
   };
 
+  ////
+
+  imageChangedEvent: any = '';
+croppedImage: any = '';
+
+fileChangeEvent(event: any): void {
+  this.imageChangedEvent = event;
+}
+imageCropped(image: any) {
+  console.log(image.base64);
+  this.croppedImage = image.base64;
+  console.log("Croppped");
+}
+imageLoaded() {
+  // show cropper
+}
+loadImageFailed() {
+  // show message
+}
+
   constructor(public _globalService: GlobalService, private animationCtrl: AnimationController , private router: Router,private _accountService: accountService, private connectionService: ConnectionService, private location: Location) {
     this.connectionService.monitor().subscribe(isConnected => {  
       this.isConnected = isConnected;  

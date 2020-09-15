@@ -7,11 +7,15 @@ import { HomePage } from './home.page';
 import { HomePageRoutingModule } from './home-routing.module';
 
 
+import { ImageCropperModule } from 'ngx-image-cropper';
+
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    ImageCropperModule,
     HomePageRoutingModule
   ],
   declarations: [HomePage]

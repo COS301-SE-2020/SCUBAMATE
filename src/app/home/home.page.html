@@ -44,6 +44,20 @@
 
 <ion-content fullscreen class="background" no-scroll padding >
   
+<!-- <input type="file" (change)="fileChangeEvent($event)" />
+  <image-cropper
+    [imageChangedEvent]="imageChangedEvent"
+    [maintainAspectRatio]="true"
+    [aspectRatio]="128 / 128"
+    [resizeToWidth]="128"
+    format="png"
+    (imageCropped)="imageCropped($event)"
+    (imageLoaded)="imageLoaded()"
+    (loadImageFailed)="loadImageFailed()"
+></image-cropper>
+
+<img [src]="croppedImage" /> -->
+ 
 
   <ion-grid id="container">
     <div id="homeSticker">
@@ -232,6 +246,7 @@
     </ion-grid>
   </div>
 
+  <!--
   <ion-slides pager="true" [options]="slideOpts" id="slideArea" *ngIf="loginLabel=='Login'">
     <ion-slide>
       <ion-img src="../../assets/images/Info/explore.PNG" style="width: 100%;height: 10%;"></ion-img>
@@ -249,7 +264,7 @@
       <ion-img src="../../assets/images/Info/achieve.PNG" style="width: 100%;height: 10%;"></ion-img>
     </ion-slide>
   </ion-slides>
-
+-->
 
 
 </ion-grid>
