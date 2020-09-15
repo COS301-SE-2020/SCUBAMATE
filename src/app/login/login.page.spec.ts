@@ -20,7 +20,7 @@ var test ={
   Password: "ScubaAWS@301!"
 }
 
-describe('LoginPage', () => {
+xdescribe('LoginPage', () => {
   let component: LoginPage;
   let fixture: ComponentFixture<LoginPage>;
   let accService: accountService;

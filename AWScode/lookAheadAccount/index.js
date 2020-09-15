@@ -24,42 +24,52 @@ exports.handler = async (event, context) => {
     let responseBody;
     if(contains(validItemTypes, ItemType)){
         /* Convert string to sentence case */
+        
         let splitStr = UserEntry.toLowerCase().split(' ');
         for (var i = 0; i < splitStr.length; i++) {
           splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);     
         }
         splitStr.join(' ');
-        UserEntry = splitStr.toString().trim();
-    
-        let filter = '#public = :public AND (contains(#em , :em) OR contains(#fn , :fn) OR contains(#ln , :ln))';
+        let sentenceUE = splitStr.toString().trim();
+        let filter = '#public = :public AND #email = :email AND (contains(#em , :em) OR contains(#fn , :fn) OR contains(#ln , :ln) OR contains(#fn , :fnu) OR contains(#ln , :lnu)) ';
         let exp = {
             '#em': 'Email',
             '#fn': 'FirstName',
             '#ln': 'LastName',
             '#public': 'PublicStatus',
+            '#email':'EmailVerified'
         };
         let expVals = {
             ':em': UserEntry,
-            ':fn': UserEntry,
-            ':ln': UserEntry,
+            ':fn': sentenceUE,
+            ':ln': sentenceUE,
+            ':fnu': UserEntry,
+            ':lnu': UserEntry,
             ':public': true,
+            ':email':true
         };
         if(ItemType.trim() ==="I-"){
             const Instructor = "Instructor";
-            filter = '#accT = :accT AND #public = :public AND (contains(#em , :em) OR contains(#fn , :fn) OR contains(#ln , :ln))';
+            filter = '#accT = :accT AND #public = :public AND #email = :email AND #av = :av AND (contains(#em , :em) OR contains(#fn , :fn) OR contains(#ln , :ln) OR contains(#fn , :fnu) OR contains(#ln , :lnu)) ';
             exp = {
                 '#em': 'Email',
                 '#fn': 'FirstName',
                 '#ln': 'LastName',
                 '#public': 'PublicStatus',
                 '#accT': 'AccountType',
+                '#av':'AccountVerified',
+                '#email':'EmailVerified'
             };
             expVals = {
                 ':accT': Instructor,
                 ':em': UserEntry,
-                ':fn': UserEntry,
-                ':ln': UserEntry,
+                ':fn': sentenceUE,
+                ':ln': sentenceUE,
+                ':fnu': UserEntry,
+                ':lnu': UserEntry,
                 ':public': true,
+                ':av': true,
+                ':email':true
             };
         }
     

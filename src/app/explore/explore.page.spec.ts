@@ -45,9 +45,11 @@ describe('ExplorePage', () => {
   });
 
   it('getPublicDives() test', () => {
+    var temp: number;
+    temp = 2;
     let editDiveSpy = spyOn(divService, 'getPublicDives').and.callThrough();
     expect(editDiveSpy).toBeDefined();
-    let response = divService.getPublicDives().pipe(
+    let response = divService.getPublicDives(temp).pipe(
       map( res => res.body)
     );
     console.log(response.operator);
@@ -72,11 +74,11 @@ describe('ExplorePage', () => {
   it('Testing Explore Components', () => {
     expect(component.siteLst).toBeDefined();
     expect(component.centerLst).toBeDefined();
-    expect(component.showSites).toBeFalse();
-    expect(component.showCenters).toBeFalse();
-    expect(component.showFeed).toBeTrue();
-    expect(component.showLoading).toBeTrue();
-    expect(component.pubLst).toBeUndefined();
+    expect(component.showSites).toBeUndefined();
+    expect(component.showCenters).toBeUndefined();
+    expect(component.showFeed).toBeUndefined();
+    expect(component.showLoading).toBeUndefined();
+    expect(component.pubLst).toBeDefined();
     expect(component.loginLabel).toBe("Log Out");
   });
 
@@ -91,24 +93,24 @@ describe('ExplorePage', () => {
 
   it('Testing ngOnInit()', () => {
     component.ngOnInit();
-    expect(component.showFeed).toBeTrue();
-    expect(component.showSites).toBeFalse();
-    expect(component.showCenters).toBeFalse();
+    expect(component.showFeed).toBeUndefined();
+    expect(component.showSites).toBeUndefined();
+    expect(component.showCenters).toBeUndefined();
     expect(component.loginLabel).toBe("Log Out");
-    expect(component.pubLst).toBeUndefined();
-    expect(component.showLoading).toBeTrue();
+    expect(component.pubLst).toBeDefined();
+    expect(component.showLoading).toBeUndefined();
     let diveSpy = spyOn(divService, 'getPublicDives').and.callThrough();
     expect(diveSpy).toBeDefined();
   });
 
   it('Testing ionViewWillEnter', () => {
     component.ngOnInit();
-    expect(component.showFeed).toBeTrue();
-    expect(component.showSites).toBeFalse();
-    expect(component.showCenters).toBeFalse();
+    expect(component.showFeed).toBeUndefined();
+    expect(component.showSites).toBeUndefined();
+    expect(component.showCenters).toBeUndefined();
     expect(component.loginLabel).toBe("Log Out");
-    expect(component.pubLst).toBeUndefined();
-    expect(component.showLoading).toBeTrue();
+    expect(component.pubLst).toBeDefined();
+    expect(component.showLoading).toBeUndefined();
     let diveSpy = spyOn(divService, 'getPublicDives').and.callThrough();
     expect(diveSpy).toBeDefined();
   });

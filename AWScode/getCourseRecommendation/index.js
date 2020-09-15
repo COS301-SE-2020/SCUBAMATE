@@ -85,35 +85,46 @@ exports.handler = async (event, context) => {
             /* Get Range Type for Courses */
             let courseType;
             let age =getAge(data.Item.DateOfBirth);
-            let filter = 'begins_with(#itemT , :itemT) AND MinAgeRequired <= :age AND (QualificationType = :qType';
+            let filter = 'begins_with(#itemT , :itemT) AND MinAgeRequired <= :age ';
             let expAttrValues;
                 
             /* To decide between diver/instructor/youth, check age */
             if(age>=12){
                 if(typeof data.Item.CompletedCourses == "undefined"){
                     /* The diver has done no courses and thus can't be an instructor. */
-                    filter += ")";
+                    filter += "AND (QualificationType = :qType)";
                     courseType = "Diver";
                     expAttrValues = {
                         ':itemT': "C-",
                         ':age' : age,
                         ':qType': courseType
-                    }
+                    };
                 }
                 else{
                     /* Qualified to do instructor or diver */
-                    filter += " OR QualificationType = :qType2)";
-                    expAttrValues = {
-                        ':itemT': "C-",
-                        ':age' : age,
-                        ':qType': "Diver",
-                        ':qType2': "Instructor"
-                    };
+                    if(data.Item.AccountType == "Instructor"){
+                        filter += "AND (CourseType <> :cType)";
+                        expAttrValues = {
+                            ':itemT': "C-",
+                            ':age' : age,
+                            ':cType': "Introductory Experience"
+                        };
+                    }
+                    else{
+                         filter += "AND (QualificationType = :qType OR QualificationType = :qType2)";
+                        expAttrValues = {
+                            ':itemT': "C-",
+                            ':age' : age,
+                            ':qType': "Youth",
+                            ':qType2': "Diver"
+                        };
+                    }
+                    
                 }
             }
             else if(age>=10){
                 /* Diver is younger than 12 and older than 10 - can be a diver/youth*/
-                filter += " OR QualificationType = :qType2)";
+                filter += "AND (QualificationType = :qType OR QualificationType = :qType2)";
                 expAttrValues = {
                     ':itemT': "C-",
                     ':age' : age,
@@ -123,13 +134,13 @@ exports.handler = async (event, context) => {
             }
             else{
                 /* Diver is younger than 10 - can only be a youth*/
-                filter += ")";
+                filter += "AND (QualificationType = :qType)";
                 courseType = "Youth";
                 expAttrValues = {
                     ':itemT': "C-",
                     ':age' : age,
                     ':qType': courseType
-                }
+                };
             }
 
             /* Get List Of Courses */
