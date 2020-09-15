@@ -463,7 +463,7 @@ export class AdminPagePage implements OnInit {
 
      if(this.accountType =="10"){
       this.getDiveCentreInformation();
-      this.getUnverifiedInstructors();
+      //this.getUnverifiedInstructors();
     }
   }
 
@@ -1014,7 +1014,7 @@ getDiveCentreInformation(){
     
     this.currentDiveCenter = data.Item;
     this.showLoading = false ;
-    console.log(this.currentDiveCenter);
+    //console.log(this.currentDiveCenter);
 
   }, err =>{
 
