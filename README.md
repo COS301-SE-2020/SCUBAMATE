@@ -21,7 +21,8 @@ Available At: <a href="https://www.scuba.thematthew.me"> https://www.scuba.thema
 ## Demo Video Links
 * <a href="https://drive.google.com/drive/folders/14hiS32Kgk8xqgvmLkFV33a35PGvYcp6Y?usp=sharing">TeamAV Demo 1</a>
 * <a href="https://drive.google.com/drive/folders/1f9AQtVqOS0MdEosUH1uwPVwZdO6j9OvS?usp=sharing">TeamAV Demo 2</a>
-
+* <a href="https://drive.google.com/drive/folders/1s-HwZWjfE7g6LqAYjGYOIusZHvtbEbY8?usp=sharing">TeamAV Demo 3</a>
+* <a href="https://drive.google.com/drive/folders/11ASHoMOxMoAoQlPSTiZ8mVP0IVLus1pu?usp=sharing">TeamAV Demo 4</a>
 
 
 ## Installation Instructions
