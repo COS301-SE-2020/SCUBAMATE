@@ -188,13 +188,35 @@
  * <details>
      <summary><b>Responsibilities</b></summary>
         <br> 
-        - All Angular Ionic Front end code
+        - Developing the front-end interface with Angular-Ionic.
+        <br> 
+        - Home page
+         <br> 
+        - Login and Signup pages
+         <br> 
+        - Explore page: public feed, dive sites and dive centres
+        <br> 
+        - Individual dive site and centre page with ability to view location weather and see location on google maps.
+        <br> 
+        - View, edit and log personal dives pages
+        <br> 
+        - Planning page: viewing dive sites and courses near you, suggested courses, checklist and visibility prediction.
+        <br> 
+        - Profile page functionality for Diver, Instructor, Admin and Super Admin.
+        <br> 
+        - Admin page with functionality for Admins and Super Admins.
+        <br> 
+        - Charts on Admin page to present the visualisation statistics.
+        <br>
+        - Deploying website and mobile application
         <br>
         - SRS Document: Functional Requirements
         <br>
         - SRS Document: Use Cases
         <br>
         - User Manual
+        <br>
+         - Non-Function Testing: Usability
         <br>
     </details>
 
