@@ -369,9 +369,6 @@ ion-content.background{
 
 .leftPanelMenu{
   background-color: $inputBackgroundColor;
-
- 
-
 }
 
 .leftPanelMenuItem:hover{
@@ -402,4 +399,11 @@ ion-content.background{
 .viewLocationLink:hover{
   font-size:medium;
   text-shadow: 3px 3px 4px #000000;
+}
+
+.bigBlueBtn{
+  --border-radius:5px !important;
+  width:100% !important;
+  font-size:x-small !important;
+  padding: 5px !important;
 }
