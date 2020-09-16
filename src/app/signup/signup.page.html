@@ -132,7 +132,7 @@
             </ion-row>
             <ion-row>
               <ion-item color="dark">
-                <ion-label position="stacked">Do you want your dives to be logged publicly?</ion-label>
+                <ion-label position="stacked">Would You Like Your Account To Be Searchable By Other Users?</ion-label>
                 <ion-checkbox color="dark" disabled="false" formControlName="publicStatus" [(ngModel)]="diverObj.PublicStatus" ></ion-checkbox>
               </ion-item>
             </ion-row>
@@ -364,13 +364,13 @@
                 <ion-label  position="stacked">Date of Birth
                   <b *ngIf="!instructorForm.controls.birthday.valid  && (instructorForm.controls.birthday.dirty )" class="FormErrorControlMessage">* Please enter a valid name  </b>
                 </ion-label>
-                <ion-input formControlName="birthday" type="date"  [(ngModel)]="instructorObj.DateOfBirth"  [class.invalid]="!instructorForm.controls.birthday.valid && (instructorForm.controls.birthday.dirty )"></ion-input>
+                <ion-input  formControlName="birthday" type="date"  [(ngModel)]="instructorObj.DateOfBirth"  [class.invalid]="!instructorForm.controls.birthday.valid && (instructorForm.controls.birthday.dirty )"></ion-input>
               </ion-item>
             </ion-row>
             <ion-row>
               <ion-item color="dark">
-                <ion-label position="stacked">Do you want your dives to be logged publicly?</ion-label>
-                <ion-checkbox color="dark" disabled="false" formControlName="publicStatus" [(ngModel)]="instructorObj.PublicStatus" ></ion-checkbox>
+                <ion-label position="stacked">Would You Like Your Account To Be Searchable By Other Users?</ion-label>
+                <ion-checkbox color="primary" disabled="false" formControlName="publicStatus" [(ngModel)]="instructorObj.PublicStatus" ></ion-checkbox>
               </ion-item>
             </ion-row>
           </ion-col>

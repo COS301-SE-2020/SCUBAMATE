@@ -81,7 +81,7 @@ export class AdminPagePage implements OnInit {
   BuddyLst : string [];
   CenterLst : string[];
   CourseLst : string[];
-  DiveSiteLst: [];
+  DiveSiteLst: string[];
 
   //Course Array 
   showCourses: Boolean = false;
@@ -149,6 +149,10 @@ export class AdminPagePage implements OnInit {
 
   @ViewChild("lineCanvasChartFrequencyLogin") lineCanvasChartFrequencyLogin: ElementRef;
   private lineChartFrequencyLogin: Chart;
+
+
+  //Admin Graph
+  showAdminDiveSiteGraph : boolean = false; 
 
   //Date
   currentDate = new Date();
@@ -250,6 +254,7 @@ export class AdminPagePage implements OnInit {
       this.accountType = this._globalService.accountRole;
 
 
+
       //get initial chart data
       if(this.accountType == "11"){
         var numDivesBody ={
@@ -278,6 +283,7 @@ export class AdminPagePage implements OnInit {
             }
             
           });
+
 
 
           var rateDivesBody ={
@@ -323,34 +329,18 @@ export class AdminPagePage implements OnInit {
             
           });
 
-          var ageGroupBody ={
+
+          var ageGroupBody1 ={
             "AccessToken" : localStorage.getItem("accessToken") 
           };
 
           this.showLoading = true ;
-          this._chartService.ageGroupChartData(ageGroupBody).subscribe( data =>{
-              this.showLoading = false;
-              this.drawAgeGroupChart(data, "Total Users in Age Group");
-             
-
-          },err =>{
-            this.showLoading = false;
-            
-            if(err.error){
-              this.generalAlert("Age Groups Chart Error", err.error);
-            }else{
-              console.log("Could not access number Age Groups Chart Data");
-            }
-            
-          });
-
-          this.showLoading = true ;
-          this._chartService.numberUsersInRoles(ageGroupBody).subscribe( data =>{
+          this._chartService.numberUsersInRoles(ageGroupBody1).subscribe( data =>{
               this.showLoading = false;
 
-             
+            
               this.drawRolesChart(data, "Total Users in Role Groups");
-             
+            
 
           },err =>{
             this.showLoading = false;
@@ -360,52 +350,77 @@ export class AdminPagePage implements OnInit {
             }else{
               console.log("Could not access user role Chart Data");
             }
-            
-          });
-
-          this.showLoading = true ;
-          this._chartService.numberUsersDoneCourse(ageGroupBody).subscribe( data =>{
-              this.showLoading = false;
-             
-              this.drawCourseChart(data, "Total Users Completed Course");
-             
-
-          },err =>{
-            this.showLoading = false;
-            
-            if(err.error){
-              this.generalAlert("Total Completed Course Chart Error", err.error);
-            }else{
-              console.log("Could not access Total Completed Course");
-            }
-            
-          });
-
-          this.showLoading = true ;
-          this._chartService.frequencyLoginChart(ageGroupBody).subscribe( data =>{
-              this.showLoading = false;
-              console.log(data);
-              this.drawFrequencyLoginChart(data, "Number Users Active");
-             
-
-          },err =>{
-            this.showLoading = false;
-            
-            if(err.error){
-              this.generalAlert("Frequency of User Access to App Chart Error", err.error);
-            }else{
-              console.log("Could not access Frequency of User Access to App");
-            }
-            
-          });
-
-      
+        
+      });
+///remove here
 
       }
       else if(this.accountType =="10"){
         this.getDiveCentreInformation();
         this.getUnverifiedInstructors();
       }
+
+      var ageGroupBody ={
+        "AccessToken" : localStorage.getItem("accessToken") 
+      };
+
+      this.showLoading = true ;
+      this._chartService.ageGroupChartData(ageGroupBody).subscribe( data =>{
+          this.showLoading = false;
+          this.drawAgeGroupChart(data, "Total Users in Age Group");
+         
+
+      },err =>{
+        this.showLoading = false;
+        
+        if(err.error){
+          this.generalAlert("Age Groups Chart Error", err.error);
+        }else{
+          console.log("Could not access number Age Groups Chart Data");
+        }
+        
+      });
+
+      
+
+      this.showLoading = true ;
+      this._chartService.numberUsersDoneCourse(ageGroupBody).subscribe( data =>{
+          this.showLoading = false;
+         
+          this.drawCourseChart(data, "Total Users Completed Course");
+         
+
+      },err =>{
+        this.showLoading = false;
+        
+        if(err.error){
+          this.generalAlert("Total Completed Course Chart Error", err.error);
+        }else{
+          console.log("Could not access Total Completed Course");
+        }
+        
+      });
+
+      this.showLoading = true ;
+      this._chartService.frequencyLoginChart(ageGroupBody).subscribe( data =>{
+          this.showLoading = false;
+          console.log(data);
+          this.drawFrequencyLoginChart(data, "Number Users Active");
+         
+
+      },err =>{
+        this.showLoading = false;
+        
+        if(err.error){
+          this.generalAlert("Frequency of User Access to App Chart Error", err.error);
+        }else{
+          console.log("Could not access Frequency of User Access to App");
+        }
+        
+      });
+
+  
+
     }
 
     
@@ -431,6 +446,8 @@ export class AdminPagePage implements OnInit {
      this.userCourses = new Array();
  
      this.siteUserInput = new Array();
+
+     this.DiveSiteLst = [];
  
      //this.allInstructors = new Array();
      //this.verifiedInstructors = new Array();
@@ -1014,7 +1031,93 @@ getDiveCentreInformation(){
     
     this.currentDiveCenter = data.Item;
     this.showLoading = false ;
+    this.DiveSiteLst = this.currentDiveCenter.DiveSites  ; 
     //console.log(this.currentDiveCenter);
+
+    ////Dive Site Charts
+
+    if(this.DiveSiteLst != undefined && this.DiveSiteLst.length != 0)
+    {
+      this.showAdminDiveSiteGraph = true ; 
+
+      var numDivesBody ={
+        "AccessToken" : localStorage.getItem("accessToken") ,
+        "DiveSite" : this.DiveSiteLst[0] ,
+        "YearOfSearch" : this.currentDate.getFullYear().toString()
+      }
+  
+      this.dateSearch =  this.currentDate.getFullYear().toString() ;
+  
+  
+      this.showLoading = true ;
+        this._chartService.numberDivesAtSiteChartData(numDivesBody).subscribe( data =>{
+            this.showLoading = false;
+            this.totalNumberOfDivesYear = data.TotalNumberOfDives.toString();
+  
+            this.drawNumDivesAtSiteChart(data, this.DiveSiteLst[0]  );
+  
+        },err =>{
+          this.showLoading = false;
+          
+          if(err.error){
+            this.generalAlert("Number Of Dives Chart Error", err.error);
+          }else{
+            console.log("Could not access number Dives At " + this.DiveSiteLst[0]  +" Chart Data");
+          }
+          
+        });
+  
+  
+  
+        var rateDivesBody ={
+          "AccessToken" : localStorage.getItem("accessToken") ,
+          "DiveSite" : this.DiveSiteLst[0] 
+        };
+  
+        this._chartService.ratingAtDiveSiteChartData(rateDivesBody).subscribe( data =>{
+            this.showLoading = false;
+             this.drawRatingDivesAtSiteChart(data, "Rating of " + this.DiveSiteLst[0]  );
+          
+      
+        },err =>{
+          this.showLoading = false;
+          
+          if(err.error){
+            this.generalAlert("Rating Of Dives Chart Error", err.error);
+          }else{
+            console.log("Could not access rating of  Dives At Site Chart Data");
+          }
+          
+        });
+  
+        var peekDivesBody ={
+          "AccessToken" : localStorage.getItem("accessToken") ,
+          "DiveSite" : this.DiveSiteLst[0]  ,
+          "YearOfSearch" : this.currentDate.getFullYear().toString()
+        };
+  
+        this._chartService.peakTimesDivesAtSiteChartData(peekDivesBody).subscribe( data =>{
+            this.showLoading = false;
+            this.drawPeekDivesAtSiteChart(data, this.DiveSiteLst[0]   );
+        },err =>{
+          this.showLoading = false;
+          
+          if(err.error){
+            this.generalAlert("Number Of Dives Chart Error", err.error);
+          }else{
+            console.log("Could not access number Dives At Site Chart Data");
+          }
+          
+        });
+  
+    }
+
+   
+
+    ////
+
+
+
 
   }, err =>{
 
