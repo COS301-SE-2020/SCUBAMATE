@@ -142,7 +142,6 @@ describe('PlanningPage', () => {
     expect(component.EquipmentList).toBeDefined();
     expect(component.OptionalList).toBeDefined();
     expect(component.viewChecklist).toBeFalse();
-    expect(component.showLoading).toBeFalse();
     expect(component.SearchDiveCheckList).toBe('');
     expect(component.viewAddInput).toBeFalse();
     expect(component.viewPersonalAdded).toBeFalse();
@@ -188,7 +187,6 @@ describe('PlanningPage', () => {
 
   it('Testing diveTypeListFinder()', () => {
     component.divetypeListFinder();
-    expect(component.showLoading).toBeFalse();
     expect(component.DiveTypeLst).toBeUndefined();
   });
 
