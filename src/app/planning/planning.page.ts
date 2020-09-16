@@ -101,10 +101,10 @@ export class PlanningPage implements OnInit {
   ///
 
   //sideMenu Nav
-  sideViewPredict : boolean = true ;
-  sideViewSuggestCourse : boolean = true; 
+  sideViewPredict : boolean = false ;
+  sideViewSuggestCourse : boolean = false; 
   sideViewSitesNear : boolean = true; 
-  sideViewCheckList : boolean = true ;  
+  sideViewCheckList : boolean = false ;  
   sideViewCentreNear : boolean = true ;
 
 
@@ -948,7 +948,7 @@ export class PlanningPage implements OnInit {
       this.sideViewSuggestCourse  = false; 
       this.sideViewSitesNear  = true; 
       this.sideViewCheckList = false ;
-      this.sideViewCentreNear = false ;
+      this.sideViewCentreNear = true ; //false ;
 
 
     }else if(selectedView == "SuggestCourses"){

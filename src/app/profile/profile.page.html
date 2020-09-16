@@ -71,12 +71,12 @@
               <ion-label class="infoLabel" id="instructorNum" *ngIf='AD.InstructorNumber' >Instructor Number: {{AD.InstructorNumber}} </ion-label> <br>
               <ion-label class="infoLabel" id="birth" >Date of Birth: {{AD.DateOfBirth}} </ion-label> <br>
               <ion-label class="infoLabel" id="status"   >Viewable Status: {{AD.PublicStatus}} </ion-label><br>
-              <ion-label class="infoLabel" id="accverified">Account Verified:
+             <!-- <ion-label class="infoLabel" id="accverified">Account Verified:
                  
                  <ion-icon name="close" *ngIf='!AD.AccountVerified'  ></ion-icon>
                  <ion-icon name="checkmark" *ngIf='AD.AccountVerified'></ion-icon>
 
-                </ion-label><br> <br>
+                </ion-label><br> <br> -->
 
             </div>
             </div>
@@ -120,7 +120,7 @@
           <ion-col size="12" size-sm="6" size-md="2" size-lg="2" *ngIf="accountType=='00'">
             <ion-button color="dark" style="width:100%;--border-radius:0;" routerLink="/upgrade-instructor">
               <ion-icon name="arrow-up-outline"></ion-icon>
-              &nbsp; Upgrade
+              &nbsp; Become <br>&nbsp; Instructor
             </ion-button>
           </ion-col>
         </ion-row>
