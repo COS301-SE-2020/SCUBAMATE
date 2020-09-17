@@ -12,16 +12,11 @@ exports.handler = function(event,context,callback) {
         Maximum temperature
         Hours of sun
         Moon age
-        Wind speed
         Probability of precipitation
         Cloud cover
-    
     */
-    
-    
-    
+   
     let statusCode = 200;
-    //let responseBody = result[0];
     var responseBody;
     var rounded =-1;
     var data;
@@ -38,7 +33,7 @@ exports.handler = function(event,context,callback) {
     
     
     var forecastInfo;
-  
+    
     const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
     let params = {
         TableName: 'DiveInfo',
@@ -46,14 +41,10 @@ exports.handler = function(event,context,callback) {
           'ItemType' : 'AI-Network'
         }
     };
-    
-    
-    //const DiveSite = event.DiveSite;
-    //const date = event.Date;
+
     const anatomy = JSON.parse(event.body);
     const date = anatomy.Date;
     const DiveSite = anatomy.DiveSite;
-    
     
     var thenDate = new Date(date);
     var nowDate = new Date();
@@ -75,11 +66,8 @@ exports.handler = function(event,context,callback) {
                   },
                   body: JSON.stringify(responseBody),
               };
-              
               callback(null, response);
     }
-    
-    
     let locParams = {
         TableName: "DiveInfo",
         FilterExpression: "#n = :n",
@@ -92,12 +80,10 @@ exports.handler = function(event,context,callback) {
         }
     };
     
-    
     documentClient.scan(locParams, function(err, data1) {
     if (err) {
       console.log("Error", err);
     } else {
-     
      
      let ting = data1.Items[0].Coords;
      console.log("TingTing: " +  ting);
@@ -107,9 +93,6 @@ exports.handler = function(event,context,callback) {
      
      console.log("Lattitude: " + lat);
      console.log("Longitude: " + long);
-
-     
-     
      //**************************************************************Start of locationKey request
       const https = require('https');
       var url;
@@ -124,19 +107,13 @@ exports.handler = function(event,context,callback) {
 
         resp.on('data', (chunk) => {
           data += chunk;
-
-         console.log(data);
         
         });
       
         resp.on('end', () => {
-          console.log("WInkle dinkle?");
 
           locKey = JSON.parse(data).Key;
-          console.log("Key tings: "+locKey);
 
-          
-          console.log("Location Key mad tings " + locKey);
       url = "https://dataservice.accuweather.com/forecasts/v1/daily/5day/";
       url += locKey;
       url += "?apikey=pnzaIiEPX1k1KIxtqWME5FJvAwA1PATz&language=en-us&details=true&metric=true";
@@ -144,11 +121,8 @@ exports.handler = function(event,context,callback) {
             https.get(url, (resp) => {
               data = '';
             
-
               resp.on('data', (chunk) => {
                 data += chunk;
-
-              
               });
 
               resp.on('end', () => {
@@ -161,7 +135,6 @@ exports.handler = function(event,context,callback) {
                 probPrec = forecastInfo.Day.PrecipitationProbability;
                 cloudCover = forecastInfo.Day.CloudCover;
                 
-                
                 console.log("Min Temp: " + minTemp);
                 console.log("Max Temo: " + maxTemp);
                 console.log("Hours of Sun: " + hoursOfSun);
@@ -169,71 +142,56 @@ exports.handler = function(event,context,callback) {
                 console.log("Prec prob: " + probPrec);
                 console.log("cloudCover: " + cloudCover);
                 
-                                                                                  documentClient.get(params, function(err, data5) {
-                                                                      if (err) {
-                                                                        console.log("Error", err);
-                                                                      } else {
-                                                                        //console.log("Success", data.Item);
-                                                                        let brody = JSON.parse(data5.Item.AI);
-                                                                        
-                                                                        
-                                                                        const testNetwork = synaptic.Network.fromJSON(brody);
-                                                                        
-                                                                        
-                                                                        
-                                                                        let result = testNetwork.activate([minTemp,maxTemp,hoursOfSun,moonAge,probPrec,cloudCover]);
-                                                                        console.log("Result: " + result[0]);
-                                                                        
-                                                                        rounded = Math.round(result[0]);
-                                                                        
-                                                                        var vis;
-                                                                        switch (rounded)
-                                                                        {
-                                                                            case 0:
-                                                                              vis = "Poor";
-                                                                              break;
-                                                                            case 1:
-                                                                              vis = "Average";
-                                                                              break;
-                                                                            case 2:
-                                                                              vis = "Good";
-                                                                              break;
-                                                                            case 3:
-                                                                              vis = "Excellent";
-                                                                              break;
-                                                                            default:
-                                                                              vis = "Average";
-                                                                        }
-                                                                        console.log("Visibility: "+  vis);
-                                                                        responseBody = {"Visibility" : vis};
-                                                                        
-                                                                        
-                                                                        
-                                                                      }
-                                                                      
-                                                                      
-                                                                      response = {
-                                                                      statusCode: statusCode,
-                                                                      headers: {
-                                                                          "Access-Control-Allow-Origin" : "*",
-                                                                          "Access-Control-Allow-Methods" : "OPTIONS,POST,GET",
-                                                                          "Access-Control-Allow-Credentials" : true,
-                                                                          "Content-Type" : "application/json"
-                                                                      },
-                                                                      body: JSON.stringify(responseBody),
-                                                                  };
-                                                                  
-                                                                  callback(null, response);
-                                                                      
-                                                                    });
-                                                                    
-                                                                    
-                                                                  
-                                                                    
-                                                                    
-                
-                
-                
+                      documentClient.get(params, function(err, data5) {
+                          if (err) {
+                            console.log("Error", err);
+                          } else {
+                            let brody = JSON.parse(data5.Item.AI);
+
+                            const testNetwork = synaptic.Network.fromJSON(brody);
+
+                            let result = testNetwork.activate([minTemp,maxTemp,hoursOfSun,moonAge,probPrec,cloudCover]);
+                            console.log("Result: " + result[0]);
+
+                            rounded = Math.round(result[0]);
+
+                            var vis;
+                            switch (rounded)
+                            {
+                                case 0:
+                                  vis = "Poor";
+                                  break;
+                                case 1:
+                                  vis = "Average";
+                                  break;
+                                case 2:
+                                  vis = "Good";
+                                  break;
+                                case 3:
+                                  vis = "Excellent";
+                                  break;
+                                default:
+                                  vis = "Average";
+                            }
+                            console.log("Visibility: "+  vis);
+                            responseBody = {"Visibility" : vis};
+
+                          }
+
+                          response = {
+                          statusCode: statusCode,
+                          headers: {
+                              "Access-Control-Allow-Origin" : "*",
+                              "Access-Control-Allow-Methods" : "OPTIONS,POST,GET",
+                              "Access-Control-Allow-Credentials" : true,
+                              "Content-Type" : "application/json"
+                          },
+                          body: JSON.stringify(responseBody),
+                      };
+
+                      callback(null, response);
+
+                        });
                 
               });
             
@@ -253,20 +211,8 @@ exports.handler = function(event,context,callback) {
                 console.log("Max Temo: " + maxTemp);
                 console.log("Hours of Sun: " + hoursOfSun);
                 console.log("Moon Age: " + moonAge);
-                //console.log("Wind Speed: " + windSpeed);
                 console.log("Prec prob: " + probPrec);
                 console.log("cloudCover: " + cloudCover);
-    
-      
-      
     }
     });
-    
-    
-      
-    console.log("rounded: " + rounded);
-    console.log("bruh moment: " + responseBody);
-    
-    
-    
 }
