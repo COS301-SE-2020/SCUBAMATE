@@ -182,6 +182,8 @@ Available At: <a href="https://www.scuba.thematthew.me"> https://www.scuba.thema
         - Email verification of an account
         <br>
         - Adding of dive courses
+        <br>
+        - AI predicting dive visibility
     </details>
 
 ## Carmen Janse van Rensburg 
