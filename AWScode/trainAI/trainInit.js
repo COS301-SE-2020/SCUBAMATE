@@ -3,14 +3,6 @@
 const synaptic = require('synaptic');
     
     //factors influencing:
-
-    //Surface temperature
-    //Bottom temperature
-    //Max depth/depth
-    //fresh or salt (0 or 1)
-
-    //new factors:
-
     //Min Temperature
     //Max Temperature
     //Hours of Sun
@@ -45,27 +37,6 @@ const synaptic = require('synaptic');
         output: outputLayer
     });
 
-    /*var trainingSet = [
-      {
-        input: [0,0],
-        output: [0]
-      },
-      {
-        input: [0,1],
-        output: [1]
-      },
-      {
-        input: [1,0],
-        output: [1]
-      },
-      {
-        input: [1,1],
-        output: [0]
-      },
-    ];
-    */
-
-    //surface,bottom,depth,type
     var trainingSet = [
         {
             input: [14,32,11.5,24,0,48], //Knysna heads
@@ -170,12 +141,5 @@ const synaptic = require('synaptic');
     
 
     var testies = myNetwork.toJSON();
-    
-    //const testNetwork = synaptic.Network.fromJSON(testies);                                                                                                                 
+                                                                                                                   
     console.log(JSON.stringify(myNetwork.toJSON()));
-
-    //console.log(myNetwork.activate(testSet[0].input));
-    //console.log(testSet[0].output);
-    
-    
-    
