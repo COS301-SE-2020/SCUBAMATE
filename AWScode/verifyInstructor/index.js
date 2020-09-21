@@ -196,24 +196,24 @@ exports.handler = async (event, context) => {
                                     statusCode = 200;
                                 }
                                 catch(err){
-                                    responseBody = "Unable to update instructors."+ err +" ";
+                                    responseBody = "Unable to update instructors.";
                                     statusCode = 403;
                                 }
                             }
                             catch(err){
-                                responseBody = "Unable to find dive centre."+ err +" ";
+                                responseBody = "Unable to find dive centre.";
                                 statusCode = 403;
                             } 
                         }
                     }
                     catch(err){
-                        responseBody = "Unable to update instructor's account."+ err +" ";
+                        responseBody = "Unable to update instructor's account.";
                         statusCode = 403;
                     } 
                 }
 
             }catch(err){
-                responseBody = "Unable to find instructor's account."+ err +" ";
+                responseBody = "Unable to find instructor's account.";
                 statusCode = 403;
             } 
         }

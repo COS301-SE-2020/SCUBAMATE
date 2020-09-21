@@ -23,9 +23,9 @@ exports.handler = async (event, context) => {
     let statusCode;
     let responseBody;
     if(contains(validItemTypes, ItemType)){
-        let projection = "#name, Description, Coords, LogoPhoto"
+        let projection = "#name, #loc,  Description, Coords, LogoPhoto";
         if(ItemType == "DC-"){
-           projection =  "#name, #loc, Description, Coords, LogoPhoto, Courses, Instructors, DiveSites"
+           projection =  "#name, #loc, Description, Coords, LogoPhoto, Courses, Instructors, DiveSites";
         }
         const params = {
             TableName: 'DiveInfo',

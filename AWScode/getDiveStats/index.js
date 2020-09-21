@@ -184,7 +184,7 @@ exports.handler = async (event, context) => {
             }
             catch (err) {
                 statusCode = 403;
-                responseBody = "Unable to Find Dives: "+err;
+                responseBody = "Unable to Find Dives ";
             }
         }
 

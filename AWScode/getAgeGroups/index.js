@@ -80,7 +80,7 @@ exports.handler = async (event, context) => {
             responseBody = "Access Token Expired!";
             statusCode = 403;
         }
-        else if(data.Item.AccountType !== "SuperAdmin" && data.Item.AccountType !== "Admin" ){
+        else if(data.Item.AccountType !== "SuperAdmin" && data.Item.AccountType !== "Admin"){
             statusCode = 403;
             responseBody = "Invalid Permissions" ;
         }
@@ -147,6 +147,7 @@ exports.handler = async (event, context) => {
                     sortedList.push(result[0]);
                 });
                 
+                
                 var returnList = [];
                 returnList.push({ReturnedList: sortedList});
                 responseBody = returnList[0];
@@ -154,7 +155,7 @@ exports.handler = async (event, context) => {
                 
             }catch (err) {
                 statusCode = 403;
-                responseBody = "Could not find Statistics "+err;
+                responseBody = "Could not find Statistics ";
             }
     
         }

@@ -86,7 +86,7 @@ exports.handler = async (event, context) => {
             filter ="#app = :app";
             expNames = {
                 "#app" : "Approved"
-            }
+            };
             expVals = {
                 ":app" : true
             };
@@ -116,7 +116,7 @@ exports.handler = async (event, context) => {
                         ratings[dive.Rating-1] += 1;
                         total++;
                     }
-                })
+                });
                 responseBody = '{ "Ratings" : [[';
                 for(var i=1; i<6; i++)
                 {
@@ -132,7 +132,7 @@ exports.handler = async (event, context) => {
              }
         } 
         catch(err){
-            responseBody = "No dives found at this dive site" + err + " " + responseBody;
+            responseBody = "No dives found at this dive site." ;
             statusCode = 404;
         }
         

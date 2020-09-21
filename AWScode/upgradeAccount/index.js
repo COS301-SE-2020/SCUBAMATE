@@ -82,10 +82,12 @@ exports.handler = async (event, context, callback) => {
             /* Check Qualification */
             const paramsCourse = {
                 TableName: "DiveInfo",
+                 ProjectionExpression: "#name",
                 FilterExpression: 'begins_with(#itemT , :itemT) AND  #qualT = :qualT',
                 ExpressionAttributeNames: {
                     '#itemT': 'ItemType',
-                    '#qualT' : 'QualificationType'
+                    '#qualT' : 'QualificationType',
+                    '#name':"Name"
                 },
                 ExpressionAttributeValues: {
                     ':itemT': "C-",
@@ -95,11 +97,16 @@ exports.handler = async (event, context, callback) => {
             try{
                 const dataQ = await documentClient.scan(paramsCourse).promise();
                 let qualified = false;
+                let tmp = [];
+                dataQ.Items.forEach(function(item) {
+                    /*Store all names of courses */
+                    tmp.push(item.Name);
+                });
                 data.Item.CompletedCourses.forEach(function(item) {
                     /*For each completed course
                     Check if it is in the courses retrieved
                     */
-                    if(contains(dataQ.Items, item.Name)){
+                    if(contains(tmp, item)){
                         qualified = true;
                     }
                 });
@@ -124,7 +131,7 @@ exports.handler = async (event, context, callback) => {
                         responseBody = "Successfully upgraded account!";
                         statusCode = 201;
                     }catch(err){
-                        responseBody = "Unable to upgrade account."+ err +" ";
+                        responseBody = "Unable to upgrade account.";
                         statusCode = 403;
                     } 
                 }
@@ -134,7 +141,7 @@ exports.handler = async (event, context, callback) => {
                 }
     
             }catch(err){
-                responseBody = "Unable to check qualification verified : "+err;
+                responseBody = "Unable to check qualification verified.";
                 statusCode = 403;
             } 
             
@@ -142,7 +149,7 @@ exports.handler = async (event, context, callback) => {
 
     } catch (err) {
         statusCode = 403;
-        responseBody = "Invalid Access Token";
+        responseBody = "Invalid Access Token ";
     }
 
    
