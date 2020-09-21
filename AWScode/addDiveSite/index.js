@@ -11,6 +11,7 @@ exports.handler = async (event, context, callback) => {
     const Description = body.Description;
     const Name = body.Name;
     const TypeOfDives = body.TypeOfDives;
+    const Location = body.Location;
     const GuidSize = 36;
     const AccountGuid = AccessToken.substring(0,GuidSize);
    
@@ -152,7 +153,8 @@ exports.handler = async (event, context, callback) => {
                             Description : Description,
                             LogoPhoto : logoLink,
                             Name : Name,
-                            TypeOfDives : TypeOfDives
+                            TypeOfDives : TypeOfDives,
+                            Location: Location
                         }
                     };
                 
@@ -195,5 +197,3 @@ exports.handler = async (event, context, callback) => {
     return response;
     
 };
-
-
