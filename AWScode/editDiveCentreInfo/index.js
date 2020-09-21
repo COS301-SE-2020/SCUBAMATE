@@ -10,6 +10,7 @@ exports.handler = async (event, context, callback) => {
     const LogoPhoto = body.LogoPhoto;
     const Coords = body.Coords;
     const Description = body.Description;
+    const Location = body.Location;
     /*Parameter that can't */
     const Name = body.Name;
 
@@ -129,11 +130,12 @@ exports.handler = async (event, context, callback) => {
                 Key: {
                     'ItemType' : ItemType,
                 },
-                UpdateExpression: 'set LogoPhoto = :l, Coords = :c, Description = :d',
+                UpdateExpression: 'set LogoPhoto = :l, Coords = :c, Description = :d, Location = :loc',
                 ExpressionAttributeValues: {
                     ':c' : Coords,
                     ':l' :logoLink,
-                    ':d': Description
+                    ':d': Description,
+                    ':loc' : Location
                 }
             };  
             
@@ -165,15 +167,4 @@ exports.handler = async (event, context, callback) => {
     return response;
     
 };
-
-
-/*
-{
-    "AccessToken" : "506b939b-6591-e60c-b340-948f1a0513191096d933219462874820d2720bf7d5f6851e6aedfaed1e73678c90d702345524da",
-    "Name" : "Reefteach",
-    "Coords": "-27.506939,32.654464",
-    "Description": "Reefteach has knowledge of the reefs at Sodwana Bay and are the operator of choice for divers wishing to know more about the underwater environment. Reefteach staff have completed thousands of dives at Sodwana Bay and because they personally dive daily, they are in a position to show you the best Sodwana has to offer. All their dives are led by divemasters who have an extensive knowledge of the reefs, marine life and the ecology. Dive briefings are done using books in our marine reference library on the beach. In this way the divers know what marine life they can expect to see and to look out for. After the dive the reference books are used again to facilitate identification. Reefteach has a number of special routes that are not well known by other operators. In this way they dive pristine areas that are away from the crowds. Furthermore even on the well known dive sites the Reefteach staff knows where the rare fish and critters can be found. :)",
-    "LogoPhoto" : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAAENUlEQVRoge3ZeahVVRTH8Y9TmjappVnaQEiDFWGURZNIEfVHZSEVRkRWGCVF2ESDSPNAg9UfUfmHDZChQUWSRoGVUVpRpGT1pDmprLBy6KmvP9Y+7Pvue0/ffV7v0XhfuHDP2ufu89tn773W2uvSTTfd/B84CtOxAL9gHdbj1TJF1cIIIbalg88X5UnrPIfiRyH4bzyB83CamJEWnFOauk7SH8uE2NexT0Xb08m+oARdNXOHEPsxdqqwH42NaMaoEnTVxP5YIwZyQoW9B95L9hkl6KqZF7XezBPEIC5KtlUYXJq6TnIiNuEfNMkDWixv/CtLU9dJeuJDIfZ29MHFWCEP6HP0LktgZ7lEiP1WeK2Cw8QstWBsw1XVyC74SYg9v6ptbrLPbrSornC3ELtIbOyCccm+Bgc0XlZtHIi1Ij4cU2HvhU/FQKaXoKtmXhJin6myX5Xs32NAo0V1RD+cidu0jgEnC7GrMazCPgi/pbYLG6SxQ4ZgEl4WSV/hQu9L7T3xUbLdVPXbGcn+jtZ7pmEcgZvxvljzhfiNWJq+L0/3Xpqum9C3oo9RIpfaiNENUZ0Yg0e0DlyFp3kFl2FvEchWpbZj8XP6fm5Vf/OT/al6ijxSeIzHMBVDK9p6YGaV+HUizT5L66BW8Jy8gVvwVlX72cn+p1iaW01PPCxH1Mq3PDHdc7mcxN2VBtEsNmp7DBIvpOhrg3hRBX3xVWq7rh6DINZ5Ifxxkag9Lwa2QXibeVpH4jfS9cSKfg7B9ViYflf5Uu6seuaNcsbbpx6D2FlMbQvOqGq7RT6dFWfpC1Lb1en6bTyIL6uE/4s3cY0IgpUMEy64vWd2mTGpw2XttPUXs7IeU9J9KzFNzokqP7/jBTHYPTbzzDnp/tfqMoLE8anTpe209Rf7oFms6c+0Fd+Eh0Se1JmU+wp5g1fP1FYxQA5gY6vaillYhMlidjaJ5XQtRtb4rPFyRWSbRPAiG/1LHHImCI/TnOxz5YA3pQv99xAOpOjvga2X3D698ay2y2aDSCsKD3RDF/oeJWaw6HNaHfRukXHC/c7G/bhVeJ9aBQwRJ8CFcmxaKXu8hnK6vJ7v3cK9vXGSCJRLtM67VouXM3CbKd0MY+Va06Md3LOf8EBz5DhUfNaKgDlJHGtL4Tg5WM2U0+p+OFXMzhJt05kmPCkcxa6NldyW0fhDCJslcjA4GN9pLXy1OHtMtp2drw/Hr3IFo1eyH4Qf5KB5D05Rp/yo3oyUyzPz5IPPCPncMV8sr+2W/fCNtmKH42v5CLrdFATaY7hcc31XFjtU/r9ikRI9T2cYLM7TLaJ8X4gdIg/iA+xWiroaKP4JWozdk21POcP9RElBrFaKYsCIdD1Q/GNUVMH3KklXzRTn5fHYVy7xLxdVkB2GqdpmuyuEA9ih6CXS8hWiMjJLnUoy3XTTTfn8B2YzXIOXs2bCAAAAAElFTkSuQmCC"
-}
- */
 
