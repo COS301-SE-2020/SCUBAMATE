@@ -111,7 +111,7 @@ exports.handler = async (event, context) => {
                         
                     });
                     if(tmp.length ==0){
-                        responseBody = dataC.Items[0];//"No Courses Need to be Verified For "+data.Item.FirstName +" "+data.Item.LastName;
+                        responseBody = "No Courses Need to be Verified For "+data.Item.FirstName +" "+data.Item.LastName;
                         statusCode =404;
                     }
                     else{
@@ -142,6 +142,7 @@ exports.handler = async (event, context) => {
                         responseBody = returnList[0];
                         statusCode =200;
                     }
+                    
                     
                 }
             
