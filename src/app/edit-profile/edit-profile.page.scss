@@ -7,6 +7,14 @@ $inputBackgroundColor: #181e21;
 $darkRed: #d66853;
 
 
+@media (max-width: 767px) {
+
+  .newUser{
+    width: 95% !important ; 
+  }
+
+}
+
 ion-content.background{
   --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
 }
@@ -27,7 +35,7 @@ ion-grid {
 }
 
 
-#newUser{
+.newUser{
   background-color: rgba(38, 70, 83, 0.4);
   width: 70%;
   margin: auto;
@@ -115,6 +123,21 @@ ion-grid {
 
 
 
+}
+
+#subBtn{
+  padding-top:70%;
+  margin-top: 40px;
+  margin-bottom: 50px;
+  width: 50%;
+  background-color: $red  ;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 5px;
+  margin:auto;
 }
 
 .divSubHead{

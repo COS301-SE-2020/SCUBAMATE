@@ -14,11 +14,11 @@ exports.handler = async (event) => {
     if (dType === "Cave Dive" || dType === "Deep Dive" || dType === "Ice Dive" || dType === "Night Dive" || dType === "Reef Dive" || dType === "Wreck Dive")
     {
         //do nothing
-        dType = "DT-"+dType;
+        dType = "DT-"+dType.toLowerCase();
     }
     else
     {
-        dType = "DT-Other";
+        dType = "DT-other";
     }
     
     

@@ -5,192 +5,248 @@ AWS.config.update({region: "af-south-1"});
 exports.handler = async (event, context) => {
     const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
 
-    let responseBody = "";
-    let statusCode =0;
-
     let body = JSON.parse(event.body);
-    var DiveID = body.DiveID;
-    var AccessToken = body.AccessToken;
-    var AirTemp = body.AirTemp;
-    var Approved = body.Approved;
-    var BottomTemp = body.BottomTemp;
-    var Buddy = body.Buddy;
-    var DiveDate = body.DiveDate;
-    var Depth = body.Depth;
-    var Description = body.Description;
-    var DiveSite = body.DiveSite;
-    var DiveTypeLink = body.DiveTypeLink;
-    var InstructorLink = body.InstructorLink;
-    var SurfaceTemp = body.SurfaceTemp;
-    var TimeIn = body.TimeIn;
-    var TimeOut = body.TimeOut;
-    var Visibility = body.Visibility;
-    var Weather = body.Weather;
-    var DivePublicStatus = body.DivePublicStatus;
+    const DiveID = body.DiveID;
+    const AccessToken = body.AccessToken;
+    const AirTemp = body.AirTemp;
+    const BottomTemp = body.BottomTemp;
+    const Buddy = body.Buddy;
+    const DiveDate = body.DiveDate;
+    const Depth = body.Depth;
+    const Description = body.Description;
+    const DiveSite = body.DiveSite;
+    const DiveTypeLink = body.DiveTypeLink;
+    const InstructorLink = body.InstructorLink;
+    const SurfaceTemp = body.SurfaceTemp;
+    const TimeIn = body.TimeIn;
+    const TimeOut = body.TimeOut;
+    const Visibility = body.Visibility;
+    let Weather = body.Weather;
+    const DivePublicStatus = body.DivePublicStatus;
+    const isCourse = body.isCourse;
+    const Rating = body.Rating;
+    const WaterType = body.WaterType;
     
     const guid = AccessToken.substring(0,36);
 
-    function compareDates(t,e)
-    {
-        console.log(t.getFullYear());
-        if(t.getFullYear()<e.getFullYear())
-        {   
-            return false;
-        }else if(t.getFullYear()>e.getFullYear())
-        {
-            return true;
+   function compareDates(t,e){
+        let returnBool;
+        if(t.getFullYear()!=e.getFullYear()){
+            (t.getFullYear()>e.getFullYear())?returnBool=true:returnBool=false;
+        }   
+        else if(t.getMonth()!=e.getMonth()){
+            (t.getMonth()>e.getMonth())?returnBool=true:returnBool=false;
         }
-
-        if(t.getMonth()<e.getMonth())
-        {
-            return false;
-        }else if(t.getMonth()>e.getMonth())
-        {
-            return true;
+        else if(t.getDate()!=e.getDate()){
+            (t.getDate()>e.getDate())?returnBool=true:returnBool=false;
         }
-
-        if(t.getDate()<e.getDate())
-        {
-            return false;
-        }else if(t.getDate()>e.getDate())
-        {
-            return true;
+        else if(t.getHours()!=e.getHours()){
+            (t.getHours()>e.getHours())?returnBool=true:returnBool=false;
         }
-
-        if(t.getHours()<e.getHours())
-        {
-            return false;
-        }else if(t.getHours()>e.getHours())
-        {
-            return true;
+        else if(t.getMinutes()!=e.getMinutes()){
+            (t.getMinutes()>e.getMinutes())?returnBool=true:returnBool=false;
         }
-
-        if(t.getMinutes()<e.getMinutes())
-        {
-            return false;
-        }else if(t.getMinutes()>e.getMinutes())
-        {
-            return true;
+        else if(t.getSeconds()!=e.getSeconds()){
+            (t.getSeconds()>e.getSeconds())?returnBool=true:returnBool=false;
         }
-
-        if(t.getSeconds()<e.getSeconds())
-        {
-            return false;
-        }else if(t.getSeconds()>e.getSeconds())
-        {
-            return true;
+        else if(t.getMilliseconds()!=e.getMilliseconds()){
+            (t.getMilliseconds()>e.getMilliseconds())?returnBool=true:returnBool=false;
         }
-
-        if(t.getMilliseconds()<e.getMilliseconds())
-        {
-            return false;
-        }else if(t.getMilliseconds()>e.getMilliseconds())
-        {
-            return true;
+        else{
+            returnBool = true;
         }
-
-        return true;
+        return returnBool;
     }
-
+    
+    function contains(arr,search){
+        let returnBool = false;
+        arr.forEach(function(item) {
+            if(item==search){
+                returnBool=true;
+            }
+        });
+        return returnBool;
+    }
     //Verify AccessToken 
     const params = {
         TableName: "Scubamate",
         Key: {
             "AccountGuid": guid
         }
-    }
-
+    };
+    
+    let responseBody;
+    const undef =0;
+    let statusCode =undef;
     try {     
         const data = await documentClient.get(params).promise();
-        
-        if( data.Item.Expires) // check if it's undefined
-        {
-            const expiryDate = new Date(data.Item.Expires);
-            const today = new Date();
-            console.log("Compare: " + today + " and " + expiryDate  + " " + compareDates(today,expiryDate));
-            if(compareDates(today,expiryDate))
-            {
-                statusCode = 403;
-                responseBody = "Access Token Expired!";
-            }
-                
+        if((data.Item.AccessToken).toString().trim() != AccessToken ){
+            statusCode = 403;
+            responseBody = "Invalid Access Token." ;
         }
+        else if( compareDates(new Date(),new Date(data.Item.Expires)) ){
+            responseBody = "Access Token Expired!";
+            statusCode = 403;
+        }
+        else{
+            let diveLink = DiveTypeLink;
+            if(isCourse){
+                diveLink = DiveTypeLink + " Course";
+                if(typeof InstructorLink == "undefined" || InstructorLink.length ==0){
+                    statusCode = 400;
+                    responseBody = "Instructors needed for course";
+                }
+            }
+            if(Rating <0 || Rating >5){
+                responseBody = "Invalid Rating";
+                statusCode = 403;
+            }
+            let dsImage = "https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/defaultlogo.png";
+            const paramsCheck = {
+                TableName: "DiveInfo",
+                Key: {
+                    "ItemType": "DS-"+DiveSite.toLowerCase()
+                },
+                ProjectionExpression : "LogoPhoto"
+            };
+            try {     
+                const dataCheck = await documentClient.get(paramsCheck).promise();
+                if(typeof dataCheck === "undefined"||typeof dataCheck.Item === "undefined"){
+                    statusCode = 403;
+                    responseBody = DiveSite+" Invalid Dive Site.";
+                }
+                else{
+                    dsImage = dataCheck.Item.LogoPhoto;
+                }
+            }
+            catch(err){
+                statusCode = 403;
+                responseBody = "Invalid Dive Site. "+err;
+            }
             
-        console.log("status is now: " + statusCode) ;
+            /* Only log the dive if above is verified */
+            if(statusCode==undef){
+                let Approved = true;
+                if(isCourse){
+                    Approved = false;
+                }
+                Weather[2] = Weather[2].toLowerCase();
+                const optionalWeather = ["cloudy","deary","fog","hazy sunshine","intermittent clouds","mostly cloudy w showers","mostly cloudy","mostly sunny","overcast","partly sunny w showers","partly sunny w t-storms","partly sunny","plenty of sunshine","rain","showers","sunny","t-storms","windy"];
+                if(!contains(optionalWeather, Weather[2])){
+                    Weather[2] ="uncertain";
+                }
+                const params = {
+                    TableName: "Dives",
+                    Item: {
+                        DiveID : DiveID,
+                        AccountGuid : guid,
+                        AirTemp : AirTemp,
+                        Approved: Approved, 
+                        BottomTemp: BottomTemp,
+                        Buddy: Buddy, 
+                        DiveDate: DiveDate, 
+                        Depth: Depth+"m",
+                        Description: Description, 
+                        DiveSite: DiveSite,
+                        DiveTypeLink: diveLink,
+                        InstructorLink: InstructorLink,
+                        SurfaceTemp: SurfaceTemp,
+                        TimeIn: TimeIn,
+                        TimeOut: TimeOut,
+                        Visibility: Visibility+"m",
+                        Weather: Weather,
+                        DivePublicStatus: DivePublicStatus,
+                        DiveVerified: false,
+                        Rating: Rating,
+                        AITraining : false,
+                        DiveImage : dsImage,
+                        WaterType: WaterType
+                    }
+                };
+                try{
+                    const Divedata = await documentClient.put(params).promise();
+                    let currProgress = (data.Item.GoalProgress)+1;
+                    let goal = data.Item.Goal;
+                    let achievements = [];
+                    let completed = false;
+                    
+                    if(typeof data.Item.Achievements !=="undefined"){
+                        achievements = data.Item.Achievements;
+                    }
+                    if(currProgress==goal){
+                        completed = true;
+                        
+                        switch(goal) {
+                          case 1:
+                            goal = 5; //Goes to 5
+                            achievements.push("Completed First Dive!");
+                            break;
+                          case 5:
+                            goal = 10; //Goes to 10
+                            achievements.push("Completed Five Dives!");
+                            break;
+                          case 10:
+                            goal = 25; //Goes to 25
+                            achievements.push("Completed Ten Dives!");
+                            break;
+                          case 25:
+                            goal = 50; //Goes to 50
+                            achievements.push("Completed Twenty Five Dives!");
+                            break;
+                          case 50:
+                            goal = 100; //Goes to 100
+                            achievements.push("Completed Fifty Dives!");
+                            break;
+                          case 100:
+                                achievements.push("Completed A Hundred Dives!");
+                            break; 
+                          
+                        }
+                    }
+                    else{
+                        if(goal===100){ //Keep goal full
+                            currProgress =100;
+                        }
+                    }
+                    const paramsUpdate = {
+                        TableName: "Scubamate",
+                        Key: {
+                            AccountGuid: guid
+                        },
+                        UpdateExpression: "set GoalProgress = :gp, Goal = :g, Achievements = :a",
+                        ExpressionAttributeValues:{
+                            ":gp": currProgress,
+                            ":g":goal,
+                            ":a":achievements,
+                        },
+                        ReturnValues:"UPDATED_NEW"
+                    };
+                    
+                    try{
+                        const updateStatement = await documentClient.update(paramsUpdate).promise();
+                        if(completed){
+                            responseBody = "Dive successfully logged! Goal Reached! New Goal: "+goal+" Dives";
+                        }
+                        else{
+                            responseBody = "Dive successfully logged!";
+                        }
+                        statusCode = 201;
+                    }catch(err){
+                        statusCode = 404;
+                        responseBody = "Dive Log Failed: "+err;
+                    } 
+                    
+                    
+                }catch(err){
+                    responseBody = "Unable to log dive " + err;
+                    statusCode = 403;
+                } 
+            }
+        }
 
     } catch (error) {
-        console.error(error);
         statusCode = 403;
-        responseBody = "Invalid Access Token ";
-    }
-    
-    // Only log the dive if access token is verified
-    if(statusCode==0){
-        var timestamp = new Date();
-        var yy = timestamp.getFullYear();
-        if(yy < 10)
-        {
-            yy = "0" + yy;
-        }
-        var mm = timestamp.getMonth() + 1;
-        if(mm < 10)
-        {
-            mm = "0" + mm;
-        }
-        var dd = timestamp.getDate();
-        if(dd < 10)
-        {
-            dd = "0" + dd;
-        }
-        var hh = timestamp.getUTCHours() + 2;
-        if(hh < 10)
-        {
-            hh = "0" + hh;
-        }
-        var mins = timestamp.getMinutes();
-        if(mins < 10)
-        {
-            mins = "0" + mins;
-        }
-        var ss = timestamp.getSeconds();
-        if(ss < 10)
-        {
-            ss = "0" + ss;
-        }
-        var ms = timestamp.getMilliseconds();
-        var now = yy + "/" + mm + "/" + dd + " " + hh + ":" + mins + ":" + ss + ":" + ms;
-        const params = {
-            TableName: "Dives",
-            Item: {
-                DiveID : DiveID,
-                AccountGuid : guid,
-                AirTemp : AirTemp,
-                Approved: Approved, 
-                BottomTemp: BottomTemp,
-                Buddy: Buddy, 
-                DiveDate: DiveDate, 
-                Depth: Depth,
-                Description: Description, 
-                DiveSite: DiveSite,
-                DiveTypeLink: DiveTypeLink,
-                InstructorLink: InstructorLink,
-                SurfaceTemp: SurfaceTemp,
-                TimeIn: TimeIn,
-                TimeOut: TimeOut,
-                TimeStamp : now,
-                Visibility: Visibility,
-                Weather: Weather,
-                DivePublicStatus: DivePublicStatus
-            }
-        };
-        try{
-            const data = await documentClient.put(params).promise();
-            responseBody = "Dive successfully logged! ";
-            statusCode = 201;
-        }catch(err){
-            responseBody = "Unable log dive " + err;
-            statusCode = 403;
-        } 
+        responseBody = "Invalid Access Token "+error;
     }
     
     const response = {
@@ -208,27 +264,3 @@ exports.handler = async (event, context) => {
     return response;
 
 };
-
-// {
-//     "AccessToken" : "4c72f2f6-f763-36f6-3741-3eca8a8c86ba8b23658322b7d66c9f889fc58bad955bd5f3d2158ad5acd6375fa835c4290c8a36",
-//     "AirTemp": 30,
-//     "Approved": false,
-//     "BottomTemp": -10,
-//     "Buddy": "sdfsd",
-//     "Depth": "50m",
-//     "Description": "I saw a lot of fish",
-//     "DiveSite": "Clifton Rock – Cape Town",
-//     "DiveTypeLink": "Ice Dive",
-//     "InstructorLink": "Aaf485cf3-7e5c-4f3e-9c24-1694983820f2",
-//     "DiveID": "Dfeb0bf7d-2dbb-4936-8dbd-a86302a99e3f",
-//     "SurfaceTemp": 10,
-//     "TimeIn": "10:00",
-//     "TimeOut":"12:35",
-//     "Visibility":"50m",
-//     "Weather":
-//         [ "10 mph East",
-//         "FullMoon",
-//         "Windy",
-//         "high: 1.20m"
-//       ]
-//   }

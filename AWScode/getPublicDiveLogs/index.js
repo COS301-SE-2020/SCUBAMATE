@@ -1,32 +1,16 @@
-'use strict'
+'use strict';
 const AWS = require('aws-sdk');
 AWS.config.update({region: "af-south-1"});
+const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
 
 exports.handler = async (event, context) => {
-    const ddb = new AWS.DynamoDB({apiVersion:"2012-08-10"});
-    const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
+    let body = JSON.parse(event.body);
+    const AccessToken = body.AccessToken;
+    const PageNum = body.PageNum;
 
-    /*
-    Retrieves AccessToken 
-    */
-    let body = JSON.parse(event.body)
-    const AccessToken = body.AccessToken; 
-    console.log(body.AccessToken);
-    const guidLength = 36;
-    const guid = AccessToken.substring(0,guidLength);
-    
-    let responseBody = "";
-    let statusCode =0;
+    const GuidSize = 36;
+    const AccountGuid = AccessToken.substring(0,GuidSize);
 
-    /*
-        Verify Access Token
-    */
-    const params = {
-        TableName: "Scubamate",
-        Key: {
-            "AccountGuid": guid
-        }
-    }
     
     function compareDates(t,e){
         let returnBool;
@@ -57,57 +41,57 @@ exports.handler = async (event, context) => {
         return returnBool;
     }
 
+    /* Verify AccessToken  */
+    const params = {
+        TableName: "Scubamate",
+        Key: {
+            "AccountGuid": AccountGuid
+        },
+        ProjectionExpression : "AccessToken, Expires"
+    };
+    let responseBody;
+    const undef = 0;
+    let statusCode = undef;
+    
     try {     
         const data = await documentClient.get(params).promise();
         
-        /* check if it's undefined */
-        if(typeof data.Item !== 'undefined' && data.Item){ 
-            const expiryDate = new Date(data.Item.Expires);
-            const today = new Date();
-            console.log("Compare: " + today + " and " + expiryDate  + " " + compareDates(today,expiryDate));
-            if((data.Item.AccessToken).toString().trim() != AccessToken){
-                statusCode = 403;
-                responseBody = "Invalid Access Token" ;
-
-            }
-            if(compareDates(today,expiryDate)){
-                statusCode = 403;
-                responseBody = "Access Token Expired!";
-            }
-        }
-        else
-        {
+        if((data.Item.AccessToken).toString().trim() != AccessToken){
             statusCode = 403;
-            responseBody = "Invalid Access Token";   
-
+            responseBody = "Invalid Access Token" ;
         }
-            
-        console.log("status is now: " + statusCode) ;
+        else if(compareDates( new Date(),new Date(data.Item.Expires))){
+            responseBody = "Access Token Expired!";
+            statusCode = 403;
+    
+        }
+        else if(PageNum<1){
+            responseBody = "Invalid Page Number.";
+            statusCode = 403;
+        }
 
-    } catch (error) {
-        console.error(error);
+    } catch (err) {
         statusCode = 403;
-        responseBody = "Invalid Access Token. " + error;
+        responseBody = "Invalid Access Token";
     }
 
-    /*
-    Only proceed if access token is valid
-    */
-    if(statusCode==0){
+    /*Only proceed if access token is valid*/
+    if(statusCode==undef){
         var diveParams = {
             TableName: "Dives",
-            ProjectionExpression: "AccountGuid, DiveSite, DiveDate, DivePublicStatus, DiveTypeLink, Weather, TimeIn , TimeOut, Buddy",
-            FilterExpression: "#acc = :acc",
+            ProjectionExpression: "AccountGuid, DiveSite, DiveDate, DiveTypeLink, Weather, TimeIn , TimeOut, Buddy, Rating, DiveImage",
+            FilterExpression: "#acc = :acc AND #app = :app",
             ExpressionAttributeNames:{
-                "#acc" : "DivePublicStatus"
+                "#acc" : "DivePublicStatus",
+                "#app" : "Approved"
             },
             ExpressionAttributeValues:{
                 ":acc" : true,
+                ":app" : true
             }
         };
 
         try {
-            console.log("Scanning...");
             const dives = await documentClient.scan(diveParams).promise();
             if(dives.Items.length==0){
                 responseBody = "No public dives found :(";
@@ -115,93 +99,91 @@ exports.handler = async (event, context) => {
             }
             else{
                 /*now add the name and surname of the diver*/
-                console.log("Scan succeeded.");
                 var accounts = [];
                 dives.Items.forEach(function(dive) {
-                    console.log( dive.AccountGuid + " hmm");
                     accounts.push(dive.AccountGuid);
                 });
-                console.log("length: " + accounts.length)
-
-                for(var i=0; i<accounts.length && statusCode==0; i++) {
-                    let account = accounts[i];
-                    var accountParams = {
+                 for(let i=0; i<accounts.length; i++) {
+                    const accountParams = {
                         TableName: "Scubamate",
                         Key: {
-                            "AccountGuid": account
-                        }
-                    }
-                    
+                            "AccountGuid": accounts[i]
+                        },
+                        ProjectionExpression : "EmailVerified, FirstName, LastName"
+                    };
                     try{
-                        let acc = await documentClient.get(accountParams).promise();
-                        console.log(acc.Item.FirstName + " " + acc.Item.LastName); 
-                        if(i == 0){
-                            responseBody += '{ "PublicDiveLogs" : ['
+                        let acc = await documentClient.get(accountParams).promise(); 
+                        /*If account email isn't verified, don't add it to the public dive list */
+                        if(acc.Item.EmailVerified){
+                            dives.Items[i].FirstName = acc.Item.FirstName;
+                            dives.Items[i].LastName = acc.Item.LastName;                          
                         }
                         else{
-                            responseBody += ",";
+                            //Email not verified for account, so remove the item
+                            delete dives.Items[i];
                         }
-                        responseBody += '{ "FirstName" : "' + acc.Item.FirstName + '",' +
-                                            '"LastName" : "' + acc.Item.LastName + '",' +
-                                            '"DiveSite" : "'  + dives.Items[i].DiveSite + '",' +
-                                            '"DiveDate" : "' + dives.Items[i].DiveDate + '",' +
-                                            '"DiveType" : "' + dives.Items[i].DiveTypeLink + '",' +
-                                            '"TimeIn" : "' + dives.Items[i].TimeIn + '",' +
-                                            '"TimeOut" : "' + dives.Items[i].TimeOut + '",' +
-                                            '"Buddy" : "' + dives.Items[i].Buddy + '",' +
-                                            '"Weather" : [';
-                                            
-                        for(var j=0; j<dives.Items[i].Weather.length; j++){
-                            if(j == 0){
-                                responseBody += '"' + dives.Items[i].Weather[j] + '"';
-                            }
-                            else{
-                                responseBody += ',"' + dives.Items[i].Weather[j] + '"';
-                            }
-                        }
-                        responseBody += ']}';
-
-                        if(i==accounts.length-1){
-                            responseBody += ']}';
-                        }
-                
-                    }catch(err){
-                        var temp = responseBody;
-                        responseBody = temp + " Unable to get account." ;
-                        statusCode = 403;
                         
+                    }catch(err){
+                        //Cannot find account, so remove the item
+                         delete dives.Items[i];
                     }
-                    // statusCode = 200;
+                 }
+                /*sort the dives by date*/
+                const sortedDives = dives.Items.sort((a, b) => new Date(b.DiveDate) - new Date(a.DiveDate));
+                
+                const numOfItems = 9;
+                const start = (PageNum-1)*numOfItems ;
+                let toReturn =[];
+                /*Show next n items for current page */
+                for(let i=start;i<numOfItems+start;i++){
+                    if(sortedDives[i]!=null){
+                        //Get Image of dive and add it 
+                        let imageToGet = "https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/defaultlogo.png";
+                        if(typeof sortedDives[i].DiveImage !=="undefined"){
+                            imageToGet = sortedDives[i].DiveImage;
+                        }
+                        const startIndex = (imageToGet).lastIndexOf("/")+1;
+                        let filePath = (imageToGet).substring(startIndex, (imageToGet).length);
+                        
+                        let paramsImg = {"Bucket": "imagedatabase-scubamate", "Key": filePath };
+                        let returnImg;
+                        
+                        const s3 = new AWS.S3({httpOptions: { timeout: 2000 }});
+                        try{
+                            const binaryFile = await s3.getObject(paramsImg).promise();
+                            const startIndexContentType = (imageToGet).lastIndexOf(".")+1;
+                            const contentType = imageToGet.substring(startIndexContentType, imageToGet.length);
+                            let base64Image = "data:image/"+contentType+";base64," +binaryFile.Body.toString('base64'); 
+                            
+                            returnImg = base64Image;
+                        }
+                        catch(err){
+                            returnImg = "N/A";
+                        }
+                        sortedDives[i].DiveImage = returnImg;
+                        
+                        toReturn.push(sortedDives[i]);
+                    }
                 }
-    
-                // continue scanning if we have more movies, because
-                // scan can retrieve a maximum of 1MB of data
-                // if (typeof data.LastEvaluatedKey != "undefined") {
-                //     console.log("Scanning for more...");
-                //     diveParams.ExclusiveStartKey = data.LastEvaluatedKey;
-                //     documentClient.scan(diveParams, onScan);
-                // }
-    
-                if(statusCode == 0){    
-                    responseBody = JSON.parse(responseBody);
+                if(toReturn.length == 0){
+                    responseBody = "No more dives found";
+                    statusCode = 404;
+                }
+                else{
+                    responseBody = toReturn;
                     statusCode = 200;
                 }
-            }
+                
+             }
         } 
         catch(err){
-            if(statusCode == 0){
-                console.error("Unable to scan the table. Error JSON:", JSON.stringify(err, null, 2), );
-                responseBody = "No public dives found " + err + " " + responseBody;
-                statusCode = 404;
-            }
+            responseBody = "No public dives found " + err;
+            statusCode = 404;
         }
         
     }   
-    
   
-    /*
-    Final response to be sent back
-    */
+    /*Final response to be sent back*/
     const response = {
         statusCode: statusCode,
         headers: {

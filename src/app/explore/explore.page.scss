@@ -5,7 +5,58 @@ $red: #E76F51 ;
 $yellow : #E9C46A ;
 $inputBackgroundColor: #181e21;
 
+@media (max-width: 767px) {
+  .contentContainer{
+    margin: auto !important;
+    margin-left: 10% !important;
+    margin-top: 7px !important;
 
+    ion-col{
+      margin-left: 0% !important;
+    }
+  }
+
+  .contentContainer{
+    margin-right:0% !important;
+    margin-left: -2% !important;
+    margin-top: 40px !important;
+  }
+
+  .theback{
+    margin-left: 3.5% !important;
+  }
+
+  .thecard{
+    width: 100vw !important;
+    height: 70vh !important;
+    margin: auto !important;
+  }
+  .thecardDC{
+    width: 98vw !important;
+    height: 400px;
+  }
+
+
+
+  ion-radio-group{
+    top: -21px !important;
+    margin: auto !important;
+    width: 100% !important;
+    margin-top: 0px !important; 
+    font-size: 10px !important; 
+
+    ion-col{
+      width: 100% !important;
+      margin: 0px !important;
+      padding: 0px !important;
+    }
+
+    ion-item{
+      font-size: 13px !important;
+    }
+     
+  }
+}
 
 ion-content.background{
   --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
@@ -118,15 +169,22 @@ table{
 ///////////// Flash-Card 
 .maincontainer{
   position: relative;
-  width: 250px;
+  width: 70vw; //250px;
   height: 320px;
 }
 
 .thecard{
-  //width: 250px;
-  //height: 320px;
-  width: 270px;
-  height: 320px;
+  width: 20vw;//270px;
+  height: 340px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: all 0.5s ease;
+  word-wrap: break-word;
+  cursor: pointer;
+}
+.thecardDC{
+  width: 20vw;//270px;
+  height: 380px;
   position: relative;
   transform-style: preserve-3d;
   transition: all 0.5s ease;
@@ -134,7 +192,12 @@ table{
   cursor: pointer;
 }
 
-.thecard:active{
+/*.thecard:active{
+  transform: rotateY(180deg);
+  cursor: pointer;
+}*/
+
+.thecard:hover{
   transform: rotateY(180deg);
   cursor: pointer;
 }
@@ -145,8 +208,6 @@ table{
   height: 100%;
   backface-visibility: hidden;
   color: #333;
- // background-color: rgba(38, 70, 83);
-
     ion-card{
       position: absolute;
       height: 100%;
@@ -172,7 +233,9 @@ table{
 .contentContainer{
   margin-right:5%;
   margin-left:30%;
-  margin-top:20px;
+  //margin-top:20px;
+  //margin-top:10px;
+  margin-top: -10px;
 }
 
 .weatherIMG{
@@ -188,6 +251,86 @@ table{
   width:100%;
 }
 
+
 .WeatherDescriptionCard{
   color: $darkBlue;
 }
+
+.DiveCenterName{
+  text-align: center;
+  font-size:  18px ;
+  font-family: 'Righteous';
+  display: swap ;
+  color: $inputBackgroundColor;
+  width: 100%;
+  margin: auto;
+  margin-top: 7%; 
+  border-bottom: solid $inputBackgroundColor 0.5px;
+  border-top: solid $inputBackgroundColor  0.5px;
+  padding: 10px;
+  margin-bottom: 5px;
+  right: 0;
+  bottom: 0;
+}
+
+.DiveCenterLocation{
+  width:100%;
+  font-family: 'Righteous';
+  text-align: center;
+  font-size:  14px ;
+  margin-bottom: 5px;
+}
+
+.ViewDiveCenterLink{
+  width:100%;
+  font-size:  15px ;
+  color: #2A9D8F ;
+  background-color: #ddd;
+  text-align: center;
+  cursor: pointer;
+  float: center;
+}
+
+.ViewDiveCenterLink:hover{
+  font-size:  17px ;
+}
+
+.DiveCenterDescription{
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+#loadMoreBtn{
+  width : 80%;
+  margin-top: 20px;
+  margin-bottom: 40px; 
+  margin: auto;
+}
+
+
+$blur: blur(9px);
+
+// .infoImg{
+//   background: url(../../assets/images/info/PFInfo.png) 0 0/100% 100% no-repeat;
+//   //box-shadow: 17px 17px 50px 0 white inset; 
+//   display:block;
+//   position:relative;
+//   width: 70%;
+//   height: 450px;
+//   margin: auto;
+// }
+
+.infoImg:before
+{
+    display:block;
+    content:'';
+    position:absolute;
+    width:100%;
+    height:100%;
+    -moz-box-shadow:inset 0px 0px 6px 6px rgba(255, 255, 255, 0.055);
+    -webkit-box-shadow:inset 0px 0px 6px 6px rgba(255,255,255,0.2);
+    box-shadow:inset 0px 0px 6px 6px rgba(255,255,255,0.2);
+}
+
+
+

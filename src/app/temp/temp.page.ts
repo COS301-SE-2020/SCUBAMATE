@@ -4,7 +4,9 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { AgeValidator } from '../validators/age';
 import { AlertController } from '@ionic/angular';
 import { PRIMARY_OUTLET } from '@angular/router';
-
+import {ConnectionService} from 'ng-connection-service';
+import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 export interface UserValues{
   firstName: string
@@ -17,72 +19,25 @@ export interface UserValues{
 })
 export class TempPage implements OnInit {
 
-  //Global Variables
-  //myInput: string ;
-  myForm; 
-
-
-
-  inputValues: UserValues  ; 
-
-
-
-  matchingPasswords(passwordKey: string, passwordConfirmationKey: string ) {
-    return (group: FormGroup) => {
-      let passwordInput = group.controls[passwordKey];
-      let passwordConfirmationInput = group.controls[passwordConfirmationKey];
-      if (passwordInput.value !== passwordConfirmationInput.value) {
-        return passwordConfirmationInput.setErrors({notEquivalent: true})
-      }
+  pages = [
+    {
+      title: "First Page",
+      url: "/register",
+      ionicIcon: 'log-in-outline'
+    },{
+      title: "Second Page",
+      url: "/register",
+      ionicIcon: 'log-in-outline'
     }
-  }
+  ];
 
-  constructor(public formBuilder: FormBuilder, public alertController : AlertController) { 
-
-    this.inputValues = {
-      firstName : ""
-    }
-
-    this.myForm = formBuilder.group({
-      firstName: ['', Validators.compose([Validators.maxLength(30), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
-      lastName: ['', Validators.compose([Validators.maxLength(30), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
-      age: ['', AgeValidator.isValid], 
-      email: ['', Validators.compose([Validators.email , Validators.pattern('[A-Za-z0-9._%+-]{2,}@[a-zA-Z-_.]{2,}[.]{1}[a-zA-Z]{2,}'), Validators.required])],
-      password: ['', Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(12), Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,12}$')])],
-      confirmPassword: ['', Validators.required]},
-      {validator: this.matchingPasswords('password', 'confirmPassword')}); 
-    
-    
-    }/** End of Constructor */
+  selectedPath ="";
 
 
-  
+  constructor(private router: Router , public formBuilder: FormBuilder, public alertController : AlertController, private connectionService: ConnectionService, private location: Location) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
-  async presentAlert() {
-    const alert = await this.alertController.create({
-      cssClass: 'errorAlert',
-      header: 'Invalid Signup',
-      message: 'Please provide all required information to complete the signup',
-      buttons: ['OK']
-    });
-
-    await alert.present();
-  }
-
-  onSubmit(){
-
-    if(!this.myForm.valid){
-        this.presentAlert();
-    }
-
-  }
-
- 
-
- 
 
 
 }

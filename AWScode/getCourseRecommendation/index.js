@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 const AWS = require('aws-sdk');
 AWS.config.update({region: "af-south-1"});
 
@@ -6,9 +6,6 @@ exports.handler = async (event, context) => {
     
     const body = JSON.parse(event.body);
     const AccessToken = body.AccessToken; 
-    /* Qualification and Specialisation of user */
-    const Qualification = body.Qualification; 
-    const Specialisation = body.Specialisation; 
     
     const GuidSize = 36;
     const AccountGuid = AccessToken.substring(0,GuidSize);
@@ -40,6 +37,17 @@ exports.handler = async (event, context) => {
             returnBool = true;
         }
         return returnBool;
+    }
+    function getAge(dob){
+        var today = new Date();
+        var birthDate = new Date(dob);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) 
+        {
+            age--;
+        }
+        return age;
     }
     
     function contains(arr,search){
@@ -73,86 +81,119 @@ exports.handler = async (event, context) => {
             responseBody = "Access Token Expired!";
             statusCode = 403;
         }
-        else if(!data.Item.AccountVerified){
-            statusCode = 403;
-            responseBody = "Account Not Verified by Admin - Ask your Dive Centre to Verify";
-        }
-        else if(!data.Item.EmailVerified){
-            statusCode = 403;
-            responseBody = "Account Email Not Verified - Can't Upgrade Until Email Is Verified";
-        }
         else{
-            /* Get List Of Qualification Courses which can be taken by this level */
+            /* Get Range Type for Courses */
+            let courseType;
+            let age =getAge(data.Item.DateOfBirth);
+            let filter = 'begins_with(#itemT , :itemT) AND MinAgeRequired <= :age ';
+            let expAttrValues;
+                
+            /* To decide between diver/instructor/youth, check age */
+            if(age>=12){
+                if(typeof data.Item.CompletedCourses == "undefined"){
+                    /* The diver has done no courses and thus can't be an instructor. */
+                    filter += "AND (QualificationType = :qType)";
+                    courseType = "Diver";
+                    expAttrValues = {
+                        ':itemT': "C-",
+                        ':age' : age,
+                        ':qType': courseType
+                    };
+                }
+                else{
+                    /* Qualified to do instructor or diver */
+                    if(data.Item.AccountType == "Instructor"){
+                        filter += "AND (CourseType <> :cType)";
+                        expAttrValues = {
+                            ':itemT': "C-",
+                            ':age' : age,
+                            ':cType': "Introductory Experience"
+                        };
+                    }
+                    else{
+                         filter += "AND (QualificationType = :qType OR QualificationType = :qType2)";
+                        expAttrValues = {
+                            ':itemT': "C-",
+                            ':age' : age,
+                            ':qType': "Youth",
+                            ':qType2': "Diver"
+                        };
+                    }
+                    
+                }
+            }
+            else if(age>=10){
+                /* Diver is younger than 12 and older than 10 - can be a diver/youth*/
+                filter += "AND (QualificationType = :qType OR QualificationType = :qType2)";
+                expAttrValues = {
+                    ':itemT': "C-",
+                    ':age' : age,
+                    ':qType': "Youth",
+                    ':qType2': "Diver"
+                };
+            }
+            else{
+                /* Diver is younger than 10 - can only be a youth*/
+                filter += "AND (QualificationType = :qType)";
+                courseType = "Youth";
+                expAttrValues = {
+                    ':itemT': "C-",
+                    ':age' : age,
+                    ':qType': courseType
+                };
+            }
+
+            /* Get List Of Courses */
             const paramsCourse = {
                 TableName: 'DiveInfo',
-                FilterExpression: 'begins_with(#itemT , :itemT) AND #QNeeded = :qual',
+                ProjectionExpression: "#name,MinAgeRequired, RequiredCourses, CourseType, Description", 
+                FilterExpression: filter,
                 ExpressionAttributeNames: {
                     '#itemT': 'ItemType',
-                    '#QNeeded': 'QualificationNeeded',
+                    '#name':"Name"
                 },
-                ExpressionAttributeValues: {
-                    ':itemT': "C-",
-                    ':qual': Qualification,
-                }
+                ExpressionAttributeValues: expAttrValues
             };
 
             try{
                 const dataC = await documentClient.scan(paramsCourse).promise();
-                let tmpQ = [];
-                let tmpS = [];
+                let tmp = [];
+                /* Shorten array to return */
+                let tmpCulled =[];
+                let requiredCourses =[];
                 dataC.Items.forEach(function(item) {
-                    tmpQ.push(item.Name);
-                });
-                if(tmpQ.length == 0){
-                    tmpQ = "No Qualification Courses Found";
-                }
-                /* Get List Of Specialisation Courses which can be taken by this level */
-                const paramsSCourse = {
-                    TableName: 'DiveInfo',
-                    FilterExpression: 'begins_with(#itemT , :itemT)',
-                    ExpressionAttributeNames: {
-                        '#itemT': 'ItemType',
-                    },
-                    ExpressionAttributeValues: {
-                        ':itemT': "S-",
-                    }
-                };
-    
-                try{
-                    const dataS = await documentClient.scan(paramsSCourse).promise();
-                    
-                    dataS.Items.forEach(function(item) {
-                        let itemName = item.Name;
-                        let itemQualAllowed = item.QualificationsAllowed;
-                        /*For each specialization
-                        * check if one of them is the 
-                        * same as account's then
-                        * check qualifications allowed
-                        * then add name of specialization*/
-                        if(!contains(Specialisation,itemName)){
-                            itemQualAllowed.forEach(function(qualAllowed) {
-                                if((qualAllowed==Qualification) && !contains(tmpS,itemName)){
-                                    tmpS.push(itemName);
-                                }
-                            });
+                    if(typeof data.Item.CompletedCourses == "undefined"){
+                        /*Only push courses that don't require other courses */
+                        if(item.RequiredCourses==null){
+                            tmpCulled.push(item);
                         }
-                            
-                    });
-                    if(tmpS.length == 0){
-                        tmpS = "No Specialisation Courses Found";
                     }
-                    let returnList = [];
-                    returnList.push({QualificationCourses: tmpQ});
-                    returnList.push({SpecialisationCourses: tmpS});
-                    responseBody = returnList;
-                    statusCode = 200;
-                }catch(err){
-                    responseBody = "Unable to find new courses"+err;
-                    statusCode = 403;
+                    else if(!contains(data.Item.CompletedCourses, item.Name)){
+                        /*If user hasn't done the course */
+                        tmp.push(item);
+                        requiredCourses.push(item.RequiredCourses);
+                    }
+                });
+                
+                if(tmpCulled.length == 0 && tmp.length == 0){
+                    tmpCulled= "No Courses Found.";
                 }
+                else if(typeof data.Item.CompletedCourses != "undefined"){
+                    /*All courses added that person hasn't done */
+                    /* Check if they can do the course */
+                    requiredCourses.forEach(function(item, index){
+                        if(item==null || contains(data.Item.CompletedCourses, item)){
+                            tmpCulled.push(tmp[index]);
+                        }
+                    });
+                }
+                let returnList = [];
+                returnList.push({Courses: tmpCulled});
+                responseBody = returnList[0];
+                statusCode = 200;
                   
             }catch(err){
-                responseBody = "Unable to find new courses"+err;
+                responseBody = "Unable to find new courses: "+err;
                 statusCode = 403;
             } 
         }

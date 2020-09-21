@@ -5,6 +5,18 @@ $red: #E76F51 ;
 $yellow : #E9C46A ;
 $inputBackgroundColor: #181e21;
 
+
+@media (max-width: 767px) {
+  #editDiveDiv{
+    width: 95% !important;
+  }
+
+
+}
+
+
+
+
 .readOnlyInputArea{
     color: gray;
 }
