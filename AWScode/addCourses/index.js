@@ -43,7 +43,16 @@ exports.handler = async (event,context) => {
         }
         return returnBool;
     }
-    
+    const validSurveyAnswers = ["A","B","C","D","E","F"];
+    function contains(arr,search){
+        let returnBool = false;
+        arr.forEach(function(item) {
+            if(item==search){
+                returnBool=true;
+            }
+        });
+        return returnBool;
+    }
     const undef = 0;
     let statusCode = undef;
     let responseBody;
@@ -67,6 +76,10 @@ exports.handler = async (event,context) => {
         else if(data.Item.AccountType != "Admin" && data.Item.AccountType != "SuperAdmin"){
             statusCode = 403;
             responseBody = "Account doesn't have correct privileges";
+        }
+        else if(!contains(validSurveyAnswers,SurveyAnswer)){
+            statusCode = 403;
+            responseBody = "The Survey Answer is invalid";
         }
         else
         {
