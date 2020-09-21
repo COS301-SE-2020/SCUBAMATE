@@ -121,7 +121,7 @@ exports.handler = async (event, context) => {
             }
             catch(err){
                 statusCode = 403;
-                responseBody = "Invalid Dive Site. "+err;
+                responseBody = "Invalid Dive Site. ";
             }
             
             /* Only log the dive if above is verified */
@@ -233,12 +233,10 @@ exports.handler = async (event, context) => {
                         statusCode = 201;
                     }catch(err){
                         statusCode = 404;
-                        responseBody = "Dive Log Failed: "+err;
+                        responseBody = "Dive Log Failed. ";
                     } 
-                    
-                    
                 }catch(err){
-                    responseBody = "Unable to log dive " + err;
+                    responseBody = "Unable to log dive. ";
                     statusCode = 403;
                 } 
             }
@@ -246,7 +244,7 @@ exports.handler = async (event, context) => {
 
     } catch (error) {
         statusCode = 403;
-        responseBody = "Invalid Access Token "+error;
+        responseBody = "Invalid Access Token ";
     }
     
     const response = {
