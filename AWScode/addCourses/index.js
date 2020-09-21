@@ -1,25 +1,8 @@
 'use strict';
 const AWS = require('aws-sdk');
 AWS.config.update({region: "af-south-1"});
-const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
-
 
 exports.handler = async (event,context) => {
-    // TODO implement
-    let statusCode = 0;
-    let responseBody = "";
-    
-    /*
-    const AccessToken = event.AccessToken;
-    const Name = event.Name;
-    const CourseType = event.CourseType;
-    const MinAgeRequired = event.MinAgeRequired;
-    const QualificationType = event.QualificationType;
-    const RequiredCourses = event.RequiredCourses;
-    const SurveyAnswer = event.SurveyAnswer;
-    */
-    
-    
     const body = JSON.parse(event.body);
     const AccessToken = body.AccessToken;
     const Name = body.Name;
@@ -28,8 +11,6 @@ exports.handler = async (event,context) => {
     const QualificationType = body.QualificationType;
     const RequiredCourses = body.RequiredCourses;
     const SurveyAnswer = body.SurveyAnswer;
-    
-    
     
     const GuidSize = 36;
     const AccountGuid = AccessToken.substring(0,GuidSize);
@@ -63,7 +44,10 @@ exports.handler = async (event,context) => {
         return returnBool;
     }
     
-    
+    const undef = 0;
+    let statusCode = undef;
+    let responseBody;
+    const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
     const params1 = {
             TableName: "Scubamate",
             Key: {
@@ -81,7 +65,6 @@ exports.handler = async (event,context) => {
             statusCode = 403;
         }
         else if(data.Item.AccountType != "Admin" && data.Item.AccountType != "SuperAdmin"){
-            console.log(data.Item.AccountType);
             statusCode = 403;
             responseBody = "Account doesn't have correct privileges";
         }
