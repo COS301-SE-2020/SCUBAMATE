@@ -77,12 +77,11 @@ exports.handler = async (event, context) => {
             /* Is Instructor now to find it's Unverified Courses */
             const paramsCourses = {
                 TableName: "Dives",
-                ProjectionExpression: " DiveID,AirTemp,Approved,BottomTemp,Buddy, DiveDate, #dep, Description, DiveSite,DiveTypeLink,InstructorLink,SurfaceTemp,TimeIn,TimeOut,Visibility,Weather,DivePublicStatus", 
+                ProjectionExpression: "TimeIn, TimeOut, DiveDate, DiveSite, DiveID, AccountGuid, InstructorLink",
                 FilterExpression: 'contains(#dt , :dt) AND #dv = :dv',
                 ExpressionAttributeNames: {
                     '#dt': 'DiveTypeLink',
                     '#dv': 'DiveVerified',
-                    "#dep":"Depth"
                 },
                 ExpressionAttributeValues: {
                     ':dt': "Course",
@@ -91,30 +90,59 @@ exports.handler = async (event, context) => {
             };
             try{
                 const dataC = await documentClient.scan(paramsCourses).promise();
-                if(dataC.length == 0 ){
+                if(dataC.length == 0 || dataC.Items.length ==0){
                     responseBody = "No Courses Need to be Verified";
                     statusCode = 404;
                 }
+                else if(typeof dataC.Items == "undefined"){
+                    responseBody = "No courses can be found currently...";
+                    statusCode = 500;
+                }
                 else {
                     let tmp = [];
+                    let tmpGuids =[];
                     const search = data.Item.FirstName + " "+ data.Item.LastName+" ("+data.Item.Email+") - "+data.Item.DiveCentre;
+                    
                     dataC.Items.forEach(function (item) {
                         if(typeof item.InstructorLink != undefined && contains(item.InstructorLink, search)){
-                            tmp.push(item);    
+                            tmp.push(item); 
+                            tmpGuids.push(item.AccountGuid);
                         }
                         
                     });
                     if(tmp.length ==0){
-                        responseBody = "No Courses Need to be Verified";
+                        responseBody = dataC.Items[0];//"No Courses Need to be Verified For "+data.Item.FirstName +" "+data.Item.LastName;
                         statusCode =404;
-                        
                     }
                     else{
+                        /* Insructor has to verify some courses - now get Diver's name */
+                        var cont = true; //boolean value to continue checking for diver names
+                        for(let i =0; i<tmpGuids.length && cont; i++){
+                            const paramsName = {
+                                TableName: "Scubamate",
+                                Key: {
+                                    "AccountGuid": tmpGuids[i]
+                                },
+                                ProjectionExpression: "FirstName, LastName",
+                            };
+                            try{
+                                const dataN = await documentClient.get(paramsName).promise();
+                                tmp[i].FirstName = dataN.Item.FirstName;
+                                tmp[i].LastName = dataN.Item.LastName
+                            }
+                            catch(err){
+                                statusCode = 403;
+                                responseBody = "Could not find divers courses. "+err;
+                                cont = false;
+                            }
+                        };
+                        
                         let returnList = [];
                         returnList.push({UnverifiedCourses: tmp});
                         responseBody = returnList[0];
                         statusCode =200;
                     }
+                    
                 }
             
             }
