@@ -160,15 +160,10 @@ ion-grid {
   }
 
   #acountInfo1{
-    padding-left: 20px;
+    padding-left: 7% ; //20px;
     padding-top: 20px;
     padding-right:0;
   }
-
-  #acountInfo2{
-    padding-top: 20px;
-  }
-
 
   ion-button{
     float:right;
@@ -192,8 +187,8 @@ ion-grid {
 
 
 #userProfile{
-  width: 160px;
-  height: 160px;
+  width: 180px;
+  height: 180px;
   margin: auto;
   margin-top: 6%;
   margin-bottom: 6%;
@@ -203,12 +198,12 @@ ion-grid {
 }
 
 #profileSurroundDiv{
-  width:180px;
-  height:180px;
+  width:200px;
+  height:200px;
   padding:0;
   margin: auto;
-  margin-top: 2%;
-  margin-bottom: 3%;
+  margin-top: 15px;//5%;
+  margin-bottom: 20px;//8%;
   border-radius: 100% !important;
   overflow: hidden;
   background-color:  rgba(24, 30, 33, 0.4) ;
