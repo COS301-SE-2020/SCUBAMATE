@@ -7,6 +7,8 @@ import { Location } from '@angular/common';
 import { GlobalService } from "../global.service";
 import { AlertController } from '@ionic/angular';
 
+import { IonInfiniteScroll } from '@ionic/angular';
+
 export interface Dive{
   FirstName : string ;
   LastName : string ;
@@ -46,6 +48,7 @@ export class ExplorePage implements OnInit {
   /*********************************************
                 Global Variables
   *********************************************/
+ 
   siteLst: DiveSite[] = new Array() ;
   centerLst: DiveCenter[] = new Array() ;
   showSites : boolean ;
@@ -322,5 +325,8 @@ export class ExplorePage implements OnInit {
     await alert.present();
   }
 
+
+
+ 
 
 }

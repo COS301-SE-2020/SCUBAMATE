@@ -402,7 +402,8 @@ ion-content.background{
 }
 
 .bigBlueBtn{
-  --border-radius:5px !important;
+ // --border-radius:5px !important;
+ --border-radius:0px !important;
   width:100% !important;
   font-size:x-small !important;
   padding: 5px !important;
