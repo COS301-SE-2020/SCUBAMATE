@@ -36,6 +36,8 @@ import { AgeValidator } from './validators/age';
 import {HttpModule} from '@angular/http';
 //rating 
 import { IonicRatingModule  } from 'ionic4-rating';
+//cropping
+import { Crop } from '@ionic-native/crop/ngx';
 
 @NgModule({
   declarations: [
@@ -59,6 +61,7 @@ import { IonicRatingModule  } from 'ionic4-rating';
     weatherService,
     chartService,
     AgeValidator,
+    Crop,
     GlobalService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     Geolocation

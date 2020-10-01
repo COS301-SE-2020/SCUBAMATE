@@ -97,16 +97,16 @@
 
 <ion-radio-group color="dark" *ngIf="!viewFeedInfo" slot="fixed" style="width:20%;margin-top:2%;margin-left:2%;" value="feed" class="hidden-sm-down">
   <ion-row>
-    <ion-item color="dark" (click)="displayFeed()" style="width:100%;--border-radius:27px;" >
-      <ion-label>Public Feed</ion-label>
+    <ion-item color="dark" (click)="displayFeed()" style="width:100%;--border-radius:4px;" >
+      <ion-label><ion-icon name="people" style="font-size:20px;"></ion-icon>&nbsp;&nbsp;  Community</ion-label>
       <ion-radio  value="feed" ></ion-radio>
     </ion-item>
-    <ion-item color="dark"  (click)="displayDiveCenters()" style="width:100%;--border-radius:27px;margin-top:8px;">
-      <ion-label>Dive Centres</ion-label>
+    <ion-item color="dark"  (click)="displayDiveCenters()" style="width:100%;--border-radius:4px;margin-top:8px;">
+      <ion-label><ion-icon name="ribbon" style="font-size:20px;"></ion-icon>&nbsp;&nbsp;Dive Centres</ion-label>
       <ion-radio value="centers"></ion-radio>
     </ion-item>
-    <ion-item color="dark"  (click)="displayDiveSites()" style="width:100%;--border-radius:27px;margin-top:8px;">
-      <ion-label>Dive Sites</ion-label>
+    <ion-item color="dark"  (click)="displayDiveSites()" style="width:100%;--border-radius:4px;margin-top:8px;">
+      <ion-label><ion-icon name="boat" style="font-size:20px;"></ion-icon>&nbsp;&nbsp;Dive Sites</ion-label>
       <ion-radio value="sites" ></ion-radio>
     </ion-item>
 </ion-row>
@@ -117,19 +117,19 @@
   <ion-row>
     <ion-col size="4">
       <ion-item color="dark" (click)="displayFeed()" style="display:inline;" >
-        <ion-label>Public <br> Feed</ion-label>
+        <ion-label style="font-size:10px;text-align:center;"><ion-icon name="people" style="font-size:20px;"></ion-icon><br>Community</ion-label>
         <ion-radio  value="feed" ></ion-radio>
       </ion-item>
     </ion-col>
     <ion-col size="4">
       <ion-item color="dark"  (click)="displayDiveCenters()" style="display:inline;">
-        <ion-label>Dive <br> Centres</ion-label>
+        <ion-label style="font-size:10px;text-align:center;"><ion-icon name="ribbon" style="font-size:20px;"></ion-icon><br>Centres</ion-label>
         <ion-radio value="centers"></ion-radio>
       </ion-item>
     </ion-col>
     <ion-col size="4">
       <ion-item color="dark"  (click)="displayDiveSites()" style="display:inline;">
-        <ion-label>Dive <br> Sites</ion-label>
+        <ion-label style="font-size:10px;text-align:center;"><ion-icon name="boat" style="font-size:20px;"></ion-icon><br>Sites</ion-label>
         <ion-radio value="sites" ></ion-radio>
       </ion-item>
     </ion-col>
