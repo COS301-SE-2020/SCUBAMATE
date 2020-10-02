@@ -52,7 +52,7 @@
         <ion-radio  value="where" ></ion-radio>
       </ion-item>
       <ion-item color="dark"  (click)="toggleSideView('SuggestCourses')" style="width:100%;--border-radius:4px;margin-top:8px;">
-        <ion-label><ion-icon name="book" style="font-size:22px;"></ion-icon>&nbsp;&nbsp;Courses For Me</ion-label>
+        <ion-label><ion-icon name="book" style="font-size:22px;"></ion-icon>&nbsp;&nbsp;My Next Course</ion-label>
         <ion-radio value="courses"></ion-radio>
       </ion-item>
       <ion-item color="dark"  (click)="toggleSideView('Checklist')" style="width:100%;--border-radius:4px;margin-top:8px;">
@@ -60,7 +60,7 @@
         <ion-radio value="what" ></ion-radio>
       </ion-item>
       <ion-item color="dark"  (click)="toggleSideView('Predict')" style="width:100%;--border-radius:4px;margin-top:8px;">
-        <ion-label><ion-icon name="search" style="font-size:22px;"></ion-icon>&nbsp;&nbsp;Dive Conditions</ion-label>
+        <ion-label><ion-icon name="search" style="font-size:22px;"></ion-icon>&nbsp;&nbsp;When To Dive</ion-label>
         <ion-radio value="predict" ></ion-radio>
       </ion-item>
   </ion-row>
@@ -82,13 +82,13 @@
       </ion-col>
       <ion-col size="3">
         <ion-item color="dark"  (click)="toggleSideView('Checklist')"  style="display:inline;">
-          <ion-label style="font-size:9px;text-align:center;"><ion-icon name="clipboard" style="font-size:20px;"></ion-icon><br>Bring</ion-label>
+          <ion-label style="font-size:9px;text-align:center;"><ion-icon name="clipboard" style="font-size:20px;"></ion-icon><br>Checklist</ion-label>
           <ion-radio value="sites" ></ion-radio>
         </ion-item>
       </ion-col>
       <ion-col size="3">
         <ion-item color="dark"  (click)="toggleSideView('Predict')"  style="display:inline;">
-          <ion-label style="font-size:9px;text-align:center;"><ion-icon name="search" style="font-size:20px;"></ion-icon><br>Predict</ion-label>
+          <ion-label style="font-size:9px;text-align:center;"><ion-icon name="search" style="font-size:20px;"></ion-icon><br>When</ion-label>
           <ion-radio value="predict" ></ion-radio>
         </ion-item>
       </ion-col>
@@ -178,7 +178,7 @@
                         <label class="SitesNearName" (click)="viewDiveSite(snr.Name)" style="cursor:pointer;"> {{snr.Name}} </label> <br>
                         
                       </ion-card-title>
-                      <label class="SitesNearRating" style="margin-top:5%;">Rating: {{snr.Rating}}  </label> <br> 
+                      <label class="SitesNearRating" style="margin-top:5%;">Rating: {{snr.Rating}} <ion-icon name="star" color="warning"></ion-icon> </label> <br> 
                         <a href="https://maps.google.com/?q={{snr.Coords}}" class="viewLocationLink" style="margin-top:10%;"><ion-icon name="location" style="font-size:larger;"></ion-icon> View On Map</a>
                   </ion-card-content>
                     
@@ -328,7 +328,7 @@
       </div>
 
       --> 
-      <label class="divHeadTag" *ngIf="sideViewSuggestCourse &&  showCourses">Courses For Me</label>
+      <label class="divHeadTag" *ngIf="sideViewSuggestCourse &&  showCourses">My Next Course</label>
       <div *ngIf="sideViewSuggestCourse &&  showCourses" class="coursesCardDiv">
         <div id="SuggestedCoursesDiv">
           <div class="divHeadSection">
@@ -356,6 +356,7 @@
                     <ion-card color="dark">
                       <ion-card-content fixed>
                           <ion-card-title fixed color="dark">
+                            <label class="SitesNearName" style="cursor:pointer;color:#d66853  ;"> Survey Suggestion </label> <br>
                             <label class="SitesNearName" style="cursor:pointer;"> {{ssc.Name}} </label> <br>
                             <label class="CourseRating" style="font-size:medium;color:#2A9D8F ;">  Type: {{ssc.CourseType}}   </label>
                           </ion-card-title>
@@ -374,7 +375,7 @@
                     <ion-card-content fixed>
                         <ion-card-title fixed color="dark">
                           <label class="SitesNearName" style="cursor:pointer;"> {{sc.Name}} </label> <br>
-                          <label class="CourseRating" style="font-size:medium;color:#264653 ;">  Type: {{sc.CourseType}}   </label>
+                          <label class="CourseRating" style="font-size:medium;color:#2A9D8F ;">  Type: {{sc.CourseType}}   </label>
                         </ion-card-title>
                         
                         <label class="SitesNearDesc" style="margin-top:10%;"> {{sc.Description.substr(0,200)}} </label>
@@ -482,7 +483,7 @@
       </div>
 
 
-      <label class="divHeadTag" *ngIf="sideViewPredict">Dive Condition</label>
+      <label class="divHeadTag" *ngIf="sideViewPredict">When To Dive</label>
       <div id="SuggestedCoursesDiv" *ngIf="sideViewPredict" >
         <div class="divHeadSection">
            <ion-grid>
@@ -501,7 +502,7 @@
         <div class="divBodySection" style="margin:0;">
          <ion-grid>
            <ion-row>
-              <ion-label color='success' style="text-align:center; width:100%; background-color: rgba(24, 30, 33, 0.6); border-radius: 4px; margin-bottom: 10px;padding:7px;" > To predict future dive visibility please provide a Dive Site and a date within 4 days from now </ion-label>
+              <ion-label  style="color:#F4A261 ;text-align:center; width:100%; background-color: rgba(24, 30, 33, 0.6); border-radius: 4px; margin-bottom: 10px;padding:7px;" > To predict future dive visibility please provide a Dive Site and a date within 4 days from now </ion-label>
            </ion-row>
            <ion-row>
              <ion-col size="12" size-sm="12" size-md="5" size-lg="5" style="margin:0;padding:0;">
@@ -534,10 +535,10 @@
                 <label class="predictedInfo"> {{predictObj.Date}} </label>
               </ion-col>
               <ion-col size="12" size-sm="12" size-md="4" size-lg='4'>
-                <label class="predictedInfo" *ngIf='predictedVisibility == "Poor"' class="predictResult" style="color: #eb445a;"> {{predictedVisibility}} </label>
-                <label class="predictedInfo" *ngIf='predictedVisibility == "Average"' class="predictResult" style="color: #E76F51;"> {{predictedVisibility}} </label>
-                <label class="predictedInfo" *ngIf='predictedVisibility == "Good"' class="predictResult" style="color: #36abe0;"> {{predictedVisibility}} </label>
-                <label class="predictedInfo" *ngIf='predictedVisibility == "Excellent"' class="predictResult" style="color: #2dd36f;"> {{predictedVisibility}} </label>
+                <label class="predictedInfo" *ngIf='predictedVisibility == "Poor"' class="predictResult" style="color: #2A9D8F ;"> {{predictedVisibility}} </label>
+                <label class="predictedInfo" *ngIf='predictedVisibility == "Average"' class="predictResult" style="color: #2A9D8F ;"> {{predictedVisibility}} </label>
+                <label class="predictedInfo" *ngIf='predictedVisibility == "Good"' class="predictResult" style="color: #2A9D8F ;"> {{predictedVisibility}} </label>
+                <label class="predictedInfo" *ngIf='predictedVisibility == "Excellent"' class="predictResult" style="color: #2A9D8F ;"> {{predictedVisibility}} </label>
               </ion-col>
            </ion-row>
          </ion-grid>

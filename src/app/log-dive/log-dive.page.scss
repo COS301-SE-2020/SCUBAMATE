@@ -112,8 +112,8 @@ ion-content.background{
 }
 
 @mixin progressDiv{
-  background-color: $inputBackgroundColor;
-  padding-bottom: 1px;
+  background-color: #2b2e33 ;//$darkBlue ;//$inputBackgroundColor;
+  //padding-bottom: 1px;
   margin-bottom: 0;
 }
 
@@ -125,6 +125,7 @@ ion-content.background{
   text-align: center;
   margin: 0;
   padding: 0;
+  padding-bottom:20px;
 
 
 
@@ -192,8 +193,8 @@ ion-content.background{
   background-color: rgba(38, 70, 83, 0.5);
   width: 80%;//70%;
   margin: auto;
-  border-bottom: solid white 0.5px;
-  border-top: solid white 0.5px;
+  //border-bottom: solid white 0.5px;
+ // border-top: solid white 0.5px;
   text-align: center;
   padding: 0;
   margin-bottom: 50px;
@@ -211,8 +212,8 @@ ion-content.background{
     font-size:  20px ;
     font-family: 'Barlow Semi Condensed', sans-serif;
     color: white;
-    border-bottom: solid white 0.5px;
-    border-top: solid white 0.5px;
+   // border-bottom: solid white 0.5px;
+   // border-top: solid white 0.5px;
   }
 
   input[type=submit]{

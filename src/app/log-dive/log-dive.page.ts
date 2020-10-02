@@ -277,7 +277,21 @@ export class LogDivePage implements OnInit {
     }else{
       this.loginLabel = "Log Out";
       this.accountType = this._globalService.accountRole;
+      
+
+      this._diveService.getDiveTypes("*").subscribe(res =>{
+        this.DiveTypeLst = res.ReturnedList ;
+        this.showLoading = false;  
+  
+      }, err =>{
+        this.showLoading = false; 
+      });
+
+
+
     }
+
+    
     
 
   } //end ngOnInit

@@ -38,7 +38,7 @@ $inputBackgroundColor: #181e21;
 }
 
 ion-content.background{
-  --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
+  --background: linear-gradient(rgba(74, 74, 74, 0.4), rgba(181, 181, 181, 0.2))   , url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
 }
 
 .productHeader {
@@ -54,6 +54,7 @@ ion-content.background{
   padding: 10px;
   padding-left: 30px;
   margin-bottom: 50px;
+
 
 
   .infoImageBorder{
@@ -92,6 +93,7 @@ ion-content.background{
  // border-top: solid white 0.5px;
   width:  80% ;
   height: 80%;
+  border-radius: 3px;
 }
 
 #homeSticker img{
