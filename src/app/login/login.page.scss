@@ -8,10 +8,16 @@ $darkRed: #d66853;
 
 @media (max-width: 767px) {
     #loginDiv{
-      width: 95% !important;
+      width: 110% !important;
       padding: 5px !important;
-      margin-top: 10px !important;
+      margin-top: 40px !important;
       padding-bottom: 10px !important;
+      padding-top: 40px !important;
+      margin-left: -5% !important;
+    }
+
+    #loginDiv input[type=submit]{
+      width: 95% !important;
     }
 
     ion-item{

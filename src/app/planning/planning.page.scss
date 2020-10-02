@@ -44,6 +44,45 @@ $inputBackgroundColor: #181e21;
     margin-top: 0 !important ;
   }
 
+  .divHeadTag{
+    margin-top: 14% !important; 
+    margin-left: -17%  !important;
+    font-size: 40px !important;
+  }
+  
+  ion-radio-group{
+    top: -21px !important;
+    margin: auto !important;
+    width: 100% !important;
+    margin-top: 0px !important; 
+    font-size: 10px !important; 
+
+    ion-col{
+      width: 100% !important;
+      margin: 0px !important;
+      padding: 0px !important;
+    }
+
+    ion-item{
+      font-size: 13px !important;
+    }
+     
+  }
+
+  .thecard{
+    margin-left: -15% !important;
+    width: 97% !important;
+    height: 70vh !important;
+    margin: auto !important;
+  }
+  .thecardDC{
+    margin-left: -3% !important;
+    width: 94vw !important;
+    height: 400px;
+  }
+
+
+
 }
 
 
@@ -214,14 +253,17 @@ ion-content.background{
   @mixin DivContainers{
     background-color: rgba(38, 70, 83, 0.6);
     margin: auto;
-    border-bottom: solid white 0.5px;
-    border-top: solid white 0.5px;
-    width:  90%; //70% ;
+    //border-bottom: solid white 0.5px;
+    //border-top: solid white 0.5px;
+    //width:  90%; //70% ;
     padding: 0;
     margin-top: 10px; //30px;
     padding: 0px;
     padding-bottom: 10px;
     margin-bottom: 20px;
+
+    margin-right:8%;
+    margin-left:13%;
 
     ion-button{
       float:right;
@@ -332,14 +374,16 @@ ion-content.background{
 .SitesNearRow:hover{
   background-color: rgba(38, 70, 83, 0.8) ; 
 
-  .SitesNearRating{
-    font-size:  17px ;
-    font-weight: bold;
-  }
-  .SitesNearName{
-    font-size:  21px ;
-  }
+
 } 
+
+.SitesNearRating{
+  font-size:  17px ;
+  font-weight: bold;
+}
+.SitesNearName{
+  font-size:  21px ;
+}
 
 .showPredictionRow{
   background-color: rgba(38, 70, 83, 0.7) ;
@@ -398,7 +442,7 @@ ion-content.background{
 
 .viewLocationLink:hover{
   font-size:medium;
-  text-shadow: 3px 3px 4px #000000;
+  text-shadow: 1px 1px 1px #264653;
 }
 
 .bigBlueBtn{
@@ -407,4 +451,58 @@ ion-content.background{
   width:100% !important;
   font-size:x-small !important;
   padding: 5px !important;
+}
+
+.divHeadTag{
+  margin-top: 2%; 
+  margin-left: 10% ;
+  color: white;
+  font-size:  45px ;
+  font-family: 'Righteous';
+  display: swap ;
+  text-shadow: 1px 1px 4px #000000;
+}
+
+//Cards css
+.maincontainer{
+  position: relative;
+  width: 70vw; //250px;
+  height: 320px;
+}
+
+.thecard{
+  width: 20vw;//270px;
+  height: 340px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: all 0.5s ease;
+  word-wrap: break-word;
+  cursor: pointer;
+}
+.thecardDC{
+  width: 20vw;//270px;
+  height: 380px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: all 0.5s ease;
+  word-wrap: break-word;
+  cursor: pointer;
+}
+
+
+.thefront{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  color: #333;
+    ion-card{
+      position: absolute;
+      height: 100%;
+    }  
+}
+
+.cardFeedIMG{
+  height: 200px !important;
+  width:100%;
 }
