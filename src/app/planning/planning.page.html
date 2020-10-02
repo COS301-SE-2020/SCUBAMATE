@@ -350,6 +350,23 @@
               </ion-col>
             </ion-row>
             <ion-row >
+              <ion-col size="12" size-sm="12" size-md="6" size-lg="4"  *ngFor="let ssc of surveySuggestedCourses" >
+                <div class="thecardDC" >
+                  <div class="thefront">
+                    <ion-card color="dark">
+                      <ion-card-content fixed>
+                          <ion-card-title fixed color="dark">
+                            <label class="SitesNearName" style="cursor:pointer;"> {{ssc.Name}} </label> <br>
+                            <label class="CourseRating" style="font-size:medium;color:#2A9D8F ;">  Type: {{ssc.CourseType}}   </label>
+                          </ion-card-title>
+                          
+                          <label class="SitesNearDesc" style="margin-top:10%;"> {{ssc.Description.substr(0,200)}} </label>
+                         </ion-card-content>
+                         
+                    </ion-card>
+                 </div>
+                </div>  
+              </ion-col>
               <ion-col size="12" size-sm="12" size-md="6" size-lg="4" *ngFor="let sc of suggestedCourseFullList">
               <div class="thecardDC" >
                 <div class="thefront">

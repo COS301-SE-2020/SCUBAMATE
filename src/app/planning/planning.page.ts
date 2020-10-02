@@ -74,6 +74,8 @@ export class PlanningPage implements OnInit {
 
   suggestedCourseFullList: CourseObj[] = new Array(); 
   suggestedCourseThreeList: CourseObj[] = new Array(); 
+  surveySuggestedCourses : CourseObj[] = new Array(); 
+  viewSurveyListSuggest: boolean = false;
 
   showCourses : boolean ;
   viewCourses : boolean = false ; 
@@ -852,7 +854,11 @@ export class PlanningPage implements OnInit {
         console.log(res);
         this.showLoading= false;
 
-        this.presentAlertSuggestedCourse(res.Items[0].CourseType, res.Items[0].Name ,res.Items[0].QualificationType );
+        //this.presentAlertSuggestedCourse(res.Items[0].CourseType, res.Items[0].Name ,res.Items[0].QualificationType );
+
+        this.surveySuggestedCourses = res.Items;
+        this.viewSurveyListSuggest = true ; 
+
 
       }, err =>{
         this.showLoading= false;
