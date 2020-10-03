@@ -80,25 +80,34 @@
           <!--Left Title Pane-->
           <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
             <label class="divSubHead">Dive Location</label><br>
-            <label class="subLabel" style="margin-top: 15px;">Choose A Dive Type</label>
-                <ion-row>
+            
+              
+          </ion-col>
+          <!-- Dive Location Pane -->
+          <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane" style="padding-top:3%;">
+            <label class="subLabel" >Choose A Dive Type</label>
+                <ion-row style="margin-bottom:10px;"> 
                   <ion-radio-group value="{{currentDiveTypeSelected}}" (ionChange)="viewCourse($event.target.value)" style="width:100%;">
-                    <ion-item color="dark">
-                      <ion-label>Course</ion-label>
-                      <ion-radio value="Course" disabled="false" (select)="diveObj.isCourse = true"></ion-radio>
-                    </ion-item>
-                    <ion-item color="dark">
-                      <ion-label>Recreational</ion-label>
-                      <ion-radio value="Normal" disabled="false" (select)="diveObj.isCourse = false"></ion-radio>
-                    </ion-item>
+                    
+                    
+                    <ion-row>
+                      <ion-col size="12" size-md="6" size-lg="6" style="margin:0;padding:0;">
+                        <ion-item color="dark" style="width:100%;">
+                          <ion-label>Course</ion-label>
+                          <ion-radio value="Course" disabled="false" (select)="diveObj.isCourse = true"></ion-radio>
+                        </ion-item>
+                      </ion-col>
+                      <ion-col size="12" size-md="6" size-lg="6" style="margin:0;padding:0;">
+                        <ion-item color="dark"  style="width:100%;">
+                          <ion-label>Recreational</ion-label>
+                          <ion-radio value="Normal" disabled="false" (select)="diveObj.isCourse = false"></ion-radio>
+                        </ion-item>
+                      </ion-col>
+                    </ion-row>
                   </ion-radio-group>
 
 
                 </ion-row>
-              
-          </ion-col>
-          <!-- Dive Location Pane -->
-          <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane" style="padding-top:7%;">
                   <ion-row  *ngIf="diveObj.isCourse"  >
                   <div class="searchableSelect" color="dark">
                     <ion-label class="searchableSelectLabel">Course</ion-label>

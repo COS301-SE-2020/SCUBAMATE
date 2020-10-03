@@ -38,7 +38,8 @@ $inputBackgroundColor: #181e21;
 }
 
 ion-content.background{
-  --background: linear-gradient(rgba(74, 74, 74, 0.4), rgba(181, 181, 181, 0.2))   , url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
+  //--background: linear-gradient(rgba(74, 74, 74, 0.4), rgba(181, 181, 181, 0.2))   , url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
+  --background: url(../../assets/images/darkSea.jpg) 0 0/100% 100% no-repeat;
 }
 
 .productHeader {
