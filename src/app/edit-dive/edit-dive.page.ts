@@ -2,7 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { diveService } from '../service/dive.service';
 import { Router } from '@angular/router';
 import { accountService } from '../service/account.service';
+import { GlobalService } from "../global.service";
+import {ConnectionService} from 'ng-connection-service';
+import { Location } from '@angular/common';
 
+//forms
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { AlertController } from '@ionic/angular';
 
 export interface DiveLog{
   DiveID : string; 
@@ -23,39 +30,94 @@ export interface DiveLog{
   InstructorLink: "Aaf485cf3-7e5c-4f3e-9c24-1694983820f2" ;
   Weather: [] ;
   DivePublicStatus: boolean;
+  DiveImage: string;
+}
+
+export interface EditDiveLog{
+  DiveID: string;
+  AccessToken: string;
+  Buddy: string;
+  InstructorLink: [];
+  Description: string;
+  DivePublicStatus: boolean;
 }
 
 
 @Component({
   selector: 'app-edit-dive',
   templateUrl: './edit-dive.page.html',
-  styleUrls: ['./edit-dive.page.scss'],
+  styleUrls: ['./edit-dive.page.scss']
 })
 export class EditDivePage implements OnInit {
 
+   /*********************************************
+                Global Variables
+  *********************************************/
   showLoading: Boolean;
+  showUser : Boolean = false;
   DiveTypeLst: [];
   DiveSiteLst: [];
   BuddyLst:[];
-  loginLabel:string ;
+  loginLabel: string;
   CurrentDive: DiveLog ;
-  constructor(private _accountService : accountService , private router: Router, private _diveService: diveService) { }
+  accountType : string;
+
+  //Form Groups
+  diveForm;
+  diveObj: EditDiveLog;
+
+  //Internet connectivity check
+  isConnected = true;  
+  noInternetConnection: boolean;
+
+  /********************************************/
+
+
+  constructor(public _globalService: GlobalService, private _accountService : accountService , private router: Router, private _diveService: diveService, public formBuilder: FormBuilder, public alertController : AlertController, private connectionService: ConnectionService, private location: Location) { 
+
+     //Dive Form
+     this.diveObj ={
+        DiveID: localStorage.getItem("DiveID"), 
+        AccessToken: localStorage.getItem("accessToken"),
+        Buddy: "",
+        InstructorLink: [],
+        Description: "",
+        DivePublicStatus: false
+    }
+
+    this.diveForm = formBuilder.group({
+      Buddy: ['', Validators.required],
+      Description:  ['', Validators.required],
+      DivePublicStatus: []
+    }); 
+
+    this.connectionService.monitor().subscribe(isConnected => {  
+      this.isConnected = isConnected;  
+      if (this.isConnected) {  
+        this.noInternetConnection=false;
+      }  
+      else {  
+        this.noInternetConnection=true;
+        this.router.navigate(['no-internet']);
+      }  
+    });
+
+  }
 
   ngOnInit() {  
+    this.showUser = false;
     this.showLoading = true;
     this.loginLabel ="Login";
       if(!localStorage.getItem("accessToken"))
       {
         this.loginLabel = "Login";
       }else{
-        this.loginLabel = "Sign Out";
+        this.loginLabel = "Log Out";
+        this.accountType = this._globalService.accountRole; 
       }
-
+     
 
     this.getDiveInfo();
-
-    
-
   }
 
   ionViewWillEnter(){
@@ -63,14 +125,17 @@ export class EditDivePage implements OnInit {
     {
       this.loginLabel = "Login";
     }else{
-      this.loginLabel = "Sign Out";
+      this.loginLabel = "Log Out";
+      this.accountType = this._globalService.accountRole; 
     }
+    
   }
 
   loginClick(){
     if(localStorage.getItem("accessToken"))
     {
       localStorage.removeItem("accessToken");
+      this.accountType = "*Diver";
       this.router.navigate(['home']);
     }else{
       this.router.navigate(['login']);
@@ -101,7 +166,13 @@ export class EditDivePage implements OnInit {
         this.showLoading = false;
         localStorage.removeItem("DiveID");
         this.router.navigate(["/my-dives"]);
-      } );
+      } , err =>{
+
+        if(err.error){
+          this.presentGeneralErrorAlert(err.error);
+        }
+  
+      });
 
 
   }
@@ -133,14 +204,79 @@ export class EditDivePage implements OnInit {
 
     console.log(reqBody);
     this._diveService.getIndividualDive(reqBody).subscribe( res =>{
-        console.log("in resonse");
-        console.log(res);
         this.CurrentDive = res ;
-        console.log(this.CurrentDive.DiveSite);
         this.showLoading = false;
+        this.showUser = true;
+
+        this.diveObj.Buddy = this.CurrentDive.Buddy;
+        this.diveObj.Description = this.CurrentDive.Description;
+        this.diveObj.DivePublicStatus = this.CurrentDive.DivePublicStatus;
+    }, err =>{
+
+      if(err.error){
+        this.presentGeneralErrorAlert(err.error);
+        this.router.navigate(["/my-dives"]);
+      }
+
     });
 
 
   }
+
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: 'Invalid Update',
+      message: 'Please provide all required information to complete the update',
+      buttons: ['OK']
+    });
+  
+    await alert.present();
+  }
+
+  async presentSuccessAlert() {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: 'Dive Log Updated',
+      message: 'Successfully updated dive log',
+      buttons: ['OK']
+    });
+  
+    await alert.present();
+  }
+
+  async presentGeneralErrorAlert(msg : string) {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: 'An error occured',
+      message: msg,
+      buttons: ['OK']
+    });
+  
+    await alert.present();
+  }
+
+  UpdateDiveSubmit(){
+
+    if(!this.diveForm.valid){
+      this.presentAlert();
+    }else{
+
+      console.log(this.diveObj);
+
+      this.showLoading = true;
+
+      this._diveService.updateDive(this.diveObj).subscribe(res=>{
+        this.showLoading = false;
+        localStorage.removeItem("DiveID");
+        this.presentSuccessAlert();
+        this.router.navigate(["/my-dives"]);
+      } );
+
+    }
+
+  }
+
+
 
 }

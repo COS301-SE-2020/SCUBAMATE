@@ -1,28 +1,34 @@
-<a href="https://github.com/COS301-SE-2020/SCUBAMATE"><img src="https://github.com/COS301-SE-2020/SCUBAMATE/blob/master/images/logo.jpeg" title="Scubamate" alt="Scubamate" height="200" width="750"></a>
+<a href="https://github.com/COS301-SE-2020/SCUBAMATE"><img src="https://github.com/COS301-SE-2020/SCUBAMATE/blob/master/images/full logo.png" title="Scubamate" alt="Scubamate" height="200" width="750"></a>
 
 # SCUBAMATE
 
 ## Overview 
-"Scubamate" is a scuba diving companion app, designed to aid divers, and diving instructors with administrative tasks, such as checking weather information, logging dives, and planning diving trips.
+"Scubamate" is a scuba diving companion app, designed to aid divers, and diving instructors with administrative tasks, such as checking weather information, logging dives, and planning diving trips. Traditional methods involve using a dive book to write down the information of your dives which can become tedious when you forget this book at home, lose it or simjply forget to bring a pen, thus Scubamate's main goal is to ease this process. It also aims to encourage new divers to get into diving and help people plan a new dive.
+## Deployment 
+Available At: <a href="https://www.scuba.thematthew.me"> https://www.scuba.thematthew.me </a>
 
-## Software Requirements Specification 
- * <a href="https://www.overleaf.com/read/gnsygbdtvctw">Overleaf - LaTex</a>
+## Software Requirements Specification and Other Documents
+ * <a href="https://www.overleaf.com/read/pdbfwzfvmpcy">SRS Version 5: Overleaf - LaTex</a>
+ * <a href="https://www.overleaf.com/read/shbywrwqfcvw">Coding Standards: Overleaf - LaTex</a>
+ * <a href="https://www.overleaf.com/read/wrrjwwdgfgfn">User Manual: Overleaf - LaTex</a>
+ * <a href="https://www.overleaf.com/read/fzpxngrydqsg">Technical Installation Guide: Overleaf - LaTex</a>
+ * <a href="https://www.overleaf.com/read/pfxwhzpsjcyb">Testing Policy: Overleaf - LaTex</a>
 
 ## Project Management Tools
 * <a href="https://team-anti-virus.slack.com">Slack</a>
 * <a href="https://app.clickup.com/2536654/home/landing">ClickUp</a>
 
-## Demo 1 Video Link
+## Demo Video Links
 * <a href="https://drive.google.com/drive/folders/14hiS32Kgk8xqgvmLkFV33a35PGvYcp6Y?usp=sharing">TeamAV Demo 1</a>
+* <a href="https://drive.google.com/drive/folders/1f9AQtVqOS0MdEosUH1uwPVwZdO6j9OvS?usp=sharing">TeamAV Demo 2</a>
+* <a href="https://drive.google.com/drive/folders/1s-HwZWjfE7g6LqAYjGYOIusZHvtbEbY8?usp=sharing">TeamAV Demo 3</a>
+* <a href="https://drive.google.com/drive/folders/11ASHoMOxMoAoQlPSTiZ8mVP0IVLus1pu?usp=sharing">TeamAV Demo 4</a>
 
 
 ## Installation Instructions
     Most of our project is done using AWS hosted resources such as Lambda, API Gateway, S3 for storage and DynamoDB.
     Thus the only installation required is to download the master branch of the git which contains our front-end (Angular, Ionic and TypeScript) code, then run this command in the terminal:
     $npm install
-    $cordova telemetry on
-    $ionic cordova plugin add cordova-plugin-geolocation
-    $npm install @ionic-native/geolocation
     Then to run the application:
     $ionic serve
     The first compilation will take a few seconds and then it will automatically open in your browser on localhost:8100.
@@ -40,7 +46,7 @@
  * <a href="https://giselenadine.github.io/">giselenadine.github.io</a>
  * Email : u18012583@tuks.co.za
  * <details>
-     <summary><b>Responsibiities</b></summary>
+     <summary><b>Responsibilities </b></summary>
      <br>
         - SRS Document: Introduction
         <br>
@@ -56,6 +62,36 @@
         <br>
         - Merging branches on github
         <br>
+        - Edit Account Lambda functions
+        <br>
+        - Edit Dive Lambda functions
+        <br>
+        - SRS Document: Deployment Model
+        <br>
+        - User Manual Document: Simple Deployment Model
+        <br>
+        - Code Standards Document
+        <br>
+        - Lookahead Lambda functions
+        <br>
+        - Adding and Upgrading Instructors Lambda functions
+        <br>
+        - Adding Dive Sites function
+        <br>
+        - Verifying Courses and Instructors Lambda functions
+        <br>
+        - Code Standards Document
+        <br>
+        - Course Suggestion and Survey Lambda functions
+        <br>
+        - Lambda functions for displaying Dive Sites and Dive Centres
+        <br>
+        - Architectural Design Document: Architectural Design Diagram
+        <br>
+        - Gamification 
+        <br>
+        - Bug Fixes Front-end
+    
     </details>
 
 
@@ -64,7 +100,7 @@
  * <a href="https://u17021627.github.io/">u17021627.github.io</a>
  * Email : u17021627@tuks.co.za
  * <details>
-     <summary><b>Responsibiities</b></summary>
+     <summary><b>Responsibilities</b></summary>
      <br>
         - SRS Document: Trace-ability Matrix
         <br>
@@ -76,9 +112,15 @@
         <br>
         - Architectural Design Documment: Quality Requirements
         <br>
+        - Architectural Design Documment: Event-Driven Architecture
+        <br>
         - Weather extraction for functionality of application
         <br>
-        - Assisting UI Design for COVID, BLM & GBV
+        - Offline logging of dives
+        <br>
+        - Architectural Design Documment: Technology Requirements
+        <br>
+        - Testing Policy
         <br>
     </details>
 
@@ -87,22 +129,29 @@
  * <a href="https://u18020519.github.io/">u18020519.github.io</a>
  * Email : u18020519@tuks.co.za
  * <details>
-     <summary><b>Responsibiities</b></summary>
+     <summary><b>Responsibilities</b></summary>
      <br>
-        - SRS Document: Functional Requirements 
+        - SRS Document: Functional Requirements.
         <br>
         - SRS Document: Use Cases
         <br>
-        - Created the foundation of our very first Lambda functions (in node js) that get account information as well as adding a new account. I also connected these to API Gateway for testing.
+        - Architectural Design Document: Architectural Design Diagram.
+        <br>
+        - Lambda functions for adding and retrieving a new account.
         <br> 
-        - I created the Lambda function that adds a user's dive log to the database. The function receives the user's current access token and verifies it. Only if the token is valid will the dive log data be committed.
+        - Add new dive log lambda function.
         <br>
-        - I connected this diveLog Lambda function to API Gateway and configured the POST request in such a way that all the requests that the API receives are in the correct format.
+        - Lambda function for retrieving a list of a diver's personal dive logs.
         <br>
-        - Another Lambda function that I implemented was the retrieving of dive logs from a specific user. This function only expects an access token that is first verified and returns the user's list of dives.
+        - Retrieving a list of verified public dive logs Lambda function for the explore page
         <br>
-        - This diveLogHistory Lambda function was also connected to API Gateway and configured accordingly. 
+        - Adding and editing a new dive centre Lambda functions.
         <br>
+        - Adding courses and intructors to an existing dive centre Lambda functions.
+        <br>
+        - Functionality for upgrading an account to an Admin role.
+        <br>
+        - Adding an account to an existing dive centre Lambda function. 
     </details>
 
 ## James Darren Jenkins-Ferrett 
@@ -110,11 +159,11 @@
  * <a href="https://jamesjenkinsferrett.github.io/">jamesjenkinsferrett.github.io</a>
  * Email : u18047701@tuks.co.za
  * <details>
-     <summary><b>Responsibiities</b></summary>
+     <summary><b>Responsibilities</b></summary>
      <br>
         - SRS Document: Introduction.
         <br>
-         SRS Document: User Charactaristics and Overview.
+        - SRS Document: User Charactaristics and Overview.
         <br>
         - Lambda function for Login (including server side password hashing, and unique access token generation).
         <br> 
@@ -122,8 +171,21 @@
         <br>
         - Configuration of some of the endpoints in API-Gateway.
         <br>
-        - Editing of Demo 1 video.
+        - Editing of Demo videos.
         <br>
+        - SRS Document: Client-Server Architecture
+        <br>
+        - Lambda Function and API Gateway for default checklist functionality
+        <br>
+        - Lambda Function and API Gateway for custom checklist functionality
+        <br>
+        - Deletion of an account
+        <br>
+        - Email verification of an account
+        <br>
+        - Adding of dive courses
+        <br>
+        - AI predicting dive visibility
     </details>
 
 ## Carmen Janse van Rensburg 
@@ -131,21 +193,42 @@
  * <a href="https://carmenjvr.github.io/">carmenjvr.github.io</a>
  * Email : u18000836@tuks.co.za
  * <details>
-     <summary><b>Responsibiities</b></summary>
-     <br>
+     <summary><b>Responsibilities</b></summary>
+        <br> 
+        - Developing the front-end interface with Angular-Ionic.
+        <br> 
+        - Home page
+         <br> 
+        - Login and Signup pages
+         <br> 
+        - Explore page: public feed, dive sites and dive centres
+        <br> 
+        - Individual dive site and centre page with ability to view location weather and see location on google maps.
+        <br> 
+        - View, edit and log personal dives pages
+        <br> 
+        - Planning page: viewing dive sites and courses near you, suggested courses, checklist and visibility prediction.
+        <br> 
+        - Profile page functionality for Diver, Instructor, Admin and Super Admin.
+        <br> 
+        - Admin page with functionality for Admins and Super Admins.
+        <br> 
+        - Charts on Admin page to present the visualisation statistics.
+        <br>
+        - Deploying website and mobile application
+        <br>
         - SRS Document: Functional Requirements
         <br>
         - SRS Document: Use Cases
-        <br> 
-        - Angular Ionic Frontend
         <br>
-        - Insert data
+        - User Manual
         <br>
-        - Insert data
-        <br>
-        - Insert data
+         - Non-Function Testing: Usability
         <br>
     </details>
 
-# Testing Instructions
- TBC
+## Testing Instructions
+     Scubamate will make use of automated unit/integration testing software being Jasmine and Karma. By using Jasmine and Karma the unit/integration tests would always be performed to ensured that the system remains on a consistent standard. Jasmine as a frame work provides suites with essential functions such as describe(), taking the test case as a name and a function to be performed as the second parameter. Other functions to be included will be it() which is the more case specific function that handles the individual trial. Finally expect() is the last method used and concatenation with a matcher to test whether the case has succeeded or failed. 
+     Run Unit Test: 
+     $ng test 
+    The first compilation will take a few seconds and then it will automatically open in your browser on localhost:9876.

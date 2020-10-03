@@ -5,16 +5,16 @@ const crypto = require('crypto');
 const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
 
 exports.handler = async (event, context)=> {
-    var AccountGuid;
     let body = JSON.parse(event.body);
+    const undef = 0;
     const Email = body.Email;
     const Password = body.Password;
     
-    //hashes the password using the email as a salt
+    /*hashes the password using the email as a salt*/
     var hash = crypto.pbkdf2Sync(Password, Email, 1000, 64, 'sha512').toString('hex');
-    
     console.log("Password after hashing: " + hash);
  
+    /*verify that email and password is correct */
     const params = {
         TableName: "Scubamate",
         FilterExpression: "#em = :em AND #p = :p",
@@ -30,27 +30,27 @@ exports.handler = async (event, context)=> {
     };
     
     let responseBody = "";
-    let statusCode = 0;
-    var AccountType = "";
+    let statusCode = undef;
     try{
         const data = await documentClient.scan(params).promise();
-        if (data.Items.length==0)
+        if (data.length==0)
         {
             responseBody = "1. Unable to login";
             statusCode = 403;
         }
         else{
-            AccountGuid = data.Items[0].AccountGuid;
-            AccountType = data.Items[0].AccountType;
-            var nownow = ""+Date.now();
-            var guid = crypto.createHash('sha256').update(nownow).digest('hex');
-            guid = ""+AccountGuid + guid + AccountGuid.length;
+            const AccountGuid = data.Items[0].AccountGuid;
+            const AccountType = data.Items[0].AccountType;
+            const typeNum = AccountType.localeCompare("Diver")==0 ? "00" : (AccountType.localeCompare("Instructor")==0 ? "01" : (AccountType.localeCompare("Admin")==0 ? "10" : "11"));
+            let nownow = ""+Date.now();
+            let guid = crypto.createHash('sha256').update(nownow).digest('hex');
             
-            var today = new Date();
-            var nextWeek = new Date(today.getFullYear(), today.getMonth(),today.getDate()+7);
+            guid = "" + AccountGuid + typeNum + guid ;
+            
+            let today = new Date();
+            let nextWeek = new Date(today.getFullYear(), today.getMonth(),today.getDate()+7);
             nextWeek = nextWeek+"";
             
-            //**********************
             const params2 = {
                 TableName: "Scubamate",
                 Key: {
@@ -69,11 +69,11 @@ exports.handler = async (event, context)=> {
                 console.log("Error");
             }
             
-            var ponseBody =[];
+            let ponseBody =[];
             ponseBody.push({AccessToken:guid});
-            ponseBody.push({AccountType:AccountType});
+            // ponseBody.push({AccountType:typeNum});
             
-            var fullBody = ({Data: ponseBody});
+            let fullBody = ({Data: ponseBody});
             if (statusCode!=403)
             {
                 responseBody = fullBody;

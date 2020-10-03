@@ -2,6 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { weatherService } from '../service/weather.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import {ConnectionService} from 'ng-connection-service';
+import { Location } from '@angular/common';
+
+export interface Dive{
+  FirstName : string ;
+  LastName : string ;
+  DiveSite : string ;
+  DiveType : string;
+  DiveDate : string ;
+}
 
 @Component({
   selector: 'app-weather',
@@ -28,11 +38,25 @@ export class WeatherPage implements OnInit {
     Desc: null
   };
 
+  //Internet Connectivity check
+  isConnected = true;  
+  noInternetConnection: boolean;
   tempDate: Date;
   weatherDate: string;
 
   loginLabel:string ;
-  constructor(private router: Router, private _weatherService: weatherService,private geolocation: Geolocation) {}
+  constructor(private router: Router, private _weatherService: weatherService,private geolocation: Geolocation, private connectionService: ConnectionService, private location: Location) {
+    this.connectionService.monitor().subscribe(isConnected => {  
+      this.isConnected = isConnected;  
+      if (this.isConnected) {  
+        this.noInternetConnection=false;
+      }  
+      else {  
+        this.noInternetConnection=true;
+        this.router.navigate(['no-internet']);
+      }  
+    });
+  }
   
   ngOnInit() {
     this.loginLabel ="Login";
@@ -40,7 +64,7 @@ export class WeatherPage implements OnInit {
     {
       this.loginLabel = "Login";
     }else{
-      this.loginLabel = "Sign Out";
+      this.loginLabel = "Log Out";
     }
 
     this.geolocation.getCurrentPosition().then((resp) => {
@@ -90,7 +114,7 @@ export class WeatherPage implements OnInit {
     {
       this.loginLabel = "Login";
     }else{
-      this.loginLabel = "Sign Out";
+      this.loginLabel = "Log Out";
     }
   }
 

@@ -31,6 +31,8 @@ exports.handler = function(event,context,callback) {
     
     //let Email = event.Email;
     
+    //let Email = event.Email;
+    
     var nodemailer = require('nodemailer');
   	var smtpTransport = require('nodemailer-smtp-transport');
     
@@ -41,7 +43,6 @@ exports.handler = function(event,context,callback) {
 	        pass: sesSecretKey
 	    }
   	}));
-    
     
     var emailContent;
     if(Type.localeCompare("Email") == 0)

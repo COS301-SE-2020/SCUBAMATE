@@ -33,6 +33,84 @@ $red: #E76F51 ;
 $yellow : #E9C46A ;
 $aquaBlue: #00A896 ;
 
+.my-custom-class .alert-wrapper{
+  --min-width: 450px !important;
+}
+
+
+.invisible {
+  visibility: hidden !important;
+}
+
+.hidden-xs-up {
+  display: none !important;
+}
+
+@media (max-width: 575px) {
+  .hidden-xs-down {
+    display: none !important;
+  }
+
+
+}
+
+@media (min-width: 576px) {
+  .hidden-sm-up {
+    display: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .hidden-sm-down {
+    display: none !important;
+  }
+
+  #navLogo{
+    width: 70% !important;
+    padding: 5px !important;
+  }
+
+  .my-custom-class .alert-wrapper{
+    --min-width: 370px !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .hidden-md-up {
+    display: none !important;
+  }
+}
+
+@media (max-width: 991px) {
+  .hidden-md-down {
+    display: none !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .hidden-lg-up {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1199px) {
+  .hidden-lg-down {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1200px) {
+  .hidden-xl-up {
+    display: none !important;
+  }
+}
+
+.hidden-xl-down {
+  display: none !important;
+}
+
+
+
 ul {
     list-style-type: none;
     margin: 0;
@@ -69,10 +147,39 @@ ul {
       border-bottom-width: 3px  ;
     }
 
+    #navLogo{
+      width:12%;
+      height: 100%;
+      float:left;
+      padding-left: 14px;
+      padding-top: 10px;
+    }
+
+  }
+
+  //Lookahead Input Elements
+  .searchableSelect{
+    background-color: white;
+    border-radius: 1px;
+    text-align: left;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 100%;
+    height: 100%;
+  
+    input{
+        width: 100%;
+        margin: auto;
+        border: none;
+        font-size: medium;
+    }
+  
   }
   
-  
-  
+  .searchableSelectLabel{
+    font-size: small;
+  }
   
   
   
