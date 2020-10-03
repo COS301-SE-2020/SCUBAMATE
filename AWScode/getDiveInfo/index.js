@@ -17,7 +17,7 @@ exports.handler = async (event, context) => {
             if(item==search){
                 returnBool=true;
             }
-        });
+        }); 
         return returnBool;
     }
     
@@ -31,7 +31,7 @@ exports.handler = async (event, context) => {
             };
             
         let pagination = true;
-        if(UserEntry.toString().trim() === '*' && ItemType.toString().trim() != 'DT-'){
+        if(UserEntry.toString().trim() === '*' ){
            filter = 'begins_with(#itemT , :itemT)';
            expressVal = {
                 ':itemT': ItemType,
