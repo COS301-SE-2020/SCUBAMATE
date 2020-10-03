@@ -125,6 +125,7 @@ ion-grid {
   padding: 0;
   margin-top: 30px;
   margin-bottom: 50px;
+  border-radius:3px;
 }
 
 #checkListDiv{
@@ -138,6 +139,7 @@ ion-grid {
   padding: 0px;
   padding-bottom: 10px;
   margin-bottom: 20px;
+  border-radius:3px;
 }
 
 #ProfileInfo{
@@ -150,6 +152,7 @@ ion-grid {
   padding: 0;
   height: 80%;
   display: block;
+  border-radius:3px;
 
   .leftPane{
     background-color: rgba(38, 70, 83, 0.9);
@@ -157,6 +160,7 @@ ion-grid {
     margin:0;
     text-align: center;
     padding-bottom: 1%;
+    border-radius:3px 0 0 3px;
   }
 
   #acountInfo1{
@@ -236,6 +240,7 @@ ion-grid {
   margin-bottom: 20px;
   margin-top: 15px; 
   margin-left: 20px;
+
 }
 
 .divSubHead{
@@ -254,6 +259,7 @@ ion-grid {
   padding-left: 25px;
   padding-top: 5px;
   padding-bottom: 5px;
+  border-radius:3px 3px 0 0;
 
   ion-button{
     float:right;
@@ -327,6 +333,7 @@ table{
 } 
 
 #EmailVerificationDiv{
+  border-radius:3px;
   width: 80%;
   margin: auto;
   color: white;
@@ -344,6 +351,7 @@ table{
 
 
 #UnverifiedListsInfo{
+  border-radius:3px;
 
   ion-button{
     float:right;

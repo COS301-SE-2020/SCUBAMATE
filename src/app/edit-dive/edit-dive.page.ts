@@ -277,6 +277,9 @@ export class EditDivePage implements OnInit {
 
   }
 
-
+  viewDiveSite(DS : string){
+    localStorage.setItem("ViewDiveSite", DS) ;
+    this.router.navigate(['dive-site-information']);
+  }
 
 }

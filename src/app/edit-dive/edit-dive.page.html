@@ -54,7 +54,7 @@
           <ion-col  size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
             <label id="divHead">{{CurrentDive.DiveSite}}</label> 
               <div id="siteSurroundDiv">
-                 <img id="siteProfile" src={{CurrentDive.DiveImage}}> 
+                 <img id="siteProfile" src={{CurrentDive.DiveImage}} style="cursor:pointer;"  (click)="viewDiveSite(CurrentDive.DiveSite)"> 
               </div>
               
               <label class="subLabel">{{CurrentDive.DiveTypeLink}}</label><br>

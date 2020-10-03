@@ -4,6 +4,7 @@ $orange: #F4A261 ;
 $red: #E76F51 ;
 $yellow : #E9C46A ;
 $inputBackgroundColor: #181e21;
+$darkRed: #d66853;
 
 
 @media (max-width: 767px) {
@@ -83,11 +84,10 @@ ion-content.background{
 }
 
 #editDiveDiv{
-    background-color: rgba(38, 70, 83, 0.4);
+    background-color: rgba(38, 70, 83, 0.5);
     width: 80%;//70%;
     margin: auto;
-    border-bottom: solid white 0.5px;
-    border-top: solid white 0.5px;
+   border-radius:3px;
     text-align: center;
     padding: 0;
     margin-bottom: 50px;
@@ -96,7 +96,7 @@ ion-content.background{
         margin-top: 40px;
         margin-bottom: 50px;
         width: 50%;
-        background-color: #F4A261;
+        background-color: $red;
         border: none;
         color: #FFFFFF;
         text-align: center;
@@ -107,7 +107,7 @@ ion-content.background{
       }
     
        input[type=submit]:hover{
-        background-color: #E76F51 ;
+        background-color: $darkRed ;
         font-family: 'Righteous';
         display: swap ;
       }
@@ -168,6 +168,7 @@ font-family: 'Barlow Semi Condensed', sans-serif;
 color: white;
 border-bottom: solid white 0.5px;
 border-top: solid white 0.5px;
+
 }
 
 .divSubHead{
@@ -179,6 +180,7 @@ border-top: solid white 0.5px;
     margin: auto;
     margin-bottom: 20px;
     margin-top: 15px; 
+    
   }
   
   .divHeadSection{
@@ -235,6 +237,7 @@ border-top: solid white 0.5px;
     margin-bottom: 20px;
     border-bottom: solid white 0.5px;
     border-top: solid white 0.5px;
+    text-shadow: 1px 1px 3px #000000;
     text-align: center;
   }
 
