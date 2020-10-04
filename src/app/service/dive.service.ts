@@ -42,7 +42,7 @@ export class diveService
        return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/divelist',body, options);
     }
 
-    getDiveCoursesFeed(): Observable<any>{
+    getDiveCoursesFeed(pageNumber : number ): Observable<any>{
 
       const options = {
           headers: new HttpHeaders({
@@ -52,10 +52,11 @@ export class diveService
 
       var  body= {
           "ItemType" : "C" ,
-          "UserEntry" : "*"
+          "UserEntry" : "*",
+          "PageNum" : pageNumber
         } ;
 
-       return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/divelist',body, options);
+       return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/getdivecentres',body, options);
     }
 
     getExtendedDiveSites(entry : String, pageNumber: number): Observable<any>{

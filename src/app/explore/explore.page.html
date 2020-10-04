@@ -76,44 +76,43 @@
       <ion-label><ion-icon name="boat" style="font-size:20px;"></ion-icon>&nbsp;&nbsp;Dive Sites</ion-label>
       <ion-radio value="sites" ></ion-radio>
     </ion-item>
+    <ion-item color="dark"  (click)="displayCourses()" style="width:100%;--border-radius:4px;margin-top:8px;">
+      <ion-label ><ion-icon name="book" style="font-size:20px;"></ion-icon>&nbsp;&nbsp;Courses</ion-label>
+      <ion-radio value="courses" ></ion-radio>
+    </ion-item>
 </ion-row>
 </ion-radio-group> 
 
 <!-- value="feed"  -->
 <ion-radio-group color="dark" slot="fixed" value={{_globalService.activeExploreFeed}}  class="hidden-sm-up">
   <ion-row>
-    <ion-col size="4">
+    <ion-col size="3">
       <ion-item color="dark" (click)="displayFeed()" style="display:inline;" >
         <ion-label style="font-size:10px;text-align:center;"><ion-icon name="people" style="font-size:20px;"></ion-icon><br>Community</ion-label>
         <ion-radio  value="feed" ></ion-radio>
       </ion-item>
     </ion-col>
-    <ion-col size="4">
+    <ion-col size="3">
       <ion-item color="dark"  (click)="displayDiveCenters()" style="display:inline;">
         <ion-label style="font-size:10px;text-align:center;"><ion-icon name="ribbon" style="font-size:20px;"></ion-icon><br>Centres</ion-label>
         <ion-radio value="centers"></ion-radio>
       </ion-item>
     </ion-col>
-    <ion-col size="4">
+    <ion-col size="3">
       <ion-item color="dark"  (click)="displayDiveSites()" style="display:inline;">
         <ion-label style="font-size:10px;text-align:center;"><ion-icon name="boat" style="font-size:20px;"></ion-icon><br>Sites</ion-label>
         <ion-radio value="sites" ></ion-radio>
       </ion-item>
     </ion-col>
+    <ion-col size="3">
+      <ion-item color="dark"  (click)="displayCourses()" style="display:inline;">
+        <ion-label style="font-size:10px;text-align:center;"><ion-icon name="book" style="font-size:20px;"></ion-icon><br>Courses</ion-label>
+        <ion-radio value="courses" ></ion-radio>
+      </ion-item>
+    </ion-col>
   </ion-row>
 </ion-radio-group>
 
-<!-- <ion-grid *ngIf="viewFeedInfo">
-  <ion-row >
-    <div class="infoImg"></div>
-  </ion-row>
-</ion-grid>  -->
-
-<!-- <ion-content color='dark'  overflow-scroll="true" *ngIf="viewFeedInfo" style="width:100%;height:550px; padding: 10% !important;margin-left:25% !important;">
-  <video controls="controls" width="100%" preload="metadata" autoplay="autoplay" loop webkit-playsinline="webkit-playsinline" class="videoPlayer">
-   <source src="../assets/video/info-Feed.mp4" type="video/mp4" />
-  </video>
-</ion-content>  -->
 
 <ion-grid class="contentContainer" *ngIf='showFeed'>
   <ion-row>
@@ -273,6 +272,34 @@
   </ion-button>
 </ion-row>
 </ion-grid> 
+
+
+<ion-grid class="contentContainer" *ngIf='showCourses'>
+  <ion-row>
+    <ion-col size="12" size-sm="12" size-md="6" size-lg="4" *ngFor="let sc of courseLst">
+      <div class="thecardDC" >
+        <div class="thefront">
+          <ion-card color="light">
+            <ion-card-content fixed>
+                <ion-card-title fixed color="dark">
+                  <label class="SitesNearName" style="cursor:pointer;"> {{sc.Name}} </label> <br>
+                  <label class="CourseRating" style="font-size:medium;color:#2A9D8F ;">  Type: {{sc.CourseType}}   </label>
+                </ion-card-title>
+                
+                <label class="SitesNearDesc" style="margin-top:10%;"> {{sc.Description.substr(0,306)}} </label>
+               </ion-card-content>
+               
+          </ion-card>
+       </div>
+      </div>  
+       </ion-col>
+  </ion-row>
+  <ion-row style="margin-top:30px;margin-bottom: 40px;" *ngIf="showMoreCourses && courseLst.length>0">
+    <ion-button id="loadMoreBtn" (click)="loadCourses()">
+      <ion-icon name="code-download-outline"></ion-icon>
+    </ion-button>
+  </ion-row>
+</ion-grid>
 
 
 </ion-content>
