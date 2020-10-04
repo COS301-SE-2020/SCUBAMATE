@@ -1,139 +1,142 @@
 'use strict';
 const AWS = require('aws-sdk');
 AWS.config.update({region: "af-south-1"});
+const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
 
 exports.handler = async (event, context) => {
-    
-    const body = JSON.parse(event.body);
-    /* To distiguish search: DS- Dive Sites or DC- Dive Centre */
-    const ItemType = body.ItemType+"-"; 
-    /* Letters entered by user so far (in case of lookahead search else must be * for full list) */
-    const UserEntry = (body.UserEntry).toLowerCase(); 
-    /* Page number to display - starting with Page 1*/
-    const PageNum = body.PageNum; 
-    const validItemTypes = ["DS-","DC-","C-"];
-    function contains(arr,search){
-        let returnBool = false;
-        arr.forEach(function(item) {
-            if(item==search){
-                returnBool=true;
-            }
-        });
-        return returnBool;
-    }
-    
-    let statusCode;
+    let body = JSON.parse(event.body);
+    const PageNum = body.PageNum;
+
     let responseBody;
-    let check = true;
-    if(ItemType == "C-" && UserEntry!="*"){
-        check = false;
+    const undef = 0;
+    let statusCode = undef;
+    if(PageNum<1){
+        responseBody = "Invalid Page Number.";
+        statusCode = 403;
     }
-    if(check && PageNum>=1 && contains(validItemTypes, ItemType)){
-        
-        let filter = 'begins_with(#itemT , :itemT) AND contains(#itemT , :user)';
-        let expressVal = {
-                ':itemT': ItemType,
-                ':user': UserEntry,
-            };
-            
-        if(UserEntry.toString().trim() === '*'){
-           filter = 'begins_with(#itemT , :itemT)';
-           expressVal = {
-                ':itemT': ItemType,
-            };
-        }
-        let project = "#name, Description, LogoPhoto, #loc";
-        let expName = {
-                '#itemT': 'ItemType',
-                '#name' : 'Name',
-                '#loc': 'Location'
-            };
-        if(ItemType == "C-"){
-            project = "#name, Description, CourseType";
-            filter = 'begins_with(#itemT , :itemT)';
-            expName = {
-                '#itemT': 'ItemType',
-                '#name' : 'Name'
-            };
-        }
-        
-        const params = {
-            TableName: 'DiveInfo',
-            ProjectionExpression: project, 
-            FilterExpression: filter,
-            ExpressionAttributeNames: expName,
-            ExpressionAttributeValues: expressVal,
+    
+    if(statusCode==undef){
+        var diveParams = {
+            TableName: "Dives",
+            ProjectionExpression: "AccountGuid, DiveSite, DiveDate, DiveTypeLink, Weather, TimeIn , TimeOut, Buddy, Rating, DiveImage",
+            FilterExpression: "#acc = :acc AND #app = :app",
+            ExpressionAttributeNames:{
+                "#acc" : "DivePublicStatus",
+                "#app" : "Approved"
+            },
+            ExpressionAttributeValues:{
+                ":acc" : true,
+                ":app" : true
+            }
         };
-        const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
-        
-        try{
-            const data = await documentClient.scan(params).promise();
-            let tmp = [];
-            
-            const numOfItems = 6;
-            const start = (PageNum-1)*numOfItems ;
-            
-            /*Show next n items for current page */
-            for(let i=start;i<numOfItems+start;i++){
-                if(data.Items[i]!=null){
-                    if(ItemType != "C-"){
-                        if(typeof data.Items[i].LogoPhoto == "undefined"){
-                            data.Items[i].LogoPhoto = "https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/defaultlogo.png";
+
+        try {
+            const dives = await documentClient.scan(diveParams).promise();
+            if(dives.Items.length==0){
+                responseBody = "No public dives found :(";
+                statusCode = 404;
+            }
+            else{
+                /*now add the name and surname of the diver*/
+                var accounts = [];
+                dives.Items.forEach(function(dive) {
+                    accounts.push(dive.AccountGuid);
+                    delete dive.AccountGuid;
+                });
+                 for(let i=0; i<accounts.length; i++) {
+                    const accountParams = {
+                        TableName: "Scubamate",
+                        Key: {
+                            "AccountGuid": accounts[i]
+                        },
+                        ProjectionExpression : "EmailVerified, FirstName, LastName"
+                    };
+                    try{
+                        let acc = await documentClient.get(accountParams).promise(); 
+                        /*If account email isn't verified, don't add it to the public dive list */
+                        if(acc.Item.EmailVerified){
+                            dives.Items[i].FirstName = acc.Item.FirstName;
+                            dives.Items[i].LastName = acc.Item.LastName;                          
+                        }
+                        else{
+                            //Email not verified for account, so remove the item
+                            delete dives.Items[i];
                         }
                         
-                        const startIndex = (data.Items[i].LogoPhoto).lastIndexOf("/")+1;
-                        let filePath = (data.Items[i].LogoPhoto).substring(startIndex, (data.Items[i].LogoPhoto).length);
+                    }catch(err){
+                        //Cannot find account, so remove the item
+                         delete dives.Items[i];
+                    }
+                 }
+                /*sort the dives by date*/
+                const sortedDives = dives.Items.sort((a, b) => new Date(b.DiveDate) - new Date(a.DiveDate));
+                
+                const numOfItems = 9;
+                const start = (PageNum-1)*numOfItems ;
+                let toReturn =[];
+                /*Show next n items for current page */
+                for(let i=start;i<numOfItems+start;i++){
+                    if(sortedDives[i]!=null){
+                        //Get Image of dive and add it 
+                        let imageToGet = "https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/defaultlogo.png";
+                        if(typeof sortedDives[i].DiveImage !=="undefined"){
+                            imageToGet = sortedDives[i].DiveImage;
+                        }
+                        const startIndex = (imageToGet).lastIndexOf("/")+1;
+                        let filePath = (imageToGet).substring(startIndex, (imageToGet).length);
                         
                         let paramsImg = {"Bucket": "imagedatabase-scubamate", "Key": filePath };
+                        let returnImg;
                         
                         const s3 = new AWS.S3({httpOptions: { timeout: 2000 }});
                         try{
                             const binaryFile = await s3.getObject(paramsImg).promise();
-                            const startIndexContentType = (data.Items[i].LogoPhoto).lastIndexOf(".")+1;
-                            const contentType = data.Items[i].LogoPhoto.substring(startIndexContentType, data.Items[i].LogoPhoto.length);
+                            const startIndexContentType = (imageToGet).lastIndexOf(".")+1;
+                            const contentType = imageToGet.substring(startIndexContentType, imageToGet.length);
                             let base64Image = "data:image/"+contentType+";base64," +binaryFile.Body.toString('base64'); 
                             
-                            data.Items[i].LogoPhoto = base64Image;
+                            returnImg = base64Image;
                         }
                         catch(err){
-                            data.Items[i].LogoPhoto = "N/A";
+                            returnImg = "N/A";
                         }
+                        sortedDives[i].DiveImage = returnImg;
+                        
+                        toReturn.push(sortedDives[i]);
                     }
-                    tmp.push(data.Items[i]);
                 }
-            }
-            
-            if(tmp.length == 0){
-                responseBody = "No Results Found For: "+UserEntry;
-                statusCode = 404;
-            }
-            else{
-                let returnList = [];
-                returnList.push({ReturnedList: tmp});
-                responseBody = returnList[0];
-                 statusCode = 200;
+                if(toReturn.length == 0){
+                    responseBody = "No more dives found";
+                    statusCode = 404;
+                }
+                else{
+                    responseBody = toReturn;
+                    statusCode = 200;
+                }
+                
              }
-            
-        }catch(err){
-            responseBody = "Unable to get data: "+err;
-            statusCode = 403;
+        } 
+        catch(err){
+            responseBody = "No public dives found " + err;
+            statusCode = 404;
         }
-    }
-    else{
-        responseBody = "Invalid Request.";
-        statusCode = 403;
-    }
-
+        
+    }   
+  
+    /*Final response to be sent back*/
     const response = {
         statusCode: statusCode,
         headers: {
+            "Content-Type" : "application/json",
             "Access-Control-Allow-Origin" : "*",
             "Access-Control-Allow-Methods" : "OPTIONS,POST,GET",
-            "Access-Control-Allow-Credentials" : true,
-            "Content-Type" : "application/json"
+            "Access-Control-Allow-Credentials" : true
         },
         body : JSON.stringify(responseBody),
         isBase64Encoded: false
     };
+
     return response;
+
 };
+
