@@ -11,7 +11,7 @@ exports.handler = async (event, context) => {
     const UserEntry = (body.UserEntry).toLowerCase(); 
     /* Page number to display - starting with Page 1*/
     const PageNum = body.PageNum; 
-    const validItemTypes = ["DS-","DC-"];
+    const validItemTypes = ["DS-","DC-","C-"];
     function contains(arr,search){
         let returnBool = false;
         arr.forEach(function(item) {
@@ -24,8 +24,12 @@ exports.handler = async (event, context) => {
     
     let statusCode;
     let responseBody;
-    if(PageNum>=1 && contains(validItemTypes, ItemType)){
-          
+    let check = true;
+    if(ItemType == "C-" && UserEntry!="*"){
+        check = false;
+    }
+    if(check && PageNum>=1 && contains(validItemTypes, ItemType)){
+        
         let filter = 'begins_with(#itemT , :itemT) AND contains(#itemT , :user)';
         let expressVal = {
                 ':itemT': ItemType,
@@ -38,16 +42,26 @@ exports.handler = async (event, context) => {
                 ':itemT': ItemType,
             };
         }
-        
-        const params = {
-            TableName: 'DiveInfo',
-            ProjectionExpression: "#name, Description, LogoPhoto, #loc", 
-            FilterExpression: filter,
-            ExpressionAttributeNames: {
+        let project = "#name, Description, LogoPhoto, #loc";
+        let expName = {
                 '#itemT': 'ItemType',
                 '#name' : 'Name',
                 '#loc': 'Location'
-            },
+            };
+        if(ItemType == "C-"){
+            project = "#name, Description, CourseType";
+            filter = 'begins_with(#itemT , :itemT)';
+            expName = {
+                '#itemT': 'ItemType',
+                '#name' : 'Name'
+            };
+        }
+        
+        const params = {
+            TableName: 'DiveInfo',
+            ProjectionExpression: project, 
+            FilterExpression: filter,
+            ExpressionAttributeNames: expName,
             ExpressionAttributeValues: expressVal,
         };
         const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
@@ -55,6 +69,11 @@ exports.handler = async (event, context) => {
         try{
             const data = await documentClient.scan(params).promise();
             let tmp = [];
+            //sort
+            
+            if (ItemType=="C-"){
+                data.Items.sort((a, b) => (a.Name > b.Name) ? 1 : -1)
+            }
             
             const numOfItems = 6;
             const start = (PageNum-1)*numOfItems ;
@@ -62,28 +81,29 @@ exports.handler = async (event, context) => {
             /*Show next n items for current page */
             for(let i=start;i<numOfItems+start;i++){
                 if(data.Items[i]!=null){
-                    if(typeof data.Items[i].LogoPhoto == "undefined"){
-                        data.Items[i].LogoPhoto = "https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/defaultlogo.png";
-                    }
-                    
-                    const startIndex = (data.Items[i].LogoPhoto).lastIndexOf("/")+1;
-                    let filePath = (data.Items[i].LogoPhoto).substring(startIndex, (data.Items[i].LogoPhoto).length);
-                    
-                    let paramsImg = {"Bucket": "imagedatabase-scubamate", "Key": filePath };
-                    
-                    const s3 = new AWS.S3({httpOptions: { timeout: 2000 }});
-                    try{
-                        const binaryFile = await s3.getObject(paramsImg).promise();
-                        const startIndexContentType = (data.Items[i].LogoPhoto).lastIndexOf(".")+1;
-                        const contentType = data.Items[i].LogoPhoto.substring(startIndexContentType, data.Items[i].LogoPhoto.length);
-                        let base64Image = "data:image/"+contentType+";base64," +binaryFile.Body.toString('base64'); 
+                    if(ItemType != "C-"){
+                        if(typeof data.Items[i].LogoPhoto == "undefined"){
+                            data.Items[i].LogoPhoto = "https://imagedatabase-scubamate.s3.af-south-1.amazonaws.com/defaultlogo.png";
+                        }
                         
-                        data.Items[i].LogoPhoto = base64Image;
+                        const startIndex = (data.Items[i].LogoPhoto).lastIndexOf("/")+1;
+                        let filePath = (data.Items[i].LogoPhoto).substring(startIndex, (data.Items[i].LogoPhoto).length);
+                        
+                        let paramsImg = {"Bucket": "imagedatabase-scubamate", "Key": filePath };
+                        
+                        const s3 = new AWS.S3({httpOptions: { timeout: 2000 }});
+                        try{
+                            const binaryFile = await s3.getObject(paramsImg).promise();
+                            const startIndexContentType = (data.Items[i].LogoPhoto).lastIndexOf(".")+1;
+                            const contentType = data.Items[i].LogoPhoto.substring(startIndexContentType, data.Items[i].LogoPhoto.length);
+                            let base64Image = "data:image/"+contentType+";base64," +binaryFile.Body.toString('base64'); 
+                            
+                            data.Items[i].LogoPhoto = base64Image;
+                        }
+                        catch(err){
+                            data.Items[i].LogoPhoto = "N/A";
+                        }
                     }
-                    catch(err){
-                        data.Items[i].LogoPhoto = "N/A";
-                    }
-                    
                     tmp.push(data.Items[i]);
                 }
             }
@@ -96,7 +116,7 @@ exports.handler = async (event, context) => {
                 let returnList = [];
                 returnList.push({ReturnedList: tmp});
                 responseBody = returnList[0];
-                 statusCode = 200;
+                statusCode = 200;
              }
             
         }catch(err){
