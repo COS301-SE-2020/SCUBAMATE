@@ -5,77 +5,16 @@ const documentClient = new AWS.DynamoDB.DocumentClient({region: "af-south-1"});
 
 exports.handler = async (event, context) => {
     let body = JSON.parse(event.body);
-    const AccessToken = body.AccessToken;
     const PageNum = body.PageNum;
 
-    const GuidSize = 36;
-    const AccountGuid = AccessToken.substring(0,GuidSize);
-
-    
-    function compareDates(t,e){
-        let returnBool;
-        if(t.getFullYear()!=e.getFullYear()){
-            (t.getFullYear()>e.getFullYear())?returnBool=true:returnBool=false;
-        }   
-        else if(t.getMonth()!=e.getMonth()){
-            (t.getMonth()>e.getMonth())?returnBool=true:returnBool=false;
-        }
-        else if(t.getDate()!=e.getDate()){
-            (t.getDate()>e.getDate())?returnBool=true:returnBool=false;
-        }
-        else if(t.getHours()!=e.getHours()){
-            (t.getHours()>e.getHours())?returnBool=true:returnBool=false;
-        }
-        else if(t.getMinutes()!=e.getMinutes()){
-            (t.getMinutes()>e.getMinutes())?returnBool=true:returnBool=false;
-        }
-        else if(t.getSeconds()!=e.getSeconds()){
-            (t.getSeconds()>e.getSeconds())?returnBool=true:returnBool=false;
-        }
-        else if(t.getMilliseconds()!=e.getMilliseconds()){
-            (t.getMilliseconds()>e.getMilliseconds())?returnBool=true:returnBool=false;
-        }
-        else{
-            returnBool = true;
-        }
-        return returnBool;
-    }
-
-    /* Verify AccessToken  */
-    const params = {
-        TableName: "Scubamate",
-        Key: {
-            "AccountGuid": AccountGuid
-        },
-        ProjectionExpression : "AccessToken, Expires"
-    };
     let responseBody;
     const undef = 0;
     let statusCode = undef;
-    
-    try {     
-        const data = await documentClient.get(params).promise();
-        
-        if((data.Item.AccessToken).toString().trim() != AccessToken){
-            statusCode = 403;
-            responseBody = "Invalid Access Token" ;
-        }
-        else if(compareDates( new Date(),new Date(data.Item.Expires))){
-            responseBody = "Access Token Expired!";
-            statusCode = 403;
-    
-        }
-        else if(PageNum<1){
-            responseBody = "Invalid Page Number.";
-            statusCode = 403;
-        }
-
-    } catch (err) {
+    if(PageNum<1){
+        responseBody = "Invalid Page Number.";
         statusCode = 403;
-        responseBody = "Invalid Access Token";
     }
-
-    /*Only proceed if access token is valid*/
+    
     if(statusCode==undef){
         var diveParams = {
             TableName: "Dives",
@@ -102,6 +41,7 @@ exports.handler = async (event, context) => {
                 var accounts = [];
                 dives.Items.forEach(function(dive) {
                     accounts.push(dive.AccountGuid);
+                    delete dive.AccountGuid;
                 });
                  for(let i=0; i<accounts.length; i++) {
                     const accountParams = {
