@@ -130,8 +130,7 @@ export class ExplorePage implements OnInit {
     }else{
       this.loginLabel = "Log Out";
     }
-    if(localStorage.getItem("accessToken")){
-      this._globalService.activeLabel =  "Log Out";
+
       this.accountType = this._globalService.accountRole;
       
       //this.displayFeed();
@@ -156,7 +155,7 @@ export class ExplorePage implements OnInit {
       }
 
 
-    }
+    
    
   }
 

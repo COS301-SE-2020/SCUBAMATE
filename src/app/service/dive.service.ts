@@ -42,6 +42,22 @@ export class diveService
        return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/divelist',body, options);
     }
 
+    getDiveCoursesFeed(): Observable<any>{
+
+      const options = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+          })
+        };
+
+      var  body= {
+          "ItemType" : "C" ,
+          "UserEntry" : "*"
+        } ;
+
+       return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/divelist',body, options);
+    }
+
     getExtendedDiveSites(entry : String, pageNumber: number): Observable<any>{
 
       const options = {
@@ -229,7 +245,7 @@ export class diveService
       };
     
       var PostData = {
-        "AccessToken" : localStorage.getItem("accessToken"),
+       // "AccessToken" : localStorage.getItem("accessToken"),
         "PageNum" : pageNumber
       }
       return this.httpClient.post('https://b8uk84do1j.execute-api.af-south-1.amazonaws.com/LatestDiveAPI/getpublicdives', PostData , options); 
