@@ -1,0 +1,20 @@
+<ion-content>
+
+    <label class="subLabel">Profile Photo</label>
+           <div id="profileSurroundDiv">
+            <ion-img src={{ProfilePhoto}} id="userProfile" ></ion-img>
+           </div>
+              <ion-item color="transparent" lines="none">
+                <ion-button expand="full" (click)="f.click()" style="margin:auto;">
+                  <ion-icon lazy="true" name="image"></ion-icon>
+                  <ion-label slot="end">Change Profile Photo</ion-label>
+                </ion-button>
+                  <input class="ion-hide" (change)="onFileSelected($event)"  #f type="file" id="file-input"
+                    accept="image/png, image/jpeg">
+
+    </ion-item>
+
+
+    <ion-button (click)="cropImage(ProfilePhoto)">Click Here to Crop</ion-button>
+    <ion-img src={{ProfilePhoto}}></ion-img>
+</ion-content>

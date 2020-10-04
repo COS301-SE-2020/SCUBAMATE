@@ -24,40 +24,7 @@
 -->
 <ion-header no-border slot="fixed" style="margin-bottom: 20px;">
   <ion-toolbar color="dark" class="productHeader" >
-    
- <!--  <ion-buttons slot="primary">
-      <ion-button routerLink="" *ngIf="loginLabel" (click)="loginClick()"  >
-        {{loginLabel}}
-      </ion-button>
-      <ion-button color="secondary">
-        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-title > 
-     <ion-buttons >
-      <img src="../assets/images/full logo wit.png" alt="Scubamate" id="navLogo" style="height:80%;width:12%;padding-bottom:3px;padding-top:3px;margin-right:10px;"/>
-      
-        <ion-button routerLink="/home">
-          <ion-icon name="home" ></ion-icon><label style="padding-top:7px;">&nbsp; Home</label> 
-        </ion-button>
-        <ion-button routerLink="/explore">
-          <ion-icon name="color-wand-outline"></ion-icon>&nbsp; Explore
-        </ion-button>
-        <ion-button routerLink="/planning">
-          <ion-icon name="newspaper"></ion-icon>&nbsp; Plan
-        </ion-button>
-        <ion-button routerLink="/my-dives">
-          <ion-icon name="water"></ion-icon>&nbsp; My Dives
-        </ion-button>
-        <ion-button routerLink="/profile">
-          <ion-icon name="person" ></ion-icon>&nbsp; Profile
-        </ion-button>
-        <ion-button *ngIf="accountType=='Admin' || accountType=='SuperAdmin'" routerLink="/admin-page" >
-          <ion-icon name="podium"></ion-icon>&nbsp; Admin
-        </ion-button>
-      </ion-buttons>
-      
-    </ion-title>-->
+
     <ion-buttons slot="primary">
       <ion-button routerLink="" *ngIf="loginLabel" (click)="loginClick()" class="hidden-sm-down" >
         {{loginLabel}}
@@ -71,7 +38,7 @@
         <ion-button routerLink="/home" class="hidden-sm-down">
           <ion-icon name="home" ></ion-icon><label style="padding-top:7px;">&nbsp; Home</label> 
         </ion-button>
-        <ion-button routerLink="/explore" class="hidden-sm-down" *ngIf="loginLabel=='Log Out'">
+        <ion-button routerLink="/explore" class="hidden-sm-down" >
           <ion-icon name="color-wand-outline"></ion-icon>&nbsp; Explore
         </ion-button>
         <ion-button routerLink="/planning" class="hidden-sm-down" *ngIf="loginLabel=='Log Out'">
@@ -97,17 +64,21 @@
 
 <ion-radio-group color="dark" *ngIf="!viewFeedInfo" slot="fixed" style="width:20%;margin-top:2%;margin-left:2%;" value="feed" class="hidden-sm-down">
   <ion-row>
-    <ion-item color="dark" (click)="displayFeed()" style="width:100%;--border-radius:27px;" >
-      <ion-label>Public Feed</ion-label>
+    <ion-item color="dark" (click)="displayFeed()" style="width:100%;--border-radius:4px;" >
+      <ion-label><ion-icon name="people" style="font-size:20px;"></ion-icon>&nbsp;&nbsp;  Community</ion-label>
       <ion-radio  value="feed" ></ion-radio>
     </ion-item>
-    <ion-item color="dark"  (click)="displayDiveCenters()" style="width:100%;--border-radius:27px;margin-top:8px;">
-      <ion-label>Dive Centres</ion-label>
+    <ion-item color="dark"  (click)="displayDiveCenters()" style="width:100%;--border-radius:4px;margin-top:8px;">
+      <ion-label><ion-icon name="ribbon" style="font-size:20px;"></ion-icon>&nbsp;&nbsp;Dive Centres</ion-label>
       <ion-radio value="centers"></ion-radio>
     </ion-item>
-    <ion-item color="dark"  (click)="displayDiveSites()" style="width:100%;--border-radius:27px;margin-top:8px;">
-      <ion-label>Dive Sites</ion-label>
+    <ion-item color="dark"  (click)="displayDiveSites()" style="width:100%;--border-radius:4px;margin-top:8px;">
+      <ion-label><ion-icon name="boat" style="font-size:20px;"></ion-icon>&nbsp;&nbsp;Dive Sites</ion-label>
       <ion-radio value="sites" ></ion-radio>
+    </ion-item>
+    <ion-item color="dark"  (click)="displayCourses()" style="width:100%;--border-radius:4px;margin-top:8px;">
+      <ion-label ><ion-icon name="book" style="font-size:20px;"></ion-icon>&nbsp;&nbsp;Courses</ion-label>
+      <ion-radio value="courses" ></ion-radio>
     </ion-item>
 </ion-row>
 </ion-radio-group> 
@@ -115,38 +86,33 @@
 <!-- value="feed"  -->
 <ion-radio-group color="dark" slot="fixed" value={{_globalService.activeExploreFeed}}  class="hidden-sm-up">
   <ion-row>
-    <ion-col size="4">
+    <ion-col size="3">
       <ion-item color="dark" (click)="displayFeed()" style="display:inline;" >
-        <ion-label>Public <br> Feed</ion-label>
+        <ion-label style="font-size:10px;text-align:center;"><ion-icon name="people" style="font-size:20px;"></ion-icon><br>Community</ion-label>
         <ion-radio  value="feed" ></ion-radio>
       </ion-item>
     </ion-col>
-    <ion-col size="4">
+    <ion-col size="3">
       <ion-item color="dark"  (click)="displayDiveCenters()" style="display:inline;">
-        <ion-label>Dive <br> Centres</ion-label>
+        <ion-label style="font-size:10px;text-align:center;"><ion-icon name="ribbon" style="font-size:20px;"></ion-icon><br>Centres</ion-label>
         <ion-radio value="centers"></ion-radio>
       </ion-item>
     </ion-col>
-    <ion-col size="4">
+    <ion-col size="3">
       <ion-item color="dark"  (click)="displayDiveSites()" style="display:inline;">
-        <ion-label>Dive <br> Sites</ion-label>
+        <ion-label style="font-size:10px;text-align:center;"><ion-icon name="boat" style="font-size:20px;"></ion-icon><br>Sites</ion-label>
         <ion-radio value="sites" ></ion-radio>
+      </ion-item>
+    </ion-col>
+    <ion-col size="3">
+      <ion-item color="dark"  (click)="displayCourses()" style="display:inline;">
+        <ion-label style="font-size:10px;text-align:center;"><ion-icon name="book" style="font-size:20px;"></ion-icon><br>Courses</ion-label>
+        <ion-radio value="courses" ></ion-radio>
       </ion-item>
     </ion-col>
   </ion-row>
 </ion-radio-group>
 
-<!-- <ion-grid *ngIf="viewFeedInfo">
-  <ion-row >
-    <div class="infoImg"></div>
-  </ion-row>
-</ion-grid>  -->
-
-<!-- <ion-content color='dark'  overflow-scroll="true" *ngIf="viewFeedInfo" style="width:100%;height:550px; padding: 10% !important;margin-left:25% !important;">
-  <video controls="controls" width="100%" preload="metadata" autoplay="autoplay" loop webkit-playsinline="webkit-playsinline" class="videoPlayer">
-   <source src="../assets/video/info-Feed.mp4" type="video/mp4" />
-  </video>
-</ion-content>  -->
 
 <ion-grid class="contentContainer" *ngIf='showFeed'>
   <ion-row>
@@ -253,24 +219,7 @@
                   
               </ion-card>
            </div>
-           <!--  <div class="theback">
-              <ion-card color="light">
-                  <ion-card-content >                   
-                    <ion-item-divider color="medium" >
-                      <ion-card-title color="light">
-                        {{dc.Name}}
-                      </ion-card-title>
-                    </ion-item-divider>
-                    <div style="padding-top: 10px; text-align: left;" class="DiveCenterDescription">
-                      {{dc.Description}} 
-                    </div>
-            
-                </ion-card-content>
-              </ion-card>
-            </div>
-            --> 
           </div>  
-          
         </ion-col>
     </ion-row>
     <ion-row style="margin-top:30px;margin-bottom: 40px;" *ngIf="showMoreCenters && centerLst.length>0">
@@ -322,8 +271,35 @@
     <ion-icon name="code-download-outline"></ion-icon>
   </ion-button>
 </ion-row>
-</ion-grid>
+</ion-grid> 
 
+
+<ion-grid class="contentContainer" *ngIf='showCourses'>
+  <ion-row>
+    <ion-col size="12" size-sm="12" size-md="6" size-lg="4" *ngFor="let sc of courseLst">
+      <div class="thecardDC" >
+        <div class="thefront">
+          <ion-card color="light">
+            <ion-card-content fixed>
+                <ion-card-title fixed color="dark">
+                  <label class="SitesNearName" style="cursor:pointer;"> {{sc.Name}} </label> <br>
+                  <label class="CourseRating" style="font-size:medium;color:#2A9D8F ;">  Type: {{sc.CourseType}}   </label>
+                </ion-card-title>
+                
+                <label class="SitesNearDesc" style="margin-top:10%;"> {{sc.Description.substr(0,306)}} </label>
+               </ion-card-content>
+               
+          </ion-card>
+       </div>
+      </div>  
+       </ion-col>
+  </ion-row>
+  <ion-row style="margin-top:30px;margin-bottom: 40px;" *ngIf="showMoreCourses && courseLst.length>0">
+    <ion-button id="loadMoreBtn" (click)="loadCourses()">
+      <ion-icon name="code-download-outline"></ion-icon>
+    </ion-button>
+  </ion-row>
+</ion-grid>
 
 
 </ion-content>

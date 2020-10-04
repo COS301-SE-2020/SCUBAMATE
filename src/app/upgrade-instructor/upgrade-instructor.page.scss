@@ -7,7 +7,7 @@ $inputBackgroundColor: #181e21;
 $darkRed: #d66853;
 
 ion-content.background{
-    --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
+    --background: url(../../assets/images/darkSea.jpg) 0 0/100% 100% no-repeat;
 }
   
 .productHeader {
@@ -69,6 +69,7 @@ display: swap ;
     padding-left: 25px;
     padding-top: 5px;
     padding-bottom: 5px;
+    border-radius:3px 3px 0 0;
   }
   
   .divBodySection{
@@ -86,8 +87,6 @@ display: swap ;
     background-color: rgba(38, 70, 83, 0.65);
     width: 70%;
     margin: auto;
-    border-bottom: solid white 0.5px;
-    border-top: solid white 0.5px;
     text-align: center;
     margin-bottom: 50px;
 
@@ -102,6 +101,7 @@ display: swap ;
         text-align: center;
         padding-bottom: 1%;
         padding-top: 5%;
+        border-radius:3px 0 0 3px;
     }
     
     #divHead{

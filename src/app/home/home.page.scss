@@ -27,6 +27,11 @@ $inputBackgroundColor: #181e21;
       }
   }
 
+  #divHeadTag{
+    font-size: 40px !important;
+    text-shadow: 1px 1px 4px #000000;
+  }
+
  #footerIMG{
       width: 60% !important;
       height: 60% !important;
@@ -34,7 +39,8 @@ $inputBackgroundColor: #181e21;
 }
 
 ion-content.background{
-  --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
+  //--background: linear-gradient(rgba(74, 74, 74, 0.4), rgba(181, 181, 181, 0.2))   , url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
+  --background: url(../../assets/images/darkSea.jpg) 0 0/100% 100% no-repeat;
 }
 
 .productHeader {
@@ -52,6 +58,7 @@ ion-content.background{
   margin-bottom: 50px;
 
 
+
   .infoImageBorder{
     margin:auto;
     background-color: rgba( 42, 157, 143, 0.3); 
@@ -61,7 +68,7 @@ ion-content.background{
     text-align: center;
 
     .innerInfoBorder{
-      background-color: rgba(231, 111, 81, 0.8);
+      background-color: rgba(42, 157, 143, 0.8);//rgba(231, 111, 81, 0.8);
       width:170px;
       height:170px;
       border-radius: 100%;
@@ -72,7 +79,7 @@ ion-content.background{
     }
 
     .innerInfoBorder:hover{
-      background-color: rgba(231, 111, 81, 0.9);
+      background-color: rgba(42, 157, 143, 0.9);//rgba(231, 111, 81, 0.9);
       font-size: 125px;
     }
   }
@@ -82,36 +89,49 @@ ion-content.background{
 
 
 #homeSticker{
-  background-color: rgba(38, 70, 83, 0.6);
+  background-color: rgba(38, 70, 83, 0.7);
   margin: auto;
-  border-bottom: solid white 0.5px;
-  border-top: solid white 0.5px;
+ // border-bottom: solid white 0.5px;
+ // border-top: solid white 0.5px;
   width:  80% ;
   height: 80%;
+  border-radius: 3px;
 }
 
 #homeSticker img{
-padding-left: 10%;
-object-fit: cover;
-width: 100%;
-height: 100%;
+ margin-top: 14%;
+//padding-left: 10%;
+//object-fit: cover;
+object-fit:contain;
+height: auto;
 }
 
 #about{
 margin-top: 5%;
-margin-left: 5% ;
+margin-left: 3% ;
 color: white;
 font-size:  30px ;
 font-family: 'Righteous';
 display: swap ;
 }
 
+#divHeadTag{
+  margin-top: 4%; 
+  margin-left: 10% ;
+  color: white;
+  font-size:  45px ;
+  font-family: 'Righteous';
+  display: swap ;
+  text-shadow: 1px 1px 3px #000000;
+}
+
 #aboutInfo{
-margin-left: 5% ;
+margin-left: 3% ;
 margin-right: 5% ;
 margin-top:  3%;
-margin-bottom: 2%;
+margin-bottom: 5%;
 color: white;
+line-height: 1.5;
 }
 
 
@@ -126,7 +146,7 @@ color: white;
   transition: all 0.5s;
   cursor: pointer;
   margin-left: 5px;
-  border-radius: 16px;
+  border-radius: 3px;
   word-wrap: break-word;
 
  

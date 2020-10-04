@@ -8,8 +8,28 @@ $inputBackgroundColor: #181e21;
 
 
 ion-content.background{
-  --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
+  --background: url(../../assets/images/darkSea.jpg) 0 0/100% 100% no-repeat;
 }
+
+#divHeadTag{
+  margin-top: 10%; 
+  margin: auto;
+  color: white;
+  font-size:  45px ;
+  font-family: 'Righteous';
+  display: swap ;
+  text-shadow: 1px 1px 3px #000000;
+}
+
+.subLabel{
+  margin-top: 1% ; 
+  font-size:  20px ;
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  color: white;
+  border-bottom: solid white 0.5px;
+  border-top: solid white 0.5px;
+  
+  }
 
 .productHeader {
   --background: transparent;

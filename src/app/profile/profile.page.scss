@@ -95,7 +95,7 @@ $inputBackgroundColor: #181e21;
 }
 
 ion-content.background{
-  --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
+  --background: url(../../assets/images/darkSea.jpg) 0 0/100% 100% no-repeat;
 }
 
 
@@ -119,37 +119,40 @@ ion-grid {
   padding: 0;
   background-color: rgba(38, 70, 83, 0.6);
   margin: auto;
-  border-bottom: solid white 0.5px;
-  border-top: solid white 0.5px;
-  width:  70% ;
+  //border-bottom: solid white 0.5px;
+  //border-top: solid white 0.5px;
+  width:  80% ; //70% ;
   padding: 0;
   margin-top: 30px;
   margin-bottom: 50px;
+  border-radius:3px;
 }
 
 #checkListDiv{
   background-color: rgba(38, 70, 83, 0.6);
   margin: auto;
-  border-bottom: solid white 0.5px;
-  border-top: solid white 0.5px;
-  width:  70% ;
+  //border-bottom: solid white 0.5px;
+ // border-top: solid white 0.5px;
+  width:  80%; //70% ;
   padding: 0;
   margin-top: 30px;
   padding: 0px;
   padding-bottom: 10px;
   margin-bottom: 20px;
+  border-radius:3px;
 }
 
 #ProfileInfo{
   background-color: rgba(38, 70, 83, 0.8);
   margin: auto;
   margin-top: 30px;
-  border-bottom: solid white 0.5px;
-  border-top: solid white 0.5px;
-  width:  70% ;
+ // border-bottom: solid white 0.5px;
+ // border-top: solid white 0.5px;
+  width:  80%;//70% ;
   padding: 0;
   height: 80%;
   display: block;
+  border-radius:3px;
 
   .leftPane{
     background-color: rgba(38, 70, 83, 0.9);
@@ -157,18 +160,14 @@ ion-grid {
     margin:0;
     text-align: center;
     padding-bottom: 1%;
+    border-radius:3px 0 0 3px;
   }
 
   #acountInfo1{
-    padding-left: 20px;
+    padding-left: 7% ; //20px;
     padding-top: 20px;
     padding-right:0;
   }
-
-  #acountInfo2{
-    padding-top: 20px;
-  }
-
 
   ion-button{
     float:right;
@@ -192,8 +191,8 @@ ion-grid {
 
 
 #userProfile{
-  width: 160px;
-  height: 160px;
+  width: 180px;
+  height: 180px;
   margin: auto;
   margin-top: 6%;
   margin-bottom: 6%;
@@ -203,12 +202,12 @@ ion-grid {
 }
 
 #profileSurroundDiv{
-  width:180px;
-  height:180px;
+  width:200px;
+  height:200px;
   padding:0;
   margin: auto;
-  margin-top: 2%;
-  margin-bottom: 3%;
+  margin-top: 15px;//5%;
+  margin-bottom: 20px;//8%;
   border-radius: 100% !important;
   overflow: hidden;
   background-color:  rgba(24, 30, 33, 0.4) ;
@@ -241,6 +240,7 @@ ion-grid {
   margin-bottom: 20px;
   margin-top: 15px; 
   margin-left: 20px;
+
 }
 
 .divSubHead{
@@ -259,6 +259,7 @@ ion-grid {
   padding-left: 25px;
   padding-top: 5px;
   padding-bottom: 5px;
+  border-radius:3px 3px 0 0;
 
   ion-button{
     float:right;
@@ -332,6 +333,7 @@ table{
 } 
 
 #EmailVerificationDiv{
+  border-radius:3px;
   width: 80%;
   margin: auto;
   color: white;
@@ -349,6 +351,7 @@ table{
 
 
 #UnverifiedListsInfo{
+  border-radius:3px;
 
   ion-button{
     float:right;

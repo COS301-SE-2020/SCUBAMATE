@@ -95,6 +95,7 @@ export class LogDivePage implements OnInit {
     //showDiveTypeInput : boolean; 
     allLoaded: boolean ;
     manualWeatherActive: boolean ; 
+    optionalWeather : string[];
     
 
   /********************************************/
@@ -138,6 +139,8 @@ export class LogDivePage implements OnInit {
     this.uuidValue=UUID.UUID();
     this.showLoading = true;
 
+    this.optionalWeather = ["cloudy","deary","fog","hazy sunshine","intermittent clouds","mostly cloudy w showers","mostly cloudy","mostly sunny","overcast","partly sunny w showers","partly sunny w t-storms","partly sunny","plenty of sunshine","rain","showers","sunny","t-storms","windy"];
+    ;
     //Get coordinates and return current weather
     this.geolocation.getCurrentPosition().then((resp) => {
       this.Coordinates.Latitude = resp.coords.latitude;
@@ -160,7 +163,10 @@ export class LogDivePage implements OnInit {
         this.MinTempAPI = res.DailyForecasts[0].Temperature.Minimum.Value;
         this.MaxTempAPI = res.DailyForecasts[0].Temperature.Maximum.Value;
         this.MoonPhase = res.DailyForecasts[0].Moon.Phase ;
-        this.WeatherDescription = (res.DailyForecasts[0].Day.IconPhrase).replace('/','');
+        this.WeatherDescription = ((res.DailyForecasts[0].Day.IconPhrase).replace('/','')).toLowerCase();
+        if(!this.contains(this.optionalWeather, this.WeatherDescription)){
+          this.WeatherDescription ="uncertain";
+        }
         this.WindSpeed = res.DailyForecasts[0].Day.Wind.Speed.Value + " " + res.DailyForecasts[0].Day.Wind.Speed.Unit  ; 
 
 
@@ -256,6 +262,15 @@ export class LogDivePage implements OnInit {
 
   }
   
+  contains(arr,search): boolean{
+    let returnBool = false;
+    arr.forEach(function(item) {
+        if(item==search){
+            returnBool=true;
+        }
+    });
+    return returnBool;
+  }
   ngOnInit() {
     //setup page navigation view
     this.firstPageVisible = true;
@@ -277,8 +292,15 @@ export class LogDivePage implements OnInit {
     }else{
       this.loginLabel = "Log Out";
       this.accountType = this._globalService.accountRole;
-    }
-    
+
+      this._diveService.getDiveTypes("*").subscribe(res =>{
+        this.DiveTypeLst = res.ReturnedList ;
+        this.showLoading = false;  
+  
+      }, err =>{
+        this.showLoading = false; 
+      });
+    }   
 
   } //end ngOnInit
 
@@ -335,11 +357,6 @@ export class LogDivePage implements OnInit {
         
       },
       4000);
-
-   
-
-    
-    
   }
 
   loginClick(){

@@ -95,7 +95,6 @@ export class DiveCenterInformationPage implements OnInit {
         Longitude: this.currentDiveCenter.Coords.substr(this.currentDiveCenter.Coords.indexOf(",")+1, this.currentDiveCenter.Coords.length -1 ) 
       }
 
-
       this._weatherService.getLocationKey(this.Coordinates).subscribe(res => {
         this.Key.key = res.Key;
         this.Key.city = res.LocalizedName;

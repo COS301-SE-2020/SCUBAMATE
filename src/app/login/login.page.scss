@@ -8,10 +8,16 @@ $darkRed: #d66853;
 
 @media (max-width: 767px) {
     #loginDiv{
-      width: 95% !important;
+      width: 110% !important;
       padding: 5px !important;
-      margin-top: 10px !important;
+      margin-top: 40px !important;
       padding-bottom: 10px !important;
+      padding-top: 40px !important;
+      margin-left: -5% !important;
+    }
+
+    #loginDiv input[type=submit]{
+      width: 95% !important;
     }
 
     ion-item{
@@ -21,7 +27,7 @@ $darkRed: #d66853;
 }
 
 ion-content.background{
-  --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
+  --background: url(../../assets/images/darkSea.jpg) 0 0/100% 100% no-repeat;
 }
 
 
@@ -73,7 +79,7 @@ ion-item{
 }
 
 #loginDiv input[type=submit]{
-  width: 55% ;
+  width: 70% ;
   align-self: center;
   border-radius: 0px;
 }

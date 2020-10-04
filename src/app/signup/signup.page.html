@@ -19,7 +19,9 @@
         <ion-button routerLink="/home" class="hidden-sm-down">
           <ion-icon name="home" ></ion-icon><label style="padding-top:7px;">&nbsp; Home</label> 
         </ion-button>
-
+        <ion-button routerLink="/explore" class="hidden-sm-down" >
+          <ion-icon name="color-wand-outline"></ion-icon>&nbsp; Explore
+        </ion-button>
       </ion-buttons>
       
     </ion-title> 
@@ -29,7 +31,7 @@
 <ion-content fullscreen class="background" no-scroll padding >
  
   
-  <div class="registerFormDiv" *ngIf="ShowAccountChoice" style="margin-top:20px;">
+  <div class="registerFormDiv" *ngIf="ShowAccountChoice" style="margin-top:20px;padding-bottom:20px;">
     <ion-label id="divHead"> Account Type </ion-label>
     <ion-grid>
       <ion-row>
@@ -585,14 +587,6 @@
 
 
 
-
+   
 </ion-content>
-<ion-footer class="ion-no-border" >
-  <ion-toolbar color="tertiary">
-    <ion-button color='dark' id="footerIMG" href="https://drive.google.com/drive/folders/1WhfnimgacnHdXswZPeHklnn60Xht9AKG?usp=sharing" style="float:right;width:12%;margin-right:10px;">
-      <ion-img  src='../../assets/images/playStore.png' ></ion-img>
-    </ion-button>
-    <ion-img src="../../assets/images/padi-logo.png" style="float:right;width:12%;height:80%;margin-right:10px;"></ion-img>
-  
-  </ion-toolbar>
-</ion-footer>
+

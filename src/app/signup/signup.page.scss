@@ -7,6 +7,11 @@ $inputBackgroundColor: #181e21;
 $darkRed: #d66853;
 
 @media (max-width: 767px) {
+  #footerIMG{
+    width: 60% !important;
+    height: 60% !important;
+}
+
     .registerFormDiv{
       width: 95% !important ; 
     }
@@ -35,7 +40,7 @@ $darkRed: #d66853;
 
 
 ion-content.background{
-    --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
+    --background: url(../../assets/images/darkSea.jpg) 0 0/100% 100% no-repeat;
 }
 
 .productHeader {
@@ -46,8 +51,9 @@ ion-content.background{
     background-color: rgba(38, 70, 83, 0.5);
     width: 70%;
     margin: auto;
-    border-bottom: solid white 0.5px;
-    border-top: solid white 0.5px;
+   // border-bottom: solid white 0.5px;
+   // border-top: solid white 0.5px;
+   border-radius: 3px; 
     text-align: center;
     padding: 0;
     margin-bottom: 50px;
@@ -270,9 +276,10 @@ table{
 }
 
 @mixin progressDiv{
-  background-color: $inputBackgroundColor;
+  background-color: #2b2e33 ; //$inputBackgroundColor;
   padding-bottom: 1px;
   margin-bottom: 0;
+  border-radius: 3px 3px 0 0; 
 }
 
 #DiverProgress{

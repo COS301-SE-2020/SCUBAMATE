@@ -71,14 +71,14 @@
                  <ion-label  position="floating">Instructor Number         
                    <b *ngIf="!userForm.controls.instructorNumber.valid  && (userForm.controls.instructorNumber.dirty )" class="FormErrorControlMessage">* Please enter a valid number  </b>
                  </ion-label>
-                 <ion-input formControlName="instructorNumber" type="text"  [(ngModel)]="userObj.InstructorNumber"  [class.invalid]="!userForm.controls.instructorNumber.valid && (userForm.controls.instructorNumber.dirty )"></ion-input>
+                 <ion-input formControlName="instructorNumber" placeholder="Insert Instructor Number" type="text"  [(ngModel)]="userObj.InstructorNumber"  [class.invalid]="!userForm.controls.instructorNumber.valid && (userForm.controls.instructorNumber.dirty )"></ion-input>
                </ion-item>
              </ion-col>
            </ion-row>
            <ion-row>
             <div class="searchableSelect" style="width:90%;margin:auto;">
               <ion-label class="searchableSelectLabel">Dive Centre</ion-label><br>
-                <input list="diveC"  placeholder="Insert Your Dive Center" formControlName="diveCenter" [(ngModel)]="userObj.DiveCentre"  #Cent (keypress)="CenterListFinder($event.target.value)" class="searchableSelectInput">
+                <input list="diveC"  placeholder="Insert Your Dive Centre" formControlName="diveCenter" [(ngModel)]="userObj.DiveCentre"  #Cent (keypress)="CenterListFinder($event.target.value)" class="searchableSelectInput">
                 <datalist id="diveC" >
                     <option *ngFor='let c of CenterLst' value={{c}}></option>
                 </datalist>

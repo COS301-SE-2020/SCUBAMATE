@@ -20,6 +20,9 @@
         <ion-button routerLink="/home" class="hidden-sm-down">
           <ion-icon name="home" ></ion-icon><label style="padding-top:7px;">&nbsp; Home</label> 
         </ion-button>
+        <ion-button routerLink="/explore" class="hidden-sm-down" >
+          <ion-icon name="color-wand-outline"></ion-icon>&nbsp; Explore
+        </ion-button>
       </ion-buttons>
       
     </ion-title> 
@@ -31,7 +34,7 @@
   <div class="container">
 
     <div id="loginDiv">
-      <img src="../assets/images/stacked wit.png" alt="Scubamate">
+      <img src="../assets/images/full logo wit.png" alt="Scubamate" style="width:80%;padding:20px;" class="hidden-sm-down">
         <form (keyup.enter)="onSubmit(emailInput.value, passInput.value , $event)" (submit)="onSubmit(emailInput.value, passInput.value , $event)">
           
         <ion-grid>
@@ -64,8 +67,8 @@
           </ion-row>
           <ion-row>
             <ion-col>
-              <input type="submit" value="Login"> <br><br>
-              <ion-label>Don't have an account?<a routerLink="/signup"> Sign up here</a> </ion-label>
+              <input type="submit" value="LOGIN" style="border-radius:3px;"> <br><br>
+              <ion-label>Don't have an account?<a routerLink="/signup" style="color:#2A9D8F;"> Register here</a> </ion-label>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -75,4 +78,48 @@
 
   </div>
 
+
+  <ion-footer class="ion-no-border" class="hidden-sm-down" style="margin-top:10%;">
+    <ion-toolbar color="secondary">
+      <ion-label style="float:left;color:#2A9D8F;padding-left:2%;padding-top:16px;">
+        <a href="https://github.com/COS301-SE-2020/SCUBAMATE"><ion-icon name="logo-github" color="primary" style="font-size:20px;"></ion-icon></a>
+      </ion-label>
+      <ion-label style="float:left;color:#2A9D8F;;padding-top:15px;">
+        
+         &nbsp;|
+            <a href="mailto:scubamate.team@gmail.com" style="color:#2A9D8F;">Contact Us</a>
+            
+              | &#169; <a href="https://cos301capstoneproject.github.io/" style="color:#2A9D8F;">Made by TeamAV.</a> All rights reserved.
+      </ion-label>
+  
+      <a  id="footerIMG" href="https://drive.google.com/drive/folders/1WhfnimgacnHdXswZPeHklnn60Xht9AKG?usp=sharing" style="float:right;width:12%;margin-right:10px;">
+        <ion-img  src='../../assets/images/playStore.png' ></ion-img>
+      </a>
+      <a href="https://www.padi.com/">
+        <ion-img src="../../assets/images/padi-logo.png" style="float:right;width:12%;height:80%;margin-right:10px;"></ion-img>
+      </a>
+    </ion-toolbar>
+  </ion-footer>
+  
+  
+  
+  <ion-footer class="ion-no-border" class="hidden-sm-up" style="margin-top:10%;">
+    <ion-toolbar color="secondary" >
+      <ion-label style="float:left;color:#181e21;padding-top:15px;text-align:center;margin-left:10%;">
+        
+        <a href="https://github.com/COS301-SE-2020/SCUBAMATE"><ion-icon name="logo-github" color="tertiary"></ion-icon></a>
+         |
+            <a href="mailto:scubamate.team@gmail.com" style="color:#181e21;">Contact Us</a>
+            
+              | &#169; 
+              <a href="https://cos301capstoneproject.github.io/" style="color:#181e21;">Made by TeamAV.</a> 
+              <br> 
+              All rights reserved. 
+      </ion-label>
+      
+    </ion-toolbar>
+  </ion-footer>
+  <ion-footer style="background-color:#d66853 ;text-align:center;color:white;padding:10px;">
+    Stay home, Stay safe! Visit <a href="https://sacoronavirus.co.za/" style="color:white;"><b>sacoronavirus.co.za</b></a> for official COVID-19 information.
+  </ion-footer>
 </ion-content>

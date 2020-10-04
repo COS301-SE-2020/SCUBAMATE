@@ -7,6 +7,8 @@ import { Location } from '@angular/common';
 import { GlobalService } from "../global.service";
 import { AlertController } from '@ionic/angular';
 
+import { IonInfiniteScroll } from '@ionic/angular';
+
 export interface Dive{
   FirstName : string ;
   LastName : string ;
@@ -36,6 +38,12 @@ export interface DiveCenter{
   Location: string ; 
 }
 
+export interface DiveCourse{
+  CourseType: string,
+  Name: string,
+  Description : string ; 
+}
+
 @Component({
   selector: 'app-explore',
   templateUrl: './explore.page.html',
@@ -46,18 +54,22 @@ export class ExplorePage implements OnInit {
   /*********************************************
                 Global Variables
   *********************************************/
+ 
   siteLst: DiveSite[] = new Array() ;
   centerLst: DiveCenter[] = new Array() ;
   showSites : boolean ;
   showCenters : boolean ;
   showFeed  : boolean ;
+  showCourses : boolean ;
   showLoading : boolean;
   showMoreFeed : boolean = true ;
   showMoreCenters : boolean = true ;
   showMoreSites: boolean = true ;
+  showMoreCourses : boolean = true ; 
   pubLst: Dive[] = []; 
   loginLabel:string ;
   accountType : string;
+  courseLst : DiveCourse[] = new Array() ; 
 
   showFeedLoaded : boolean = false ; 
 
@@ -68,6 +80,7 @@ export class ExplorePage implements OnInit {
   CentersPage : number = 1;
   SitesPage: number = 1 ;
   FeedPage : number = 1; 
+  CoursePage : number = 1; 
 
   //infoViews
   viewFeedInfo: boolean = false; 
@@ -127,8 +140,7 @@ export class ExplorePage implements OnInit {
     }else{
       this.loginLabel = "Log Out";
     }
-    if(localStorage.getItem("accessToken")){
-      this._globalService.activeLabel =  "Log Out";
+
       this.accountType = this._globalService.accountRole;
       
       //this.displayFeed();
@@ -136,24 +148,35 @@ export class ExplorePage implements OnInit {
         this.showFeed = false;
         this.showSites = true;
         this.showCenters = false;
+        this.showCourses = false; 
         this.displayDiveSites();
 
       }else if(this._globalService.activeExploreFeed == "feed"){
         this.showFeed = true;
         this.showSites = false;
         this.showCenters = false;
+        this.showCourses = false;
         this.displayFeed();
 
-      }else{
+      }
+      else if( this._globalService.activeExploreFeed == "courses"){
+        this.showFeed = false;
+        this.showSites = false;
+        this.showCenters = false;
+        this.showCourses = true;
+        this.displayCourses();
+      }
+      else{
         this.showFeed = false;
         this.showSites = false;
         this.showCenters = true;
+        this.showCourses = false;
         this.displayDiveCenters();
 
       }
 
 
-    }
+    
    
   }
 
@@ -174,6 +197,7 @@ export class ExplorePage implements OnInit {
     this.showFeed =  false;
     this.showSites = true;
     this.showCenters = false;
+    this.showCourses = false; 
     this.showFeedLoaded = false;
 
     this.viewFeedInfo = false; 
@@ -187,6 +211,7 @@ export class ExplorePage implements OnInit {
     this.showFeed =  false;
     this.showSites = false;
     this.showCenters= true;
+    this.showCourses = false; 
     this.viewFeedInfo = false; 
     
     this.showFeedLoaded = false;
@@ -197,6 +222,7 @@ export class ExplorePage implements OnInit {
     this.showFeed =  true;
     this.showSites = false;
     this.showCenters = false;
+    this.showCourses = false; 
     this.viewFeedInfo = false; 
     
     this.showFeedLoaded = true;
@@ -226,6 +252,41 @@ export class ExplorePage implements OnInit {
           this.FeedPage = 1;
         }
       }
+    });
+  }
+
+  displayCourses(){
+    this.showFeed =  false;
+    this.showSites = false;
+    this.showCenters= false;
+    this.showCourses = true; 
+    this.viewFeedInfo = false; 
+    
+    this.showFeedLoaded = false;
+    this._globalService.activeExploreFeed = "courses";
+    
+    this.loadCourses();
+
+
+  }
+
+  loadCourses(){
+    this.showLoading = true ; 
+
+    this._diveService.getDiveCoursesFeed(this.CoursePage).subscribe( res =>{
+      this.showLoading = false ; 
+      this.CoursePage++ ;
+      
+      this.courseLst.push(...res.ReturnedList);
+      console.log(this.courseLst);
+
+      
+
+
+    }, err=>{
+      this.showLoading = false ; 
+      //this.presentGeneralAlert("Could not load courses" , err ); 
+      this.showMoreCourses = false;
     });
   }
 
@@ -322,5 +383,8 @@ export class ExplorePage implements OnInit {
     await alert.present();
   }
 
+
+
+ 
 
 }

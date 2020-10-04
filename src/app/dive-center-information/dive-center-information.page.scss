@@ -22,18 +22,20 @@ $inputBackgroundColor: #181e21;
 }
 
 ion-content.background{
-    --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
+    --background: url(../../assets/images/darkSea.jpg) 0 0/100% 100% no-repeat;
   }
   
 .productHeader {
       --background: transparent;
 }
 
+
+
 .containerDiv{
     background-color: rgba(38, 70, 83, 0.7);
     margin: auto;
-    border-bottom: solid white 0.5px;
-    border-top: solid white 0.5px;
+   // border-bottom: solid white 0.5px;
+   // border-top: solid white 0.5px;
     width:  70% ;
     padding: 0;
     margin-top: 30px;
@@ -51,7 +53,8 @@ ion-content.background{
   padding: 0px;
   padding-bottom: 0px;
   margin-bottom: 20px;
-  color:white ; 
+  color:white ;
+  text-align: right; 
 }
 
 .subLabel{

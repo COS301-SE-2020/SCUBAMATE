@@ -54,14 +54,14 @@
           <ion-col  size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
             <label id="divHead">{{CurrentDive.DiveSite}}</label> 
               <div id="siteSurroundDiv">
-                 <img id="siteProfile" src={{CurrentDive.DiveImage}}> 
+                 <img id="siteProfile" src={{CurrentDive.DiveImage}} style="cursor:pointer;"  (click)="viewDiveSite(CurrentDive.DiveSite)"> 
               </div>
               
               <label class="subLabel">{{CurrentDive.DiveTypeLink}}</label><br>
               <label class="infoLabel">{{CurrentDive.DiveDate}}</label> <br>
               <label class="infoLabel">{{CurrentDive.TimeIn}} - {{CurrentDive.TimeOut}}</label> <br>
           </ion-col>
-          <ion-col size="12" size-sm="12" size-md="7" size-lg="7" class="rightPane">
+          <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane">
             
                 <ion-row style="padding-bottom:10px;">
                   <ion-col>
@@ -97,11 +97,19 @@
                 </ion-row>
                 <ion-row style="padding-top:30px;">
                   <input type="submit" value="Apply" (click)="UpdateDiveSubmit()" >
-                  <ion-button color="dark" id="Btn" routerLink="/my-dives" routerDirection="root" >
-                    <ion-icon name="arrow-back"></ion-icon>Back
-                  </ion-button>
+                  
                 </ion-row>
               
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col size="3" offset="9">
+            <ion-button color="dark" id="Btn" routerLink="/my-dives" routerDirection="root" >
+              <ion-icon name="arrow-back"></ion-icon> &nbsp;&nbsp; Back
+            </ion-button> 
           </ion-col>
         </ion-row>
       </ion-grid>
