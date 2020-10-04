@@ -535,103 +535,73 @@
                 <label class="predictedInfo"> {{predictObj.Date}} </label>
               </ion-col>
               <ion-col size="12" size-sm="12" size-md="4" size-lg='4'>
-                <label class="predictedInfo" *ngIf='predictedVisibility == "Poor"' class="predictResult" style="color: #2A9D8F ;"> {{predictedVisibility}} </label>
-                <label class="predictedInfo" *ngIf='predictedVisibility == "Average"' class="predictResult" style="color: #2A9D8F ;"> {{predictedVisibility}} </label>
-                <label class="predictedInfo" *ngIf='predictedVisibility == "Good"' class="predictResult" style="color: #2A9D8F ;"> {{predictedVisibility}} </label>
-                <label class="predictedInfo" *ngIf='predictedVisibility == "Excellent"' class="predictResult" style="color: #2A9D8F ;"> {{predictedVisibility}} </label>
+                <label class="predictedInfo" *ngIf='predictedVisibility == "Poor"' class="predictResult" style="color:#d66853 ;"> {{predictedVisibility}} </label>
+                <label class="predictedInfo" *ngIf='predictedVisibility == "Average"' class="predictResult" style="color: #F4A261 ;"> {{predictedVisibility}} </label>
+                <label class="predictedInfo" *ngIf='predictedVisibility == "Good"' class="predictResult" style="color: #2A9D8F;"> {{predictedVisibility}} </label>
+                <label class="predictedInfo" *ngIf='predictedVisibility == "Excellent"' class="predictResult" style="color: #2dd36f;"> {{predictedVisibility}} </label>
               </ion-col>
            </ion-row>
          </ion-grid>
         </div>
        </div>
-    
-    
-   <!--  <div id="checkListDiv" *ngIf="sideViewCheckList">
-        <div class="divHeadSection">
-          <ion-grid>
-            <ion-row>
-              <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
-                <ion-label class="divHead">My Dive Planning Checklist </ion-label> <br>
-              </ion-col>
-              <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
-                <ion-button (click)="saveChecklist()">
-                  <ion-icon name="save-outline" ></ion-icon>
-                </ion-button>
-                <ion-button (click)="showAddInput()">
-                  <ion-icon name="add-outline"></ion-icon>
-                </ion-button>
-                <ion-button (click)="onChooseDive( diveType.value, $event)">
-                  <ion-icon name="search"></ion-icon>
-                </ion-button>
-                <ion-button (click)="toggleCheckList()">
-                  <ion-icon name="caret-down" *ngIf='!viewChecklist' color="dark"></ion-icon>
-                  <ion-icon name="caret-up" *ngIf='viewChecklist' color="dark"></ion-icon>
-                </ion-button>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-          
-        </div>
-        <div class="divBodySection">
-        
-          <ion-grid id="CheckListsInfo" >
-            <ion-row>
-              <div class="searchableSelect">
-                <ion-label class="searchableSelectLabel">Search for a checklist by Dive Type</ion-label>
-                <input list="diveTypes" [(ngModel)]="SearchDiveCheckList" class="searchableSelectInput" (keypress)="divetypeListFinder()" placeholder="Boat Dive" #diveType>
-                <datalist id="diveTypes" >
-                    <option *ngFor='let t of DiveTypeLst' value={{t}}></option>
-                </datalist>
-              </div>
-            </ion-row>
-            <ion-row *ngIf="viewAddInput">
-              <ion-col size="12" size-md="11" size-lg="11">
-                
-                <ion-item color="dark">
-                  <ion-label position="floating">Custom Item to Add</ion-label>
-                  <ion-input type="text" placeholder="Custom Item to Add to Checklist"  [(ngModel)]="itemToAdd" ></ion-input>
-                </ion-item>
-                
-              </ion-col>
-              <ion-col size="12" size-md="1" size-lg="1">
-                <ion-button (click)="addItem()" color="success" style="--border-radius:3%;width:100%;height:75%;">
-                  <ion-icon name="checkmark"></ion-icon>
-                </ion-button>
-              </ion-col>
-            </ion-row>
-              <ion-row *ngIf='viewChecklist'><label class="checkListHead">Necessary - Equipment</label></ion-row>
-              <ion-row *ngIf='viewChecklist' class="checkListTableRow">
-                <ion-col *ngFor='let e of EquipmentList' size="12" size-md="6" size-lg="6">
-                  
-                  <ion-col size="6" > {{ e.Val }}</ion-col>
-                  <ion-col size="6" > <ion-checkbox color="dark" [(ngModel)]="e.Checked"></ion-checkbox> </ion-col>
-                </ion-col>
-              </ion-row>
-    
-              <ion-row *ngIf='viewChecklist'><label class="checkListHead">Optional - Equipment</label></ion-row>
-              <ion-row *ngIf='viewChecklist' class="checkListTableRow">
-                <ion-col *ngFor='let o of OptionalList' size="12" size-md="6" size-lg="6">
-                  
-                  <ion-col size="6"> {{ o.Val }}</ion-col>
-                  <ion-col size="6" > <ion-checkbox color="dark" [(ngModel)]="o.Checked"></ion-checkbox> </ion-col>
-                </ion-col>
-              </ion-row>
-    
-              <ion-row *ngIf='viewChecklist && viewPersonalAdded'><label class="checkListHead">Custom - Equipment</label></ion-row>
-              <ion-row *ngIf='viewChecklist && viewPersonalAdded' class="checkListTableRow">
-                <ion-col *ngFor='let p of PersonalList' size="12" size-md="6" size-lg="6">
-                  
-                  <ion-col size="6"> {{ p.Val }}</ion-col>
-                  <ion-col size="6" > <ion-checkbox color="dark" [(ngModel)]="p.Checked"></ion-checkbox> </ion-col>
-                </ion-col>
-              </ion-row>
-    
-    
-          </ion-grid>
-    
-      </div>
-      </div>-->  
 
+
+       <label class="divHeadTag" *ngIf="sideViewPredict">More Information</label>
+       <div *ngIf="sideViewPredict" id="predictAboutInfo">
+         <ion-grid>
+          
+          <ion-row>
+           
+            <ion-col size="12" size-sm="12"  size-md="6" size-lg='6' >
+              <label class="subLabel">What Is Visibility?</label> <br>
+              <label> 
+                What is the difference between a great diving experience and a mediocre one?
+                In most cases it's a matter of underwater visibility. Visibility is the distance at which an object underwater can be identified.
+                Clear waters can make even the most plain dive sites seem magical, while murky waters could ruin a thrilling wreck dive or dull the vibrancy of a coral reef.
+              </label>
+           </ion-col>
+           <ion-col size="12" size-sm="12"  size-md="6" size-lg='6' >
+            <ion-img src="../assets/images/lowVisibility.jpg" ></ion-img>
+          </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12" size-sm="12"  size-md="6" size-lg='6' >
+              <ion-img src="../assets/images/excellentVisibility.jpg" ></ion-img>
+              <ion-img src="../assets/images/goodVisibility.jpg" ></ion-img>
+              
+            </ion-col>
+            <ion-col size="12" size-sm="12"  size-md="6" size-lg='6' >
+               <label class="subLabel">How To Read My Results</label> <br>
+               <label>  
+                Poor <br> You can see from 0-3m. We would not recommend diving in these conditions as the water will be murky.<br><br>
+                Average <br> You can see from 4-6m. This is the normal distance for visibility on a dive. We would recommend diving at this dive site.<br><br>
+                Good <br> You can see from 7-9m. This is a really good result! The visibility at this site is great and you shouldn't miss an opportunity to dive here after obtaining this result!<br><br>
+                Excellent <br> You can see from 10m or greater distances. This is an outstanding result! We highly recommend diving with this result! If you don't go diving with a result like this, our team will!<br>
+
+               </label>
+            </ion-col>
+
+          </ion-row>
+          <ion-row>
+           
+            <ion-col size="12" size-sm="12"  size-md="6" size-lg='6' >
+              <label class="subLabel">The Magic Behind Scubamate's Visibility Predictor!</label> <br>
+              <label> 
+                You provide us with the dive site you want to dive at and the date you're considering for this dive.
+                 We then forecast the weather for this date and get loads of information such as details about the moon, rain, clouds, sun and various temperature information. 
+                 Using our decision tree and the ID3 algorithm, we can predict the visibility for you and help you have fantastic dives all the time! 
+                 To learn more about decision trees go to 
+                 https://medium.com/@ODSC/the-complete-guide-to-decision-trees-part-1-aa68b34f476d and the ID3 algorithm: 
+                 https://medium.com/machine-learning-guy/an-introduction-to-decision-tree-learning-id3-algorithm-54c74eb2ad55
+              </label>
+           </ion-col>
+           <ion-col size="12" size-sm="12"  size-md="6" size-lg='6' >
+            <ion-img src="../assets/images/badVisibility.jpg" ></ion-img>
+          </ion-col>
+          </ion-row>
+         </ion-grid>
+       </div>
+  
 
     </ion-col> 
   </ion-row>

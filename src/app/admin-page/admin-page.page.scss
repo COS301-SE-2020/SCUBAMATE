@@ -8,7 +8,7 @@ $inputBackgroundColor: #181e21;
 
 
 ion-content.background{
-  --background: url(../../assets/images/sea.jpg) 0 0/100% 100% no-repeat;
+  --background: url(../../assets/images/darkSea.jpg) 0 0/100% 100% no-repeat;
 }
 
 
@@ -47,8 +47,9 @@ ion-content.background{
 @mixin divContainer {
   background-color: rgba(38, 70, 83, 0.8);
   margin: auto;
-  border-bottom: solid white 0.5px;
-  border-top: solid white 0.5px;
+ // border-bottom: solid white 0.5px;
+ // border-top: solid white 0.5px;
+ border-radius:3px; 
   width:  80% ;
   text-align: center;
   padding:0;
@@ -86,6 +87,7 @@ ion-content.background{
         text-align: center;
         padding-bottom: 4%;
         padding-top:3%;
+        border-radius: 3px 0 0 3px ; 
     }
 
     .subLabel{

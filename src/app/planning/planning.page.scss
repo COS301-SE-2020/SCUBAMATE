@@ -139,6 +139,10 @@ ion-content.background{
     color: white;
     border-bottom: solid white 0.5px;
     border-top: solid white 0.5px;
+    padding-left: 5px;
+    padding-right: 5px ;
+    padding-top: 2px ; 
+    padding-bottom: 2px ; 
   }
   
   .infoLabel{
@@ -175,6 +179,7 @@ ion-content.background{
     padding-left: 25px;
     padding-top: 5px;
     padding-bottom: 5px;
+    border-radius: 3px 3px 0 0 ;
 
     ion-button{
       float:right;
@@ -253,9 +258,7 @@ ion-content.background{
   @mixin DivContainers{
     background-color: rgba(38, 70, 83, 0.6);
     margin: auto;
-    //border-bottom: solid white 0.5px;
-    //border-top: solid white 0.5px;
-    //width:  90%; //70% ;
+    border-radius: 3px;
     padding: 0;
     margin-top: 10px; //30px;
     padding: 0px;
@@ -505,4 +508,27 @@ ion-content.background{
 .cardFeedIMG{
   height: 200px !important;
   width:100%;
+}
+
+#predictAboutInfo{
+  background-color: rgba(38, 70, 83, 0.6) ; 
+  margin-bottom: 30px;
+  margin-right:8%;
+  margin-left:13%;
+  color: white ; 
+  line-height: 1.5;
+  padding: 20px;
+
+  ion-row{
+    margin-bottom: 8%;
+  }
+
+  ion-img{
+    margin:auto;
+    width:80%;
+    height:auto;
+    box-shadow: 1px 2px 3px rgba(0,0,0,.5);
+    border-radius: 2px;
+  }
+
 }

@@ -140,21 +140,7 @@ export class PlanningPage implements OnInit {
     }
    
 
-    //get Suggested Courses
-    this._diveService.getSuggestedCourses().subscribe(res =>{
-     // console.log("Suggestions Received")
-     console.log(res);
-      this.suggestedCourseFullList = res.Courses;
-      this.showCourses = true;
-      this.viewCourses = true ; 
-      //this.getRandomThreeCourses();
-      
-    }, err=>{
-      if(err.error == "Invalid Access Token"){
-        localStorage.removeItem("accessToken");
-        this.router.navigate(['login']);
-      }
-    });
+
 
 
     //get Custom CheckList If it exists
@@ -250,11 +236,11 @@ export class PlanningPage implements OnInit {
         "Location"  : resp.coords.latitude.toString() + "," + resp.coords.longitude.toString() 
       };
 
-
+      this.showLoading = true ;
       this._diveService.getClosestDiveSites(reqBod).subscribe(res =>{
         this.showLoading = false ; 
         this.SitesNearYouLst = res.Items ;
-        //console.log(res);
+
 
         this.showSitesNearYou = true ; 
 
@@ -270,14 +256,14 @@ export class PlanningPage implements OnInit {
       };
 
       this._diveService.getClosestDiveSites(reqBod2).subscribe(res =>{
-        this.showLoading = false ; 
+
         this.CentreNearYouLst = res.Items ;
        // console.log(res);
 
         this.showCentreNearYou = true ; 
 
       }, err => {
-        this.showLoading = false ; 
+        //this.showLoading = false ; 
       });
      
 
@@ -297,7 +283,23 @@ export class PlanningPage implements OnInit {
         }
       );
     
-
+      this.showLoading = true ; 
+              //get Suggested Courses
+        this._diveService.getSuggestedCourses().subscribe(res =>{
+          // console.log("Suggestions Received")
+          console.log(res);
+          this.suggestedCourseFullList = res.Courses;
+          this.showCourses = true;
+          this.viewCourses = true ; 
+          this.showLoading = false ; 
+          
+        }, err=>{
+          this.showLoading = false ; 
+          if(err.error == "Invalid Access Token"){
+            localStorage.removeItem("accessToken");
+            this.router.navigate(['login']);
+          }
+        });
 
 
   }
@@ -964,6 +966,8 @@ export class PlanningPage implements OnInit {
       this.sideViewSitesNear  = false; 
       this.sideViewCheckList = false ;
       this.sideViewCentreNear = false ;
+
+   
 
     }else if(selectedView == "CentresNear"){
       this.sideViewPredict  = false ;
