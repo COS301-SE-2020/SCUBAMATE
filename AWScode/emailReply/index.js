@@ -25,7 +25,6 @@ exports.handler = async (event) => {
             ':em' : Email,
         }
     };
-            console.log("talk about a brug moment**************************************");
     try{
     const data = await documentClient.scan(params).promise();
     if (data.Items.length==0) //bad news bears

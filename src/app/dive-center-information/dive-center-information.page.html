@@ -1,0 +1,194 @@
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@100&family=Righteous&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+
+</head>
+
+<ion-header no-border slot="fixed" style="margin-bottom: 20px;">
+  <ion-toolbar color="dark" class="productHeader" >
+    
+    <ion-buttons slot="primary">
+      <ion-button routerLink="" *ngIf="loginLabel" (click)="loginClick()" class="hidden-sm-down" >
+        {{loginLabel}}
+      </ion-button>
+      <ion-menu-button autoHide="false" class="hidden-sm-up"></ion-menu-button>
+    </ion-buttons>
+    <ion-title > 
+     <ion-buttons >
+      <img src="../assets/images/full logo wit.png" routerLink="/home" alt="Scubamate" id="navLogo" style="height:80%;width:12%;padding-bottom:3px;padding-top:3px;margin-right:10px;"/>
+      
+        <ion-button routerLink="/home" class="hidden-sm-down">
+          <ion-icon name="home" ></ion-icon><label style="padding-top:7px;">&nbsp; Home</label> 
+        </ion-button>
+        <ion-button routerLink="/explore" class="hidden-sm-down" *ngIf="loginLabel=='Log Out'">
+          <ion-icon name="color-wand-outline"></ion-icon>&nbsp; Explore
+        </ion-button>
+        <ion-button routerLink="/planning" class="hidden-sm-down" *ngIf="loginLabel=='Log Out'">
+          <ion-icon name="newspaper"></ion-icon>&nbsp; Plan
+        </ion-button>
+        <ion-button routerLink="/my-dives" class="hidden-sm-down" *ngIf="loginLabel=='Log Out'">
+          <ion-icon name="water"></ion-icon>&nbsp; My Dives
+        </ion-button>
+        <ion-button routerLink="/profile" class="hidden-sm-down" *ngIf="loginLabel=='Log Out'">
+          <ion-icon name="person" ></ion-icon>&nbsp; Profile
+        </ion-button>
+        <ion-button *ngIf="accountType=='10' || accountType=='11'" routerLink="/admin-page" class="hidden-sm-down">
+          <ion-icon name="podium"></ion-icon>&nbsp; Admin 
+        </ion-button>
+      </ion-buttons>
+      
+    </ion-title> 
+     <ion-progress-bar type="indeterminate" *ngIf="showLoading"></ion-progress-bar> 
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="background" no-scroll padding >
+ 
+  <div class="containerDiv" *ngIf="showDiveCenter">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" class="divHeadSection">
+          <label class="divHead"> {{currentDiveCenter.Name}} </label> <br>
+        </ion-col>  
+      </ion-row>
+      <ion-row>
+        <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
+          
+          <div id="ProfileSurroundDiv">
+            <img id="Profile" src={{currentDiveCenter.LogoPhoto}}>
+         </div>
+         <label class="infoLabel"> {{currentDiveCenter.Location}}</label> <br>
+         <a href="https://maps.google.com/?q={{currentDiveCenter.Coords}}" style="font-size:medium;text-decoration: none;"><ion-icon name="location" style="font-size:larger;"></ion-icon> View On Map</a>
+       
+        </ion-col>
+        <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane">
+            
+            <ion-row>
+              <ion-col>
+                {{currentDiveCenter.Description}}
+              </ion-col>
+            </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <div class="containerDiv" *ngIf="showWeather">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" class="divHeadSection">
+         <label class="divSubHead"> Current Weather </label> 
+        </ion-col>
+      </ion-row>
+      <ion-row >
+        <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
+          <div id="ProfileSurroundDiv">
+              
+            <img class="weatherIMG" src= "../../assets/images/Weather/{{Weather.Day}}.png" />
+              
+         </div>
+        </ion-col>
+        <ion-col size="12" size-sm="12" size-md="8" size-lg="8" class="rightPane" style="padding-top: 20px;">
+          <ion-row>
+            <ion-col size="12" size-sm="12" size-md="12" size-lg="12" >
+              <label class="subLabel"> {{Weather.Desc}} </label>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12" size-sm="12" size-md="12" size-lg="12" >
+              <ion-icon name="location-outline"></ion-icon>
+              <label class="infoLabel"> City: &nbsp;&nbsp; </label>
+              <label class="infoLabel">{{Key.city}} </label>
+            </ion-col>
+          </ion-row>
+            <ion-row>
+              <ion-col size="12" size-sm="12" size-md="12" size-lg="12" >
+                <ion-icon name="thermometer-outline"></ion-icon>
+                <label class="infoLabel"> Temperature: &nbsp;&nbsp; </label>
+                <label class="infoLabel">{{Weather.Min}}  /  {{Weather.Max}} </label>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="12" size-sm="12" size-md="12" size-lg="12" >
+                <ion-icon name="moon-outline"></ion-icon>
+                <label class="infoLabel"> Night: &nbsp;&nbsp; </label>
+                <label class="infoLabel">{{Weather.Night}}  </label>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="12" size-sm="12" size-md="12" size-lg="12" >
+                <ion-icon name="sunny-outline"></ion-icon>
+                <label class="infoLabel"> Wind: &nbsp;&nbsp; </label>
+                <label class="infoLabel">{{ Weather.Wind }}  </label>
+              </ion-col>
+            </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <div class="containerDiv" *ngIf="showDiveCenter">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" class="divHeadSection">
+         <label class="divSubHead"> Courses </label> 
+        </ion-col>
+      </ion-row>
+      <ion-row style="padding-left:7%;" *ngIf='currentDiveCenter.Courses == undefined'>
+        <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
+          <ion-icon name="remove-outline"></ion-icon> No Courses to display yet
+        </ion-col>
+      </ion-row>
+      <ion-row style="padding-left:7%;" *ngIf='currentDiveCenter.Courses != undefined && currentDiveCenter.Courses.length>0'>
+        <ion-col size="12" size-sm="12" size-md="6" size-lg="6" *ngFor="let c of currentDiveCenter.Courses">
+          <ion-icon name="remove-outline"></ion-icon> {{c}}
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <div class="containerDiv" *ngIf="showDiveCenter">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" class="divHeadSection">
+         <label class="divSubHead"> Dive Sites </label> 
+        </ion-col>
+      </ion-row>
+      <ion-row style="padding-left:7%;" *ngIf='currentDiveCenter.DiveSites == undefined'>
+        <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
+          <ion-icon name="remove-outline"></ion-icon> No Related Dive Sites
+        </ion-col>
+      </ion-row>
+      <ion-row style="padding-left:7%;" *ngIf='currentDiveCenter.DiveSites != undefined && currentDiveCenter.DiveSites.length>0'>
+        <ion-col size="12" size-sm="12" size-md="6" size-lg="6" *ngFor="let s of currentDiveCenter.DiveSites">
+         <ion-icon name="remove-outline"></ion-icon> {{s}} 
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+
+ 
+
+  <div class="containerDiv" *ngIf="showDiveCenter">
+    <ion-grid *ngIf="currentDiveCenter.Instructors != undefined && currentDiveCenter.Instructors.length != 0">
+      <ion-row>
+        <ion-col size="12" class="divHeadSection">
+         <label class="divSubHead"> Registered Instructors </label> 
+        </ion-col>
+      </ion-row>
+      <ion-row style="padding-left:7%;">
+        <ion-col size="12" size-sm="12" size-md="6" size-lg="6" *ngFor="let i of currentDiveCenter.Instructors">
+          <ion-icon name="person"></ion-icon> {{i}}
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <div class="containerDivBack" *ngIf="showDiveCenter">
+    <ion-button color="dark" id="Btn" routerLink="/explore" routerDirection="root" >
+      <ion-icon name="arrow-back"></ion-icon>Back
+    </ion-button>
+  </div>
+</ion-content>

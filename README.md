@@ -1,14 +1,18 @@
-<a href="https://github.com/COS301-SE-2020/SCUBAMATE"><img src="https://github.com/COS301-SE-2020/SCUBAMATE/blob/master/images/logo.jpeg" title="Scubamate" alt="Scubamate" height="200" width="750"></a>
+<a href="https://github.com/COS301-SE-2020/SCUBAMATE"><img src="https://github.com/COS301-SE-2020/SCUBAMATE/blob/master/images/full logo.png" title="Scubamate" alt="Scubamate" height="200" width="750"></a>
 
 # SCUBAMATE
 
 ## Overview 
-"Scubamate" is a scuba diving companion app, designed to aid divers, and diving instructors with administrative tasks, such as checking weather information, logging dives, and planning diving trips.
+"Scubamate" is a scuba diving companion app, designed to aid divers, and diving instructors with administrative tasks, such as checking weather information, logging dives, and planning diving trips. Traditional methods involve using a dive book to write down the information of your dives which can become tedious when you forget this book at home, lose it or simjply forget to bring a pen, thus Scubamate's main goal is to ease this process. It also aims to encourage new divers to get into diving and help people plan a new dive.
+## Deployment 
+Available At: <a href="https://www.scuba.thematthew.me"> https://www.scuba.thematthew.me </a>
 
 ## Software Requirements Specification and Other Documents
- * <a href="https://www.overleaf.com/read/mrwqnywskgch">SRS Version 3: Overleaf - LaTex</a>
+ * <a href="https://www.overleaf.com/read/pdbfwzfvmpcy">SRS Version 5: Overleaf - LaTex</a>
  * <a href="https://www.overleaf.com/read/shbywrwqfcvw">Coding Standards: Overleaf - LaTex</a>
  * <a href="https://www.overleaf.com/read/wrrjwwdgfgfn">User Manual: Overleaf - LaTex</a>
+ * <a href="https://www.overleaf.com/read/fzpxngrydqsg">Technical Installation Guide: Overleaf - LaTex</a>
+ * <a href="https://www.overleaf.com/read/pfxwhzpsjcyb">Testing Policy: Overleaf - LaTex</a>
 
 ## Project Management Tools
 * <a href="https://team-anti-virus.slack.com">Slack</a>
@@ -17,7 +21,8 @@
 ## Demo Video Links
 * <a href="https://drive.google.com/drive/folders/14hiS32Kgk8xqgvmLkFV33a35PGvYcp6Y?usp=sharing">TeamAV Demo 1</a>
 * <a href="https://drive.google.com/drive/folders/1f9AQtVqOS0MdEosUH1uwPVwZdO6j9OvS?usp=sharing">TeamAV Demo 2</a>
-
+* <a href="https://drive.google.com/drive/folders/1s-HwZWjfE7g6LqAYjGYOIusZHvtbEbY8?usp=sharing">TeamAV Demo 3</a>
+* <a href="https://drive.google.com/drive/folders/11ASHoMOxMoAoQlPSTiZ8mVP0IVLus1pu?usp=sharing">TeamAV Demo 4</a>
 
 
 ## Installation Instructions
@@ -67,6 +72,26 @@
         <br>
         - Code Standards Document
         <br>
+        - Lookahead Lambda functions
+        <br>
+        - Adding and Upgrading Instructors Lambda functions
+        <br>
+        - Adding Dive Sites function
+        <br>
+        - Verifying Courses and Instructors Lambda functions
+        <br>
+        - Code Standards Document
+        <br>
+        - Course Suggestion and Survey Lambda functions
+        <br>
+        - Lambda functions for displaying Dive Sites and Dive Centres
+        <br>
+        - Architectural Design Document: Architectural Design Diagram
+        <br>
+        - Gamification 
+        <br>
+        - Bug Fixes Front-end
+    
     </details>
 
 
@@ -91,6 +116,12 @@
         <br>
         - Weather extraction for functionality of application
         <br>
+        - Offline logging of dives
+        <br>
+        - Architectural Design Documment: Technology Requirements
+        <br>
+        - Testing Policy
+        <br>
     </details>
 
 ## Isobel Bosman 
@@ -100,20 +131,27 @@
  * <details>
      <summary><b>Responsibilities</b></summary>
      <br>
-        - SRS Document: Functional Requirements, Use Cases
+        - SRS Document: Functional Requirements.
         <br>
-        - Architectural Design Document: N-tier Diagram and Object-Persistence Diagram
+        - SRS Document: Use Cases
         <br>
-        - Created the foundation of our very first Lambda functions (in node js) that get account information as well as adding a new account. I also connected these to API Gateway for testing.
+        - Architectural Design Document: Architectural Design Diagram.
+        <br>
+        - Lambda functions for adding and retrieving a new account.
         <br> 
-        - I created the Lambda function that adds a user's dive log to the database. The function receives the user's current access token and verifies it. Only if the token is valid will the dive log data be committed.
+        - Add new dive log lambda function.
         <br>
-        - I connected this diveLog Lambda function to API Gateway and configured the POST request in such a way that all the requests that the API receives are in the correct format.
+        - Lambda function for retrieving a list of a diver's personal dive logs.
         <br>
-        - Another Lambda function that I implemented was the retrieving of dive logs from a specific user. This function only expects an access token that is first verified and returns the user's list of dives.
+        - Retrieving a list of verified public dive logs Lambda function for the explore page
         <br>
-        - I also created the get public dives Lambda function.
+        - Adding and editing a new dive centre Lambda functions.
         <br>
+        - Adding courses and intructors to an existing dive centre Lambda functions.
+        <br>
+        - Functionality for upgrading an account to an Admin role.
+        <br>
+        - Adding an account to an existing dive centre Lambda function. 
     </details>
 
 ## James Darren Jenkins-Ferrett 
@@ -137,8 +175,17 @@
         <br>
         - SRS Document: Client-Server Architecture
         <br>
-        - Lambda Function and API Gateway for Checklist functionality
+        - Lambda Function and API Gateway for default checklist functionality
         <br>
+        - Lambda Function and API Gateway for custom checklist functionality
+        <br>
+        - Deletion of an account
+        <br>
+        - Email verification of an account
+        <br>
+        - Adding of dive courses
+        <br>
+        - AI predicting dive visibility
     </details>
 
 ## Carmen Janse van Rensburg 
@@ -148,7 +195,27 @@
  * <details>
      <summary><b>Responsibilities</b></summary>
         <br> 
-        - All Angular Ionic Front end code
+        - Developing the front-end interface with Angular-Ionic.
+        <br> 
+        - Home page
+         <br> 
+        - Login and Signup pages
+         <br> 
+        - Explore page: public feed, dive sites and dive centres
+        <br> 
+        - Individual dive site and centre page with ability to view location weather and see location on google maps.
+        <br> 
+        - View, edit and log personal dives pages
+        <br> 
+        - Planning page: viewing dive sites and courses near you, suggested courses, checklist and visibility prediction.
+        <br> 
+        - Profile page functionality for Diver, Instructor, Admin and Super Admin.
+        <br> 
+        - Admin page with functionality for Admins and Super Admins.
+        <br> 
+        - Charts on Admin page to present the visualisation statistics.
+        <br>
+        - Deploying website and mobile application
         <br>
         - SRS Document: Functional Requirements
         <br>
@@ -156,10 +223,12 @@
         <br>
         - User Manual
         <br>
+         - Non-Function Testing: Usability
+        <br>
     </details>
 
 ## Testing Instructions
-     Scubamate will make use of automated unit/integration testing software being Jasmine and Karma. By using Jasmine and Karma the unit/integration tests would always be performed to ensured that the system remains on a consistent standard. Jasmine as a frame work provides suites with essential functions such as describe(), taking the test case as a name and a function to be performed as the second parameter. Other functions to be included will be it() which is the more case specific function that handles the individual trial. Finally expect() is the last method used and concatenation with a matcher to test whether the case has succeeded or failed. <br>
-     Run Unit Test: <br>
-     $ng test <br>
+     Scubamate will make use of automated unit/integration testing software being Jasmine and Karma. By using Jasmine and Karma the unit/integration tests would always be performed to ensured that the system remains on a consistent standard. Jasmine as a frame work provides suites with essential functions such as describe(), taking the test case as a name and a function to be performed as the second parameter. Other functions to be included will be it() which is the more case specific function that handles the individual trial. Finally expect() is the last method used and concatenation with a matcher to test whether the case has succeeded or failed. 
+     Run Unit Test: 
+     $ng test 
     The first compilation will take a few seconds and then it will automatically open in your browser on localhost:9876.

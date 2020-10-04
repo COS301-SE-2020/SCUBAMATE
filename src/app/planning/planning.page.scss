@@ -1,0 +1,409 @@
+$darkBlue : #264653 ;
+$lightBlue : #2A9D8F ;
+$orange: #F4A261 ; 
+$red: #E76F51 ;
+$yellow : #E9C46A ;
+$darkRed: #d66853   ;
+$inputBackgroundColor: #181e21;
+
+@media (max-width: 767px) {
+
+  #checkListDiv{
+      width: 120% !important;
+      margin-top: 0px !important;
+      margin-bottom : 5px !important;
+      margin-left: -20% !important;
+  }
+
+  .divHead{
+    margin-left: 3px !important;
+  }
+
+  .divHeadSection{
+    padding-left:0px !important;
+  }
+
+  #SuggestedCoursesDiv{
+    width:  120% !important;//95% !important;
+    margin-left: -20% !important;
+
+    ion-button{
+      margin: auto;
+    }
+
+    .divBodySection{
+      padding: 0px !important;
+    }
+  }
+
+  .SitesNearName{
+    margin-top: 0 !important ;
+  }
+
+  .SitesNearRating{
+    margin-top: 0 !important ;
+  }
+
+}
+
+
+ion-content.background{
+    --background: url(../../assets/images/water.jpg) 0 0/100% 100% no-repeat;
+}
+
+.productHeader {
+    --background: transparent;
+}
+
+.searchableSelect{
+    background-color: white;
+    border-radius: 1px;
+    text-align: left;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 100%;
+    height:100%;
+  
+    input{
+        width: 100%;
+        margin: auto;
+        border: none;
+        font-size: medium;
+    }
+  
+  }
+  
+  .searchableSelect{
+    background-color: #222428 ;
+  }
+  
+  .searchableSelectInput{
+    margin-top:10px;
+    width:100%;
+    background-color: #222428 ;
+    color:white;
+  }
+  
+  .searchableSelectLabel{
+    color: white;
+    font-size: small;
+    margin: auto;
+  }
+
+  
+
+  .subLabel{
+    font-size:  20px ;
+    font-weight: bold;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    color: white;
+    border-bottom: solid white 0.5px;
+    border-top: solid white 0.5px;
+  }
+  
+  .infoLabel{
+    font-size:  18px ;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    color: white;
+  }
+  
+  .divHead{
+    font-size:  30px ;
+    font-family: 'Righteous';
+    display: swap ;
+    color: white;
+    width: 100%;
+    margin: auto;
+    margin-bottom: 20px;
+    margin-top: 15px; 
+    //margin-left: 20px;
+  }
+  
+  .divSubHead{
+    font-size:  25px ;
+    font-family: 'Righteous';
+    display: swap ;
+    color: white;
+    width: 100%;
+    margin: auto;
+    margin-bottom: 20px;
+    margin-top: 15px; 
+  }
+  
+  .divHeadSection{
+    background-color: rgba(38, 70, 83, 0.9);
+    padding-left: 25px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    ion-button{
+      float:right;
+      --border-radius: 100% ;
+      margin-right: 1%;
+      width: 50px;
+      height:50px;
+      padding:0;
+    
+    }
+  }
+  
+  .divBodySection{
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  
+  
+  #CheckListsInfo{
+    
+    
+
+    .checkListHead{
+      font-size:  20px ;
+      font-weight: bold;
+      font-family: 'Barlow Semi Condensed', sans-serif;
+      color: white;
+      border-bottom: solid white 0.5px;
+      border-top: solid white 0.5px;
+      margin-top:10px;
+      width:100%;
+      padding-left: 2%;
+      padding-top: 5px;
+      padding-bottom: 5px;
+
+      
+    }
+
+    .checkListTableRow{
+      background-color: $inputBackgroundColor ;
+      color: white;
+      padding: 5px;
+      font-family: 'Barlow Semi Condensed', sans-serif;
+      cursor: pointer;
+
+      ion-checkbox{
+        float: right;
+        margin-right: 5%;
+      }
+
+      ion-button{
+        float:right;
+        --border-radius: 100% ;
+        margin-right: 1%;
+        width: 50px;
+        height:50px;
+        padding:0;
+      
+      }
+    }
+
+    .checkListTableRow :hover{
+      color: $lightBlue;
+      font-weight: bold;
+    }
+
+  }
+
+  #toggleCheckListView{
+    width: 100%;
+  }
+
+  @mixin DivContainers{
+    background-color: rgba(38, 70, 83, 0.6);
+    margin: auto;
+    border-bottom: solid white 0.5px;
+    border-top: solid white 0.5px;
+    width:  90%; //70% ;
+    padding: 0;
+    margin-top: 10px; //30px;
+    padding: 0px;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+
+    ion-button{
+      float:right;
+      --border-radius: 100% ;
+      margin-right: 1%;
+      width: 50px;
+      height:50px;
+      padding:0;
+    
+    }
+  }
+
+  #checkListDiv{
+    @include DivContainers;
+  }
+
+  #SuggestedCoursesDiv{
+    @include DivContainers;
+
+    .divBodySection{
+      margin-left: 7%;
+      margin-right:7%;
+    }
+
+    img{
+      height: 100px;
+    }
+  }
+
+  ion-card-title{
+    font-family:  'Barlow Semi Condensed', sans-serif;
+    font-weight: bolder;
+    border-bottom: solid 1px gray;
+  }
+
+  ion-card{
+    max-height: 350px;
+    min-height: 350px;
+    
+  }
+
+
+ .courseTypeLabel{
+   color: $inputBackgroundColor;
+
+   font-size: medium;
+ }
+
+ .requirementsLabel{
+   font-size: smaller;
+ }
+
+#infotxt{
+  font-size: 13px;
+  color: $lightBlue;
+}
+
+.SitesNearRow{
+  border-bottom: solid white 1px;
+  width: 100% ;
+  text-align: center ;
+  background-color: rgba(38, 70, 83, 0.6) ;  
+
+  .SitesNearName{
+    font-size:  17px ;
+    font-weight: bold;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    color: white;
+    margin-top: 15% ;
+  }
+
+  .CourseName{
+    font-size:  16px ;
+    font-weight: bold;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    color: white;
+    margin-top: 10% ;
+  }
+
+  .CourseRating{
+    font-size:  14px ;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    color: white;
+    margin-top: 10% ;
+  }
+
+  .SitesNearRating{
+    font-size:  15px ;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    color: white;
+    margin-top: 15% ;
+  }
+
+  .SitesNearDesc{
+    font-size:  14px ;
+    color: white;
+    word-wrap: break-word ;
+    margin:10px;
+    text-align: left;
+    font-weight: lighter;
+  }
+
+  .SitesNearLeftCol{
+    background-color: $inputBackgroundColor;
+  }
+}
+
+.SitesNearRow:hover{
+  background-color: rgba(38, 70, 83, 0.8) ; 
+
+  .SitesNearRating{
+    font-size:  17px ;
+    font-weight: bold;
+  }
+  .SitesNearName{
+    font-size:  21px ;
+  }
+} 
+
+.showPredictionRow{
+  background-color: rgba(38, 70, 83, 0.7) ;
+  border-bottom: solid white 1px;
+  border-top: solid white 1px; 
+  text-align: center ; 
+
+  .predictedInfo{
+    font-size:  18px ;
+    font-weight: bold;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    color: white;
+    margin-top: 7% ;
+    margin-bottom: 7% ;
+  }
+
+  .predictResult{
+    text-shadow: 2px 2px 4px #000000;
+    font-weight: bolder; 
+    font-size: x-large;
+    font-family: 'Righteous';
+    margin-top: 7% ;
+    margin-bottom: 7% ;
+  }
+}
+
+
+.leftPanelMenu{
+  background-color: $inputBackgroundColor;
+}
+
+.leftPanelMenuItem:hover{
+  color: $orange ; 
+  cursor: pointer;
+  
+}
+
+.CentresNearMore{
+  font-family: 'Righteous';
+  color: $red ; 
+  cursor: pointer;
+  font-size:  15px ;
+  margin-top: 20%;
+  text-shadow: 2px 2px 4px #000000;
+}
+
+.CentresNearMore:hover{
+  font-size:  19px ;
+  text-shadow: 3px 3px 4px #000000;
+}
+
+.viewLocationLink{
+  font-size:small;
+  text-decoration: none;
+}
+
+.viewLocationLink:hover{
+  font-size:medium;
+  text-shadow: 3px 3px 4px #000000;
+}
+
+.bigBlueBtn{
+  --border-radius:5px !important;
+  width:100% !important;
+  font-size:x-small !important;
+  padding: 5px !important;
+}

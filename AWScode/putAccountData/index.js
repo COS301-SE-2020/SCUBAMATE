@@ -15,9 +15,7 @@ exports.handler = async (event, context, callback) => {
     const PublicStatus = body.PublicStatus;
     
     const AccountType = "Diver";
-    
-    const Qualification = body.Qualification;
-    const Specialisation = body.Specialisation;
+    const CompletedCourses = body.CompletedCourses;
     
     const crypto = require('crypto');
     const hash = crypto.pbkdf2Sync(Password, Email, 1000, 64, 'sha512').toString('hex');
@@ -88,9 +86,23 @@ exports.handler = async (event, context, callback) => {
     }
     
     if(!dupFlag){
+        
+        /* Create Accesstoken */
+        const typeNum = "00";
+        let nownow = "" + Date.now();
+        const token = crypto.createHash('sha256').update(nownow).digest('hex');
+        const accessToken = "" + AccountGuid + typeNum + token ;
+
+        /* Create Expiry Date  */
+        let today = new Date();
+        let nextWeek = new Date(today.getFullYear(), today.getMonth(),today.getDate()+7);
+        const expiryDate = nextWeek + "";
+
         const params = {
             TableName: "Scubamate",
             Item: {
+                AccessToken : accessToken,
+                Expires: expiryDate,
                 AccountGuid : AccountGuid,
                 AccountType: AccountType, 
                 FirstName: FirstName,
@@ -102,14 +114,15 @@ exports.handler = async (event, context, callback) => {
                 PublicStatus: PublicStatus,
                 EmailVerified: false,
                 AccountVerified: false,
-                Qualification: Qualification,
-                Specialisation: Specialisation
+                CompletedCourses: CompletedCourses,
+                Goal: 1,
+                GoalProgress: 0
             }
         };
     
         try{
             const data = await documentClient.put(params).promise();
-            responseBody = "Successfully added account!";
+            responseBody={AccessToken:accessToken};
             statusCode = 201;
         }catch(err){
             responseBody = "Unable to create account";
@@ -130,3 +143,5 @@ exports.handler = async (event, context, callback) => {
     return response;
     
 }
+
+
