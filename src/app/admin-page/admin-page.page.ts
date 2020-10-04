@@ -105,6 +105,9 @@ export class AdminPagePage implements OnInit {
   showAddSiteToCentre : boolean ; 
   showLoading: boolean ; 
 
+  showAdminChart : boolean = true ;
+  showSuperAdminChart : boolean = true;
+
   //Verified | Unverified Instructors List
   verifiedInstructors: instructor[]; 
   unverifiedInstructors: instructor[];
@@ -209,6 +212,8 @@ export class AdminPagePage implements OnInit {
     this.showAddSiteToCentre = false;
     this.showEditBasicDiveCentre = false;
     this.showAddSite = false; 
+    this.showAdminChart = true ;
+    this.showSuperAdminChart = true ;
 
     this.firstPageNewCentre = false ; 
     this.secondPageNewCentre = false ; 
@@ -239,7 +244,9 @@ export class AdminPagePage implements OnInit {
       Instructors: [],
     }
 
-    this.hideAllViews();
+    //this.hideAllViews();
+
+    
 
     //Setup Login Label
     this.loginLabel ="Login";
@@ -257,6 +264,8 @@ export class AdminPagePage implements OnInit {
 
       //get initial chart data
       if(this.accountType == "11"){
+        this.showSuperAdminChart = true ; 
+
         var numDivesBody ={
           "AccessToken" : localStorage.getItem("accessToken") ,
           "DiveSite" : "*",
@@ -356,6 +365,7 @@ export class AdminPagePage implements OnInit {
 
       }
       else if(this.accountType =="10"){
+        this.showAdminChart = true ; 
         this.getDiveCentreInformation();
         this.getUnverifiedInstructors();
       }
@@ -436,6 +446,8 @@ export class AdminPagePage implements OnInit {
      this.showAddCourseToCentre = false;
      this.showAddSiteToCentre = false;
      this.showEditBasicDiveCentre = false; 
+     this.showAdminChart = true ;
+     this.showSuperAdminChart = true ;
  
      this.firstPageNewCentre = false ; 
      this.secondPageNewCentre = false ; 
@@ -449,9 +461,6 @@ export class AdminPagePage implements OnInit {
 
      this.DiveSiteLst = [];
  
-     //this.allInstructors = new Array();
-     //this.verifiedInstructors = new Array();
-     //this.unverifiedInstructors = new Array();
  
      //Setup Dive Centre Object
      this.currentDiveCenter ={
@@ -529,6 +538,8 @@ export class AdminPagePage implements OnInit {
     this.showAddSiteToCentre = false;
     this.showEditBasicDiveCentre = false;
     this.showAddSite = false;
+    this.showAdminChart = false ;
+    this.showSuperAdminChart = false;
 
     this.showCourses = false;
     this.showSites = false;
@@ -551,6 +562,8 @@ export class AdminPagePage implements OnInit {
     this.showAddSiteToCentre = false;
     this.showEditBasicDiveCentre = false;
     this.showAddSite = false;
+    this.showAdminChart = false ;
+    this.showSuperAdminChart = false;
 
     this.firstPageNewCentre = true ;
     this.secondPageNewCentre = false;
@@ -573,6 +586,8 @@ export class AdminPagePage implements OnInit {
     this.showAddSiteToCentre = false;
     this.showEditBasicDiveCentre = false;
     this.showAddSite = false;
+    this.showAdminChart = false ;
+    this.showSuperAdminChart = false;
 
     this.showCourses = false;
     this.showSites = false;
@@ -594,6 +609,8 @@ export class AdminPagePage implements OnInit {
     this.showAddSiteToCentre = false;
     this.showEditBasicDiveCentre = false;
     this.showAddSite = false;
+    this.showAdminChart = false ;
+    this.showSuperAdminChart = false;
 
     this.showCourses = false;
     this.showSites = false;
@@ -615,6 +632,8 @@ export class AdminPagePage implements OnInit {
     this.showAddSiteToCentre = false;
     this.showEditBasicDiveCentre = true; 
     this.showAddSite = false;
+    this.showAdminChart = false ;
+    this.showSuperAdminChart = false;
 
     this.showCourses = false;
     this.showSites = false;
@@ -636,6 +655,8 @@ export class AdminPagePage implements OnInit {
     this.showAddSiteToCentre = false;
     this.showEditBasicDiveCentre = false; 
     this.showAddSite = false;
+    this.showAdminChart = false ;
+    this.showSuperAdminChart = false;
 
     this.showCourses = true;
     this.showSites = false;
@@ -657,6 +678,8 @@ export class AdminPagePage implements OnInit {
     this.showAddSiteToCentre = false;
     this.showEditBasicDiveCentre = false;
     this.showAddSite = false;
+    this.showAdminChart = false ;
+    this.showSuperAdminChart = false;
 
     this.showCourses = false;
     this.showSites = false;
@@ -678,6 +701,8 @@ export class AdminPagePage implements OnInit {
     this.showAddSiteToCentre = true;
     this.showEditBasicDiveCentre = false;
     this.showAddSite = false;
+    this.showAdminChart = false ;
+    this.showSuperAdminChart = false;
 
     this.showCourses = false;
     this.showSites = true;
@@ -699,6 +724,8 @@ export class AdminPagePage implements OnInit {
     this.showAddSiteToCentre = false;
     this.showEditBasicDiveCentre = false;
     this.showAddSite = true;
+    this.showAdminChart = false ;
+    this.showSuperAdminChart = false;
 
     this.showCourses = false;
     this.showSites = true;
@@ -708,6 +735,66 @@ export class AdminPagePage implements OnInit {
     this.firstPageNewCentre = false ;
     this.secondPageNewCentre = false;
     this.thirdPageNewCentre = false;
+  }
+
+  viewAdminCharts(){
+    this.showRegisterNewCenter = false ;
+    this.showUnverifiedInstructors = false ;
+    this.showVerifiedInstructors = false;
+    this.showRegisterUserToCenter = false;
+    this.showAddCourse = false;
+    this.showAddCourseToCentre = false;
+    this.showAddSiteToCentre = false;
+    this.showEditBasicDiveCentre = false;
+    this.showAddSite = false;
+    this.showAdminChart = true ;
+    this.showSuperAdminChart = false;
+
+    this.showCourses = false;
+    this.showSites = true;
+    this.courseInputField = "";
+    this.siteInput = "" ;
+
+    this.firstPageNewCentre = false ;
+    this.secondPageNewCentre = false;
+    this.thirdPageNewCentre = false;
+
+
+    this.searchAllDiveSitesCharts(this.currentDate);
+    this.updateAgeGroupChart();
+    this.updateFrequencyLoginChart();
+    this.updateCourseChart() ;
+
+     
+  }
+
+  viewSuperAdminCharts(){
+    this.showRegisterNewCenter = false ;
+    this.showUnverifiedInstructors = false ;
+    this.showVerifiedInstructors = false;
+    this.showRegisterUserToCenter = false;
+    this.showAddCourse = false;
+    this.showAddCourseToCentre = false;
+    this.showAddSiteToCentre = false;
+    this.showEditBasicDiveCentre = false;
+    this.showAddSite = false;
+    this.showAdminChart = false ;
+    this.showSuperAdminChart = true;
+
+    this.showCourses = false;
+    this.showSites = true;
+    this.courseInputField = "";
+    this.siteInput = "" ;
+
+    this.firstPageNewCentre = false ;
+    this.secondPageNewCentre = false;
+    this.thirdPageNewCentre = false;
+
+    this.searchAllDiveSitesCharts(this.currentDate);
+    this.updateAgeGroupChart();
+    this.updateFrequencyLoginChart();
+    this.updateRolesChart();
+    this.updateCourseChart() ;
   }
 
   hideAllViews(){
@@ -720,6 +807,8 @@ export class AdminPagePage implements OnInit {
     this.showAddSiteToCentre = false;
     this.showEditBasicDiveCentre = false;
     this.showAddSite = false;
+    this.showAdminChart = false ;
+    this.showSuperAdminChart = false;
 
     this.showCourses = false;
     this.showSites = false;
@@ -1767,7 +1856,123 @@ getDiveCentreInformation(){
 
   }
 
+  updateAgeGroupChart(){
 
+    this.lineChartAgeGroup.destroy();
+
+    var ageGroupBody ={
+      "AccessToken" : localStorage.getItem("accessToken") 
+    };
+
+    this.showLoading = true ;
+    this._chartService.ageGroupChartData(ageGroupBody).subscribe( data =>{
+        this.showLoading = false;
+        this.drawAgeGroupChart(data, "Total Users in Age Group");
+
+
+       
+
+    },err =>{
+      this.showLoading = false;
+      
+      if(err.error){
+        this.generalAlert("Age Groups Chart Error", err.error);
+      }else{
+        console.log("Could not access number Age Groups Chart Data");
+      }
+      
+    });
+    
+ 
+    
+    
+
+
+  }
+
+
+  updateRolesChart(){
+
+    this.barChartChartRoles.destroy();
+    var ageGroupBody1 ={
+      "AccessToken" : localStorage.getItem("accessToken") 
+    };
+
+    this.showLoading = true ;
+    this._chartService.numberUsersInRoles(ageGroupBody1).subscribe( data =>{
+        this.showLoading = false;
+
+      
+        this.drawRolesChart(data, "Total Users in Role Groups");
+      
+
+    },err =>{
+      this.showLoading = false;
+      
+      if(err.error){
+        this.generalAlert("User Role Chart Error", err.error);
+      }else{
+        console.log("Could not access user role Chart Data");
+      }
+  
+});
+  }
+
+  updateFrequencyLoginChart(){
+
+    this.lineChartFrequencyLogin.destroy() ; 
+
+    var ageGroupBody ={
+      "AccessToken" : localStorage.getItem("accessToken") 
+    };
+
+
+    this.showLoading = true ;
+      this._chartService.frequencyLoginChart(ageGroupBody).subscribe( data =>{
+          this.showLoading = false;
+          console.log(data);
+          this.drawFrequencyLoginChart(data, "Number Users Active");
+         
+
+      },err =>{
+        this.showLoading = false;
+        
+        if(err.error){
+          this.generalAlert("Frequency of User Access to App Chart Error", err.error);
+        }else{
+          console.log("Could not access Frequency of User Access to App");
+        }
+        
+      });
+
+  }
+
+  updateCourseChart(){
+    this.lineChartCourses.destroy() ; 
+
+    var ageGroupBody ={
+      "AccessToken" : localStorage.getItem("accessToken") 
+    };
+
+
+    this.showLoading = true ;
+    this._chartService.numberUsersDoneCourse(ageGroupBody).subscribe( data =>{
+        this.showLoading = false;
+       
+        this.drawCourseChart(data, "Total Users Completed Course");
+       
+
+    },err =>{
+      this.showLoading = false;
+      
+      if(err.error){
+        this.generalAlert("Total Completed Course Chart Error", err.error);
+      }else{
+        console.log("Could not access Total Completed Course");
+      }
+      
+    });
+  }
 
   drawRolesChart(returnedData, msg){
 
@@ -2129,5 +2334,6 @@ getDiveCentreInformation(){
 
 
   }
+
 
 }

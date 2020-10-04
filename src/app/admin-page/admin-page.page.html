@@ -39,68 +39,119 @@
     </ion-title> 
     <ion-progress-bar type="indeterminate" *ngIf="showLoading"></ion-progress-bar> 
   </ion-toolbar>
+
+
+  <ion-grid  class="productHeader" style="padding:0;margin:0;">
+    <ion-row class="innerDivNav">
+  
+  
+      <ion-row *ngIf="accountType=='11'"> <!--Super Admin Nav Div-->
+        <ion-col size="12" size-sm="12" size-md="4" size-lg="2">
+          <ion-button (click)="viewRegisterNewCenter()">
+            <ion-icon name="cube-outline"></ion-icon> &nbsp; Register <br>&nbsp;New Centre
+          </ion-button>
+        </ion-col>
+        <ion-col size="12" size-sm="12" size-md="4" size-lg="2">
+          <ion-button (click)="viewRegisterUserToCenter()">
+            <ion-icon name="people"></ion-icon> &nbsp; Register User <br> At Centre
+          </ion-button>
+        </ion-col>
+        <ion-col size="12" size-sm="12" size-md="4" size-lg="2">
+          <ion-button (click)="viewAddCourse()">
+            <ion-icon name="add-circle"></ion-icon> &nbsp; Create Course
+          </ion-button>
+        </ion-col>
+        <ion-col size="12" size-sm="12" size-md="4" size-lg="2">
+          <ion-button (click)="viewAddSite()">
+            <ion-icon name="add-circle"></ion-icon> &nbsp; Create Site
+          </ion-button>
+        </ion-col>
+        <ion-col size="12" size-sm="12" size-md="4" size-lg="2">
+          <ion-button (click)="viewSuperAdminCharts()">
+            <ion-icon name="bar-chart"></ion-icon> &nbsp; View Graphs
+          </ion-button>
+        </ion-col>
+      </ion-row>
+        <ion-row *ngIf='accountType=="10"'>
+          <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
+            <ion-button (click)="viewUnverifiedInstructors()">
+              <ion-icon name="shield-checkmark"></ion-icon> &nbsp; Verify Instructors
+            </ion-button>
+          </ion-col>
+          <ion-col size="12" size-sm="12" size-md="6" size-lg="6" >
+            <ion-button (click)="viewVerifiedInstructors()">
+              <ion-icon name="trash-bin"></ion-icon> &nbsp; Remove Instructors
+            </ion-button>
+          </ion-col>
+          <ion-col size="12" size-sm="12" size-md="4" size-lg="3" >
+            <ion-button (click)="viewAddBasicCentre()">
+              <ion-icon name="pencil"></ion-icon> &nbsp; Edit Centre Information
+            </ion-button>
+          </ion-col>
+          <ion-col size="12" size-sm="12" size-md="4" size-lg="3" >
+            <ion-button (click)="viewAddSiteToCentre()">
+              <ion-icon name="add-circle"></ion-icon> &nbsp; Update Centre Sites
+            </ion-button>
+          </ion-col>
+          <ion-col size="12" size-sm="12" size-md="4" size-lg="3" >
+            <ion-button (click)="viewAddCourseToCentre()">
+              <ion-icon name="add-circle"></ion-icon> &nbsp; Update Centre Courses
+            </ion-button>
+          </ion-col>
+          <ion-col size="12" size-sm="12" size-md="4" size-lg="3">
+            <ion-button (click)="viewAdminCharts()">
+              <ion-icon name="bar-chart"></ion-icon> &nbsp; View Graphs
+            </ion-button>
+          </ion-col>
+        </ion-row>
+  
+  
+  
+  
+    </ion-row>
+  </ion-grid>
 </ion-header>
 
 <ion-content fullscreen class="background" no-scroll padding >
 
+
+  <ion-grid class="headingSection">
+    <ion-row *ngIf="showUnverifiedInstructors" class="sectionHeadTag">
+      Verify Instructors
+    </ion-row>
+    <ion-row *ngIf="showVerifiedInstructors" class="sectionHeadTag">
+      Remove Instructors
+    </ion-row>
+    <ion-row *ngIf="showEditBasicDiveCentre" class="sectionHeadTag">
+      Edit Centre Information
+    </ion-row>
+    <ion-row *ngIf="showAddCourseToCentre" class="sectionHeadTag">
+      Update Centre Courses
+    </ion-row>
+    <ion-row *ngIf="showAddSiteToCentre" class="sectionHeadTag">  
+      Update Centre Sites
+    </ion-row>
+    <ion-row *ngIf="showRegisterNewCenter" class="sectionHeadTag">  
+      Register New Centre
+    </ion-row>
+    <ion-row *ngIf="showRegisterUserToCenter" class="sectionHeadTag">  
+      Register New User At Centre
+    </ion-row>
+    <ion-row *ngIf="showAddCourse" class="sectionHeadTag">  
+      Create Course
+    </ion-row>
+    <ion-row *ngIf="showAddSite" class="sectionHeadTag">  
+      Create Site
+    </ion-row>
+    <ion-row class="sectionHeadTag" *ngIf="showSuperAdminChart || showAdminChart" style="margin-left:-5%;margin-bottom:-3%;">  
+      View Graphs
+    </ion-row>
+
+  </ion-grid>
+
+
   <ion-grid id="DiveCenterDiv">
-      <ion-row class="innerDivNav">
-
-
-        <ion-row *ngIf="accountType=='11'"> <!--Super Admin Nav Div-->
-          <ion-col size="12" size-sm="12" size-md="4" size-lg="3">
-            <ion-button (click)="viewRegisterNewCenter()">
-              <ion-icon name="cube-outline"></ion-icon> &nbsp; Register new Centre
-            </ion-button>
-          </ion-col>
-          <ion-col size="12" size-sm="12" size-md="4" size-lg="3">
-            <ion-button (click)="viewRegisterUserToCenter()">
-              <ion-icon name="people"></ion-icon> &nbsp; Register User <br> At Centre
-            </ion-button>
-          </ion-col>
-          <ion-col size="12" size-sm="12" size-md="4" size-lg="3">
-            <ion-button (click)="viewAddCourse()">
-              <ion-icon name="add-circle"></ion-icon> &nbsp; Create Course
-            </ion-button>
-          </ion-col>
-          <ion-col size="12" size-sm="12" size-md="4" size-lg="3">
-            <ion-button (click)="viewAddSite()">
-              <ion-icon name="add-circle"></ion-icon> &nbsp; Create Site
-            </ion-button>
-          </ion-col>
-        </ion-row>
-          <ion-row *ngIf='accountType=="10"'>
-            <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
-              <ion-button (click)="viewUnverifiedInstructors()">
-                <ion-icon name="shield-checkmark"></ion-icon> &nbsp; Verify Instructors
-              </ion-button>
-            </ion-col>
-            <ion-col size="12" size-sm="12" size-md="6" size-lg="6" >
-              <ion-button (click)="viewVerifiedInstructors()">
-                <ion-icon name="trash-bin"></ion-icon> &nbsp; Remove Instructors
-              </ion-button>
-            </ion-col>
-            <ion-col size="12" size-sm="12" size-md="4" size-lg="4" >
-              <ion-button (click)="viewAddBasicCentre()">
-                <ion-icon name="pencil"></ion-icon> &nbsp; Edit Centre Information
-              </ion-button>
-            </ion-col>
-            <ion-col size="12" size-sm="12" size-md="4" size-lg="4" >
-              <ion-button (click)="viewAddSiteToCentre()">
-                <ion-icon name="add-circle"></ion-icon> &nbsp; Update Centre Sites
-              </ion-button>
-            </ion-col>
-            <ion-col size="12" size-sm="12" size-md="4" size-lg="4" >
-              <ion-button (click)="viewAddCourseToCentre()">
-                <ion-icon name="add-circle"></ion-icon> &nbsp; Update Centre Courses
-              </ion-button>
-            </ion-col>
-          </ion-row>
-
-
-
-
-      </ion-row>
+     
       <ion-row *ngIf="showRegisterNewCenter">
         <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
           <label class="subLabel">Register A New Dive Centre</label>
@@ -292,6 +343,7 @@
 
         </ion-col>
       </ion-row>
+      
       <ion-row *ngIf="showVerifiedInstructors">
         <ion-col size="12" size-sm="12" size-md="2" size-lg="2" class="leftPane">
           <label class="subLabel"> Verified <br> Instructors</label>
@@ -316,6 +368,7 @@
 
         </ion-col>
       </ion-row>
+      
       <ion-row *ngIf="showEditBasicDiveCentre"> 
         <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
           <label class="subLabel"> Edit <br> {{currentDiveCenter.Name}} </label>
@@ -356,6 +409,7 @@
             </ion-row>
         </ion-col>
       </ion-row>
+      
       <ion-row *ngIf="showAddCourseToCentre">
         <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
           <label class="subLabel"> Update Courses <br> At {{currentDiveCenter.Name}}</label>
@@ -400,6 +454,7 @@
         </ion-col>
 
       </ion-row>
+     
       <ion-row *ngIf="showAddSiteToCentre">
         <ion-col size="12" size-sm="12" size-md="4" size-lg="4" class="leftPane">
           <label class="subLabel"> Update Sites <br> At {{currentDiveCenter.Name}}</label>
@@ -667,8 +722,9 @@
   </ion-grid>
 
 
-
-  <ion-grid id="diveSiteGraphsDiv" *ngIf="accountType=='11'">
+  
+  <ion-grid id="diveSiteGraphsDiv" *ngIf="accountType=='11' && showSuperAdminChart">
+    
     <ion-row>
       <ion-item color='dark' style="width:100%;text-align: center;">
         <ion-col size="12">
@@ -764,7 +820,7 @@
       </ion-row>
   </ion-grid>
 
-  <ion-grid id="diveSiteGraphsDiv" *ngIf="accountType=='10' && showAdminDiveSiteGraph">
+  <ion-grid id="diveSiteGraphsDiv" *ngIf="accountType=='10' && showAdminDiveSiteGraph && showAdminChart">
     <ion-row>
       <ion-item color='dark' style="width:100%;text-align: center;border-radius:3px 3px 0 0 ;">
         <ion-col size="12">
@@ -859,7 +915,7 @@
       </ion-row>
   </ion-grid>
 
-  <ion-grid id="diveSiteGraphsDiv" *ngIf="accountType=='10'">
+  <ion-grid id="diveSiteGraphsDiv" *ngIf="accountType=='10' && showAdminChart">
     <ion-row>
       <ion-item color='dark' style="width:100%;text-align: center;border-radius:3px 3px 0 0 ;">
         <ion-col size="12">
@@ -910,7 +966,7 @@
 
   </ion-grid>
 
-  <ion-grid id="diveSiteGraphsDiv" *ngIf="accountType=='11'">
+  <ion-grid id="diveSiteGraphsDiv" *ngIf="accountType=='11' && showSuperAdminChart">
     <ion-row>
       <ion-item color='dark' style="width:100%;text-align: center;border-radius:3px 3px 0 0 ;">
         <ion-col size="12">

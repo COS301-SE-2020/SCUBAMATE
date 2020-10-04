@@ -44,6 +44,30 @@ ion-content.background{
   --background: transparent;
 }
 
+.innerDivNav{
+  background-color: rgba(24, 30, 33);
+  padding: 10px;
+  padding-left: 7vw;
+  padding-right: 12vw;
+  text-align: center;
+  margin-top: -6px;
+ // margin-bottom: 30px;
+  width: 105vmax;
+  height: 105%;
+  //margin-left: -5%;
+  position: sticky;
+
+  ion-button{
+    margin: auto;
+    width: 100%;
+  }
+
+  ion-row{
+    width:100%;
+  }
+}
+
+
 @mixin divContainer {
   background-color: rgba(38, 70, 83, 0.8);
   margin: auto;
@@ -60,20 +84,7 @@ ion-content.background{
       width: 100%;
   }
 
-  .innerDivNav{
-    background-color: rgba(24, 30, 33, 0.8);
-    padding: 7px;
-    padding-bottom: 10px;
-
-    ion-button{
-      margin: auto;
-      width: 100%;
-    }
-
-    ion-row{
-      width:100%;
-    }
-  }
+  
 
     .rightPane{
     padding: 2%;
@@ -276,4 +287,16 @@ ion-content.background{
   canvas{
     min-height: 270px;
   }
+}
+
+.sectionHeadTag{
+  color: white ; 
+  font-family: 'Righteous';
+  font-size: 40px !important;
+  text-shadow: 1px 1px 4px #000000;
+}
+
+.headingSection{
+  width:80%;
+  margin: auto;
 }
