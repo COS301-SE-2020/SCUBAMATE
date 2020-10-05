@@ -591,13 +591,21 @@ CourseListFinder(){
 sendEmail( e : string){
      
   this.showLoading = true;
-  this._accountService.sendValidationEmail(e).subscribe( res=>
-    {
-      console.log("Email Sent");
+
+
+    var reqBody ={
+      "Email" : e ,
+      "Type" : "Email"
+    }
+
+
+    this._accountService.sendRelatedEmail(reqBody).subscribe(res=>{
+      this.showLoading = false ;
       localStorage.setItem("otp", res.OTP);
       this.showLoading = false;
       this.presentOTPPrompt(e);
-    }, err =>{
+
+    },err =>{
       if(err.error){
         this.presentGeneralAlert("Failed to send OTP", err.error);
       }else{
@@ -606,7 +614,11 @@ sendEmail( e : string){
       this.showLoading = false;
       this.router.navigate(['home']);
       location.reload();
+
     });
+
+
+
 }
 
 sendVerifiedEmail(e : string ){
@@ -616,8 +628,9 @@ sendVerifiedEmail(e : string ){
     {
       console.log("Validated Email Sent");
       this.showLoading = false;
-      this.router.navigate(['home']);
+      
       location.reload();
+      this.router.navigate(['home']);
     });
 }
 
@@ -687,8 +700,9 @@ async presentOTPPrompt(e : string) {
         cssClass: 'secondary',
         handler: () => {
           console.log('Confirm Cancel');
-          this.router.navigate(['home']);
           location.reload();
+          this.router.navigate(['home']);
+          
         }
       }, {
         text: 'Confirm',
