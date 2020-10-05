@@ -217,24 +217,54 @@ export class ProfilePage implements OnInit {
   sendEmail(){
      
     this.showLoading = true;
-    this._accountService.sendValidationEmail(this.AD.Email).subscribe( res=>
+   /** this._accountService.sendValidationEmail(this.AD.Email).subscribe( res=>
       {
         //console.log("Email Sent");
         localStorage.setItem("otp", res.OTP);
         this.showLoading = false;
         this.presentOTPPrompt();
       });
+
+      */
+     var reqBody ={
+      "Email" : this.AD.Email ,
+      "Type" : "Email"
+    }
+
+    this._accountService.sendRelatedEmail(reqBody).subscribe(res =>{
+
+      this.showLoading = false;
+      localStorage.setItem("otp", res.OTP);
+        this.showLoading = false;
+        this.presentOTPPrompt();
+    }, err=>{
+      this.showLoading = false;
+      this.presentAlertGeneral("Could Not Send OTP Email to "+ this.AD.Email  , err.error);
+
+    })
+
+
   }
 
   sendVerifiedEmail(){
      
     this.showLoading = true;
-    this._accountService.confirmEmailValidation(this.AD.Email).subscribe( res=>
+     this._accountService.confirmEmailValidation(this.AD.Email).subscribe( res=>
       {
         //console.log("Validated Email Sent");
         this.showLoading = false;
         location.reload();
+      }, err=>{
+        this.showLoading = false;
+        this.presentAlertGeneral("Could Validate Email For "+ this.AD.Email  , err.error);
+      
       });
+
+    
+
+   
+
+
   }
 
   async presentAlertOtpOk( ) {

@@ -297,4 +297,29 @@ export class accountService
  
     }
 
+    receiveNewPassword(PostData): Observable<any>{
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }) 
+      };
+
+      
+      return this.httpClient.post('https://10n4obqtkh.execute-api.af-south-1.amazonaws.com/email/updatepassword', PostData, options );
+ 
+    }
+
+    sendRelatedEmail(PostData): Observable<any>{
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }) 
+      };
+
+      
+      return this.httpClient.post('https://10n4obqtkh.execute-api.af-south-1.amazonaws.com/email/emailsender', PostData, options );
+ 
+    }
+  
+
 }
