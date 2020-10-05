@@ -760,9 +760,9 @@ export class AdminPagePage implements OnInit {
     this.thirdPageNewCentre = false;
 
 
-    this.searchAllDiveSitesCharts(this.currentDate);
+    this.searchAllDiveSitesCharts(this.currentDate.getFullYear().toString());
     this.updateAgeGroupChart();
-    this.updateFrequencyLoginChart();
+   // this.updateFrequencyLoginChart();
     this.updateCourseChart() ;
 
      
@@ -790,7 +790,7 @@ export class AdminPagePage implements OnInit {
     this.secondPageNewCentre = false;
     this.thirdPageNewCentre = false;
 
-    this.searchAllDiveSitesCharts(this.currentDate);
+    this.searchAllDiveSitesCharts(this.currentDate.getFullYear().toString());
     this.updateAgeGroupChart();
     this.updateFrequencyLoginChart();
     this.updateRolesChart();
@@ -1920,7 +1920,7 @@ getDiveCentreInformation(){
 
   updateFrequencyLoginChart(){
 
-    this.lineChartFrequencyLogin.destroy() ; 
+   this.lineChartFrequencyLogin.destroy() ; 
 
     var ageGroupBody ={
       "AccessToken" : localStorage.getItem("accessToken") 

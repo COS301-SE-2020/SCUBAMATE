@@ -831,6 +831,7 @@
     <ion-row>
       <ion-item color='dark' id="diveGraphSearch">
         <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
+          <ion-label stacked>Select Dive Site</ion-label>
             <ion-select value={{DiveSiteLst[0]}}  [(ngModel)]="siteInput" >
               <ion-select-option *ngFor='let i of DiveSiteLst' value={{i}} >{{i}}</ion-select-option>
             </ion-select>
