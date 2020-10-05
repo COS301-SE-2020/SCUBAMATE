@@ -164,6 +164,10 @@ export class LogDivePage implements OnInit {
         this.MaxTempAPI = res.DailyForecasts[0].Temperature.Maximum.Value;
         this.MoonPhase = res.DailyForecasts[0].Moon.Phase ;
         this.WeatherDescription = ((res.DailyForecasts[0].Day.IconPhrase).replace('/','')).toLowerCase();
+        
+        if(this.WeatherDescription =="thunderstorms"){
+          this.WeatherDescription = "t-storms";
+        }
         if(!this.contains(this.optionalWeather, this.WeatherDescription)){
           this.WeatherDescription ="uncertain";
         }
