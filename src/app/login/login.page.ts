@@ -30,6 +30,7 @@ export class LoginPage implements OnInit {
   //Internet Connectivity check
   isConnected = true;  
   noInternetConnection: boolean;
+  showLoading: boolean = false;
 
   constructor(public _globalService: GlobalService, public alertController : AlertController, private _accountService : accountService, private router: Router, private connectionService: ConnectionService, private location: Location) {
     this.connectionService.monitor().subscribe(isConnected => {  
@@ -171,6 +172,108 @@ isUndefined(val): boolean {
       this.showPassword = false ;
       this.passwordType = 'password';
     }
+
+
+  }
+
+  emailReset(){
+    this.presentEmailPasswordPrompt();
+  
+  }
+
+
+  async presentEmailPasswordPrompt() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Forgot Your Password',
+      message:  'Provide Email Of Account To Receive Temporary Password',
+      inputs: [
+        {
+          name: 'emailEntered',
+          type: 'text',
+          placeholder: 'example@mail.com'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+          }
+        }, {
+          text: 'Confirm',
+          handler: data => {
+
+              this.step2EmailReset(data.emailEntered);
+
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+
+  async presentAlertGeneral( head : string , msg : string) {
+    const alert = await this.alertController.create({
+      cssClass: 'errorAlert',
+      header: head,
+      message: msg ,
+      buttons: [
+        {
+          text: 'Ok',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
+  }
+
+
+  step2EmailReset(accEmail){
+
+      var step1Req ={
+        "Email" : accEmail 
+      }
+
+
+      this.showLoading = true ; 
+
+      this._accountService.receiveNewPassword(step1Req).subscribe(res =>{
+        this.showLoading = false ; 
+            console.log(res);
+
+          var step2Req ={
+            "Email" : accEmail ,
+            "Type" : res.new 
+          } 
+
+          this.showLoading = true ; 
+
+          this._accountService.sendRelatedEmail(step2Req).subscribe(res =>{
+            this.showLoading = false ; 
+            console.log(res);
+            this.presentAlertGeneral("Temporary Password Send To " + accEmail , "Log in using new temporary password then proceed to your profile page to reset your password.");
+
+
+          }, err =>{
+            this.showLoading = false ; 
+            this.presentAlertGeneral("Could Not Send Temporary Password To " + accEmail , err.error);
+
+          });
+
+
+      },err => {
+        this.showLoading = false ; 
+          this.presentAlertGeneral("Could Not Create Temporary Password for " + accEmail , err.error);
+      }); 
+
 
 
   }
