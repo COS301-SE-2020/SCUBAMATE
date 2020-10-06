@@ -9,7 +9,9 @@ $inputBackgroundColor: #181e21;
 
 @media (max-width: 767px) {
     .divHeadTag{
-        font-size: 35px !important;
+        font-size: 30px !important;
+        margin-left: 0px !important;
+        padding-left: 10px !important; 
     }
 
     .divContainer{
