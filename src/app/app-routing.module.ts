@@ -79,7 +79,11 @@ const routes: Routes = [
   {
     path: 'no-internet',
     loadChildren: () => import('./no-internet/no-internet.module').then( m => m.NoInternetPageModule)
+  },  {
+    path: 'technical',
+    loadChildren: () => import('./technical/technical.module').then( m => m.TechnicalPageModule)
   }
+
 
 ];
 

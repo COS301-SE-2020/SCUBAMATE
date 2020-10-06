@@ -1,0 +1,91 @@
+$darkBlue : #264653 ;
+$lightBlue : #2A9D8F ;
+$orange: #F4A261 ; 
+$red: #E76F51 ;
+$yellow : #E9C46A ;
+$darkRed: #d66853   ;
+$inputBackgroundColor: #181e21;
+
+
+@media (max-width: 767px) {
+    .divHeadTag{
+        font-size: 30px !important;
+        margin-left: 0px !important;
+        padding-left: 10px !important; 
+    }
+
+    .divContainer{
+        width:100% !important;
+        margin-left: 0px !important ;
+    }
+
+}
+
+
+ion-content.background{
+    --background: url(../../assets/images/darkSea.jpg) 0 0/100% 100% no-repeat;
+}
+
+.productHeader {
+    --background: transparent;
+}
+
+.divHeadTag{
+    margin-top: 5%; 
+    margin-left: 10% ;
+    color: white;
+    font-size:  45px ;
+    font-family: 'Righteous';
+    display: swap ;
+    text-shadow: 1px 1px 4px #000000;
+  }
+
+  .divContainer{
+    background-color: rgba(38, 70, 83, 0.8);
+    margin: auto;
+    border-radius: 3px;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 80% ; 
+    text-align: center;
+  }
+
+
+  .subLabel{
+    font-size:  20px ;
+    font-weight: bold;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    color: white;
+    border-bottom: solid white 0.5px;
+    border-top: solid white 0.5px;
+    padding-left: 20px;
+    padding-right: 20px ;
+    padding-top: 5px ; 
+    padding-bottom: 5px ; 
+    margin-top:20px;
+    text-shadow: 1px 1px 3px #000000;
+  }
+  
+  .infoLabel{
+    font-size:  18px ;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    color: white;
+    font-weight: bold;
+
+
+    .linkLabel{
+        color: white  ;
+        cursor: pointer;
+        font-weight: bolder;
+        text-decoration: underline ;
+    }
+
+    .linkLabel:hover{
+        font-size: 22px;
+    }
+
+  }
+
+  ion-img{
+      box-shadow: 2px 2px 4px #181e21;
+  }
