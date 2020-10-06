@@ -1,0 +1,22 @@
+$darkBlue : #264653 ;
+$lightBlue : #2A9D8F ;
+$orange: #F4A261 ; 
+$red: #E76F51 ;
+$yellow : #E9C46A ;
+$darkRed: #d66853   ;
+$inputBackgroundColor: #181e21;
+
+
+@media (max-width: 767px) {
+
+
+}
+
+
+ion-content.background{
+    --background: url(../../assets/images/darkSea.jpg) 0 0/100% 100% no-repeat;
+}
+
+.productHeader {
+    --background: transparent;
+}
