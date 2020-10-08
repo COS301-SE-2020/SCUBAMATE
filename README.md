@@ -9,6 +9,17 @@ Available At: <a href="https://www.scuba.thematthew.me"> https://www.scuba.thema
 
 ## Software Requirements Specification and Other Documents
  * <a href="https://www.overleaf.com/read/pdbfwzfvmpcy">SRS Version 5: Overleaf - LaTex</a>
+ <details>
+     <summary><b>Previous Versions </b></summary>
+     <br>
+         <a href="https://www.overleaf.com/read/fpfrysmtpkzx">SRS Version 4: Overleaf - LaTex</a>
+        <br>
+        <a href="https://www.overleaf.com/read/mrwqnywskgch">SRS Version 3: Overleaf - LaTex</a>
+        <br>
+         <a href="https://www.overleaf.com/read/pdbfwzfvmpcy">SRS Version 2: Overleaf - LaTex</a>
+        <br> 
+         <a href="https://www.overleaf.com/read/gnsygbdtvctw">SRS Version 1: Overleaf - LaTex</a>
+ </details>
  * <a href="https://www.overleaf.com/read/shbywrwqfcvw">Coding Standards: Overleaf - LaTex</a>
  * <a href="https://www.overleaf.com/read/wrrjwwdgfgfn">User Manual: Overleaf - LaTex</a>
  * <a href="https://www.overleaf.com/read/fzpxngrydqsg">Technical Installation Guide: Overleaf - LaTex</a>
