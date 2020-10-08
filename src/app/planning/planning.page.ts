@@ -903,7 +903,8 @@ export class PlanningPage implements OnInit {
         }, err=> {
 
             this.showLoading= false ;
-            this.presentGeneralAlert("Failed to predict Visibility", err.error) ; 
+           // this.presentGeneralAlert("Failed to predict Visibility", err.error) ; 
+           this.presentGeneralAlert("Failed to predict Visibility","Oops! We have reached our limit for daily AccuWeather requests. Please try again tomorrow" );
 
         }); 
     }else{
