@@ -55,6 +55,7 @@ For Android APK: <a href="https://drive.google.com/drive/u/2/folders/1Whfnimgacn
 # Collaborators
 
 ## Gisèle Nadine Marais
+ * <a href="https://github.com/GiseleNadine"> Github Account </a>
  * <a href="https://www.linkedin.com/in/gisele-marais-871a801a7/"> Linkedin Account </a>
  * <a href="https://giselenadine.github.io/">giselenadine.github.io</a>
  * Email : u18012583@tuks.co.za
