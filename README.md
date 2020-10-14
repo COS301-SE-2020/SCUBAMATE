@@ -10,6 +10,34 @@ For Android APK: <a href="https://drive.google.com/drive/u/2/folders/1Whfnimgacn
 ## Software Requirements Specification
  * <a href="https://www.overleaf.com/read/pdbfwzfvmpcy">SRS Version 5: Overleaf - LaTex</a>
  <details>
+     <summary><b>Technology and Testing Frameworks </b></summary>
+     <br>
+        <a href="https://angular.io/">Client-Side: Ionic</a>
+        <br>
+        <a href="https://ionicframework.com/">Client-Side: Angular</a>
+        <br>
+        <a href="https://cordova.apache.org/">For Android APK: Cordova</a>
+        <br>
+        <a href="https://aws.amazon.com/lambda/">Server-Side: Lambda</a>
+        <br>
+        <a href="https://aws.amazon.com/api-gateway/">Server-Side: API Gateway</a>
+        <br>
+        <a href="https://aws.amazon.com/dynamodb/">Server-Side: DynamoDB</a>
+        <br>
+        <a href="https://aws.amazon.com/s3/">Server-Side: S3 Storage</a>
+        <br>
+        <a href="https://aws.amazon.com/cloudfront/">Server-Side Deployment: Cloudfront</a>
+        <br>
+        <a href="https://jasmine.github.io/">Unit and Integration Testing: Karma and Jasmine</a>
+        <br>
+        <a href="https://circleci.com/">Continuous Integrastion Testing: Circle CI</a>
+        <br>
+        <a href="">Performance Testing: K6</a>
+        <br>
+        <a href="https://gatling.io/">Scalability Testing: Gatling</a>
+        <br>
+ </details>
+ <details>
      <summary><b>Previous Versions </b></summary>
      <br>
          <a href="https://www.overleaf.com/read/fpfrysmtpkzx">SRS Version 4: Overleaf - LaTex</a>
@@ -29,7 +57,9 @@ For Android APK: <a href="https://drive.google.com/drive/u/2/folders/1Whfnimgacn
 
 ## Project Management Tools
 * <a href="https://team-anti-virus.slack.com">Slack</a>
-* <a href="https://app.clickup.com/2536654/home/landing">ClickUp</a>
+* <a href="https://share.clickup.com/l/h/6-19432008-1/f541a53aee335e7">Clickup: Demo Preparation</a>
+* <a href="https://share.clickup.com/b/h/6-21589272-2/57d68e5ce531dde">Clickup: User Stories</a>
+* <a href="https://share.clickup.com/b/h/2dd6e-218/c0defc289b7775f">Clickup: Current Sprint</a>
 
 ## Demo Video Links
 * <a href="https://drive.google.com/drive/folders/14hiS32Kgk8xqgvmLkFV33a35PGvYcp6Y?usp=sharing">TeamAV Demo 1</a>
