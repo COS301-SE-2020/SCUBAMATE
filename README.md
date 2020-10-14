@@ -169,8 +169,9 @@ For Android APK: <a href="https://drive.google.com/drive/u/2/folders/1Whfnimgacn
     </details>
 
 ## Isobel Bosman 
+ * <a href="https://github.com/u18020519"> Github Account</a>
  * <a href="https://www.linkedin.com/in/isobel-bosman-8b29661a7/"> Linkedin  Account </a>
- * <a href="https://u18020519.github.io/">u18020519.github.io</a>
+ * <a href="https://u18020519.github.io/"> u18020519.github.io</a>
  * Email : u18020519@tuks.co.za
  * <details>
      <summary><b>Responsibilities</b></summary>
